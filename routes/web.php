@@ -15,10 +15,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/example', function () {
-    return view('example');
+Route::get('home', function() {
+	return view('home');
 });
 
-Route::get('/logout', function () {
-    return view('logout');
+Route::get('login', function() {
+	return view('example');
 });

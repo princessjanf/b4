@@ -79,7 +79,7 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    Halo Halo Bandung
+                    Ini halaman lain
                 </div>
 
                 <div class="links">
