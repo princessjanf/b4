@@ -1,6 +1,10 @@
 @extends('main')
 
-@section('title', '| Example')
+@section('title', '| Welcome')
+
+@section('nav.home')
+  class="active"
+@endsection
 
 @section('body')
 

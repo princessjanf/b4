@@ -11,14 +11,8 @@
 |
 */
 
-Route::get('/', function () {
-    return view('pages.welcome');
-});
+Route::get('/', 'MainController@index');
 
-Route::get('example', function() {
-    return view('pages.example');
-});
+Route::get('login', 'MainController@login');
 
-Route::get('logout', function() {
-    return view('pages.logout');
-});
+Route::get('logout', 'MainController@logout');

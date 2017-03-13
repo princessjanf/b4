@@ -14,8 +14,8 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav">
-            <li><a href=".">Home</a></li>
-            <li><a href="./example">log in</a></li>
+            <li @yield('nav.home')><a href=".">Home</a></li>
+            <li @yield('nav.login')><a href="./login">log in</a></li>
             <li><a href="./logout">log out</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
