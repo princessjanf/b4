@@ -16,3 +16,7 @@ Route::get('/', 'MainController@index');
 Route::get('login', 'MainController@login');
 
 Route::get('logout', 'MainController@logout');
+
+Route::get('/createScholarship', 'ScholarshipController@create');
+
+Route::post('/insertScholarship', 'ScholarshipController@insert');
