@@ -14,7 +14,7 @@
 					<tbody>
 						<tr>
 						<td>
-							<input type = "text" id="syarat1">
+							<input type = "text" name="syarat">
 						</td>
 				</tr>
 			</tbody>
@@ -30,11 +30,11 @@ counter=1;
 function insertRow(){
     counter+=1;
     console.log(counter);
-    
+    document.getElementsByName("counter")[0].value = counter;
 		var tmp = document.getElementById('tableSyarat');
 		var new_row = tmp.rows[1].cloneNode(true);
 		new_row.cells[0].innerHTML =
-    '<input type = "text" id="syarat1">';
+    '<input type = "text" name="syarat">';
 		tmp.appendChild(new_row);
 	}
 </script>

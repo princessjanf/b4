@@ -16,31 +16,36 @@ class ScholarshipController extends Controller
       public function create(){
         $categories = DB::select('select * from kategori_beasiswa');
         $pendonor = DB::select('select * from pendonor');
-
-         return view('pages.createSyarat', ['categories' => $categories, 'pendonor' => $pendonor]);
+          $idBeasiswa = DB::select('SELECT id_beasiswa FROM beasiswa ORDER BY id_beasiswa DESC LIMIT 1');
+         return view('pages.createScholarship', ['categories' => $categories, 'pendonor' => $pendonor, 'idBeasiswa' =>$idBeasiswa]);
       }
 
       public function insert(Request $request){
-         $name = $request->get('counter');
-         echo $name;
-  /*    DB::insert('INSERT INTO `beasiswa`(`nama_beasiswa`, `deskripsi_beasiswa`, `kategori`, `tanggal_buka`, `tanggal_tutup`,
+
+        /* ini untuk insert syarat, tergantung konfig db nya*/
+         $counter = $request->get('counter');
+         for($i = 0;$i<($counter);$i++)
+         {
+           //echo $request->get('syarat');
+          }
+          /*insert beasiswa*/
+          DB::insert('INSERT INTO `beasiswa`(`nama_beasiswa`, `deskripsi_beasiswa`, `kategori`, `tanggal_buka`, `tanggal_tutup`,
                                           `kuota`, `nominal`, `dana`, `public`, `flag`, `syarat`)
-                    VALUES (?,?,?,?,?,?,?,?,1,1,?)',
+                    VALUES (?,?,?,?,?,?,?,?,0,1,"asdsa")',
                     [$request->input('namaBeasiswa'),
                     $request->input('deskripsiBeasiswa'),
-                    $request->input('kategoriBeasiswa'),
+                    $request->get('kategoriBeasiswa'),
                     $request->input('tanggalBuka'),
                     $request->input('tanggalTutup'),
                     $request->input('kuota'),
                     $request->input('nominal'),
-                    $request->input('totalDana'),
-                    $request->input('syaratBeasiswa')]
+                    $request->input('totalDana')]
+        );
+        /*assign pendonor ke beasiswa*/
+        $idBeasiswa = DB::select('SELECT * FROM beasiswa ORDER BY id_beasiswa DESC LIMIT 1');
+        $id_pendonor = $request->get('pendonor');
 
-
-       );*/
-        // DB::insert('insert into kategori_beasiswa (nama_kategori) values(?)',[$name]);
-         //echo "Record inserted successfully.<br/>";
-         //echo '<a href = "/insert">Click Here</a> to go back.';
-        //   return redirect()->route('/');
+          //  DB::insert('insert into `beasiswa_pendonor` VALUES (?,?)', [$idBeasiswa, $id_pendonor]);
+      
       }
 }
