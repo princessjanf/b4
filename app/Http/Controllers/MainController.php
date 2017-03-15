@@ -18,8 +18,6 @@ class MainController extends Controller
         $user = SSO::getUser();
         return view('pages.welcome')->withUser($user);
       }
-
-      
     }
 
     function login()

@@ -17,7 +17,7 @@ class ScholarshipController extends Controller
         $categories = DB::select('select * from kategori_beasiswa');
         $pendonor = DB::select('select * from pendonor');
 
-         return view('pages.createScholarship', ['categories' => $categories, 'pendonor' => $pendonor]);
+         return view('pages.createSyarat', ['categories' => $categories, 'pendonor' => $pendonor]);
       }
 
       public function insert(Request $request){
