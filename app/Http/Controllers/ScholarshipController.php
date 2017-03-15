@@ -14,7 +14,10 @@ class ScholarshipController extends Controller
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
       public function create(){
-         return view('pages.createScholarship');
+        $categories = DB::select('select * from kategori_beasiswa');
+        $pendonor = DB::select('select * from pendonor');
+
+         return view('pages.createScholarship', ['categories' => $categories, 'pendonor' => $pendonor]);
       }
 
       public function insert(Request $request){
