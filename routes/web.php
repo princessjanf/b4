@@ -16,3 +16,5 @@ Route::get('/', 'MainController@index');
 Route::get('login', 'MainController@login');
 
 Route::get('logout', 'MainController@logout');
+
+Route::get('homepage', 'MainController@index');

@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\URL;
 
 class MainController extends Controller
 {
+    
     function index()
     {
       return view('pages.homepage');
