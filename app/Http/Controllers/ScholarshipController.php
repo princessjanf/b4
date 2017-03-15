@@ -21,9 +21,9 @@ class ScholarshipController extends Controller
       }
 
       public function insert(Request $request){
-         $name = $request->input('namaBeasiswa');
+         $name = $request->get('counter');
          echo $name;
-      DB::insert('INSERT INTO `beasiswa`(`nama_beasiswa`, `deskripsi_beasiswa`, `kategori`, `tanggal_buka`, `tanggal_tutup`,
+  /*    DB::insert('INSERT INTO `beasiswa`(`nama_beasiswa`, `deskripsi_beasiswa`, `kategori`, `tanggal_buka`, `tanggal_tutup`,
                                           `kuota`, `nominal`, `dana`, `public`, `flag`, `syarat`)
                     VALUES (?,?,?,?,?,?,?,?,1,1,?)',
                     [$request->input('namaBeasiswa'),
@@ -37,7 +37,7 @@ class ScholarshipController extends Controller
                     $request->input('syaratBeasiswa')]
 
 
-       );
+       );*/
         // DB::insert('insert into kategori_beasiswa (nama_kategori) values(?)',[$name]);
          //echo "Record inserted successfully.<br/>";
          //echo '<a href = "/insert">Click Here</a> to go back.';
