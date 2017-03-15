@@ -10,7 +10,7 @@ class MainController extends Controller
 {
     function index()
     {
-      return view('pages.welcome');
+      return view('pages.homepage');
     }
 
     function login()
