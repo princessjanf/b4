@@ -49,6 +49,7 @@ class MainController extends Controller
     function detailbeasiswa($id)
     {
       $beasiswa = DB::table('beasiswa')->where('id_beasiswa', $id)->first();
-      return view('pages.detail-beasiswa')->withBeasiswa($beasiswa);
+      $pendonor = DB::table('pendonor')->where('id_pendonor', $beasiswa->id_pendonor)->first();
+      return view('pages.detail-beasiswa')->withBeasiswa($beasiswa)->withPendonor($pendonor);
     }
 }
