@@ -8,11 +8,9 @@ use Illuminate\Support\Facades\URL;
 
 class MainController extends Controller
 {
-    
+
     function index()
     {
-<<<<<<< HEAD
-=======
       if(!SSO::check()) {
         $user = null;
         return view('pages.welcome')->withUser($user);
@@ -21,7 +19,6 @@ class MainController extends Controller
         $user = SSO::getUser();
         return view('pages.welcome')->withUser($user);
       }
->>>>>>> master
     }
 
     function login()

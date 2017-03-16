@@ -8,7 +8,7 @@ class="active"
 
 @section('body')
 <div class="container">
-	<form id='createScholarshipForm' action = "/insertScholarship" onsubmit="return validateForm()" method = "post" data-parsley-validate="">
+	<form id='createScholarshipForm' action = "./insertScholarship" onsubmit="return validateForm()" method = "post" data-parsley-validate="">
 		<div class="form-group">
 		<button type="submit" class="btn btn-default">Submit</button>
 		</div>

@@ -11,20 +11,18 @@
 |
 */
 
-Route::get('/', 'MainController@index');
+Route::get('', 'MainController@index');
 
 Route::get('logout', 'MainController@logout');
 
-<<<<<<< HEAD
 Route::get('beranda', 'MainController@index');
 
 Route::get('daftar-beasiswa', 'MainController@daftarbeasiswa');
 
 Route::get('add-beasiswa', 'MainController@addbeasiswa');
-=======
+
 //Route::get('/createScholarship', 'ScholarshipController@create');
 Route::get('test', 'ScholarshipController@test');
-
 
 Route::get('createScholarship',[
    'middleware' => 'authSSO',
@@ -32,4 +30,3 @@ Route::get('createScholarship',[
 ]);
 
 Route::post('/insertScholarship', 'ScholarshipController@insert');
->>>>>>> master
