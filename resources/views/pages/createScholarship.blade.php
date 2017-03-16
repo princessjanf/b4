@@ -80,9 +80,10 @@ function insertRow(){
     document.getElementsByName("counter")[0].value = counter;
 		var theForm = document.getElementById('createScholarshipForm');
 		var tmp = document.createElement("input");
-		tmp.name = "syarat"+counter; // poll[optionX]
+		tmp.name = "syarat"+counter;
     tmp.type = "text";
 		console.log(tmp.name);
     theForm.appendChild(tmp);
 	}
+
 </script>

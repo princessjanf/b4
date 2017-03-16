@@ -34,7 +34,13 @@ class ScholarshipController extends Controller
            }
         }
 
+        public function delete($id){
+            DB::update('update `beasiswa` SET flag = 0 WHERE id_beasiswa =?', [$id]);
+          }
 
+          public function makePublic($id){
+              DB::update('update `beasiswa` SET public = 1 WHERE id_beasiswa =?', [$id]);
+            }
 
       public function insert(Request $request){
 
