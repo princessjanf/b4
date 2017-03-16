@@ -18,3 +18,5 @@ Route::get('login', 'MainController@login');
 Route::get('logout', 'MainController@logout');
 
 Route::get('homepage', 'MainController@index');
+
+Route::get('daftar-beasiswa', 'MainController@daftarbeasiswa');

@@ -42,10 +42,10 @@
                 <div class="navbar-collapse collapse ">
                     <ul class="nav navbar-nav">
                         <li class="active"><a href="./homepage">Home</a></li>
-                        <li><a href="portfolio.html">Daftar Beasiswa</a></li>
+                        <li><a href="./daftar-beasiswa">Daftar Beasiswa</a></li>
                         <li><a href="portfolio.html">Donasi</a></li>
                         <li><a href="blog.html">LPJ</a></li>
-                        <li><a href="contact.html">LOG IN</a></li>
+                       <li><a href="./login">log in</a></li>
                     </ul>
                 </div>
             </div>
@@ -93,19 +93,6 @@
     
     
 
-    </section>
-    <section class="callaction">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="big-cta">
-                    <div class="cta-text">
-                        <a href=""><h2><span>Lihat</span> Daftar Beasiswa</h2></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
     </section>
     <section id="content">
     <div class="container">
@@ -191,6 +178,19 @@
             </div>
         </div>
         <!-- end divider -->
+        <section class="callaction">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="big-cta">
+                            <div class="cta-text">
+                                <a href=""><h2><span>Lihat</span> Daftar Beasiswa</h2></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
         <!-- Portfolio Projects -->
         <div class="row">
             <div class="col-lg-12">

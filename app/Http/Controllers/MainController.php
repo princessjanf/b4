@@ -27,4 +27,10 @@ class MainController extends Controller
     {
       SSO::logout(URL::to('/'));
     }
+
+    function daftarbeasiswa()
+    {
+      return view('pages.daftar-beasiswa');
+    }
+
 }
