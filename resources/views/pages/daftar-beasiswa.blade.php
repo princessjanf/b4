@@ -3,7 +3,7 @@
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 		<meta charset="utf-8">
-		<title>Bootstrap 3 Control Panel</title>
+		<title>Daftar Beasiswa</title>
 		<meta name="generator" content="Bootply" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 		
@@ -36,11 +36,7 @@
                 </div>
                 <div class="navbar-collapse collapse ">
                     <ul class="nav navbar-nav">
-                        <li><a href="./homepage">Home</a></li>
-                        <li class="active"><a href="./daftar-beasiswa">Daftar Beasiswa</a></li>
-                        <li><a href="portfolio.html">Donasi</a></li>
-                        <li><a href="blog.html">LPJ</a></li>
-                       <li><a href="./login">log in</a></li>
+                        <li><a href="./login">log in</a></li>
                     </ul>
                 </div>
             </div>
@@ -57,15 +53,10 @@
 
       <!-- left -->
       <ul class="nav nav-stacked">
-        <li><a href="http://www.bootply.com/85861" target="ext">Alerts</a></li>
-        <li><a href="http://www.bootply.com/85861" target="ext">Links</a></li>
-        <li><a href="http://www.bootply.com/85861" target="ext">Reports</a></li>
-        <li><a href="http://www.bootply.com/85861" target="ext">Books</a></li>
-        <li><a href="http://www.bootply.com/85861" target="ext">Tools</a></li>
-        <li><a href="http://www.bootply.com/85861" target="ext">Real-time</a></li>
-        <li><a href="http://www.bootply.com/85861" target="ext">Advanced..</a></li>
-      </ul>
-      
+        <li><a href="./homepage">Dashboard</a></li>
+        <li><a href="./daftar-beasiswa">Beasiswa</a></li>
+        <li><a href="http://www.bootply.com/85861">LPJ</a></li>
+        <li><a href="http://www.bootply.com/85861">Settings</a></li>
       <hr>
       
   	</div><!-- /span-3 -->
