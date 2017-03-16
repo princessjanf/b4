@@ -8,8 +8,11 @@ use Illuminate\Support\Facades\URL;
 
 class MainController extends Controller
 {
+    
     function index()
     {
+<<<<<<< HEAD
+=======
       if(!SSO::check()) {
         $user = null;
         return view('pages.welcome')->withUser($user);
@@ -18,6 +21,7 @@ class MainController extends Controller
         $user = SSO::getUser();
         return view('pages.welcome')->withUser($user);
       }
+>>>>>>> master
     }
 
     function login()
@@ -33,4 +37,15 @@ class MainController extends Controller
     {
       SSO::logout(URL::to('/'));
     }
+
+    function daftarbeasiswa()
+    {
+      return view('pages.daftar-beasiswa');
+    }
+
+     function addbeasiswa()
+    {
+      return view('pages.add-beasiswa');
+    }
+
 }
