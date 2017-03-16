@@ -43,7 +43,7 @@ class ScholarshipController extends Controller
             }
 
       public function insert(Request $request){
-
+        
 
           /*insert beasiswa*/
         DB::insert('INSERT INTO `beasiswa`(`nama_beasiswa`, `deskripsi_beasiswa`, `kategori`, `tanggal_buka`, `tanggal_tutup`,
