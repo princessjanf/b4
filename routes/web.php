@@ -17,6 +17,13 @@ Route::get('beranda', 'MainController@login');
 
 Route::get('logout', 'MainController@logout');
 
-Route::get('/createScholarship', 'ScholarshipController@create');
+//Route::get('/createScholarship', 'ScholarshipController@create');
+Route::get('test', 'ScholarshipController@test');
+
+
+Route::get('createScholarship',[
+   'middleware' => 'authSSO',
+   'uses' => 'ScholarshipController@create',
+]);
 
 Route::post('/insertScholarship', 'ScholarshipController@insert');
