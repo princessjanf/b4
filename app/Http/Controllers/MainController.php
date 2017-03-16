@@ -38,7 +38,8 @@ class MainController extends Controller
 
     function daftarbeasiswa()
     {
-      return view('pages.daftar-beasiswa');
+      $beasiswas = DB::table('beasiswa')->get();
+      return view('pages.daftar-beasiswa')->withBeasiswas($beasiswas);
     }
 
      function addbeasiswa()

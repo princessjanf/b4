@@ -6,7 +6,7 @@
 		<title>Daftar Beasiswa</title>
 		<meta name="generator" content="Bootply" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-		
+
 		<!--[if lt IE 9]>
 			<script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
 		<![endif]-->
@@ -46,7 +46,7 @@
 
 <!-- Main -->
 <div class="container">
-  
+
   <!-- upper section -->
   <div class="row">
 	<div class="col-sm-3">
@@ -58,55 +58,50 @@
         <li><a href="http://www.bootply.com/85861">LPJ</a></li>
         <li><a href="http://www.bootply.com/85861">Settings</a></li>
       <hr>
-      
+
   	</div><!-- /span-3 -->
     <div class="col-sm-9">
     <h4>Daftar Beasiswa</h4>
     <table class="table table-striped">
         <thead>
-          <tr><th>Visits</th><th>ROI</th><th>Source</th><th>Description and Notes</th><th>More</th></tr>
+          <tr>
+						<th>No</th>
+						<th>Nama Beasiswa</th>
+						<th>Status</th>
+						<th>Akhir Periode</th>
+						<th>More</th>
+					</tr>
         </thead>
         <tbody>
-          <tr><td>45</td><td>2.45%</td><td>Direct</td><td>Sam sapien massa, aliquam in cursus ut, ullamcorper in tortor. 
-          Aliquam mauris arcu, tristique a lobortis vitae, condimentum feugiat justo.</td>
-          <td><i class="glyphicon glyphicon-pencil"></i></td>
-          <td><i class="glyphicon glyphicon-trash"></i></td>
-          <td><i class="glyphicon glyphicon-user"></i></td>
-          <td><i class="glyphicon glyphicon-eye-close"></i></td></tr>
-          <tr><td>289</td><td>56.2%</td><td>Referral</td><td>After RWD massa, aliquam in cursus ut, ullamcorper in tortor. 
-          Aliquam mauris arcu, tristique a lobortis vitae, condimentum feugiat justo.</td>
-          <td><i class="glyphicon glyphicon-pencil"></i></td>
-          <td><i class="glyphicon glyphicon-trash"></i></td>
-          <td><i class="glyphicon glyphicon-user"></i></td>
-          <td><i class="glyphicon glyphicon-eye-close"></i></td></tr>
-          <tr><td>98</td><td>25%</td><td>Type</td><td>Wil sapien massa, aliquam in cursus ut, ullamcorper in tortor. 
-          Liquam mauris arcu, tristique a lobortis vitae, condimentum feugiat justo.</td>
-          <td><i class="glyphicon glyphicon-pencil"></i></td>
-          <td><i class="glyphicon glyphicon-trash"></i></td>
-          <td><i class="glyphicon glyphicon-user"></i></td>
-          <td><i class="glyphicon glyphicon-eye-close"></i></td></tr>
-          <tr><td>109</td><td>8%</td><td>..</td><td>Forfoot aliquam in cursus ut, ullamcorper in tortor. 
-          Okma mauris arcu, tristique a lobortis vitae, condimentum feugiat justo.</td>
-          <td><i class="glyphicon glyphicon-pencil"></i></td>
-          <td><i class="glyphicon glyphicon-trash"></i></td>
-          <td><i class="glyphicon glyphicon-user"></i></td>
-          <td><i class="glyphicon glyphicon-eye-close"></i></td></tr>
-          <tr><td>34</td><td>14%</td><td>..</td><td>Mikel sapien massa, aliquam in cursus ut, ullamcorper in tortor. 
-          Maliquam mauris arcu, tristique a lobortis vitae, condimentum feugiat justo.</td>
-          <td><i class="glyphicon glyphicon-pencil"></i></td>
-          <td><i class="glyphicon glyphicon-trash"></i></td>
-          <td><i class="glyphicon glyphicon-user"></i></td>
-          <td><i class="glyphicon glyphicon-eye-close"></i></td></tr>
-          
+					@foreach ($beasiswas as $index => $beasiswa)
+    				  <tr>
+								<td>{{$index+1}}</td>
+								<td>{{$beasiswa->nama_beasiswa}}</td>
+								<td>
+									@if ($beasiswa -> flag == 1)
+										Dibuka
+									@else
+										Ditutup
+									@endif
+								</td>
+								<td>{{$beasiswa->tanggal_tutup}}</td>
+		          	<td>
+									<i class="glyphicon glyphicon-pencil"></i>
+									<i class="glyphicon glyphicon-trash"></i>
+									<i class="glyphicon glyphicon-user"></i>
+									<i class="glyphicon glyphicon-eye-close"></i>
+								</td>
+							</tr>
+					 @endforeach
         </tbody>
       </table>
     </div>
   </div><!--/row-->
   <!-- /upper section -->
-  
+
   <!-- lower section -->
-  
-  
+
+
 </div><!--/container-->
 <!-- /Main -->
 
@@ -168,8 +163,8 @@
                     <div class="copyright">
                         <p>&copy; Moderna Theme. All right reserved.</p>
                         <div class="credits">
-                            <!-- 
-                                All the links in the footer should remain intact. 
+                            <!--
+                                All the links in the footer should remain intact.
                                 You can delete the links only if you purchased the pro version.
                                 Licensing information: https://bootstrapmade.com/license/
                                 Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/buy/?theme=Moderna
@@ -194,7 +189,7 @@
 
 
 
-  
+
 	<!-- script references -->
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
 		<script src="js/bootstrap.min.js"></script>
