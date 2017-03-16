@@ -58,21 +58,13 @@ class="active"
 		<label for="kuota">Kuota</label>
 		<input type="number" class="form-control" name="kuota" min= "0" data-parsley-pattern="\d*" data-parsley-type="integer" data-parsley-maxlength="3" required>
 	</div>
-	<input type = "hidden" name = "counter" value="1">
-  <table class="w3-table" id ="tableSyarat">
-					<thead>
-						<tr>
-							<th>Syarat</th>
-            </tr>
-					</thead>
-					<tbody>
-						<tr>
-						<td>
-							<input type = "text" name="syarat">
-						</td>
-				</tr>
-			</tbody>
-		</table>
+
+	<div class="form-group" name="syarat">
+		<label for="syarat">Syarat</label>
+		<input type = "hidden" name = "counter" value="1">
+		<input type = "text" name="syarat1">
+	</div>
+
 	<button type="submit" class="btn btn-default">Submit</button>
 </form>
 <div>
@@ -85,12 +77,12 @@ class="active"
 counter=1;
 function insertRow(){
     counter+=1;
-    console.log(counter);
     document.getElementsByName("counter")[0].value = counter;
-		var tmp = document.getElementById('tableSyarat');
-		var new_row = tmp.rows[1].cloneNode(true);
-		new_row.cells[0].innerHTML =
-    '<input type = "text" name="syarat">';
-		tmp.appendChild(new_row);
+		var theForm = document.getElementById('createScholarshipForm');
+		var tmp = document.createElement("input");
+		tmp.name = "syarat"+counter; // poll[optionX]
+    tmp.type = "text";
+		console.log(tmp.name);
+    theForm.appendChild(tmp);
 	}
 </script>
