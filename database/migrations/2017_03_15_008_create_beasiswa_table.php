@@ -17,13 +17,15 @@ class CreateBeasiswaTable extends Migration
             $table->increments('id_beasiswa');
             $table->string('nama_beasiswa');
             $table->text('deskripsi_beasiswa');
-            $table->text('syarat'); //masih text belum object
+            $table->integer('id_pendonor')->unsigned();
             $table->integer('id_kategori')->unsigned();
             $table->integer('id_status')->unsigned();
             $table->dateTime('tanggal_buka');
             $table->dateTime('tanggal_tutup');
             $table->integer('kuota');
             $table->bigInteger('nominal');
+            $table->string('periode');
+            $table->string('jangka');
             $table->string('dokumen_kerja_sama',100);
             $table->bigInteger('dana');
             $table->boolean('flag');
@@ -31,6 +33,7 @@ class CreateBeasiswaTable extends Migration
 
             $table->foreign('id_kategori')->references('id_kategori')->on('kategori_beasiswa');
             $table->foreign('id_status')->references('id_status')->on('status_beasiswa');
+            $table->foreign('id_pendonor')->references('id_pendonor')->on('pendonor');
         });
     }
 

@@ -14,11 +14,11 @@ class CreatePegawaiUniversitasTable extends Migration
     public function up()
     {
         Schema::create('pegawai_universitas', function (Blueprint $table) {
-            $table->char('no_identitas',18);
+            $table->char('no_identitas',10);
             $table->string('lokasi',50);
 
-            $table->primary('no_identitas',18);
-            $table->foreign('no_identitas',18)->references('no_identitas')->on('pegawai');
+            $table->primary('no_identitas',10);
+            $table->foreign('no_identitas',10)->references('no_identitas')->on('pegawai');
         });
     }
 

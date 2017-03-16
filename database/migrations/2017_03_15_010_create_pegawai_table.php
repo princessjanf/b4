@@ -14,7 +14,7 @@ class CreatePegawaiTable extends Migration
     public function up()
     {
         Schema::create('pegawai', function (Blueprint $table) {
-            $table->char('no_identitas',18);
+            $table->char('no_identitas',10);
             $table->string('username',20);
             $table->integer('id_role_pegawai')->unsigned();
             $table->string('jabatan',50);

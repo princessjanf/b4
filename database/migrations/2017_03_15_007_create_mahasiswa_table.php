@@ -17,12 +17,12 @@ class CreateMahasiswaTable extends Migration
             $table->string('username',20);
             $table->char('npm',10);
             $table->integer('id_fakultas')->unsigned();
-            $table->integer('id_program_studi')->unsigned();
+            $table->integer('id_prodi')->unsigned();
 
             $table->primary('username');
             $table->foreign('username')->references('username')->on('user');
             $table->foreign('id_fakultas')->references('id_fakultas')->on('fakultas');
-            $table->foreign('id_program_studi')->references('id_program_studi')->on('program_studi');
+            $table->foreign('id_prodi')->references('id_prodi')->on('program_studi');
         });
     }
 
