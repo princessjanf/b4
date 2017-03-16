@@ -13,12 +13,23 @@
 
 Route::get('/', 'MainController@index');
 
-Route::get('login', 'MainController@login');
-
 Route::get('logout', 'MainController@logout');
 
-Route::get('homepage', 'MainController@index');
+<<<<<<< HEAD
+Route::get('beranda', 'MainController@index');
 
 Route::get('daftar-beasiswa', 'MainController@daftarbeasiswa');
 
 Route::get('add-beasiswa', 'MainController@addbeasiswa');
+=======
+//Route::get('/createScholarship', 'ScholarshipController@create');
+Route::get('test', 'ScholarshipController@test');
+
+
+Route::get('createScholarship',[
+   'middleware' => 'authSSO',
+   'uses' => 'ScholarshipController@create',
+]);
+
+Route::post('/insertScholarship', 'ScholarshipController@insert');
+>>>>>>> master

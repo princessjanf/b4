@@ -11,7 +11,17 @@ class MainController extends Controller
     
     function index()
     {
-      return view('pages.homepage');
+<<<<<<< HEAD
+=======
+      if(!SSO::check()) {
+        $user = null;
+        return view('pages.welcome')->withUser($user);
+      }
+      else{
+        $user = SSO::getUser();
+        return view('pages.welcome')->withUser($user);
+      }
+>>>>>>> master
     }
 
     function login()
@@ -20,7 +30,7 @@ class MainController extends Controller
         SSO::authenticate();
 			$user = SSO::getUser();
 
-      return view('pages.example')->withUser($user);
+      return view('pages.beranda')->withUser($user);
     }
 
     function logout()

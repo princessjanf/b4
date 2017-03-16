@@ -2,7 +2,7 @@
 
 @section('title', '| Example')
 
-@section('nav.login')
+@section('nav.beranda')
 	class="active"
 @endsection
 
