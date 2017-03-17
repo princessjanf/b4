@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use SSO\SSO;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\DB;
 
 class MainController extends Controller
 {
@@ -37,7 +38,8 @@ class MainController extends Controller
 
     function daftarbeasiswa()
     {
-      return view('pages.daftar-beasiswa');
+      $beasiswas = DB::table('beasiswa')->get();
+      return view('pages.daftar-beasiswa')->withBeasiswas($beasiswas);
     }
 
      function addbeasiswa()
@@ -45,4 +47,10 @@ class MainController extends Controller
       return view('pages.add-beasiswa');
     }
 
+    function detailbeasiswa($id)
+    {
+      $beasiswa = DB::table('beasiswa')->where('id_beasiswa', $id)->first();
+      $pendonor = DB::table('pendonor')->where('id_pendonor', $beasiswa->id_pendonor)->first();
+      return view('pages.detail-beasiswa')->withBeasiswa($beasiswa)->withPendonor($pendonor);
+    }
 }
