@@ -58,173 +58,82 @@
   
   <!-- upper section -->
   <div class="row">
-  <div class="col-sm-3">
+    <div class="col-sm-3">
 
-      <!-- left -->
-      <ul class="nav nav-stacked">
-        <li><a href="./homepage">Dashboard</a></li>
-        <li><a href="./daftar-beasiswa">Beasiswa</a></li>
-        <li><a href="http://www.bootply.com/85861">LPJ</a></li>
-        <li><a href="http://www.bootply.com/85861">Settings</a></li>
-      <hr>
-      
-    </div><!-- /span-3 -->
-    <div class="col-sm-9">
-    <h4>Entri Beasiswa</h4>
-    <hr>
-    <div class='panel-body'>
-        <form class='form-horizontal' role='form'>
-          <div class='form-group'>
-            <label class='control-label col-md-2 col-md-offset-2' for='id_accomodation'>Accomodation</label>
-            <div class='col-md-2'>
-              <select class='form-control' id='id_accomodation'>
-                <option>RV</option>
-                <option>Tent</option>
-                <option>Cabin/Lodging</option>
+        <!-- left -->
+        <ul class="nav nav-stacked">
+          <li><a href="./homepage">Dashboard</a></li>
+          <li><a href="./daftar-beasiswa">Beasiswa</a></li>
+          <li><a href="http://www.bootply.com/85861">LPJ</a></li>
+          <li><a href="http://www.bootply.com/85861">Settings</a></li>
+        <hr>
+        
+      </div><!-- /span-3 -->
+     
+      <div class="col-sm-9">
+      <h4>Entri Beasiswa</h4>
+            <form id='createScholarshipForm' action = "/insertScholarship" method = "post" data-parsley-validate="">
+            <input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
+            <div class="form-group">
+              <label for="namaBeasiswa">Nama Beasiswa</label>
+              <input type="text" class="form-control" name="namaBeasiswa" required="">
+            </div>
+            <div class="form-group">
+              <label for="deskripsiBeasiswa">Deskripsi Beasiswa</label>
+              <textarea id="message" class="form-control" name="deskripsiBeasiswa" data-parsley-trigger="keyup" data-parsley-minlength="20"
+              data-parsley-maxlength="100" data-parsley-minlength-message="Come on! You need to enter at least a 20 character comment.."
+              data-parsley-validation-threshold="10"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="nominal">Nominal</label>
+              <input type="number" class="form-control" name="nominal" min= "0" data-parsley-pattern="\d*" data-parsley-type="integer" data-parsley-maxlength="8" required>
+            </div>
+            <div class="form-group">
+              <label for="totalDana">Total Dana</label>
+              <input type="number" class="form-control" name="totalDana" min= "0" data-parsley-pattern="\d*" data-parsley-type="integer" data-parsley-maxlength="20" required>
+            </div>
+            <div class="form-group">
+              <label for="kategoriBeasiswa">Kategori Beasiswa</label>
+              <select class="form-control" name="kategoriBeasiswa">
+                @foreach ($categories as $category)
+                <option value= {{ $category->id_kategori}}> {{$category->nama_kategori}} </option>
+                @endforeach
               </select>
             </div>
-          </div>
-          <div class='form-group'>
-            <label class='control-label col-md-2 col-md-offset-2' for='id_title'>Name</label>
-            <div class='col-md-8'>
-              <div class='col-md-2'>
-                <div class='form-group internal'>
-                  <select class='form-control' id='id_title'>
-                    <option>Mr</option>
-                    <option>Ms</option>
-                    <option>Mrs</option>
-                    <option>Miss</option>
-                    <option>Dr</option>
-                  </select>
-                </div>
-              </div>
-              <div class='col-md-3 indent-small'>
-                <div class='form-group internal'>
-                  <input class='form-control' id='id_first_name' placeholder='First Name' type='text'>
-                </div>
-              </div>
-              <div class='col-md-3 indent-small'>
-                <div class='form-group internal'>
-                  <input class='form-control' id='id_last_name' placeholder='Last Name' type='text'>
-                </div>
-              </div>
+
+            <div class="form-group">
+              <label for="tanggalBuka">Tanggal Buka</label>
+              {!!Form::date('tanggalBuka', \Carbon\Carbon::now())!!}
             </div>
-          </div>
-          <div class='form-group'>
-            <label class='control-label col-md-2 col-md-offset-2' for='id_adults'>Guests</label>
-            <div class='col-md-8'>
-              <div class='col-md-2'>
-                <div class='form-group internal'>
-                  <input class='form-control col-md-8' id='id_adults' placeholder='18+ years' type='number'>
-                </div>
-              </div>
-              <div class='col-md-3 indent-small'>
-                <div class='form-group internal'>
-                  <input class='form-control' id='id_children' placeholder='2-17 years' type='number'>
-                </div>
-              </div>
-              <div class='col-md-3 indent-small'>
-                <div class='form-group internal'>
-                  <input class='form-control' id='id_children_free' placeholder='&lt; 2 years' type='number'>
-                </div>
-              </div>
+            <div class="form-group">
+              <label for="tanggalTutup">Tanggal Tutup</label>
+              {!!Form::date('tanggalTutup', \Carbon\Carbon::now())!!}
             </div>
+
+            <label for="pendonor">Pendonor</label>
+            <select class="form-control" name="pendonor">
+              @foreach ($pendonor as $pendonor)
+              <option value= {{ $pendonor->id_pendonor}}> {{$pendonor->nama_instansi}} </option>
+              @endforeach
+            </select>
           </div>
-          <div class='form-group'>
-            <label class='control-label col-md-2 col-md-offset-2' for='id_email'>Contact</label>
-            <div class='col-md-6'>
-              <div class='form-group'>
-                <div class='col-md-11'>
-                  <input class='form-control' id='id_email' placeholder='E-mail' type='text'>
-                </div>
-              </div>
-              <div class='form-group internal'>
-                <div class='col-md-11'>
-                  <input class='form-control' id='id_phone' placeholder='Phone: (xxx) - xxx xxxx' type='text'>
-                </div>
-              </div>
-            </div>
+
+          <div class="form-group">
+            <label for="kuota">Kuota</label>
+            <input type="number" class="form-control" name="kuota" min= "0" data-parsley-pattern="\d*" data-parsley-type="integer" data-parsley-maxlength="3" required>
           </div>
-          <div class='form-group'>
-            <label class='control-label col-md-2 col-md-offset-2' for='id_checkin'>Checkin</label>
-            <div class='col-md-8'>
-              <div class='col-md-3'>
-                <div class='form-group internal input-group'>
-                  <input class='form-control datepicker' id='id_checkin'>
-                  <span class='input-group-addon'>
-                    <i class='glyphicon glyphicon-calendar'></i>
-                  </span>
-                </div>
-              </div>
-              <label class='control-label col-md-2' for='id_checkout'>Checkout</label>
-              <div class='col-md-3'>
-                <div class='form-group internal input-group'>
-                  <input class='form-control datepicker' id='id_checkout'>
-                  <span class='input-group-addon'>
-                    <i class='glyphicon glyphicon-calendar'></i>
-                  </span>
-                </div>
-              </div>
-            </div>
+
+          <div class="form-group" name="syarat">
+            <label for="syarat">Syarat</label>
+            <input type = "hidden" name = "counter" value="1">
+            <input type = "text" name="syarat1">
           </div>
-          <div class='form-group'>
-            <label class='control-label col-md-2 col-md-offset-2' for='id_equipment'>Equipment type</label>
-            <div class='col-md-8'>
-              <div class='col-md-3'>
-                <div class='form-group internal'>
-                  <select class='form-control' id='id_equipment'>
-                    <option>Travel trailer</option>
-                    <option>Fifth wheel</option>
-                    <option>RV/Motorhome</option>
-                    <option>Tent trailer</option>
-                    <option>Pickup camper</option>
-                    <option>Camper van</option>
-                  </select>
-                </div>
-              </div>
-              <div class='col-md-9'>
-                <div class='form-group internal'>
-                  <label class='control-label col-md-3' for='id_slide'>Slide-outs</label>
-                  <div class='make-switch' data-off-label='NO' data-on-label='YES' id='id_slide_switch'>
-                    <input id='id_slide' type='checkbox' value='chk_hydro'>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class='form-group'>
-            <label class='control-label col-md-2 col-md-offset-2' for='id_service'>Required Service</label>
-            <div class='col-md-8'>
-              <select class='multiselect' id='id_service' multiple='multiple'>
-                <option value='hydro'>Hydro</option>
-                <option value='water'>Water</option>
-                <option value='sewer'>Sewer</option>
-              </select>
-            </div>
-          </div>
-          <div class='form-group'>
-            <label class='control-label col-md-2 col-md-offset-2' for='id_pets'>Pets</label>
-            <div class='col-md-8'>
-              <div class='make-switch' data-off-label='NO' data-on-label='YES' id='id_pets_switch'>
-                <input id='id_pets' type='checkbox' value='chk_hydro'>
-              </div>
-            </div>
-          </div>
-          <div class='form-group'>
-            <label class='control-label col-md-2 col-md-offset-2' for='id_comments'>Comments</label>
-            <div class='col-md-6'>
-              <textarea class='form-control' id='id_comments' placeholder='Additional comments' rows='3'></textarea>
-            </div>
-          </div>
-          <div class='form-group'>
-            <div class='col-md-offset-4 col-md-3'>
-              <button class='btn-lg btn-primary' type='submit'>Request Reservation</button>
-            </div>
-            <div class='col-md-3'>
-              <button class='btn-lg btn-danger' style='float:right' type='submit'>Cancel</button>
-            </div>
-          </div>
+
+          <button type="submit" class="btn btn-default">Submit</button>
         </form>
+        <div>
+            <button type="button" class="btn btn-default pull-right" id="buttonTambahSyarat" onclick="insertRow()">+</button>
+        </div>
       </div>
     </div>
   </div><!--/row-->

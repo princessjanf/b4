@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Moderna - Bootstrap 3 flat corporate template</title>
+<title>Modul Beasiswa</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="description" content="" />
 <meta name="author" content="http://bootstraptaste.com" />
@@ -52,6 +52,7 @@
         </div>
     </header>
     <!-- end header -->
+    
     <section id="featured">
     <!-- start slider -->
     <div class="container">
@@ -90,10 +91,8 @@
             </div>
         </div>
     </div>  
-    
-    
-
     </section>
+    
     <section id="content">
     <div class="container">
         <div class="row">

@@ -11,17 +11,17 @@ class MainController extends Controller
     
     function index()
     {
-<<<<<<< HEAD
-=======
+
+
       if(!SSO::check()) {
         $user = null;
-        return view('pages.welcome')->withUser($user);
+        return view('pages.homepage')->withUser($user);
       }
       else{
         $user = SSO::getUser();
-        return view('pages.welcome')->withUser($user);
+        return view('pages.homepage')->withUser($user);
       }
->>>>>>> master
+
     }
 
     function login()
@@ -30,7 +30,7 @@ class MainController extends Controller
         SSO::authenticate();
 			$user = SSO::getUser();
 
-      return view('pages.beranda')->withUser($user);
+        return view('pages.daftar-beasiswa')->withUser($user);
     }
 
     function logout()
