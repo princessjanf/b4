@@ -46,7 +46,7 @@ class ScholarshipController extends Controller
 
 
           /*insert beasiswa*/
-        DB::insert('INSERT INTO `beasiswa`(`nama_beasiswa`, `deskripsi_beasiswa`, `kategori`, `tanggal_buka`, `tanggal_tutup`,
+        DB::insert('INSERT INTO `beasiswa`(`nama_beasiswa`, `deskripsi_beasiswa`, `id_kategori`, `tanggal_buka`, `tanggal_tutup`,
                                           `kuota`, `nominal`, `dana`, `public`, `flag`, `syarat`)
                     VALUES (?,?,?,?,?,?,?,?,0,1,"asdsa")',
                     [$request->input('namaBeasiswa'),

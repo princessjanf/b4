@@ -16,12 +16,11 @@
 
 @section('body')
 		<?php
-		if 
 			echo '<ul>';
+			echo "alvin nih";
 			foreach ($user as $value) {
 				echo '<li>' . $value . '</li>';
 			}
 			echo '</ul>';
-                   
 		?>
 @endsection
