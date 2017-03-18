@@ -18,6 +18,7 @@ class MiddlewareUser
     {
         if (SSO::check()){
             return $next($request);
+
         }   
         return redirect('/login');
     }
