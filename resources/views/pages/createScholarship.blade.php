@@ -59,7 +59,7 @@
   	</div><!-- /span-3 -->
 <div class="col-sm-9">
 	<form id='createScholarshipForm' action = "./insertScholarship" onsubmit="return validateForm()" method = "post" data-parsley-validate="">
-		
+
 		<input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
 		<input type = "hidden" name = "counter" value="1">
 		<div class="form-group">
@@ -110,18 +110,26 @@
 		<label for="kuota">Kuota</label>
 		<input type="number" class="form-control" name="kuota" min= "0" data-parsley-pattern="\d*" data-parsley-type="integer" data-parsley-maxlength="3" required>
 	</div>
+	<div class="form-group">
+		<label for="periode">Periode</label>
+		<input type="number" class="form-control" name="periode" min= "0" data-parsley-pattern="\d*" data-parsley-type="integer" data-parsley-maxlength="3" required>
+	</div>
+	<div class="form-group">
+		<label for="jangka">Jangka</label>
+		<input type="number" class="form-control" name="jangka" min= "0" data-parsley-pattern="\d*" data-parsley-type="integer" data-parsley-maxlength="3" required>
+	</div>
 	<div class="form-group" name="syarat">
 		<label for="syarat">Syarat</label>
 		<input type = "text" class="form-control" name="syarat1" required>
 	</div>
-
+	<div class="form-group">
+			<button type="submit" class="btn btn-default">Submit</button>
+	</div>
 </form>
 <div>
 		<button type="button" class="btn btn-default pull-right" id="buttonTambahSyarat" onclick="insertRow()">+</button>
 </div>
-<div class="form-group">
-		<button type="submit" class="btn btn-default">Submit</button>
-</div>
+
 </div>
 
 </div>
