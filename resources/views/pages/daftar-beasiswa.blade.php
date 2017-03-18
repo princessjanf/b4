@@ -36,7 +36,7 @@
                 </div>
                 <div class="navbar-collapse collapse ">
                     <ul class="nav navbar-nav">
-                        <li><a href="./login">log in</a></li>
+                            <li><a href="./profile">{{$user->username}} ({{$namarole}})</a></li>
                     </ul>
                 </div>
             </div>
@@ -85,11 +85,19 @@
 									@endif
 								</td>
 								<td>{{$beasiswa->tanggal_tutup}}</td>
-		          	<td>
-									<a href = "./daftar-beasiswa"><button><i class="glyphicon glyphicon-pencil"></i></button></a>
-									<i class="glyphicon glyphicon-trash"></i>
-									<i class="glyphicon glyphicon-user"></i>
-									<i class="glyphicon glyphicon-eye-close"></i>
+		          	<td>           
+                                    @if($namarole=="Pegawai Universitas")
+    									<a href = "./daftar-beasiswa"><button><i class="glyphicon glyphicon-pencil"></i></button></a>
+                                        <a href = "./#"><button><i class="glyphicon glyphicon-trash"></i></button></a>
+                                        <a href = "./#"><button><i class="glyphicon glyphicon-eye-close"></i></button></a>
+                                    
+                                    @elseif($namarole=="mahasiswa")
+                                        <a href = "#"><button>Apply</button></a>
+                                    
+                                    @else
+                                        <a href = "#">gaada menu :(</a>
+
+                                    @endif
 								</td>
 							</tr>
 					 @endforeach

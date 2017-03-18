@@ -23,7 +23,10 @@ Route::get('daftar-beasiswa', [
    'uses' => 'MainController@daftarbeasiswa',
 ]);
 
-Route::get('add-beasiswa', 'MainController@addbeasiswa');
+Route::get('add-beasiswa', [
+   'middleware' => 'authSSO',
+   'uses' => 'MainController@addbeasiswa',
+]);
 
 
 Route::get('detail-beasiswa/{id}', 'MainController@detailbeasiswa');
