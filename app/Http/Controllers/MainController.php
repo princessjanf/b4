@@ -10,49 +10,42 @@ use Illuminate\Support\Facades\DB;
 class MainController extends Controller
 {
 
-    function index()
-    {
+  function index()
+  {
+    $user = null;
+    if(SSO::check())
+    $user = SSO::getUser();
+    return view('pages.homepage')->withUser($user);
+  }
 
-      if(!SSO::check()) {
-        $user = null;
-        return view('pages.homepage')->withUser($user);
-      }
-      else{
-        $user = SSO::getUser();
-        return view('pages.homepage')->withUser($user);
-      }
+  function login()
+  {
+    if(!SSO::check())
+    SSO::authenticate();
+    $user = SSO::getUser();
+    return view('pages.homepage')->withUser($user);
+  }
 
-    }
+  function logout()
+  {
+    SSO::logout(URL::to('/'));
+  }
 
-    function login()
-    {
-      if(!SSO::check())
-        SSO::authenticate();
-			$user = SSO::getUser();
+  function daftarbeasiswa()
+  {
+    $beasiswas = DB::table('beasiswa')->get();
+    return view('pages.daftar-beasiswa')->withBeasiswas($beasiswas);
+  }
 
-        return view('pages.beranda')->withUser($user);
-    }
+  function addbeasiswa()
+  {
+    return view('pages.add-beasiswa');
+  }
 
-    function logout()
-    {
-      SSO::logout(URL::to('/'));
-    }
-
-    function daftarbeasiswa()
-    {
-      $beasiswas = DB::table('beasiswa')->get();
-      return view('pages.daftar-beasiswa')->withBeasiswas($beasiswas);
-    }
-
-     function addbeasiswa()
-    {
-      return view('pages.add-beasiswa');
-    }
-
-    function detailbeasiswa($id)
-    {
-      $beasiswa = DB::table('beasiswa')->where('id_beasiswa', $id)->first();
-      $pendonor = DB::table('pendonor')->where('id_pendonor', $beasiswa->id_pendonor)->first();
-      return view('pages.detail-beasiswa')->withBeasiswa($beasiswa)->withPendonor($pendonor);
-    }
+  function detailbeasiswa($id)
+  {
+    $beasiswa = DB::table('beasiswa')->where('id_beasiswa', $id)->first();
+    $persyaratans = DB::table('persyaratan')->where('id_beasiswa', $beasiswa->id_beasiswa)->get();
+    return view('pages.detail-beasiswa')->withBeasiswa($beasiswa)->withPersyaratans($persyaratans);
+  }
 }
