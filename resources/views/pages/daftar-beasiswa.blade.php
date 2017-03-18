@@ -18,7 +18,6 @@
 	<link href="{{ asset('css/flexslider.css') }}" rel="stylesheet" />
 	<link href="{{ asset('css/style.css') }}" rel="stylesheet" />
 
-<<<<<<< HEAD
 <!-- Theme skin -->
 <link href="{{ asset('skins/default.css') }}" rel="stylesheet" />
 	</head>
@@ -61,46 +60,7 @@
 					<hr>
 				</ul>
 			</div><!-- /span-3 -->
-			<div class="col-sm-9">
-				<h4>Daftar Beasiswa</h4>
-				<table class="table table-striped">
-					<thead>
-						<tr>
-							<th>No</th>
-							<th>Nama Beasiswa</th>
-							<th>Status</th>
-							<th>Akhir Periode</th>
-							<th>More</th>
-						</tr>
-					</thead>
-					<tbody>
-						@foreach ($beasiswas as $index => $beasiswa)
-						<tr>
-							<td>{{$index+1}}</td>
-							<td>{{$beasiswa->nama_beasiswa}}</td>
-							<td>
-								@if ($beasiswa -> flag == 1)
-								Dibuka
-								@else
-								Ditutup
-								@endif
-							</td>
-							<td>{{$beasiswa->tanggal_tutup}}</td>
-							<td>
-								<a href = "./daftar-beasiswa"><button><i class="glyphicon glyphicon-pencil"></i></button></a>
-								<i class="glyphicon glyphicon-trash"></i>
-								<i class="glyphicon glyphicon-user"></i>
-								<i class="glyphicon glyphicon-eye-close"></i>
-							</td>
-						</tr>
-						@endforeach
-					</tbody>
-				</table>
-			</div>
-		</div><!--/row-->
-		<!-- /upper section -->
 
-  	</div><!-- /span-3 -->
     <div class="col-sm-9">
     <h4>Daftar Beasiswa</h4>
     <table class="table table-striped">
@@ -152,7 +112,6 @@
 
 	</div><!--/container-->
 	<!-- /Main -->
-
 
 	<footer>
 		<div class="container">

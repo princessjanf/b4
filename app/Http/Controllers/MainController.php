@@ -20,16 +20,16 @@ class MainController extends Controller
         $user = SSO::getUser();
         $pengguna = DB::table('user')->where('username', $user->username)->first();
         $role = DB::table('role')->where('id_role', $pengguna->id_role)->first();
-        $namaRole = $role->nama_role;
+        $namarole = $role->nama_role;
 
-        if($namaRole=='pegawai'){
+        if($namarole=='pegawai'){
           $pengguna = DB::table('pegawai')->where('username', $user->username)->first();
           $role = DB::table('role_pegawai')->where('id_role_pegawai', $pengguna->id_role_pegawai)->first();
-          $namaRole = $role->nama_role;
+          $namarole = $role->nama_role;
         }
 
-        //$namaRole disini kemungkinannya berarti = mahasiswa/pendonor/pegawai fakultas/pegawai universitas/direktorat kerjasama
-          return view('pages.homepage')->withUser($user)->withRole($namaRole);
+        //$namarole disini kemungkinannya berarti = mahasiswa/pendonor/pegawai fakultas/pegawai universitas/direktorat kerjasama
+          return view('pages.homepage')->withUser($user)->withNamarole($namarole);
         }
 
     }
@@ -44,14 +44,14 @@ class MainController extends Controller
       $role = DB::table('role')->where('id_role', $pengguna->id_role)->first();
       $namarole = $role->nama_role;
 
-      if($namaRole=='pegawai'){
+      if($namarole=='pegawai'){
         $pengguna = DB::table('pegawai')->where('username', $user->username)->first();
         $role = DB::table('role_pegawai')->where('id_role_pegawai', $pengguna->id_role_pegawai)->first();
         $namarole = $role->nama_role;
       }
 
-      //$namaRole disini kemungkinannya berarti = mahasiswa/pendonor/pegawai fakultas/pegawai universitas/direktorat kerjasama
-        return view('pages.homepage')->withUser($user)->withRole($namarole);
+      //$namarole disini kemungkinannya berarti = mahasiswa/pendonor/pegawai fakultas/pegawai universitas/direktorat kerjasama
+        return view('pages.homepage')->withUser($user)->withNamarole($namarole);
     }
 
     function logout()
@@ -72,7 +72,7 @@ class MainController extends Controller
         $namaRole = $role->nama_role;
       }
 
-      //$namaRole disini kemungkinannya berarti = mahasiswa/pendonor/pegawai fakultas/pegawai universitas/direktorat kerjasama
+      //$namarole disini kemungkinannya berarti = mahasiswa/pendonor/pegawai fakultas/pegawai universitas/direktorat kerjasama
       $beasiswas = DB::table('beasiswa')->get();
       return view('pages.daftar-beasiswa')->withBeasiswas($beasiswas)->withUser($user)->withNamarole($namarole);
     }
