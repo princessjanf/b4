@@ -19,14 +19,14 @@ class CreateBeasiswaTable extends Migration
             $table->text('deskripsi_beasiswa');
             $table->integer('id_pendonor')->unsigned();
             $table->integer('id_kategori')->unsigned();
-            $table->integer('id_status')->unsigned();
+            $table->integer('id_status')->unsigned()->nullable;
             $table->dateTime('tanggal_buka');
             $table->dateTime('tanggal_tutup');
             $table->integer('kuota');
             $table->bigInteger('nominal');
             $table->string('periode');
             $table->string('jangka');
-            $table->string('dokumen_kerja_sama',100);
+            $table->string('dokumen_kerja_sama',100)->nullable();
             $table->bigInteger('dana');
             $table->boolean('flag');
             $table->boolean('public');
