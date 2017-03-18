@@ -6,7 +6,7 @@
 
   <body>
     
-
+    @yield('nav.home')
     <div class="container">
       @yield('body')
     </div>

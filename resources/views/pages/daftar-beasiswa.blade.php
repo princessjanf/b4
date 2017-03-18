@@ -86,7 +86,7 @@
 								</td>
 								<td>{{$beasiswa->tanggal_tutup}}</td>
 		          	<td>
-									<i class="glyphicon glyphicon-pencil"></i>
+									<a href = "./daftar-beasiswa"><button><i class="glyphicon glyphicon-pencil"></i></button></a>
 									<i class="glyphicon glyphicon-trash"></i>
 									<i class="glyphicon glyphicon-user"></i>
 									<i class="glyphicon glyphicon-eye-close"></i>
