@@ -25,7 +25,7 @@ class MainController extends Controller
         if($namarole=='pegawai'){
           $pengguna = DB::table('pegawai')->where('username', $user->username)->first();
           $role = DB::table('role_pegawai')->where('id_role_pegawai', $pengguna->id_role_pegawai)->first();
-          $namarole = $role->nama_role;
+          $namarole = $role->nama_role_pegawai;
         }
 
         //$namarole disini kemungkinannya berarti = mahasiswa/pendonor/pegawai fakultas/pegawai universitas/direktorat kerjasama
@@ -47,7 +47,7 @@ class MainController extends Controller
       if($namarole=='pegawai'){
         $pengguna = DB::table('pegawai')->where('username', $user->username)->first();
         $role = DB::table('role_pegawai')->where('id_role_pegawai', $pengguna->id_role_pegawai)->first();
-        $namarole = $role->nama_role;
+        $namarole = $role->nama_role_pegawai;
       }
 
       //$namarole disini kemungkinannya berarti = mahasiswa/pendonor/pegawai fakultas/pegawai universitas/direktorat kerjasama
@@ -69,7 +69,7 @@ class MainController extends Controller
       if($namarole=='pegawai'){
         $pengguna = DB::table('pegawai')->where('username', $user->username)->first();
         $role = DB::table('role_pegawai')->where('id_role_pegawai', $pengguna->id_role_pegawai)->first();
-        $namarole = $role->nama_role;
+        $namarole = $role->nama_role_pegawai;
       }
 
       //$namarole disini kemungkinannya berarti = mahasiswa/pendonor/pegawai fakultas/pegawai universitas/direktorat kerjasama
@@ -88,10 +88,13 @@ class MainController extends Controller
       }
         
         $role = DB::table('role_pegawai')->where('id_role_pegawai', $pengguna->id_role_pegawai)->first();
-        $namarole = $role->nama_role;
+        $namarole = $role->nama_role_pegawai;
+
+        $kategoribeasiswa = DB::table('kategori_beasiswa')->get();
+        $pendonor = DB::table('pendonor')->get();
 
         if($namarole=='Pegawai Universitas'){
-          return view('pages.add-beasiswa');
+          return view('pages.add-beasiswa')->withUser($user)->withNamarole($namarole)->withKategoribeasiswa($kategoribeasiswa)->withPendonor($pendonor);
         }
     }
 
@@ -106,7 +109,7 @@ class MainController extends Controller
       if($namarole=='pegawai'){
         $pengguna = DB::table('pegawai')->where('username', $user->username)->first();
         $role = DB::table('role_pegawai')->where('id_role_pegawai', $pengguna->id_role_pegawai)->first();
-        $namarole = $role->nama_role;
+        $namarole = $role->nama_role_pegawai;
       }
 
       $beasiswa = DB::table('beasiswa')->where('id_beasiswa', $id)->first();
