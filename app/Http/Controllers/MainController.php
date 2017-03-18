@@ -69,7 +69,7 @@ class MainController extends Controller
       if($namarole=='pegawai'){
         $pengguna = DB::table('pegawai')->where('username', $user->username)->first();
         $role = DB::table('role_pegawai')->where('id_role_pegawai', $pengguna->id_role_pegawai)->first();
-        $namaRole = $role->nama_role;
+        $namarole = $role->nama_role;
       }
 
       //$namarole disini kemungkinannya berarti = mahasiswa/pendonor/pegawai fakultas/pegawai universitas/direktorat kerjasama
@@ -80,14 +80,37 @@ class MainController extends Controller
      function addbeasiswa()
     {
       $user = SSO::getUser();
-      return view('pages.add-beasiswa');
+
+      $pengguna = DB::table('pegawai')->where('username', $user->username)->first();
+
+      if($pengguna==null){
+        return redirect('/');
+      }
+        
+        $role = DB::table('role_pegawai')->where('id_role_pegawai', $pengguna->id_role_pegawai)->first();
+        $namarole = $role->nama_role;
+
+        if($namarole=='Pegawai Universitas'){
+          return view('pages.add-beasiswa');
+        }
     }
 
     function detailbeasiswa($id)
     {
       $user = SSO::getUser();
+
+      $pengguna = DB::table('user')->where('username', $user->username)->first();
+      $role = DB::table('role')->where('id_role', $pengguna->id_role)->first();
+      $namarole = $role->nama_role;
+
+      if($namarole=='pegawai'){
+        $pengguna = DB::table('pegawai')->where('username', $user->username)->first();
+        $role = DB::table('role_pegawai')->where('id_role_pegawai', $pengguna->id_role_pegawai)->first();
+        $namarole = $role->nama_role;
+      }
+
       $beasiswa = DB::table('beasiswa')->where('id_beasiswa', $id)->first();
       $pendonor = DB::table('pendonor')->where('id_pendonor', $beasiswa->id_pendonor)->first();
-      return view('pages.detail-beasiswa')->withBeasiswa($beasiswa)->withPendonor($pendonor)->withUser($user);
+      return view('pages.detail-beasiswa')->withBeasiswa($beasiswa)->withPendonor($pendonor)->withUser($user)->withNamarole($namarole);
     }
 }
