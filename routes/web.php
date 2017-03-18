@@ -39,3 +39,5 @@ Route::get('createScholarship',[
 
 Route::post('/insertScholarship', 'ScholarshipController@insert');
 
+Route::post('/edit-beasiswa', 'ScholarshipController@edit');
+
