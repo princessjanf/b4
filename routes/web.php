@@ -10,16 +10,27 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/', 'MainController@index');
-
-Route::get('beranda', 'MainController@login');
+Route::get('', 'MainController@index');
 
 Route::get('logout', 'MainController@logout');
 
+Route::get('homepage', 'MainController@index');
+
+Route::get('login', 'MainController@login');
+
+Route::get('daftar-beasiswa', [
+   'middleware' => 'authSSO',
+   'uses' => 'MainController@daftarbeasiswa',
+]);
+
+Route::get('add-beasiswa', 'MainController@addbeasiswa');
+
+
+Route::get('detail-beasiswa/{id}', 'MainController@detailbeasiswa');
+
+
 //Route::get('/createScholarship', 'ScholarshipController@create');
 Route::get('test', 'ScholarshipController@test');
-
 
 Route::get('createScholarship',[
    'middleware' => 'authSSO',
@@ -27,3 +38,4 @@ Route::get('createScholarship',[
 ]);
 
 Route::post('/insertScholarship', 'ScholarshipController@insert');
+
