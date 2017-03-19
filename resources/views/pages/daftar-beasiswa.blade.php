@@ -97,7 +97,6 @@
                                     
                                     @else
                                         <a href = "#">gaada menu :(</a>
-
                                     @endif
 								</td>
 							</tr>
