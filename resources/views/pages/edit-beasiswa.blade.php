@@ -71,13 +71,13 @@
 
 					<div class="form-group">
 						<label for="namaBeasiswa">Nama Beasiswa</label>
-						<input type="text" value= {{$beasiswa->nama_beasiswa}} class="form-control" name="namaBeasiswa" required="">
+						<input type="text" class="form-control" name="namaBeasiswa" required value= "{{ $beasiswa->nama_beasiswa }}">
 					</div>
 
 					<div class="form-group">
 						<label for="deskripsiBeasiswa">Deskripsi Beasiswa</label>
 						<textarea id="message" class="form-control" name="deskripsiBeasiswa" data-parsley-trigger="keyup" data-parsley-minlength="20"
-						data-parsley-maxlength="100" data-parsley-minlength-message="Come on! You need to enter at least a 20 character comment.."s
+						data-parsley-maxlength="500" data-parsley-minlength-message="Come on! You need to enter at least a 20 character comment.."s
 						data-parsley-validation-threshold="10">{{$beasiswa->deskripsi_beasiswa}}</textarea>
 					</div>
 					<div class = "row">
