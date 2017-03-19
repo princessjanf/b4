@@ -17,7 +17,7 @@
 	<link href="{{ asset('css/jcarousel.css') }}" rel="stylesheet" />
 	<link href="{{ asset('css/flexslider.css') }}" rel="stylesheet" />
 	<link href="{{ asset('css/style.css') }}" rel="stylesheet" />
-
+	<link href="{{ asset('css/parsley.css') }}" rel="stylesheet" />
 	<!-- Theme skin -->
 	<link href="{{ asset('skins/default.css') }}" rel="stylesheet" />
 </head>
@@ -36,7 +36,7 @@
 				</div>
 				<div class="navbar-collapse collapse ">
 					<ul class="nav navbar-nav">
-						<li><a href="./profile">{{$user->username}} ({{$namarole}})</a></li>
+						<li><a href="#profile">{{$user->username}} ({{$namarole}})</a></li>
 						<li><a href="./logout">LOG OUT</a></li>
 					</ul>
 				</div>
@@ -99,7 +99,7 @@
 								<a href = "make-public-beasiswa/{{$beasiswa->id_beasiswa}}"><button><i class="glyphicon glyphicon-eye-close"></i></button></a>
 
 								@elseif($namarole=="mahasiswa")
-								<a href = "#apply"><button>Apply</button></a>
+								<a href = "#daftar"><button>Daftar</button></a>
 
 								@elseif($namarole=="Direktorat Kerjasama")
 								<style>

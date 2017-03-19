@@ -18,9 +18,6 @@
 	<link href="{{ asset('css/flexslider.css') }}" rel="stylesheet" />
 	<link href="{{ asset('css/style.css') }}" rel="stylesheet" />
 	<link href="{{ asset('css/parsley.css') }}" rel="stylesheet" />
-	<script src='https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js'></script>
-	<script src="http://parsleyjs.org/dist/parsley.js"></script>
-	<script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'></script>
 	<!-- Theme skin -->
 	<link href="{{ asset('skins/default.css') }}" rel="stylesheet" />
 </head>
@@ -39,7 +36,7 @@
 				</div>
 				<div class="navbar-collapse collapse ">
 					<ul class="nav navbar-nav">
-						<li><a href="./profile">{{$user->username}} ({{$namarole}})</a></li>
+						<li><a href="#profile">{{$user->username}} ({{$namarole}})</a></li>
 					</ul>
 				</div>
 			</div>
@@ -274,6 +271,9 @@
 		<!-- script references -->
 
 
+		<script src='https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js'></script>
+		<script src="http://parsleyjs.org/dist/parsley.js"></script>
+		<script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'></script>
 		<script>
 			$("[name='alertDateModal']").hide();
 			$("[name='alertDanaModal']").hide();

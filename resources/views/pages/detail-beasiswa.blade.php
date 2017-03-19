@@ -17,11 +17,10 @@
   <link href="{{ asset('css/jcarousel.css') }}" rel="stylesheet" />
   <link href="{{ asset('css/flexslider.css') }}" rel="stylesheet" />
   <link href="{{ asset('css/style.css') }}" rel="stylesheet" />
-
+	<link href="{{ asset('css/parsley.css') }}" rel="stylesheet" />
   <!-- Theme skin -->
   <link href="{{ asset('skins/default.css') }}" rel="stylesheet" />
 </head>
-
 <body>
   <!-- Header -->
   <header>
@@ -37,11 +36,7 @@
         </div>
         <div class="navbar-collapse collapse ">
           <ul class="nav navbar-nav">
-            @if ($username=='guest')
-            <li><a href="/login">{{$username}}</a></li>
-            @else ()
-            <li><a href="#">{{$username}} ({{$namarole}})</a></li>
-            @endif
+            <li><a href="#profile">{{$username}} ({{$namarole}})</a></li>
           </ul>
         </div>
       </div>
@@ -68,9 +63,9 @@
 
       <div class="col-sm-9">
         @if ($namarole=='Direktorat Kerjasama')
-        <h4>Detail Beasiswa <button class="btn"><a href="./upload"><b>Upload</b></a></button></h4>
+        <h4>Detail Beasiswa <button class="btn"><a href="#upload"><b>Upload</b></a></button></h4>
         @elseif ($namarole=='mahasiswa')
-        <h4>Detail Beasiswa <button class="btn"><a href="./daftar"><b>Daftar</b></a></button></h4>
+        <h4>Detail Beasiswa <button class="btn"><a href="#daftar"><b>Daftar</b></a></button></h4>
         @else
         <h4>Detail Beasiswa</h4>
         @endif

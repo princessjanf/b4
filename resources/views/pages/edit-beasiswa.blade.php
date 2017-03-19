@@ -17,10 +17,7 @@
 	<link href="{{ asset('css/jcarousel.css') }}" rel="stylesheet" />
 	<link href="{{ asset('css/flexslider.css') }}" rel="stylesheet" />
 	<link href="{{ asset('css/style.css') }}" rel="stylesheet" />
-	<script src='https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js'></script>
-	<script src="http://parsleyjs.org/dist/parsley.js"></script>
-	<script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'></script>
-
+	<link href="{{ asset('css/parsley.css') }}" rel="stylesheet" />
 	<!-- Theme skin -->
 	<link href="{{ asset('skins/default.css') }}" rel="stylesheet" />
 </head>
@@ -274,6 +271,9 @@
 		<!-- script references -->
 
 
+		<script src='https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js'></script>
+		<script src="http://parsleyjs.org/dist/parsley.js"></script>
+		<script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'></script>
 		<script>
 			$("[name='alertDateModal']").hide();
 			$("[name='alertDanaModal']").hide();
