@@ -74,7 +74,14 @@ class MainController extends Controller
       }
 
       //$namarole disini kemungkinannya berarti = mahasiswa/pendonor/pegawai fakultas/pegawai universitas/direktorat kerjasama
-      $beasiswas = DB::table('beasiswa')->get();
+      if ($namarole == 'mahasiswa' || $namarole == 'Pegawai Fakultas') {
+        $beasiswas = DB::table('beasiswa')->where('flag', '1')->where('public', '1')->get();
+      } else if ($namarole == 'pendonor'){
+        $pendonor = DB::table('pendonor')->where('username', $user->username)->first();
+        $beasiswas = DB::table('beasiswa')->where('flag', '1')->where('id_pendonor', $pendonor->id_pendonor)->get();
+      } else {
+        $beasiswas = DB::table('beasiswa')->where('flag', '1')->get();
+      }
       return view('pages.daftar-beasiswa')->withBeasiswas($beasiswas)->withUser($user)->withNamarole($namarole);
     }
 
@@ -101,25 +108,18 @@ class MainController extends Controller
 
     function detailbeasiswa($id)
     {
-      if(!SSO::check())
-      {
-        $username = 'guest';
-        $namarole = 'guest';
-      }
-      else
-      {
-        $user = SSO::getUser();
-        $username = $user->username;
-        $pengguna = DB::table('user')->where('username', $user->username)->first();
-        $role = DB::table('role')->where('id_role', $pengguna->id_role)->first();
-        $namarole = $role->nama_role;
+      $user = SSO::getUser();
+      $username = $user->username;
+      $pengguna = DB::table('user')->where('username', $user->username)->first();
+      $role = DB::table('role')->where('id_role', $pengguna->id_role)->first();
+      $namarole = $role->nama_role;
 
-        if($namarole=='pegawai'){
-          $pengguna = DB::table('pegawai')->where('username', $user->username)->first();
-          $role = DB::table('role_pegawai')->where('id_role_pegawai', $pengguna->id_role_pegawai)->first();
-          $namarole = $role->nama_role_pegawai;
-        }
+      if($namarole=='pegawai'){
+        $pengguna = DB::table('pegawai')->where('username', $user->username)->first();
+        $role = DB::table('role_pegawai')->where('id_role_pegawai', $pengguna->id_role_pegawai)->first();
+        $namarole = $role->nama_role_pegawai;
       }
+      
       $beasiswa = DB::table('beasiswa')->where('id_beasiswa', $id)->first();
       $persyaratans = DB::table('persyaratan')->where('id_beasiswa', $beasiswa->id_beasiswa)->get();
 
