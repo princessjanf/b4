@@ -15,7 +15,7 @@ class ScholarshipController extends Controller
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
 
-      function addbeasiswa()
+     public function addbeasiswa()
      {
        $user = SSO::getUser();
 
@@ -37,7 +37,7 @@ class ScholarshipController extends Controller
            return view('pages.add-beasiswa')->withUser($user)->withNamarole($namarole)->withKategoribeasiswa($kategoribeasiswa)->withPendonor($pendonor)->withJenjang($jenjang)->withFakultasbeasiswa($fakultas);
          }
      }
-     function edit($id)
+    public function edit($id)
     {
       /*$user = SSO::getUser();
 
@@ -61,9 +61,6 @@ class ScholarshipController extends Controller
         return view('pages.edit-beasiswa', ['kategoribeasiswa' => $kategoribeasiswa, 'pendonor' => $pendonor, 'jenjang'=>$jenjang, 'fakultasbeasiswa'=>$fakultas,'beasiswa'=>$beasiswa]);
         //return view('pages.edit-beasiswa')->withKategoribeasiswa($kategoribeasiswa)->withPendonor($pendonor)->withJenjang($jenjang)->withFakultasbeasiswa($fakultas)->withBeasiswa($beasiswa);
       }
-      public function test(){
-          return view('pages.test');
-        }
 
       public function delete($id){
             DB::update('update `beasiswa` SET flag = 0 WHERE id_beasiswa =?', [$id]);
@@ -99,7 +96,6 @@ class ScholarshipController extends Controller
          {
            DB::insert('insert into `persyaratan` (`id_beasiswa`, `syarat`) VALUES (?,?)', [$idBeasiswa->id_beasiswa, $request->input('syarat'.$i)]);
           }
-
       }
 
       public function updateBeasiswa(Request $request){
@@ -119,5 +115,6 @@ class ScholarshipController extends Controller
                       'id_pendonor'=>$request->get('pendonor'),
                       'jangka'=>$request->input('jangka')
                     ]);
+
         }
 }

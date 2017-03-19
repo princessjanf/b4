@@ -34,7 +34,8 @@ Route::get('add-beasiswa', [
    'uses' => 'ScholarshipController@addbeasiswa',
 ]);
 
-Route::get('edit-beasiswa/{id}', 'ScholarshipController@edit');
 
+Route::get('edit-beasiswa/{id}', 'ScholarshipController@edit');
 Route::post('update-beasiswa', 'ScholarshipController@updateBeasiswa');
 Route::post('insert-beasiswa', 'ScholarshipController@insertBeasiswa');
+
