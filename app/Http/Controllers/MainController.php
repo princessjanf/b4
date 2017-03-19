@@ -11,11 +11,13 @@ class MainController extends Controller
 {
     function index()
     {
-
+      
+      
 
       if(!SSO::check()) {
         $user = null;
-        return view('pages.homepage')->withUser($user);
+        $beasiswas = DB::table('beasiswa')->get();
+        return view('pages.homepage')->withBeasiswas($beasiswas)->withUser($user);
       }
       else{
         $user = SSO::getUser();
@@ -30,7 +32,8 @@ class MainController extends Controller
         }
 
         //$namarole disini kemungkinannya berarti = mahasiswa/pendonor/pegawai fakultas/pegawai universitas/direktorat kerjasama
-          return view('pages.homepage')->withUser($user)->withNamarole($namarole);
+        $beasiswas = DB::table('beasiswa')->get();
+          return view('pages.homepage')->withBeasiswas($beasiswas)->withUser($user)->withNamarole($namarole);
         }
 
     }

@@ -152,19 +152,26 @@
 			<label for="tanggalTutup">Tanggal Tutup</label>
 			<input type="date" name="tanggalTutup" data-date-format="YYYY/MM/DD" required>
 		</div>
-		<div class = "col-sm-1"></div>
+		
 	</div>
 
+	<div class="row">
 	<div class="form-group" name="syarat">
 		<label for="syarat">Syarat</label>
 		<input type = "text" class="form-control" name="syarat1" required>
+
 	</div>
+	<div class="button">
+		<button type="button" class="btn btn-default"" id="buttonTambahSyarat" onclick="insertRow()">+</button>
+</div>
+
+	</div>
+	<div class="row">
 		 <button type="submit" id="submit-form"> Submit </button>
+	</div>
 </form>
 
-<div>
-		<button type="button" class="btn btn-default pull-right" id="buttonTambahSyarat" onclick="insertRow()">+</button>
-</div>
+
 
 <div name= "alertDateModal" class="alert alert-danger alert-dismissable fade in">
 		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
