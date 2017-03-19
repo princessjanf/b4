@@ -60,7 +60,7 @@
 
   	</div><!-- /span-3 -->
 <div class="col-sm-9">
-	<form id='createScholarshipForm' action = "./insert-beasiswa" onsubmit="return validateForm()" method = "post" data-parsley-validate="">
+	<form id='createScholarshipForm' action = "/insert-beasiswa" onsubmit="return validateForm()" method = "post" data-parsley-validate="">
 		<input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
 		<input type = "hidden" name = "counter" value="1">
 
@@ -95,7 +95,7 @@
 		<div class="form-group col-sm-3">
 			<label for="kategoriBeasiswa">Kategori Beasiswa</label>
 			<select class="form-control" name="kategoriBeasiswa">
-				@foreach ($categories as $category)
+				@foreach ($kategoribeasiswa as $category)
 				<option value= {{ $category->id_kategori}}> {{$category->nama_kategori}} </option>
 				@endforeach
 			</select>
@@ -103,7 +103,7 @@
 		<div class="form-group col-sm-3">
 			<label for="jenjangBeasiswa">Untuk Jenjang</label>
 			<select class="form-control" name="jenjangBeasiswa">
-				@foreach ($categories as $category)
+				@foreach ($kategoribeasiswa as $category)
 				<option value= {{ $category->id_kategori}}> {{$category->nama_kategori}} </option>
 				@endforeach
 			</select>
@@ -111,7 +111,7 @@
 		<div class="form-group col-sm-3">
 			<label for="rumpunBeasiswa">Rumpun Beasiswa</label>
 			<select class="form-control" name="rumpunBeasiswa">
-				@foreach ($categories as $category)
+				@foreach ($kategoribeasiswa as $category)
 				<option value= {{ $category->id_kategori}}> {{$category->nama_kategori}} </option>
 				@endforeach
 			</select>
@@ -126,7 +126,7 @@
 		<div class="form-group col-sm-4">
 			<label for="periode">Periode</label>
 			<p> Periode beasiswa diberikan </p>
-			<input type="number" class="form-control" placeholder="2016.1 - 2017.4" name="periode" min= "0" data-parsley-pattern="\d*" data-parsley-type="integer" data-parsley-maxlength="3" required>
+			<input type="number" class="form-control" placeholder="2016.1 - 2017.4" name="periode" min= "0" data-parsley-pattern="\d*" data-parsley-type="integer" data-parsley-maxlength="8" required>
 		</div>
 	</div>
 	<div class = "row">
@@ -301,10 +301,10 @@ function insertRow(){
     $('.bs-callout-warning').toggleClass('hidden', ok);
   })
   .on('form:submit', function() {
-    return false;
+    return true;
   });
 });
-
+	
 </script>
 
 </body>
