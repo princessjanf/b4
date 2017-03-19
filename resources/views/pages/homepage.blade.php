@@ -37,19 +37,19 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href=""><span>M</span>odul Beasiswa</a>
+            <a class="navbar-brand" href="."><span>M</span>odul Beasiswa</a>
           </div>
           <div class="navbar-collapse collapse ">
             <ul class="nav navbar-nav">
-              <li class="active"><a href="">Home</a></li>
+              <li class="active"><a href="./homepage">Home</a></li>
               <li><a href="./daftar-beasiswa">Daftar Beasiswa</a></li>
-              <li><a href="#donasi">Donasi</a></li>
-              <li><a href="#lpj ">LPJ</a></li>
+              <li><a href="./">Donasi</a></li>
+              <li><a href="./">LPJ</a></li>
 
               @if($user==null)
               <li><a href="./login">Log In</a></li>
               @else
-              <li><a href="#profil">{{$user->username}} ({{$namarole}})</a></li>
+              <li><a href="./profil">{{$user->username}} ({{$namarole}})</a></li> {{-- link profil belum --}}
               <li><a href="./logout">Log Out</a></li>
               @endif
             </ul>
