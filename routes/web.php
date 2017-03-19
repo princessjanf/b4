@@ -34,13 +34,8 @@ Route::get('add-beasiswa', [
    'uses' => 'ScholarshipController@addbeasiswa',
 ]);
 
-Route::get('createScholarship',[
-   'middleware' => 'authSSO',
-   'uses' => 'ScholarshipController@create',
-]);
 
-Route::post('/insertScholarship', 'ScholarshipController@insert');
+Route::get('edit-beasiswa/{id}', 'ScholarshipController@edit');
+Route::post('update-beasiswa', 'ScholarshipController@updateBeasiswa');
+Route::post('insert-beasiswa', 'ScholarshipController@insertBeasiswa');
 
-Route::post('/edit-beasiswa', 'ScholarshipController@edit');
-
-Route::post('/insert-beasiswa', 'ScholarshipController@insertBeasiswa');
