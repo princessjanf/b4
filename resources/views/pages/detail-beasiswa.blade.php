@@ -1,5 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
+<<<<<<< HEAD
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <title>Detail Beasiswa</title>
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link href="{{ asset('css/styles.css') }}" rel="stylesheet">
+  <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet" />
+  <link href="{{ asset('css/fancybox/jquery.fancybox.css') }}" rel="stylesheet">
+  <link href="{{ asset('css/jcarousel.css') }}" rel="stylesheet" />
+  <link href="{{ asset('css/flexslider.css') }}" rel="stylesheet" />
+  <link href="{{ asset('css/style.css') }}" rel="stylesheet" />
+
+  <!-- Theme skin -->
+  <link href="{{ asset('skins/default.css') }}" rel="stylesheet" />
+<<<<<<< HEAD
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <title>Detail Beasiswa</title>
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link href="{{ asset('css/styles.css') }}" rel="stylesheet">
+  <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet" />
+  <link href="{{ asset('css/fancybox/jquery.fancybox.css') }}" rel="stylesheet">
+  <link href="{{ asset('css/jcarousel.css') }}" rel="stylesheet" />
+  <link href="{{ asset('css/flexslider.css') }}" rel="stylesheet" />
+  <link href="{{ asset('css/style.css') }}" rel="stylesheet" />
+
+  <!-- Theme skin -->
+  <link href="{{ asset('skins/default.css') }}" rel="stylesheet" />
+=======
+>>>>>>> refs/remotes/origin/master
+</head>
+
+<body>
+  <!-- Header -->
+  <header>
+    <div class="navbar navbar-default navbar-static-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="."><span>M</span>odul Beasiswa</a>
+=======
   <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
@@ -58,6 +113,7 @@
                     </ul>
                 </div>
             </div>
+>>>>>>> refs/remotes/origin/master
         </div>
     </header>
 <!-- /Header -->
@@ -203,10 +259,20 @@
             </div>
         </div>
     </div>
+<<<<<<< HEAD
+  </header>
+<<<<<<< HEAD
+
+   <!-- /Header -->
+=======
+  <!-- /Header -->
+>>>>>>> refs/remotes/origin/master
+=======
     </footer>
 
 
 
+>>>>>>> refs/remotes/origin/master
 
   <!-- script references -->
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
@@ -295,9 +361,32 @@
 <!-- /Main -->
 
 
+<<<<<<< HEAD
+    <footer>
+      <div class="container">
+<<<<<<< HEAD
+      <div class="row">
+=======
+        <div class="row">
+>>>>>>> refs/remotes/origin/master
+          <div class="col-lg-3">
+            <div class="widget">
+              <h5 class="widgetheading">Get in touch with us</h5>
+              <address>
+                <strong>Moderna company Inc</strong><br>
+                Modernbuilding suite V124, AB 01<br>
+                Someplace 16425 Earth </address>
+                <p>
+                  <i class="icon-phone"></i> (123) 456-7890 - (123) 555-7891 <br>
+                  <i class="icon-envelope-alt"></i> email@domainname.com
+                </p>
+              </div>
+            </div>
+=======
 <footer>
     <div class="container">
         <div class="row">
+>>>>>>> refs/remotes/origin/master
             <div class="col-lg-3">
                 <div class="widget">
                     <h5 class="widgetheading">Get in touch with us</h5>
@@ -324,6 +413,16 @@
                 </div>
             </div>
             <div class="col-lg-3">
+<<<<<<< HEAD
+              <div class="widget">
+                <h5 class="widgetheading">Flickr photostream</h5>
+                <div class="flickr_badge">
+<<<<<<< HEAD
+                  <script type="text/javascript" src="https://www.flickr.com/badge_code_v2.gne?count=8&display=random&size=s&layout=x&source=user&user=34178660@N03"></script>
+=======
+                  <script type="text/javascript" src="https://www.flickr.com/badge_code_v2.gne?count=8&amp;display=random&amp;size=s&amp;layout=x&amp;source=user&amp;user=34178660@N03"></script>
+>>>>>>> refs/remotes/origin/master
+=======
                 <div class="widget">
                     <h5 class="widgetheading">Latest posts</h5>
                     <ul class="link-list">
@@ -331,6 +430,7 @@
                         <li><a href="#">Pellentesque et pulvinar enim. Quisque at tempor ligula</a></li>
                         <li><a href="#">Natus error sit voluptatem accusantium doloremque</a></li>
                     </ul>
+>>>>>>> refs/remotes/origin/master
                 </div>
             </div>
             <div class="col-lg-3">
@@ -376,6 +476,13 @@
     </div>
     </footer>
 
+<<<<<<< HEAD
+      <!-- script references -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+  </body>
+  </html>
+=======
 
 
   
@@ -383,4 +490,9 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
   </body>
+<<<<<<< HEAD
+  </html>
+>>>>>>> refs/remotes/origin/master
+=======
 </html>
+>>>>>>> refs/remotes/origin/master

@@ -18,19 +18,32 @@ Route::get('homepage', 'MainController@index');
 
 Route::get('login', 'MainController@login');
 
+Route::get('test', 'ScholarshipController@test');
+
+Route::get('delete/{id}', 'ScholarshipController@delete');
+
+Route::get('detail-beasiswa/{id}', 'MainController@detailbeasiswa');
+
 Route::get('daftar-beasiswa', [
    'middleware' => 'authSSO',
    'uses' => 'MainController@daftarbeasiswa',
 ]);
 
+Route::get('add-beasiswa', [
+   'middleware' => 'authSSO',
+   'uses' => 'ScholarshipController@addbeasiswa',
+]);
 
-Route::get('add-beasiswa', 'ScholarshipController@addBeasiswa');
+<<<<<< HEAD
+Route::get('createScholarship',[
+   'middleware' => 'authSSO',
+   'uses' => 'ScholarshipController@create',
+]);
 
+Route::post('/insertScholarship', 'ScholarshipController@insert');
 
-Route::get('detail-beasiswa/{id}', 'MainController@detailbeasiswa');
+Route::post('/edit-beasiswa', 'ScholarshipController@edit');
 
-
-//Route::get('/createScholarship', 'ScholarshipController@create');
-Route::get('test', 'ScholarshipController@test');
-
+=======
 Route::post('/insert-beasiswa', 'ScholarshipController@insertBeasiswa');
+>>>>>>> refs/remotes/origin/master
