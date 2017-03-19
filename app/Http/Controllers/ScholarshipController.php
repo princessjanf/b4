@@ -37,6 +37,30 @@ class ScholarshipController extends Controller
            return view('pages.add-beasiswa')->withUser($user)->withNamarole($namarole)->withKategoribeasiswa($kategoribeasiswa)->withPendonor($pendonor)->withJenjang($jenjang)->withFakultasbeasiswa($fakultas);
          }
      }
+     function edit($id)
+    {
+      /*$user = SSO::getUser();
+
+      $pengguna = DB::table('pegawai')->where('username', $user->username)->first();
+
+      if($pengguna==null){
+        return redirect('/');
+      }
+
+        $role = DB::table('role_pegawai')->where('id_role_pegawai', $pengguna->id_role_pegawai)->first();
+        $namarole = $role->nama_role_pegawai;
+        if($namarole=='Pegawai Universitas'){
+          return view('pages.edit-beasiswa')->withUser($user)->withNamarole($namarole)->withKategoribeasiswa($kategoribeasiswa)->withPendonor($pendonor)->withJenjang($jenjang)->withFakultasbeasiswa($fakultas)->withBeasiswa($beasiswa);
+        }
+        */
+        $kategoribeasiswa = DB::table('kategori_beasiswa')->get();
+        $pendonor = DB::table('pendonor')->get();
+        $jenjang = DB::table('jenjang')->get();
+        $fakultas = DB::table('fakultas')->get();
+        $beasiswa = DB::table('beasiswa')->where('id_beasiswa', $id)->first();
+        return view('pages.edit-beasiswa', ['kategoribeasiswa' => $kategoribeasiswa, 'pendonor' => $pendonor, 'jenjang'=>$jenjang, 'fakultasbeasiswa'=>$fakultas,'beasiswa'=>$beasiswa]);
+        //return view('pages.edit-beasiswa')->withKategoribeasiswa($kategoribeasiswa)->withPendonor($pendonor)->withJenjang($jenjang)->withFakultasbeasiswa($fakultas)->withBeasiswa($beasiswa);
+      }
       public function test(){
           return view('pages.test');
         }
@@ -78,33 +102,22 @@ class ScholarshipController extends Controller
 
       }
 
-      public function edit(Request $request){
+      public function updateBeasiswa(Request $request){
 
-
-          /*insert beasiswa*/
-        DB::insert('INSERT INTO `beasiswa`(`nama_beasiswa`, `deskripsi_beasiswa`, `id_kategori`, `tanggal_buka`, `tanggal_tutup`,
-                                          `kuota`, `nominal`, `dana`, `public`, `flag`, `syarat`)
-                    VALUES (?,?,?,?,?,?,?,?,0,1,"asdsa")',
-                    [$request->input('namaBeasiswa'),
-                    $request->input('deskripsiBeasiswa'),
-                    $request->get('kategoriBeasiswa'),
-                    $request->input('tanggalBuka'),
-                    $request->input('tanggalTutup'),
-                    $request->input('kuota'),
-                    $request->input('nominal'),
-                    $request->input('totalDana')]
-        );
-        /*assign pendonor ke beasiswa*/
-        $id_pendonor = $request->get('pendonor');
-        $idBeasiswa = DB::table('beasiswa')->orderBy('id_beasiswa', 'desc')->first();
-        DB::insert('insert into `beasiswa_pendonor` VALUES (?,?)', [$idBeasiswa->id_beasiswa, $id_pendonor]);
-
-        /* ini untuk insert syarat, tergantung konfig db nya*/
-         $counter = $request->get('counter');
-         for($i = 1;$i<=($counter);$i++)
-         {
-           DB::insert('insert into `syarat` VALUES (?,?)', [$idBeasiswa->id_beasiswa, $request->input('syarat'.$i)]);
-          }
-      }
-
+        DB::table('beasiswa')
+            ->where('id_beasiswa', $request->get('idBeasiswa'))
+            ->update(['nama_beasiswa' => 1,
+                      'nama_beasiswa'=>$request->input('namaBeasiswa'),
+                      'deskripsi_beasiswa'=>$request->input('deskripsiBeasiswa'),
+                      'id_kategori'=>$request->get('kategoriBeasiswa'),
+                      'tanggal_buka'=>$request->input('tanggalBuka'),
+                      'tanggal_tutup'=>$request->input('tanggalTutup'),
+                      'kuota'=>$request->input('kuota'),
+                      'nominal'=>$request->input('nominal'),
+                      'dana'=>$request->get('totalDana'),
+                      'periode'=>$request->input('periode'),
+                      'id_pendonor'=>$request->get('pendonor'),
+                      'jangka'=>$request->input('jangka')
+                    ]);
         }
+}
