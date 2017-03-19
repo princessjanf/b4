@@ -37,10 +37,10 @@ class MainController extends Controller
     return view('pages.daftar-beasiswa')->withBeasiswas($beasiswas);
   }
 
-  function addbeasiswa()
+/*  function addbeasiswa()
   {
     return view('pages.add-beasiswa');
-  }
+  }*/
 
   function detailbeasiswa($id)
   {
