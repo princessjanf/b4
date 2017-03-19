@@ -30,20 +30,19 @@ class ScholarshipController extends Controller
 
          $kategoribeasiswa = DB::table('kategori_beasiswa')->get();
          $pendonor = DB::table('pendonor')->get();
+         $jenjang = DB::table('jenjang')->get();
+         $fakultas = DB::table('fakultas')->get();
 
          if($namarole=='Pegawai Universitas'){
-           return view('pages.createScholarship')->withUser($user)->withNamarole($namarole)->withKategoribeasiswa($kategoribeasiswa)->withPendonor($pendonor);
+           return view('pages.add-beasiswa')->withUser($user)->withNamarole($namarole)->withKategoribeasiswa($kategoribeasiswa)->withPendonor($pendonor)->withJenjang($jenjang)->withFakultasbeasiswa($fakultas);
          }
      }
-        public function test(){
+      public function test(){
           return view('pages.test');
         }
-        public function delete($id){
+
+      public function delete($id){
             DB::update('update `beasiswa` SET flag = 0 WHERE id_beasiswa =?', [$id]);
-            return response()->json([
-    'name' => 'Abigail',
-    'state' => 'CA'
-]);
         }
 
           public function makePublic($id){
@@ -76,7 +75,7 @@ class ScholarshipController extends Controller
          {
            DB::insert('insert into `persyaratan` (`id_beasiswa`, `syarat`) VALUES (?,?)', [$idBeasiswa->id_beasiswa, $request->input('syarat'.$i)]);
           }
-<<<<<<< HEAD
+
       }
 
       public function edit(Request $request){
@@ -107,7 +106,5 @@ class ScholarshipController extends Controller
            DB::insert('insert into `syarat` VALUES (?,?)', [$idBeasiswa->id_beasiswa, $request->input('syarat'.$i)]);
           }
       }
-=======
+
         }
->>>>>>> refs/remotes/origin/master
-}
