@@ -45,5 +45,11 @@ Route::get('make-public-beasiswa/{id}',[
   'uses' => 'ScholarshipController@makePublic'
 ]);
 
+Route::get('noaccess',[
+  'middleware' => 'authSSO',
+  'uses' => 'MainController@noaccess'
+]);
+
+
 Route::post('insert-beasiswa', 'ScholarshipController@insertBeasiswa');
 Route::post('update-beasiswa', 'ScholarshipController@updateBeasiswa');
