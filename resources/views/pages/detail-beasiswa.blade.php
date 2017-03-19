@@ -3,10 +3,13 @@
 <head>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <meta charset="utf-8">
+  <title>Detail Beasiswa</title>
+	<meta name="generator" content="Bootply" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <title>Detail Beasiswa</title>
-
+  <!--[if lt IE 9]>
+	<script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <link href="{{ asset('css/styles.css') }}" rel="stylesheet">
   <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet" />
@@ -85,13 +88,13 @@
         </p>
         @if ($namarole=='pendonor' && $ispendonor)
         <p>Pendaftar:
-            @if (count($pendaftars) < 1)
-            <br>1. -
-            @else
-            @foreach ($pendaftars as $index => $pendaftar)
-            <br>{{$index+1}}. {{$pendaftar->nama}}
-            @endforeach
-            @endif
+          @if (count($pendaftars) < 1)
+          <br>1. -
+          @else
+          @foreach ($pendaftars as $index => $pendaftar)
+          <br>{{$index+1}}. {{$pendaftar->nama}}
+          @endforeach
+          @endif
         </p>
         @endif
       </div><!--/row-->

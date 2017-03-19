@@ -74,7 +74,14 @@ class MainController extends Controller
       }
 
       //$namarole disini kemungkinannya berarti = mahasiswa/pendonor/pegawai fakultas/pegawai universitas/direktorat kerjasama
-      $beasiswas = DB::table('beasiswa')->get();
+      if ($namarole == 'mahasiswa' || $namarole == 'Pegawai Fakultas') {
+        $beasiswas = DB::table('beasiswa')->where('flag', '1')->where('public', '1')->get();
+      } else if ($namarole == 'pendonor'){
+        $pendonor = DB::table('pendonor')->where('username', $user->username)->first();
+        $beasiswas = DB::table('beasiswa')->where('flag', '1')->where('id_pendonor', $pendonor->id_pendonor)->get();
+      } else {
+        $beasiswas = DB::table('beasiswa')->where('flag', '1')->get();
+      }
       return view('pages.daftar-beasiswa')->withBeasiswas($beasiswas)->withUser($user)->withNamarole($namarole);
     }
 
