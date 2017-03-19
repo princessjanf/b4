@@ -87,7 +87,7 @@ class MainController extends Controller
       if($pengguna==null){
         return redirect('/');
       }
-        
+
         $role = DB::table('role_pegawai')->where('id_role_pegawai', $pengguna->id_role_pegawai)->first();
         $namarole = $role->nama_role_pegawai;
 
@@ -101,6 +101,8 @@ class MainController extends Controller
 
     function detailbeasiswa($id)
     {
+      $user = null;
+      if(SSO::check())
       $user = SSO::getUser();
 
       $pengguna = DB::table('user')->where('username', $user->username)->first();
@@ -114,7 +116,7 @@ class MainController extends Controller
       }
 
       $beasiswa = DB::table('beasiswa')->where('id_beasiswa', $id)->first();
-      $pendonor = DB::table('pendonor')->where('id_pendonor', $beasiswa->id_pendonor)->first();
-      return view('pages.detail-beasiswa')->withBeasiswa($beasiswa)->withPendonor($pendonor)->withUser($user)->withNamarole($namarole);
+      $persyaratans = DB::table('persyaratan')->where('id_beasiswa', $beasiswa->id_beasiswa)->get();
+      return view('pages.detail-beasiswa')->withBeasiswa($beasiswa)->withPersyaratans($persyaratans)->withUser($user)->withNamarole($namarole);
     }
 }
