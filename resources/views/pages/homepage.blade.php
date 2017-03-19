@@ -49,7 +49,7 @@
               @if($user==null)
               <li><a href="{{url('login')}}">Log In</a></li>
               @else
-              <li><a href="{{url('profil')}}">{{$user->username}} ({{$namarole}})</a></li> {{-- link profil belum --}}
+              <li><a href="{{url('profil')}}">{{$user->username}} ({{$namarole}})</a></li>
               <li><a href="{{url('logout')}}">Log Out</a></li>
               @endif
             </ul>
@@ -104,74 +104,24 @@
         <div class="row">
           <div class="col-lg-12">
             <div class="row">
+              @foreach ($beasiswas as $index => $beasiswa)
               <div class="col-lg-3">
                 <div class="box">
                   <div class="box-gray aligncenter">
-                    <h4>Beasiswa 1</h4>
+                    <h4>{{$beasiswa->nama_beasiswa}}</h4>
                     <div class="icon">
                       <i class="fa fa-desktop fa-3x"></i>
                     </div>
                     <p>
                       Voluptatem accusantium doloremque laudantium sprea totam rem aperiam.
                     </p>
-
                   </div>
                   <div class="box-bottom">
-                    <a href="#">Daftar</a>
+                    <a href="{{url('detail-beasiswa/'.$beasiswa->id_beasiswa)}}" class="btn btn-theme">Detail</a>
                   </div>
                 </div>
               </div>
-              <div class="col-lg-3">
-                <div class="box">
-                  <div class="box-gray aligncenter">
-                    <h4>Beasiswa 2</h4>
-                    <div class="icon">
-                      <i class="fa fa-pagelines fa-3x"></i>
-                    </div>
-                    <p>
-                      Voluptatem accusantium doloremque laudantium sprea totam rem aperiam.
-                    </p>
-
-                  </div>
-                  <div class="box-bottom">
-                    <a href="#">Daftar</a>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-3">
-                <div class="box">
-                  <div class="box-gray aligncenter">
-                    <h4>Beasiswa 3</h4>
-                    <div class="icon">
-                      <i class="fa fa-edit fa-3x"></i>
-                    </div>
-                    <p>
-                      Voluptatem accusantium doloremque laudantium sprea totam rem aperiam.
-                    </p>
-
-                  </div>
-                  <div class="box-bottom">
-                    <a href="#">Daftar</a>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-3">
-                <div class="box">
-                  <div class="box-gray aligncenter">
-                    <h4>Beasiswa 5</h4>
-                    <div class="icon">
-                      <i class="fa fa-code fa-3x"></i>
-                    </div>
-                    <p>
-                      Voluptatem accusantium doloremque laudantium sprea totam rem aperiam.
-                    </p>
-
-                  </div>
-                  <div class="box-bottom">
-                    <a href="#">Daftar</a>
-                  </div>
-                </div>
-              </div>
+              @endforeach
             </div>
           </div>
         </div>
