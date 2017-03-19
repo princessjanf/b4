@@ -81,26 +81,7 @@ class MainController extends Controller
       return view('pages.daftar-beasiswa')->withBeasiswas($beasiswas)->withUser($user)->withNamarole($namarole);
     }
 
-     function addbeasiswa()
-    {
-      $user = SSO::getUser();
-
-      $pengguna = DB::table('pegawai')->where('username', $user->username)->first();
-
-      if($pengguna==null){
-        return redirect('/');
-      }
-        
-        $role = DB::table('role_pegawai')->where('id_role_pegawai', $pengguna->id_role_pegawai)->first();
-        $namarole = $role->nama_role_pegawai;
-
-        $kategoribeasiswa = DB::table('kategori_beasiswa')->get();
-        $pendonor = DB::table('pendonor')->get();
-
-        if($namarole=='Pegawai Universitas'){
-          return view('pages.createScholarship')->withUser($user)->withNamarole($namarole)->withKategoribeasiswa($kategoribeasiswa)->withPendonor($pendonor);
-        }
-    }
+    
 
     function detailbeasiswa($id)
     {
