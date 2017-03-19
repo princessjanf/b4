@@ -22,6 +22,7 @@ Route::get('test', 'ScholarshipController@test');
 
 Route::get('delete/{id}', 'ScholarshipController@delete');
 
+Route::get('detail-beasiswa/{id}', 'MainController@detailbeasiswa');
 
 Route::get('daftar-beasiswa', [
    'middleware' => 'authSSO',
