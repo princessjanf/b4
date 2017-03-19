@@ -12,6 +12,7 @@ class MainController extends Controller
     function index()
     {
 
+
       if(!SSO::check()) {
         $user = null;
         return view('pages.homepage')->withUser($user);
@@ -94,7 +95,7 @@ class MainController extends Controller
         $pendonor = DB::table('pendonor')->get();
 
         if($namarole=='Pegawai Universitas'){
-          return view('pages.add-beasiswa')->withUser($user)->withNamarole($namarole)->withKategoribeasiswa($kategoribeasiswa)->withPendonor($pendonor);
+          return view('pages.createScholarship')->withUser($user)->withNamarole($namarole)->withKategoribeasiswa($kategoribeasiswa)->withPendonor($pendonor);
         }
     }
 
