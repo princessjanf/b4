@@ -76,5 +76,38 @@ class ScholarshipController extends Controller
          {
            DB::insert('insert into `persyaratan` (`id_beasiswa`, `syarat`) VALUES (?,?)', [$idBeasiswa->id_beasiswa, $request->input('syarat'.$i)]);
           }
+<<<<<<< HEAD
+      }
+
+      public function edit(Request $request){
+
+
+          /*insert beasiswa*/
+        DB::insert('INSERT INTO `beasiswa`(`nama_beasiswa`, `deskripsi_beasiswa`, `id_kategori`, `tanggal_buka`, `tanggal_tutup`,
+                                          `kuota`, `nominal`, `dana`, `public`, `flag`, `syarat`)
+                    VALUES (?,?,?,?,?,?,?,?,0,1,"asdsa")',
+                    [$request->input('namaBeasiswa'),
+                    $request->input('deskripsiBeasiswa'),
+                    $request->get('kategoriBeasiswa'),
+                    $request->input('tanggalBuka'),
+                    $request->input('tanggalTutup'),
+                    $request->input('kuota'),
+                    $request->input('nominal'),
+                    $request->input('totalDana')]
+        );
+        /*assign pendonor ke beasiswa*/
+        $id_pendonor = $request->get('pendonor');
+        $idBeasiswa = DB::table('beasiswa')->orderBy('id_beasiswa', 'desc')->first();
+        DB::insert('insert into `beasiswa_pendonor` VALUES (?,?)', [$idBeasiswa->id_beasiswa, $id_pendonor]);
+
+        /* ini untuk insert syarat, tergantung konfig db nya*/
+         $counter = $request->get('counter');
+         for($i = 1;$i<=($counter);$i++)
+         {
+           DB::insert('insert into `syarat` VALUES (?,?)', [$idBeasiswa->id_beasiswa, $request->input('syarat'.$i)]);
+          }
+      }
+=======
         }
+>>>>>>> refs/remotes/origin/master
 }
