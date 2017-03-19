@@ -93,7 +93,7 @@
 							<td>{{$index+1}}</td>
 							<td><a href="{{url('detail-beasiswa/'.$beasiswa->id_beasiswa)}}">{{$beasiswa->nama_beasiswa}}</a></td>
 							<td>
-								@if ($beasiswa -> public == 1)
+								@if ($beasiswa->tanggal_buka <= Carbon\Carbon::now() and Carbon\Carbon::now() <= $beasiswa->tanggal_tutup)
 								Dibuka
 								@else
 								Ditutup
