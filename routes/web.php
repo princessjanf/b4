@@ -29,8 +29,21 @@ Route::get('add-beasiswa', [
   'middleware' => 'authSSO',
   'uses' => 'ScholarshipController@addbeasiswa'
 ]);
+
+Route::get('edit-beasiswa/{id}',[
+  'middleware' => 'authSSO',
+  'uses' => 'ScholarshipController@edit'
+]);
+
+Route::get('delete-beasiswa/{id}',[
+  'middleware' => 'authSSO',
+  'uses' => 'ScholarshipController@delete'
+]);
+
+Route::get('make-public-beasiswa/{id}',[
+  'middleware' => 'authSSO',
+  'uses' => 'ScholarshipController@makePublic'
+]);
+
 Route::post('insert-beasiswa', 'ScholarshipController@insertBeasiswa');
-Route::get('edit-beasiswa/{id}', 'ScholarshipController@edit');
 Route::post('update-beasiswa', 'ScholarshipController@updateBeasiswa');
-Route::get('delete-beasiswa/{id}', 'ScholarshipController@delete');
-Route::get('make-public-beasiswa/{id}', 'ScholarshipController@makePublic');

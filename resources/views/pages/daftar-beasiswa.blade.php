@@ -91,7 +91,7 @@
 						@foreach ($beasiswas as $index => $beasiswa)
 						<tr>
 							<td>{{$index+1}}</td>
-							<td><a href="{{url('detail-beasiswa/$beasiswa->id_beasiswa')}}">{{$beasiswa->nama_beasiswa}}</a></td>
+							<td><a href="{{url('detail-beasiswa/'.$beasiswa->id_beasiswa)}}">{{$beasiswa->nama_beasiswa}}</a></td>
 							<td>
 								@if ($beasiswa -> public == 1)
 								Dibuka
@@ -103,9 +103,9 @@
 
 							<td>
 								@if($namarole=="Pegawai Universitas")
-								<a href = "{{url('edit-beasiswa/$beasiswa->id_beasiswa')}}"><button><i class="glyphicon glyphicon-pencil"></i></button></a>
-								<a href = "{{url('delete-beasiswa/$beasiswa->id_beasiswa')}}"><button><i class="glyphicon glyphicon-trash"></i></button></a>
-								<a href = "{{url('make-public-beasiswa/$beasiswa->id_beasiswa')}}"><button><i class="glyphicon glyphicon-eye-close"></i></button></a>
+								<a href = "{{url('edit-beasiswa/'.$beasiswa->id_beasiswa)}}"><button><i class="glyphicon glyphicon-pencil"></i></button></a>
+								<a href = "{{url('delete-beasiswa/'.$beasiswa->id_beasiswa)}}"><button><i class="glyphicon glyphicon-trash"></i></button></a>
+								<a href = "{{url('make-public-beasiswa/'.$beasiswa->id_beasiswa)}}"><button><i class="glyphicon glyphicon-eye-close"></i></button></a>
 
 								@elseif($namarole=="mahasiswa")
 								<a href = "#daftar"><button>Daftar</button></a>
