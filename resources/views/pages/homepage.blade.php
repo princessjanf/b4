@@ -42,15 +42,15 @@
           <div class="navbar-collapse collapse ">
             <ul class="nav navbar-nav">
               <li class="active"><a href="./homepage">Home</a></li>
-              <li><a href="./daftar-beasiswa">Daftar Beasiswa</a></li>
-              <li><a href="./">Donasi</a></li>
-              <li><a href="./">LPJ</a></li>
+              <li><a href="{{url('daftar-beasiswa')}}">Daftar Beasiswa</a></li>
+              <li><a href="{{url('')}}">Donasi</a></li>
+              <li><a href="{{url('./')}}">LPJ</a></li>
 
               @if($user==null)
-              <li><a href="./login">Log In</a></li>
+              <li><a href="{{url('login')}}">Log In</a></li>
               @else
-              <li><a href="./profil">{{$user->username}} ({{$namarole}})</a></li> {{-- link profil belum --}}
-              <li><a href="./logout">Log Out</a></li>
+              <li><a href="{{url('profil')}}">{{$user->username}} ({{$namarole}})</a></li> {{-- link profil belum --}}
+              <li><a href="{{url('logout')}}">Log Out</a></li>
               @endif
             </ul>
           </div>
@@ -189,7 +189,7 @@
               <div class="col-lg-12">
                 <div class="big-cta">
                   <div class="cta-text">
-                    <a href=""><h2><span>Lihat</span> Daftar Beasiswa</h2></a>
+                    <a href="{{url('daftar-beasiswa')}}"><h2><span>Lihat</span> Daftar Beasiswa</h2></a>
                   </div>
                 </div>
               </div>

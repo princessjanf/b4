@@ -32,11 +32,12 @@
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="."><span>M</span>odul Beasiswa</a>
+					<a class="navbar-brand" href="{{url('')}}"><span>M</span>odul Beasiswa</a>
 				</div>
 				<div class="navbar-collapse collapse ">
 					<ul class="nav navbar-nav">
-						<li><a href="./login">log in</a></li>
+						<li><a href="#profile">{{$user->username}} ({{$namarole}})</a></li>
+						<li><a href="{{url('logout')}}">LOG OUT</a></li>
 					</ul>
 				</div>
 			</div>
@@ -50,10 +51,10 @@
 		<div class="col-sm-3">
 			<!-- left -->
 			<ul class="nav nav-stacked">
-				<li><a href="./homepage">Dashboard</a></li>
-				<li><a href="./daftar-beasiswa">Beasiswa</a></li>
-				<li><a href="http://www.bootply.com/85861">LPJ</a></li>
-				<li><a href="http://www.bootply.com/85861">Settings</a></li>
+				<li><a href="{{url('')}}">Dashboard</a></li>
+				<li><a href="{{url('daftar-beasiswa')}}">Beasiswa</a></li>
+				<li><a href="#">LPJ</a></li>
+				<li><a href="#">Settings</a></li>
 				<hr>
 
 			</div><!-- /span-3 -->
