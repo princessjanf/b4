@@ -38,7 +38,7 @@
                 </div>
                 <div class="navbar-collapse collapse ">
                     <ul class="nav navbar-nav">
-                        <li><a href="./login">log in</a></li>
+                         <li><a href="./profile">{{$user->username}} ({{$namarole}})</a></li>
                     </ul>
                 </div>
             </div>
@@ -60,7 +60,7 @@
 
   	</div><!-- /span-3 -->
 <div class="col-sm-9">
-	<form id='createScholarshipForm' action = "./insert-beasiswa" onsubmit="return validateForm()" method = "post" data-parsley-validate="">
+	<form id='createScholarshipForm' action = "/insert-beasiswa" onsubmit="return validateForm()" method = "post" data-parsley-validate="">
 		<input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
 		<input type = "hidden" name = "counter" value="1">
 
@@ -95,7 +95,7 @@
 		<div class="form-group col-sm-3">
 			<label for="kategoriBeasiswa">Kategori Beasiswa</label>
 			<select class="form-control" name="kategoriBeasiswa">
-				@foreach ($categories as $category)
+				@foreach ($kategoribeasiswa as $category)
 				<option value= {{ $category->id_kategori}}> {{$category->nama_kategori}} </option>
 				@endforeach
 			</select>
@@ -103,7 +103,7 @@
 		<div class="form-group col-sm-3">
 			<label for="jenjangBeasiswa">Untuk Jenjang</label>
 			<select class="form-control" name="jenjangBeasiswa">
-				@foreach ($categories as $category)
+				@foreach ($kategoribeasiswa as $category)
 				<option value= {{ $category->id_kategori}}> {{$category->nama_kategori}} </option>
 				@endforeach
 			</select>
@@ -111,7 +111,7 @@
 		<div class="form-group col-sm-3">
 			<label for="rumpunBeasiswa">Rumpun Beasiswa</label>
 			<select class="form-control" name="rumpunBeasiswa">
-				@foreach ($categories as $category)
+				@foreach ($kategoribeasiswa as $category)
 				<option value= {{ $category->id_kategori}}> {{$category->nama_kategori}} </option>
 				@endforeach
 			</select>
@@ -126,7 +126,7 @@
 		<div class="form-group col-sm-4">
 			<label for="periode">Periode</label>
 			<p> Periode beasiswa diberikan </p>
-			<input type="number" class="form-control" placeholder="2016.1 - 2017.4" name="periode" min= "0" data-parsley-pattern="\d*" data-parsley-type="integer" data-parsley-maxlength="3" required>
+			<input type="number" class="form-control" placeholder="2016.1 - 2017.4" name="periode" min= "0" data-parsley-pattern="\d*" data-parsley-type="integer" data-parsley-maxlength="8" required>
 		</div>
 	</div>
 	<div class = "row">
@@ -152,19 +152,26 @@
 			<label for="tanggalTutup">Tanggal Tutup</label>
 			<input type="date" name="tanggalTutup" data-date-format="YYYY/MM/DD" required>
 		</div>
-		<div class = "col-sm-1"></div>
+		
 	</div>
 
+	<div class="row">
 	<div class="form-group" name="syarat">
 		<label for="syarat">Syarat</label>
 		<input type = "text" class="form-control" name="syarat1" required>
+
 	</div>
+	<div class="button">
+		<button type="button" class="btn btn-default"" id="buttonTambahSyarat" onclick="insertRow()">+</button>
+</div>
+
+	</div>
+	<div class="row">
 		 <button type="submit" id="submit-form"> Submit </button>
+	</div>
 </form>
 
-<div>
-		<button type="button" class="btn btn-default pull-right" id="buttonTambahSyarat" onclick="insertRow()">+</button>
-</div>
+
 
 <div name= "alertDateModal" class="alert alert-danger alert-dismissable fade in">
 		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
@@ -301,7 +308,7 @@ function insertRow(){
     $('.bs-callout-warning').toggleClass('hidden', ok);
   })
   .on('form:submit', function() {
-    return false;
+    return true;
   });
 });
 

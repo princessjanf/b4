@@ -43,13 +43,14 @@
                     <ul class="nav navbar-nav">
                         <li class="active"><a href="./homepage">Home</a></li>
                         <li><a href="./daftar-beasiswa">Daftar Beasiswa</a></li>
-                        <li><a href="portfolio.html">Donasi</a></li>
-                        <li><a href="blog.html">LPJ</a></li>
+                        <li><a href="./">Donasi</a></li>
+                        <li><a href="./">LPJ</a></li>
                         
                         @if($user==null)
                             <li><a href="./login">Log In</a></li>
                         @else
                             <li><a href="./profil">{{$user->username}} ({{$namarole}})</a></li> {{-- link profil belum --}}
+                            <li><a href="./logout">Log Out</a></li>
                         @endif
                     </ul>
                 </div>
@@ -69,7 +70,7 @@
               <li>
                 <img src="img/slides/beasiswa.jpg" alt="" />
                 <div class="flex-caption">
-                    <h3>BEASISWA 1</h3> 
+                    <h3>Beasiswa 1</h3> 
                     <p>Duis fermentum auctor ligula ac malesuada. Mauris et metus odio, in pulvinar urna</p> 
                     <a href="#" class="btn btn-theme">Daftar</a>
                 </div>

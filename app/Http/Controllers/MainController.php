@@ -4,6 +4,7 @@ class MainController extends Controller
 {
     function index()
     {
+<<<<<<< HEAD
 
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -15,6 +16,15 @@ class MainController extends Controller
       if(!SSO::check()) {
         $user = null;
 @@ -20,8 +25,24 @@ class MainController extends Controller
+=======
+      
+      
+
+      if(!SSO::check()) {
+        $user = null;
+        $beasiswas = DB::table('beasiswa')->get();
+        return view('pages.homepage')->withBeasiswas($beasiswas)->withUser($user);
+>>>>>>> refs/remotes/origin/master
       }
       else{
         $user = SSO::getUser();
@@ -33,7 +43,8 @@ class MainController extends Controller
         }
 
         //$namarole disini kemungkinannya berarti = mahasiswa/pendonor/pegawai fakultas/pegawai universitas/direktorat kerjasama
-          return view('pages.homepage')->withUser($user)->withNamarole($namarole);
+        $beasiswas = DB::table('beasiswa')->get();
+          return view('pages.homepage')->withBeasiswas($beasiswas)->withUser($user)->withNamarole($namarole);
         }
 >>>>>>> refs/remotes/origin/master
 
@@ -87,6 +98,7 @@ class MainController extends Controller
 >>>>>>> refs/remotes/origin/master
     }
 
+<<<<<<< HEAD
      function addbeasiswa()
     {
 <<<<<<< HEAD
@@ -111,6 +123,9 @@ class MainController extends Controller
         }
 >>>>>>> refs/remotes/origin/master
     }
+=======
+    
+>>>>>>> refs/remotes/origin/master
 
     function detailbeasiswa($id)
     {

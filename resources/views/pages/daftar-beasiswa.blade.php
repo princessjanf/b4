@@ -37,6 +37,7 @@
                 <div class="navbar-collapse collapse ">
                     <ul class="nav navbar-nav">
                             <li><a href="./profile">{{$user->username}} ({{$namarole}})</a></li>
+                            <li><a href="./logout">LOG OUT</a></li>
                     </ul>
                 </div>
             </div>
@@ -79,6 +80,9 @@
 =======
     <div class="col-sm-9">
     <h4>Daftar Beasiswa</h4>
+    @if($namarole=="Pegawai Universitas")
+    <button id="add-beasiswa"><a href="add-beasiswa">Buat Beasiswa</a></button>
+    @endif
     <table class="table table-striped">
 >>>>>>> refs/remotes/origin/master
         <thead>
@@ -125,14 +129,117 @@
 		          	<td>           
                                     @if($namarole=="Pegawai Universitas")
     									<a href = "./daftar-beasiswa"><button><i class="glyphicon glyphicon-pencil"></i></button></a>
-                                        <a href = "./#"><button><i class="glyphicon glyphicon-trash"></i></button></a>
+
+    									 <!-- Trigger/Open The Modal -->
+										<button id="myBtn"><i class="glyphicon glyphicon-trash"></i></button></button>
+
+
+
+                                        <style>
+                                        /* The Modal (background) */
+										.modal {
+										    display: none; /* Hidden by default */
+										    position: fixed; /* Stay in place */
+										    z-index: 1; /* Sit on top */
+										    left: 0;
+										    top: 0;
+										    width: 100%; /* Full width */
+										    height: 100%; /* Full height */
+										    overflow: auto; /* Enable scroll if needed */
+										    background-color: rgb(0,0,0); /* Fallback color */
+										    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+										}
+
+										/* Modal Content/Box */
+										.modal-content {
+										    background-color: #fefefe;
+										    margin: 15% auto; /* 15% from the top and centered */
+										    padding: 20px;
+										    border: 1px solid #888;
+										    width: 80%; /* Could be more or less, depending on screen size */
+										}
+
+										/* The Close Button */
+										.close {
+										    color: #aaa;
+										    float: right;
+										    font-size: 28px;
+										    font-weight: bold;
+										}
+
+										.close:hover,
+										.close:focus {
+										    color: black;
+										    text-decoration: none;
+										    cursor: pointer;
+										}	
+                                        </style>
+
+                                       
+
+										<!-- The Modal -->
+										<div id="myModal" class="modal">
+
+										  <!-- Modal content -->
+										  <div class="modal-content">
+										    <span class="close">&times;</span>
+										    <p>Are you sure want to delete this beasiswa?</p>
+										    <button id="yes-button-delete" class="btn btn-success">Yes</button>
+										    <button id="no-button-delete" class="btn btn-danger">No</button>
+										  </div>
+
+										</div>
+
+										<script>
+										// Get the modal
+										var modal = document.getElementById('myModal');
+
+										// Get the button that opens the modal
+										var btn = document.getElementById("myBtn");
+
+										// Get the <span> element that closes the modal
+										var span = document.getElementsByClassName("close")[0];
+
+										// When the user clicks the button, open the modal 
+										btn.onclick = function() {
+										    modal.style.display = "block";
+										}
+
+										// When the user clicks on <span> (x), close the modal
+										span.onclick = function() {
+										    modal.style.display = "none";
+										}
+
+										// When the user clicks anywhere outside of the modal, close it
+										window.onclick = function(event) {
+										    if (event.target == modal) {
+										        modal.style.display = "none";
+										    }
+										}
+										</script>
+
+
+
                                         <a href = "./#"><button><i class="glyphicon glyphicon-eye-close"></i></button></a>
                                     
                                     @elseif($namarole=="mahasiswa")
                                         <a href = "#"><button>Apply</button></a>
                                     
+                                    @elseif($namarole=="Direktorat Kerjasama")
+                                    <style>
+                                    	img {
+										    width: 20px;
+										}
+									</style>
+                                        <a href = "#"><img name = "upload-logo" src="img/upload.png" alt="" /></a>
+
                                     @else
+<<<<<<< HEAD
                                         <a href = "#">gaada menu :(</a>
+>>>>>>> refs/remotes/origin/master
+=======
+
+                                    <p>-</p>
 >>>>>>> refs/remotes/origin/master
 
                                     @endif
