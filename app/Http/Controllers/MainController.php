@@ -11,11 +11,10 @@ class MainController extends Controller
 {
     function index()
     {
-
-
       if(!SSO::check()) {
         $user = null;
-        return view('pages.homepage')->withUser($user);
+        $beasiswas = DB::table('beasiswa')->where('flag', '1')->where('public', '1')->take(4)->get();
+        return view('pages.homepage')->withBeasiswas($beasiswas)->withUser($user);
       }
       else{
         $user = SSO::getUser();
@@ -29,8 +28,8 @@ class MainController extends Controller
           $namarole = $role->nama_role_pegawai;
         }
 
-        //$namarole disini kemungkinannya berarti = mahasiswa/pendonor/pegawai fakultas/pegawai universitas/direktorat kerjasama
-          return view('pages.homepage')->withUser($user)->withNamarole($namarole);
+          $beasiswas = DB::table('beasiswa')->where('flag', '1')->where('public', '1')->get();
+          return view('pages.homepage')->withBeasiswas($beasiswas)->withUser($user)->withNamarole($namarole);
         }
 
     }
@@ -51,8 +50,8 @@ class MainController extends Controller
         $namarole = $role->nama_role_pegawai;
       }
 
-      //$namarole disini kemungkinannya berarti = mahasiswa/pendonor/pegawai fakultas/pegawai universitas/direktorat kerjasama
-        return view('pages.homepage')->withUser($user)->withNamarole($namarole);
+        $beasiswas = DB::table('beasiswa')->where('flag', '1')->where('public', '1')->get();
+        return view('pages.homepage')->withBeasiswas($beasiswas)->withUser($user)->withNamarole($namarole);
     }
 
     function logout()
@@ -73,7 +72,6 @@ class MainController extends Controller
         $namarole = $role->nama_role_pegawai;
       }
 
-      //$namarole disini kemungkinannya berarti = mahasiswa/pendonor/pegawai fakultas/pegawai universitas/direktorat kerjasama
       if ($namarole == 'mahasiswa' || $namarole == 'Pegawai Fakultas') {
         $beasiswas = DB::table('beasiswa')->where('flag', '1')->where('public', '1')->get();
       } else if ($namarole == 'pendonor'){
