@@ -14,32 +14,9 @@ class ScholarshipController extends Controller
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-
-      function addbeasiswa()
-     {
-       $user = SSO::getUser();
-
-       $pengguna = DB::table('pegawai')->where('username', $user->username)->first();
-
-       if($pengguna==null){
-         return redirect('/');
-       }
-
-         $role = DB::table('role_pegawai')->where('id_role_pegawai', $pengguna->id_role_pegawai)->first();
-         $namarole = $role->nama_role_pegawai;
-
-         $kategoribeasiswa = DB::table('kategori_beasiswa')->get();
-         $pendonor = DB::table('pendonor')->get();
-         $jenjang = DB::table('jenjang')->get();
-         $fakultas = DB::table('fakultas')->get();
-
-         if($namarole=='Pegawai Universitas'){
-           return view('pages.add-beasiswa')->withUser($user)->withNamarole($namarole)->withKategoribeasiswa($kategoribeasiswa)->withPendonor($pendonor)->withJenjang($jenjang)->withFakultasbeasiswa($fakultas);
-         }
-     }
-     function edit($id)
+    public function addbeasiswa()
     {
-      /*$user = SSO::getUser();
+      $user = SSO::getUser();
 
       $pengguna = DB::table('pegawai')->where('username', $user->username)->first();
 
@@ -47,37 +24,39 @@ class ScholarshipController extends Controller
         return redirect('/');
       }
 
-        $role = DB::table('role_pegawai')->where('id_role_pegawai', $pengguna->id_role_pegawai)->first();
-        $namarole = $role->nama_role_pegawai;
-        if($namarole=='Pegawai Universitas'){
-          return view('pages.edit-beasiswa')->withUser($user)->withNamarole($namarole)->withKategoribeasiswa($kategoribeasiswa)->withPendonor($pendonor)->withJenjang($jenjang)->withFakultasbeasiswa($fakultas)->withBeasiswa($beasiswa);
-        }
-        */
+      $role = DB::table('role_pegawai')->where('id_role_pegawai', $pengguna->id_role_pegawai)->first();
+      $namarole = $role->nama_role_pegawai;
+
+      $kategoribeasiswa = DB::table('kategori_beasiswa')->get();
+      $pendonor = DB::table('pendonor')->get();
+      $jenjang = DB::table('jenjang')->get();
+      $fakultas = DB::table('fakultas')->get();
+
+      if($namarole=='Pegawai Universitas'){
+        return view('pages.add-beasiswa')->withUser($user)->withNamarole($namarole)->withKategoribeasiswa($kategoribeasiswa)->withPendonor($pendonor)->withJenjang($jenjang)->withFakultasbeasiswa($fakultas);
+      }
+    }
+    public function edit($id)
+    {
         $kategoribeasiswa = DB::table('kategori_beasiswa')->get();
         $pendonor = DB::table('pendonor')->get();
         $jenjang = DB::table('jenjang')->get();
         $fakultas = DB::table('fakultas')->get();
         $beasiswa = DB::table('beasiswa')->where('id_beasiswa', $id)->first();
         return view('pages.edit-beasiswa', ['kategoribeasiswa' => $kategoribeasiswa, 'pendonor' => $pendonor, 'jenjang'=>$jenjang, 'fakultasbeasiswa'=>$fakultas,'beasiswa'=>$beasiswa]);
-        //return view('pages.edit-beasiswa')->withKategoribeasiswa($kategoribeasiswa)->withPendonor($pendonor)->withJenjang($jenjang)->withFakultasbeasiswa($fakultas)->withBeasiswa($beasiswa);
       }
-      public function test(){
-          return view('pages.test');
-        }
 
       public function delete($id){
             DB::update('update `beasiswa` SET flag = 0 WHERE id_beasiswa =?', [$id]);
+            return redirect('/daftar-beasiswa');
         }
 
-          public function makePublic($id){
-              DB::update('update `beasiswa` SET public = 1 WHERE id_beasiswa =?', [$id]);
-            }
+      public function makePublic($id){
+        DB::update('update `beasiswa` SET public = 1 WHERE id_beasiswa =?', [$id]);
+      }
 
-      public function insertBeasiswa(Request $request){
-
-          /*insert beasiswa*/
-
-
+      public function insertBeasiswa(Request $request)
+      {
         DB::insert('INSERT INTO `beasiswa`(`nama_beasiswa`, `deskripsi_beasiswa`, `id_kategori`, `tanggal_buka`, `tanggal_tutup`,
                                           `kuota`, `nominal`, `dana`, `periode`,  `id_pendonor`, `jangka`, `id_status`, `public`, `flag`)
                     VALUES (?,?,?,?,?,?,?,?,?,?,?,2,0,1)',
@@ -92,14 +71,14 @@ class ScholarshipController extends Controller
                     $request->input('periode'),
                     $request->get('pendonor'),
                     $request->input('jangka')]
-       );
-       $idBeasiswa = DB::table('beasiswa')->orderBy('id_beasiswa', 'desc')->first();
-         $counter = $request->get('counter');
-         for($i = 1;$i<=($counter);$i++)
-         {
-           DB::insert('insert into `persyaratan` (`id_beasiswa`, `syarat`) VALUES (?,?)', [$idBeasiswa->id_beasiswa, $request->input('syarat'.$i)]);
-          }
-
+                  );
+        $beasiswa = DB::table('beasiswa')->orderBy('id_beasiswa', 'desc')->first();
+        $counter = $request->get('counter');
+        for($i = 1;$i<=($counter);$i++)
+        {
+          DB::insert('insert into `persyaratan` (`id_beasiswa`, `syarat`) VALUES (?,?)', [$beasiswa->id_beasiswa, $request->input('syarat'.$i)]);
+        }
+        return redirect('/detail-beasiswa/'.$beasiswa->id_beasiswa);
       }
 
       public function updateBeasiswa(Request $request){

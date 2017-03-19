@@ -10,31 +10,27 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('', 'MainController@index');
+Route::get('/homepage', 'MainController@index');
+Route::get('/', function() {return redirect('/homepage');});
 
-Route::get('logout', 'MainController@logout');
+Route::get('/login', 'MainController@login');
+Route::get('/logout', 'MainController@logout');
 
-Route::get('homepage', 'MainController@index');
-
-Route::get('login', 'MainController@login');
-
-Route::get('test', 'ScholarshipController@test');
-
-Route::get('delete/{id}', 'ScholarshipController@delete');
-
-Route::get('detail-beasiswa/{id}', 'MainController@detailbeasiswa');
-
-Route::get('daftar-beasiswa', [
-   'middleware' => 'authSSO',
-   'uses' => 'MainController@daftarbeasiswa',
+Route::get('/daftar-beasiswa', [
+  'middleware' => 'authSSO',
+  'uses' => 'MainController@daftarbeasiswa'
+]);
+Route::get('/detail-beasiswa/{id}', [
+  'middleware' => 'authSSO',
+  'uses' => 'MainController@detailbeasiswa'
 ]);
 
 Route::get('add-beasiswa', [
-   'middleware' => 'authSSO',
-   'uses' => 'ScholarshipController@addbeasiswa',
+  'middleware' => 'authSSO',
+  'uses' => 'ScholarshipController@addbeasiswa'
 ]);
-
-Route::get('edit-beasiswa/{id}', 'ScholarshipController@edit');
-
-Route::post('update-beasiswa', 'ScholarshipController@updateBeasiswa');
 Route::post('insert-beasiswa', 'ScholarshipController@insertBeasiswa');
+Route::get('edit-beasiswa/{id}', 'ScholarshipController@edit');
+Route::post('update-beasiswa', 'ScholarshipController@updateBeasiswa');
+Route::get('delete-beasiswa/{id}', 'ScholarshipController@delete');
+Route::get('make-public-beasiswa/{id}', 'ScholarshipController@makePublic');
