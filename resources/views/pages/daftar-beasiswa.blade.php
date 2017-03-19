@@ -18,31 +18,31 @@
 	<link href="{{ asset('css/flexslider.css') }}" rel="stylesheet" />
 	<link href="{{ asset('css/style.css') }}" rel="stylesheet" />
 
-	<!-- Theme skin -->
-	<link href="{{ asset('skins/default.css') }}" rel="stylesheet" />
-</head>
-<body>
-	<!-- Header -->
-	<header>
-		<div class="navbar navbar-default navbar-static-top">
-			<div class="container">
-				<div class="navbar-header">
-					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-					</button>
-					<a class="navbar-brand" href="."><span>M</span>odul Beasiswa</a>
-				</div>
-				<div class="navbar-collapse collapse ">
-					<ul class="nav navbar-nav">
-						<li><a href="./login">log in</a></li>
-					</ul>
-				</div>
-			</div>
-		</div>
-	</header>
-	<!-- /Header -->
+<!-- Theme skin -->
+<link href="{{ asset('skins/default.css') }}" rel="stylesheet" />
+	</head>
+	<body>
+<!-- Header -->
+<header>
+        <div class="navbar navbar-default navbar-static-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="."><span>M</span>odul Beasiswa</a>
+                </div>
+                <div class="navbar-collapse collapse ">
+                    <ul class="nav navbar-nav">
+                            <li><a href="./profile">{{$user->username}} ({{$namarole}})</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </header>
+<!-- /Header -->
 
 	<!-- Main -->
 	<div class="container">
@@ -60,51 +60,58 @@
 					<hr>
 				</ul>
 			</div><!-- /span-3 -->
-			<div class="col-sm-9">
-				<h4>Daftar Beasiswa</h4>
-				<table class="table table-striped">
-					<thead>
-						<tr>
-							<th>No</th>
-							<th>Nama Beasiswa</th>
-							<th>Status</th>
-							<th>Akhir Periode</th>
-							<th>More</th>
-						</tr>
-					</thead>
-					<tbody>
-						@foreach ($beasiswas as $index => $beasiswa)
-						<tr>
-							<td>{{$index+1}}</td>
-							<td>{{$beasiswa->nama_beasiswa}}</td>
-							<td>
-								@if ($beasiswa -> flag == 1)
-								Dibuka
-								@else
-								Ditutup
-								@endif
-							</td>
-							<td>{{$beasiswa->tanggal_tutup}}</td>
-							<td>
-								<a href = "./daftar-beasiswa"><button><i class="glyphicon glyphicon-pencil"></i></button></a>
-								<i class="glyphicon glyphicon-trash"></i>
-								<i class="glyphicon glyphicon-user"></i>
-								<i class="glyphicon glyphicon-eye-close"></i>
-							</td>
-						</tr>
-						@endforeach
-					</tbody>
-				</table>
-			</div>
-		</div><!--/row-->
-		<!-- /upper section -->
+
+    <div class="col-sm-9">
+    <h4>Daftar Beasiswa</h4>
+    <table class="table table-striped">
+        <thead>
+          <tr>
+						<th>No</th>
+						<th>Nama Beasiswa</th>
+						<th>Status</th>
+						<th>Akhir Periode</th>
+						<th>More</th>
+					</tr>
+        </thead>
+        <tbody>
+					@foreach ($beasiswas as $index => $beasiswa)
+    				  <tr>
+								<td>{{$index+1}}</td>
+								<td>{{$beasiswa->nama_beasiswa}}</td>
+								<td>
+									@if ($beasiswa -> flag == 1)
+										Dibuka
+									@else
+										Ditutup
+									@endif
+								</td>
+								<td>{{$beasiswa->tanggal_tutup}}</td>
+		          	<td>           
+                                    @if($namarole=="Pegawai Universitas")
+    									<a href = "./daftar-beasiswa"><button><i class="glyphicon glyphicon-pencil"></i></button></a>
+                                        <a href = "./#"><button><i class="glyphicon glyphicon-trash"></i></button></a>
+                                        <a href = "./#"><button><i class="glyphicon glyphicon-eye-close"></i></button></a>
+                                    
+                                    @elseif($namarole=="mahasiswa")
+                                        <a href = "#"><button>Apply</button></a>
+                                    
+                                    @else
+                                        <a href = "#">gaada menu :(</a>
+
+                                    @endif
+								</td>
+							</tr>
+					 @endforeach
+        </tbody>
+      </table>
+    </div>
+  </div><!--/row-->
+  <!-- /upper section -->
 
 		<!-- lower section -->
 
-
 	</div><!--/container-->
 	<!-- /Main -->
-
 
 	<footer>
 		<div class="container">
@@ -186,9 +193,6 @@
 			</div>
 		</div>
 	</footer>
-
-
-
 
 	<!-- script references -->
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>

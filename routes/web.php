@@ -23,6 +23,7 @@ Route::get('daftar-beasiswa', [
    'uses' => 'MainController@daftarbeasiswa',
 ]);
 
+
 Route::get('add-beasiswa', 'ScholarshipController@addBeasiswa');
 
 

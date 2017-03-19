@@ -36,7 +36,7 @@
                 </div>
                 <div class="navbar-collapse collapse ">
                     <ul class="nav navbar-nav">
-                        <li><a href="./login">log in</a></li>
+                        <li><a href="./profile">{{$user->username}} ({{$namarole}})</a></li>
                     </ul>
                 </div>
             </div>
@@ -89,8 +89,8 @@
                     <div class="form-group">
                         <label for="kategoriBeasiswa">Kategori Beasiswa</label>
                         <select class="form-control" name="kategoriBeasiswa">
-                            @foreach ($categories as $category)
-                            <option value= {{ $category->id_kategori}}> {{$category->nama_kategori}} </option>
+                            @foreach ($kategoribeasiswa as $kategori)
+                                <option value= {{ $kategori->id_kategori}}> {{$kategori->nama_kategori}} </option>
                             @endforeach
                         </select>
                     </div>
@@ -107,7 +107,7 @@
                     <label for="pendonor">Pendonor</label>
                     <select class="form-control" name="pendonor">
                         @foreach ($pendonor as $pendonor)
-                        <option value= {{ $pendonor->id_pendonor}}> {{$pendonor->nama_instansi}} </option>
+                            <option value= {{ $pendonor->id_pendonor}}> {{$pendonor->nama_instansi}} </option>
                         @endforeach
                     </select>
                     </div>
@@ -126,7 +126,6 @@
                     <button type="button" class="btn btn-default pull-right" id="buttonTambahSyarat" onclick="insertRow()">+</button>
             </div>
             </div>
-            @endsection
 
 
     </div>
