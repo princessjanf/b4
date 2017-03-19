@@ -1,37 +1,24 @@
-@@ -9,10 +9,15 @@ use Illuminate\Support\Facades\DB;
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use SSO\SSO;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\DB;
 
 class MainController extends Controller
 {
     function index()
     {
-<<<<<<< HEAD
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-    function index()
-    {
-=======
->>>>>>> refs/remotes/origin/master
 
       if(!SSO::check()) {
         $user = null;
-@@ -20,8 +25,24 @@ class MainController extends Controller
-=======
-      
-      
-
-      if(!SSO::check()) {
-        $user = null;
-        $beasiswas = DB::table('beasiswa')->get();
-        return view('pages.homepage')->withBeasiswas($beasiswas)->withUser($user);
->>>>>>> refs/remotes/origin/master
+        return view('pages.homepage')->withUser($user);
       }
       else{
         $user = SSO::getUser();
-<<<<<<< HEAD
-        return view('pages.homepage')->withUser($user);
-      }
-=======
         $pengguna = DB::table('user')->where('username', $user->username)->first();
         $role = DB::table('role')->where('id_role', $pengguna->id_role)->first();
         $namarole = $role->nama_role;
@@ -43,20 +30,17 @@ class MainController extends Controller
         }
 
         //$namarole disini kemungkinannya berarti = mahasiswa/pendonor/pegawai fakultas/pegawai universitas/direktorat kerjasama
-        $beasiswas = DB::table('beasiswa')->get();
-          return view('pages.homepage')->withBeasiswas($beasiswas)->withUser($user)->withNamarole($namarole);
+          return view('pages.homepage')->withUser($user)->withNamarole($namarole);
         }
->>>>>>> refs/remotes/origin/master
 
     }
 
-@@ -31,7 +52,22 @@ class MainController extends Controller
+    function login()
+    {
+      if(!SSO::check())
         SSO::authenticate();
-      $user = SSO::getUser();
+			$user = SSO::getUser();
 
-<<<<<<< HEAD
-        return view('pages.beranda')->withUser($user);
-=======
       $pengguna = DB::table('user')->where('username', $user->username)->first();
       $role = DB::table('role')->where('id_role', $pengguna->id_role)->first();
       $namarole = $role->nama_role;
@@ -69,18 +53,15 @@ class MainController extends Controller
 
       //$namarole disini kemungkinannya berarti = mahasiswa/pendonor/pegawai fakultas/pegawai universitas/direktorat kerjasama
         return view('pages.homepage')->withUser($user)->withNamarole($namarole);
->>>>>>> refs/remotes/origin/master
     }
 
     function logout()
-@@ -41,17 +77,55 @@ class MainController extends Controller
+    {
+      SSO::logout(URL::to('/'));
+    }
 
     function daftarbeasiswa()
     {
-<<<<<<< HEAD
-      $beasiswas = DB::table('beasiswa')->get();
-      return view('pages.daftar-beasiswa')->withBeasiswas($beasiswas);
-=======
       $user = SSO::getUser();
       $pengguna = DB::table('user')->where('username', $user->username)->first();
       $role = DB::table('role')->where('id_role', $pengguna->id_role)->first();
@@ -95,15 +76,10 @@ class MainController extends Controller
       //$namarole disini kemungkinannya berarti = mahasiswa/pendonor/pegawai fakultas/pegawai universitas/direktorat kerjasama
       $beasiswas = DB::table('beasiswa')->get();
       return view('pages.daftar-beasiswa')->withBeasiswas($beasiswas)->withUser($user)->withNamarole($namarole);
->>>>>>> refs/remotes/origin/master
     }
 
-<<<<<<< HEAD
      function addbeasiswa()
     {
-<<<<<<< HEAD
-      return view('pages.add-beasiswa');
-=======
       $user = SSO::getUser();
 
       $pengguna = DB::table('pegawai')->where('username', $user->username)->first();
@@ -121,23 +97,10 @@ class MainController extends Controller
         if($namarole=='Pegawai Universitas'){
           return view('pages.createScholarship')->withUser($user)->withNamarole($namarole)->withKategoribeasiswa($kategoribeasiswa)->withPendonor($pendonor);
         }
->>>>>>> refs/remotes/origin/master
     }
-=======
-    
->>>>>>> refs/remotes/origin/master
 
     function detailbeasiswa($id)
     {
-<<<<<<< HEAD
-      $beasiswa = DB::table('beasiswa')->where('id_beasiswa', $id)->first();
-      $persyaratans = DB::table('persyaratan')->where('id_beasiswa', $beasiswa->id_beasiswa)->get();
-      return view('pages.detail-beasiswa')->withBeasiswa($beasiswa)->withPersyaratans($persyaratans);
-@@ -96,4 +170,22 @@ class MainController extends Controller
-    return view('pages.detail-beasiswa')->withBeasiswa($beasiswa)->withPersyaratans($persyaratans);
-  }
->>>>>>> refs/remotes/origin/master
-=======
       $user = SSO::getUser();
 
       $pengguna = DB::table('user')->where('username', $user->username)->first();
@@ -154,5 +117,4 @@ class MainController extends Controller
       $pendonor = DB::table('pendonor')->where('id_pendonor', $beasiswa->id_pendonor)->first();
       return view('pages.detail-beasiswa')->withBeasiswa($beasiswa)->withPendonor($pendonor)->withUser($user)->withNamarole($namarole);
     }
->>>>>>> refs/remotes/origin/master
 }
