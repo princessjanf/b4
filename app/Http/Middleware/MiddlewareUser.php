@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use SSO\SSO;
+use Illuminate\Support\Facades\DB;
 class MiddlewareUser
 {
     /**
@@ -17,7 +18,8 @@ class MiddlewareUser
     {
         if (SSO::check()){
             return $next($request);
-        }
-        return redirect('/index');
+
+        }   
+        return redirect('/login');
     }
 }

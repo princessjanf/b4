@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
 class ScholarshipController extends Controller
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
-      public function create(){
+      public function addBeasiswa(){
         $categories = DB::select('select * from kategori_beasiswa');
         $pendonor = DB::select('select * from pendonor');
 
@@ -28,7 +28,7 @@ class ScholarshipController extends Controller
               DB::update('update `beasiswa` SET public = 1 WHERE id_beasiswa =?', [$id]);
             }
 
-      public function insert(Request $request){
+      public function insertBeasiswa(Request $request){
 
           /*insert beasiswa*/
 

@@ -45,7 +45,12 @@
                         <li><a href="./daftar-beasiswa">Daftar Beasiswa</a></li>
                         <li><a href="portfolio.html">Donasi</a></li>
                         <li><a href="blog.html">LPJ</a></li>
-                       <li><a href="./login">log in</a></li>
+                        
+                        @if($user==null)
+                            <li><a href="./login">Log In</a></li>
+                        @else
+                            <li><a href="./profil">{{$user->username}} ({{$namarole}})</a></li> {{-- link profil belum --}}
+                        @endif
                     </ul>
                 </div>
             </div>
