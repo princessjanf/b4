@@ -38,7 +38,7 @@
                 </div>
                 <div class="navbar-collapse collapse ">
                     <ul class="nav navbar-nav">
-                        <li><a href="./login">log in</a></li>
+                         <li><a href="./profile">{{$user->username}} ({{$namarole}})</a></li>
                     </ul>
                 </div>
             </div>
@@ -304,7 +304,7 @@ function insertRow(){
     return true;
   });
 });
-	
+
 </script>
 
 </body>
