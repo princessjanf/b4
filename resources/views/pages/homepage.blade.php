@@ -37,19 +37,28 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="."><span>M</span>odul Beasiswa</a>
+            <a class="navbar-brand" href="{{url('')}}"><span>M</span>odul Beasiswa</a>
           </div>
           <div class="navbar-collapse collapse ">
             <ul class="nav navbar-nav">
-              <li class="active"><a href="./homepage">Home</a></li>
-              <li><a href="{{url('daftar-beasiswa')}}">Daftar Beasiswa</a></li>
-              <li><a href="{{url('')}}">Donasi</a></li>
-              <li><a href="{{url('./')}}">LPJ</a></li>
 
               @if($user==null)
+              <li class="active"><a href="{{url('')}}">Home</a></li>
               <li><a href="{{url('login')}}">Log In</a></li>
               @else
-              <li><a href="{{url('profil')}}">{{$user->username}} ({{$namarole}})</a></li>
+              <li class="active"><a href="{{url('')}}">Home</a></li>
+              <li><a href="{{url('daftar-beasiswa')}}">Daftar Beasiswa</a></li>
+                @if ($namarole=='pendonor')
+                <li><a href="#donate">Donate</a></li>
+                @elseif ($namarole=='mahasiswa')
+                <li><a href="#isilpj">Isi LPJ</a></li>
+                @elseif ($namarole=='Pegawai Universitas')
+                <li><a href="#kelolalpj">Kelola LPJ</a></li>
+                @endif
+                @if ($namarole=='pendonor'||$namarole=='Pegawai Universitas'||$namarole=='Pegawai Fakultas')
+                <li><a href="#dashboard">Dashboard</a></li>
+                @endif
+              <li><a href="#profil">{{$user->username}} ({{$namarole}})</a></li>
               <li><a href="{{url('logout')}}">Log Out</a></li>
               @endif
             </ul>
@@ -108,12 +117,20 @@
               <div class="col-lg-3">
                 <div class="box">
                   <div class="box-gray aligncenter">
-                    <h4>{{$beasiswa->nama_beasiswa}}</h4>
+                    <h4>
+                      <?php
+                        $string = $beasiswa->nama_beasiswa;
+                        echo str_limit($string,39);
+                      ?>
+                    </h4>
                     <div class="icon">
                       <i class="fa fa-desktop fa-3x"></i>
                     </div>
                     <p>
-                      Voluptatem accusantium doloremque laudantium sprea totam rem aperiam.
+                      <?php
+                        $string = $beasiswa->deskripsi_beasiswa;
+                        echo str_limit($string,120);
+                      ?>
                     </p>
                   </div>
                   <div class="box-bottom">
