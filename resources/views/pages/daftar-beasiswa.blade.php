@@ -10,6 +10,7 @@
 	<!--[if lt IE 9]>
 	<script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
+	<script src="{{ asset('js/jquery-3.2.0.js') }}"></script>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<link href="{{ asset('css/styles.css') }}" rel="stylesheet">
 	<link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet" />
@@ -18,8 +19,16 @@
 	<link href="{{ asset('css/flexslider.css') }}" rel="stylesheet" />
 	<link href="{{ asset('css/style.css') }}" rel="stylesheet" />
 	<link href="{{ asset('css/parsley.css') }}" rel="stylesheet" />
+	
 	<!-- Theme skin -->
 	<link href="{{ asset('skins/default.css') }}" rel="stylesheet" />
+
+	<!-- Data Table :) -->
+	<script src="{{ asset('js/jquery.dataTables.js') }}"></script>
+	<script src="{{ asset('js/dataTables.bootstrap.js') }}"></script>
+	<link href="{{ asset('css/jquery.dataTables.css')}}" rel="stylesheet" media="screen" />
+	<link href="{{ asset('css/dataTables.bootstrap.css')}}" rel="stylesheet" media="screen" />
+	
 </head>
 <body>
 	<!-- Header -->
@@ -51,7 +60,6 @@
 		<!-- upper section -->
 		<div class="row">
 			<div class="col-sm-3">
-
 				<!-- left -->
 				<ul class="nav nav-stacked">
 					<li><a href="./homepage">Dashboard</a></li>
@@ -65,8 +73,9 @@
 				<h4>Daftar Beasiswa</h4>
 				@if($namarole=="Pegawai Universitas")
 				<button id="add-beasiswa"><a href="add-beasiswa">Buat Beasiswa</a></button>
+				<br></br>
 				@endif
-				<table class="table table-striped">
+				<table id="beasiswalist" class="table table-striped">
 					<thead>
 						<tr>
 							<th>No</th>
@@ -205,7 +214,20 @@
 	</footer>
 
 	<!-- script references -->
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+	{{-- <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script> --}}
 	<script src="js/bootstrap.min.js"></script>
+	<script type="text/javascript">
+	$(document).ready(function() {
+		$('#beasiswalist').DataTable();
+	});
+
+	$('#beasiswalist').dataTable( {
+	  "columnDefs": [
+	    { "width": "5%", "targets": 0 },
+	    { "width": "40%", "targets": 1 },
+	    { "width": "5%", "targets": 2 }
+	  ]
+	} );
+	</script>
 </body>
 </html>

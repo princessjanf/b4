@@ -98,6 +98,5 @@ class ScholarshipController extends Controller
                       'id_pendonor'=>$request->get('pendonor'),
                       'jangka'=>$request->input('jangka')
                     ]);
-
         }
 }
