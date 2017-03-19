@@ -122,18 +122,30 @@ class MainController extends Controller
       }
       $beasiswa = DB::table('beasiswa')->where('id_beasiswa', $id)->first();
       $persyaratans = DB::table('persyaratan')->where('id_beasiswa', $beasiswa->id_beasiswa)->get();
-      if ($namarole!='pendonor')
+
+      if ($namarole=='pendonor')
       {
-        return view('pages.detail-beasiswa')->withBeasiswa($beasiswa)->withPersyaratans($persyaratans)->withUsername($username)->withNamarole($namarole);
+        $isPendonor = false;
+        $pendonor = DB::table('beasiswa')
+                    ->where('id_beasiswa', $beasiswa->id_beasiswa)
+                    ->join('pendonor', 'beasiswa.id_pendonor', '=', 'pendonor.id_pendonor')
+                    ->select('pendonor.*')
+                    ->first();
+        if ($pendonor->username == $user->username)
+        {
+          $isPendonor = true;
+        }
+
+        $pendaftars = DB::table('melamar')
+                    ->where('id_beasiswa', $beasiswa->id_beasiswa)
+                    ->join('user', 'melamar.username', '=', 'user.username')
+                    ->select('melamar.*', 'user.nama')
+                    ->get();
+        return view('pages.detail-beasiswa')->withBeasiswa($beasiswa)->withPersyaratans($persyaratans)->withUsername($username)->withNamarole($namarole)->withPendaftars($pendaftars)->withIspendonor($isPendonor);
       }
       else
       {
-        $pendaftars = DB::table('melamar')
-                ->where('id_beasiswa', $beasiswa->id_beasiswa)
-                ->join('user', 'melamar.username', '=', 'user.username')
-                ->select('melamar.*', 'user.nama')
-                ->get();
-        return view('pages.detail-beasiswa')->withBeasiswa($beasiswa)->withPersyaratans($persyaratans)->withUsername($username)->withNamarole($namarole)->withPendaftars($pendaftars);
+        return view('pages.detail-beasiswa')->withBeasiswa($beasiswa)->withPersyaratans($persyaratans)->withUsername($username)->withNamarole($namarole);
       }
     }
   }
