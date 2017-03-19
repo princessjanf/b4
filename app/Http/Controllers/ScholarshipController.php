@@ -38,66 +38,76 @@ class ScholarshipController extends Controller
     }
     public function edit($id)
     {
-        $kategoribeasiswa = DB::table('kategori_beasiswa')->get();
-        $pendonor = DB::table('pendonor')->get();
-        $jenjang = DB::table('jenjang')->get();
-        $fakultas = DB::table('fakultas')->get();
-        $beasiswa = DB::table('beasiswa')->where('id_beasiswa', $id)->first();
-        return view('pages.edit-beasiswa', ['kategoribeasiswa' => $kategoribeasiswa, 'pendonor' => $pendonor, 'jenjang'=>$jenjang, 'fakultasbeasiswa'=>$fakultas,'beasiswa'=>$beasiswa]);
+      $user = SSO::getUser();
+
+      $pengguna = DB::table('pegawai')->where('username', $user->username)->first();
+
+      if($pengguna==null){
+        return redirect('/');
       }
 
-      public function delete($id){
-            DB::update('update `beasiswa` SET flag = 0 WHERE id_beasiswa =?', [$id]);
-            return redirect('/daftar-beasiswa');
-        }
+      $role = DB::table('role_pegawai')->where('id_role_pegawai', $pengguna->id_role_pegawai)->first();
+      $namarole = $role->nama_role_pegawai;
+      $kategoribeasiswa = DB::table('kategori_beasiswa')->get();
+      $pendonor = DB::table('pendonor')->get();
+      $jenjang = DB::table('jenjang')->get();
+      $fakultas = DB::table('fakultas')->get();
+      $beasiswa = DB::table('beasiswa')->where('id_beasiswa', $id)->first();
+      return view('pages.edit-beasiswa', ['kategoribeasiswa' => $kategoribeasiswa, 'pendonor' => $pendonor, 'jenjang'=>$jenjang, 'fakultasbeasiswa'=>$fakultas,'beasiswa'=>$beasiswa,'user'=>$user,'namarole'=>$namarole]);
+    }
 
-      public function makePublic($id){
-        DB::update('update `beasiswa` SET public = 1 WHERE id_beasiswa =?', [$id]);
+    public function delete($id){
+          DB::update('update `beasiswa` SET flag = 0 WHERE id_beasiswa =?', [$id]);
+          return redirect('/daftar-beasiswa');
       }
 
-      public function insertBeasiswa(Request $request)
+    public function makePublic($id){
+      DB::update('update `beasiswa` SET public = 1 WHERE id_beasiswa =?', [$id]);
+    }
+
+    public function insertBeasiswa(Request $request)
+    {
+      DB::insert('INSERT INTO `beasiswa`(`nama_beasiswa`, `deskripsi_beasiswa`, `id_kategori`, `tanggal_buka`, `tanggal_tutup`,
+                                        `kuota`, `nominal`, `dana`, `periode`,  `id_pendonor`, `jangka`, `id_status`, `public`, `flag`)
+                  VALUES (?,?,?,?,?,?,?,?,?,?,?,2,0,1)',
+                  [$request->input('namaBeasiswa'),
+                  $request->input('deskripsiBeasiswa'),
+                  $request->get('kategoriBeasiswa'),
+                  $request->input('tanggalBuka'),
+                  $request->input('tanggalTutup'),
+                  $request->input('kuota'),
+                  $request->input('nominal'),
+                  $request->input('totalDana'),
+                  $request->input('periode'),
+                  $request->get('pendonor'),
+                  $request->input('jangka')]
+                );
+      $beasiswa = DB::table('beasiswa')->orderBy('id_beasiswa', 'desc')->first();
+      $counter = $request->get('counter');
+      for($i = 1;$i<=($counter);$i++)
       {
-        DB::insert('INSERT INTO `beasiswa`(`nama_beasiswa`, `deskripsi_beasiswa`, `id_kategori`, `tanggal_buka`, `tanggal_tutup`,
-                                          `kuota`, `nominal`, `dana`, `periode`,  `id_pendonor`, `jangka`, `id_status`, `public`, `flag`)
-                    VALUES (?,?,?,?,?,?,?,?,?,?,?,2,0,1)',
-                    [$request->input('namaBeasiswa'),
-                    $request->input('deskripsiBeasiswa'),
-                    $request->get('kategoriBeasiswa'),
-                    $request->input('tanggalBuka'),
-                    $request->input('tanggalTutup'),
-                    $request->input('kuota'),
-                    $request->input('nominal'),
-                    $request->input('totalDana'),
-                    $request->input('periode'),
-                    $request->get('pendonor'),
-                    $request->input('jangka')]
-                  );
-        $beasiswa = DB::table('beasiswa')->orderBy('id_beasiswa', 'desc')->first();
-        $counter = $request->get('counter');
-        for($i = 1;$i<=($counter);$i++)
-        {
-          DB::insert('insert into `persyaratan` (`id_beasiswa`, `syarat`) VALUES (?,?)', [$beasiswa->id_beasiswa, $request->input('syarat'.$i)]);
-        }
-        return redirect('/detail-beasiswa/'.$beasiswa->id_beasiswa);
+        DB::insert('insert into `persyaratan` (`id_beasiswa`, `syarat`) VALUES (?,?)', [$beasiswa->id_beasiswa, $request->input('syarat'.$i)]);
       }
+      return redirect('/detail-beasiswa/'.$beasiswa->id_beasiswa);
+    }
 
-      public function updateBeasiswa(Request $request){
+    public function updateBeasiswa(Request $request){
 
-        DB::table('beasiswa')
-            ->where('id_beasiswa', $request->get('idBeasiswa'))
-            ->update(['nama_beasiswa' => 1,
-                      'nama_beasiswa'=>$request->input('namaBeasiswa'),
-                      'deskripsi_beasiswa'=>$request->input('deskripsiBeasiswa'),
-                      'id_kategori'=>$request->get('kategoriBeasiswa'),
-                      'tanggal_buka'=>$request->input('tanggalBuka'),
-                      'tanggal_tutup'=>$request->input('tanggalTutup'),
-                      'kuota'=>$request->input('kuota'),
-                      'nominal'=>$request->input('nominal'),
-                      'dana'=>$request->get('totalDana'),
-                      'periode'=>$request->input('periode'),
-                      'id_pendonor'=>$request->get('pendonor'),
-                      'jangka'=>$request->input('jangka')
-                    ]);
+      DB::table('beasiswa')
+          ->where('id_beasiswa', $request->get('idBeasiswa'))
+          ->update(['nama_beasiswa' => 1,
+                    'nama_beasiswa'=>$request->input('namaBeasiswa'),
+                    'deskripsi_beasiswa'=>$request->input('deskripsiBeasiswa'),
+                    'id_kategori'=>$request->get('kategoriBeasiswa'),
+                    'tanggal_buka'=>$request->input('tanggalBuka'),
+                    'tanggal_tutup'=>$request->input('tanggalTutup'),
+                    'kuota'=>$request->input('kuota'),
+                    'nominal'=>$request->input('nominal'),
+                    'dana'=>$request->get('totalDana'),
+                    'periode'=>$request->input('periode'),
+                    'id_pendonor'=>$request->get('pendonor'),
+                    'jangka'=>$request->input('jangka')
+                  ]);
 
-        }
+      }
 }
