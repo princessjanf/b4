@@ -17,6 +17,7 @@
 
   <!-- Theme skin -->
   <link href="{{ asset('skins/default.css') }}" rel="stylesheet" />
+<<<<<<< HEAD
   <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -36,6 +37,8 @@
 
   <!-- Theme skin -->
   <link href="{{ asset('skins/default.css') }}" rel="stylesheet" />
+=======
+>>>>>>> refs/remotes/origin/master
 </head>
 
 <body>
@@ -59,8 +62,12 @@
       </div>
     </div>
   </header>
+<<<<<<< HEAD
 
    <!-- /Header -->
+=======
+  <!-- /Header -->
+>>>>>>> refs/remotes/origin/master
 
   <!-- Main -->
   <div class="container">
@@ -106,7 +113,11 @@
 
     <footer>
       <div class="container">
+<<<<<<< HEAD
       <div class="row">
+=======
+        <div class="row">
+>>>>>>> refs/remotes/origin/master
           <div class="col-lg-3">
             <div class="widget">
               <h5 class="widgetheading">Get in touch with us</h5>
@@ -146,7 +157,11 @@
               <div class="widget">
                 <h5 class="widgetheading">Flickr photostream</h5>
                 <div class="flickr_badge">
+<<<<<<< HEAD
                   <script type="text/javascript" src="https://www.flickr.com/badge_code_v2.gne?count=8&display=random&size=s&layout=x&source=user&user=34178660@N03"></script>
+=======
+                  <script type="text/javascript" src="https://www.flickr.com/badge_code_v2.gne?count=8&amp;display=random&amp;size=s&amp;layout=x&amp;source=user&amp;user=34178660@N03"></script>
+>>>>>>> refs/remotes/origin/master
                 </div>
                 <div class="clear">
                 </div>
@@ -185,8 +200,19 @@
       </div>
     </footer>
 
+<<<<<<< HEAD
       <!-- script references -->
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
   </body>
   </html>
+=======
+
+
+
+    <!-- script references -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+  </body>
+  </html>
+>>>>>>> refs/remotes/origin/master
