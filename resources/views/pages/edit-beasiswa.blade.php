@@ -85,7 +85,7 @@
 							<label for="pendonor">Pendonor</label>
 							<select class="form-control" name="pendonor">
 								@foreach ($pendonor as $pendonor)
-								@if ($pendonor->id_pendonor == $beasiswa->id_beasiswa)
+								@if ($pendonor->id_pendonor == $beasiswa->id_pendonor)
 								<option selected value= {{ $pendonor->id_pendonor}}> {{$pendonor->nama_instansi}} </option>
 								@else
 								<option value= {{ $pendonor->id_pendonor}}> {{$pendonor->nama_instansi}} </option>

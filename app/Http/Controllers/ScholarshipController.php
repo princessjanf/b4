@@ -21,7 +21,7 @@ class ScholarshipController extends Controller
       $pengguna = DB::table('pegawai')->where('username', $user->username)->first();
 
       if($pengguna==null){
-        return redirect('/');
+        return redirect('noaccess');
       }
 
       $role = DB::table('role_pegawai')->where('id_role_pegawai', $pengguna->id_role_pegawai)->first();
@@ -35,36 +35,83 @@ class ScholarshipController extends Controller
       if($namarole=='Pegawai Universitas'){
         return view('pages.add-beasiswa')->withUser($user)->withNamarole($namarole)->withKategoribeasiswa($kategoribeasiswa)->withPendonor($pendonor)->withJenjang($jenjang)->withFakultasbeasiswa($fakultas);
       }
+      else{
+        return redirect('noaccess');
+      }
     }
     public function edit($id)
     {
       $user = SSO::getUser();
 
       $pengguna = DB::table('pegawai')->where('username', $user->username)->first();
+      $pendonor = DB::table('pendonor')->where('username', $user->username)->first();
 
-      if($pengguna==null){
-        return redirect('/');
-      }
-
+      if ($pengguna != null){
       $role = DB::table('role_pegawai')->where('id_role_pegawai', $pengguna->id_role_pegawai)->first();
       $namarole = $role->nama_role_pegawai;
-
+      }
+      else if ($pendonor !=null)
+      {
+        $entriPendonor = DB::table('user')->where('username', $pendonor->username)->first();
+        $role = DB::table('role')->where('id_role', $entriPendonor->id_role)->first();
+        $namarole = $role->nama_role;
+      }
+      else{
+        return redirect('noaccess');
+      }
       $kategoribeasiswa = DB::table('kategori_beasiswa')->get();
       $pendonor = DB::table('pendonor')->get();
       $jenjang = DB::table('jenjang')->get();
       $fakultas = DB::table('fakultas')->get();
       $beasiswa = DB::table('beasiswa')->where('id_beasiswa', $id)->first();
-      return view('pages.add-beasiswa')->withBeasiswa($beasiswa)->withUser($user)->withNamarole($namarole)->withKategoribeasiswa($kategoribeasiswa)->withPendonor($pendonor)->withJenjang($jenjang)->withFakultasbeasiswa($fakultas);
+      if($namarole=='Pegawai Universitas' || $namarole=="pendonor"){
+        return view('pages.edit-beasiswa')->withBeasiswa($beasiswa)->withUser($user)->withNamarole($namarole)->withKategoribeasiswa($kategoribeasiswa)->withPendonor($pendonor)->withJenjang($jenjang)->withFakultasbeasiswa($fakultas);
+
+      }
+      else{
+        return redirect('noaccess');
+      }
     }
 
     public function delete($id){
+      $user = SSO::getUser();
+
+      $pengguna = DB::table('pegawai')->where('username', $user->username)->first();
+
+      if($pengguna==null){
+        return redirect('noaccess');
+      }
+
+      $role = DB::table('role_pegawai')->where('id_role_pegawai', $pengguna->id_role_pegawai)->first();
+      $namarole = $role->nama_role_pegawai;
+
+      if($namarole=='Pegawai Universitas'){
       DB::update('update `beasiswa` SET flag = 0 WHERE id_beasiswa =?', [$id]);
       return redirect('/daftar-beasiswa');
+      }
+      else {
+        return redirect('noaccess');
+      }
     }
 
     public function makePublic($id){
+      $user = SSO::getUser();
+
+      $pengguna = DB::table('pegawai')->where('username', $user->username)->first();
+
+      if($pengguna==null){
+        return redirect('noaccess');
+      }
+
+      $role = DB::table('role_pegawai')->where('id_role_pegawai', $pengguna->id_role_pegawai)->first();
+      $namarole = $role->nama_role_pegawai;
+
+      if($namarole=='Pegawai Universitas'){
       DB::update('update `beasiswa` SET public = 1 WHERE id_beasiswa =?', [$id]);
-      return redirect('/daftar-beasiswa');
+      return redirect('/daftar-beasiswa');}
+      else{
+        return redirect('noaccess');
+      }
     }
 
     public function insertBeasiswa(Request $request)
@@ -110,5 +157,7 @@ class ScholarshipController extends Controller
                     'id_pendonor'=>$request->get('pendonor'),
                     'jangka'=>$request->input('jangka')
                   ]);
+          $idBeasiswa = $request->get('idBeasiswa');
+          return redirect('/detail-beasiswa/'.$idBeasiswa);
       }
 }
