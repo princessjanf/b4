@@ -34,7 +34,6 @@ Route::get('add-beasiswa', [
    'uses' => 'ScholarshipController@addbeasiswa',
 ]);
 
-<<<<<< HEAD
 Route::get('createScholarship',[
    'middleware' => 'authSSO',
    'uses' => 'ScholarshipController@create',
@@ -44,6 +43,4 @@ Route::post('/insertScholarship', 'ScholarshipController@insert');
 
 Route::post('/edit-beasiswa', 'ScholarshipController@edit');
 
-=======
 Route::post('/insert-beasiswa', 'ScholarshipController@insertBeasiswa');
->>>>>>> refs/remotes/origin/master

@@ -76,7 +76,6 @@ class ScholarshipController extends Controller
          {
            DB::insert('insert into `persyaratan` (`id_beasiswa`, `syarat`) VALUES (?,?)', [$idBeasiswa->id_beasiswa, $request->input('syarat'.$i)]);
           }
-<<<<<<< HEAD
       }
 
       public function edit(Request $request){
@@ -107,7 +106,5 @@ class ScholarshipController extends Controller
            DB::insert('insert into `syarat` VALUES (?,?)', [$idBeasiswa->id_beasiswa, $request->input('syarat'.$i)]);
           }
       }
-=======
         }
->>>>>>> refs/remotes/origin/master
 }
