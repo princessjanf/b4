@@ -34,7 +34,11 @@
         </div>
         <div class="navbar-collapse collapse ">
           <ul class="nav navbar-nav">
-            <li><a href="./profile">{{$user->username}} ({{$namarole}})</a></li>
+            @if ($username=='guest')
+            <li><a href="/login">{{$username}}</a></li>
+            @else ()
+            <li><a href="#">{{$username}} ({{$namarole}})</a></li>
+            @endif
           </ul>
         </div>
       </div>
@@ -60,8 +64,13 @@
       </div>
 
       <div class="col-sm-9">
+        @if ($namarole=='Direktorat Kerjasama')
+        <h4>Detail Beasiswa <button class="btn"><a href="./upload"><b>Upload</b></a></button></h4>
+        @elseif ($namarole=='mahasiswa')
+        <h4>Detail Beasiswa <button class="btn"><a href="./daftar"><b>Daftar</b></a></button></h4>
+        @else
         <h4>Detail Beasiswa</h4>
-
+        @endif
         <h2>{{$beasiswa->nama_beasiswa}}</h2>
         <p>{{$beasiswa->deskripsi_beasiswa}}</p>
         <p>Periode Beasiswa:  {{$beasiswa->tanggal_buka}} - {{$beasiswa->tanggal_tutup}}</p>
@@ -74,6 +83,17 @@
           @endforeach
           @endif
         </p>
+        @if ($namarole=='pendonor')
+        <p>Pendaftar:
+            @if (count($pendaftars) < 1)
+            <br>1. -
+            @else
+            @foreach ($pendaftars as $index => $pendaftar)
+            <br>{{$index+1}}. {{$pendaftar->nama}}
+            @endforeach
+            @endif
+        </p>
+        @endif
       </div><!--/row-->
       <!-- /upper section -->
 
