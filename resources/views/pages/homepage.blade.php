@@ -279,7 +279,7 @@
             <div class="row">
               <div class="col-lg-6">
                 <div class="copyright">
-                  <p>&copy; Moderna Theme. All right reserved.</p>
+                  <p>&copy; 2017 Copyright Kelompok B4</p>
                   <div class="credits">
                     <!--
                     All the links in the footer should remain intact.
