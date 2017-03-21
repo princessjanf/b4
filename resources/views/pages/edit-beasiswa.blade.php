@@ -4,7 +4,7 @@
 
 @section('content')
 		<div class="col-sm-9">
-				<form id='editScholarshipForm' action = "/update-beasiswa" onsubmit="return validateForm()" method = "post" data-parsley-validate="">
+				<form id='editScholarshipForm' action = "{{url('update-beasiswa')}}" onsubmit="return validateForm()" method = "post" data-parsley-validate="">
 					<div>
 						<h3> Informasi Beasiswa </h3>
 					</div>
