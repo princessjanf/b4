@@ -139,8 +139,36 @@
 						<div class="form-group col-sm-4">
 							<label for="periode">Periode</label>
 							<p> Periode beasiswa diberikan </p>
-							<input type="number" class="form-control" value= {{$beasiswa->periode}} name="periode" min= "0" data-parsley-pattern="\d*" data-parsley-type="integer" data-parsley-maxlength="8" required>
-						</div>
+							<select class="form-control" name="pendonor">
+								<?php $periodeSelected = false;?>
+								@if ($beasiswa->periode == "bulan")
+								{
+									<option selected value= "bulan"> Bulan </option>
+									<?php $periodeSelected = true; ?>
+								}
+								@else
+								{
+									<option value= "bulan"> Bulan </option>
+								}
+								@endif
+
+								@if ($periodeSelected == false AND $beasiswa->periode == 'semester'){
+									<option selected value= "semester"> Semester </option>
+								}
+								@else{
+									<option value= "semester"> Semester </option>
+								}
+								@endif
+
+								@if($periodeSelected==false AND $beasiswa->periode == 'tahun'){
+										<option selected value= "tahun"> Tahun </option>
+								}
+								@else{
+									<option value= "tahun"> Tahun </option>
+								}
+								@endif
+							</select>
+							</div>
 					</div>
 					<div class = "row">
 						<div class="form-group col-sm-5">
@@ -222,7 +250,7 @@
 	      </div>
 	    </div>
 	  </div>
-	        
+
 	  </footer>
 
 		<!-- script references -->

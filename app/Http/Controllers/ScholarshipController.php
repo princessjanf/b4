@@ -114,9 +114,31 @@ class ScholarshipController extends Controller
       }
     }
 
+    public function retrieveProdi(Request $request)
+    {
+            $jenjang = $request ->get('jenjang');
+
+            // select id_prodi from jenjang_prodi where id_jenjang = jenjang
+            // select id_fakultas, id_prodi, nama_prodi from program_studi where id_prodi = id_prodisblmnya
+            // select id_fakultas, nama_fakultas where id_fakultas = id_fakultas sblmnya
+            $msg = DB::table('jenjang_prodi')
+            ->where('id_jenjang',$jenjang)->join('program_studi', 'jenjang_prodi.id_prodi', '=', 'program_studi.id_prodi')
+            ->join('fakultas', 'program_studi.id_fakultas','=','fakultas.id_fakultas')
+            ->select('program_studi.id_prodi', 'program_studi.nama_prodi', 'fakultas.id_fakultas', 'fakultas.nama_fakultas')
+            ->get();
+            //echo $msg;
+            return $msg;
+    }
+
     public function insertBeasiswa(Request $request)
     {
-      DB::insert('INSERT INTO `beasiswa`(`nama_beasiswa`, `deskripsi_beasiswa`, `id_kategori`, `tanggal_buka`, `tanggal_tutup`,
+      $size = sizeof($request->get('fakultasBeasiswa'));
+
+      for ($i = 0; $i < $size; $i++)
+      {
+        echo $request->get('fakultasBeasiswa')[$i];
+      }
+    /*  DB::insert('INSERT INTO `beasiswa`(`nama_beasiswa`, `deskripsi_beasiswa`, `id_kategori`, `tanggal_buka`, `tanggal_tutup`,
                                         `kuota`, `nominal`, `dana`, `periode`,  `id_pendonor`, `jangka`, `id_status`, `public`, `flag`)
                   VALUES (?,?,?,?,?,?,?,?,?,?,?,2,0,1)',
                   [$request->input('namaBeasiswa'),
@@ -158,6 +180,6 @@ class ScholarshipController extends Controller
                     'jangka'=>$request->input('jangka')
                   ]);
           $idBeasiswa = $request->get('idBeasiswa');
-          return redirect('/detail-beasiswa/'.$idBeasiswa);
+          return redirect('/detail-beasiswa/'.$idBeasiswa);*/
       }
 }

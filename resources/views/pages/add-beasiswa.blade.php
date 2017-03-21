@@ -18,8 +18,15 @@
 	<link href="{{ asset('css/flexslider.css') }}" rel="stylesheet" />
 	<link href="{{ asset('css/style.css') }}" rel="stylesheet" />
 	<link href="{{ asset('css/parsley.css') }}" rel="stylesheet" />
+
+	<link href="{{ asset('css/multiple-select.css') }}" rel="stylesheet" />
 	<!-- Theme skin -->
 	<link href="{{ asset('skins/default.css') }}" rel="stylesheet" />
+	<script src='https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js'></script>
+	<script src="http://parsleyjs.org/dist/parsley.js"></script>
+	<script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'></script>
+	<script type="text/javascript" src="{{ URL::asset('js/multiple-select.js') }}"></script>
+
 </head>
 <body>
 	<!-- Header -->
@@ -107,7 +114,7 @@
 						</div>
 						<div class="form-group col-sm-3">
 							<label for="jenjangBeasiswa">Untuk Jenjang</label>
-							<select class="form-control" name="jenjangBeasiswa">
+							<select class="form-control" id="jenjang" name="jenjangBeasiswa">
 								@foreach ($jenjang as $jenjangbeasiswa)
 								<option value= {{ $jenjangbeasiswa->id_jenjang}}> {{$jenjangbeasiswa->nama_jenjang}} </option>
 								@endforeach
@@ -115,11 +122,10 @@
 						</div>
 						<div class="form-group col-sm-4">
 							<label for="fakultasBeasiswa">Fakultas Beasiswa</label>
-							<select class="form-control" name="fakultasBeasiswa">
-								@foreach ($fakultasbeasiswa as $fakultas)
-								<option value= {{ $fakultas->id_fakultas}}> {{$fakultas->nama_fakultas}} </option>
-								@endforeach
-							</select>
+							<input id="dataHolder"><
+							<select id="fakultasBeasiswa" name="fakultasBeasiswa[]" multiple="multiple">
+
+    					</select>
 						</div>
 					</div>
 					<div class = "row">
@@ -131,7 +137,12 @@
 						<div class="form-group col-sm-4">
 							<label for="periode">Periode</label>
 							<p> Periode beasiswa diberikan </p>
-							<input type="number" class="form-control" placeholder="2016.1 - 2017.4" name="periode" min= "0" data-parsley-pattern="\d*" data-parsley-type="integer" data-parsley-maxlength="8" required>
+							<select class="form-control" name="pendonor">
+								<option selected disabled> --Pilih Periode-- </option>
+								<option value= "bulan"> Bulan </option>
+								<option value= "semester"> Semester </option>
+								<option value= "tahun"> Tahun </option>
+							</select>
 						</div>
 					</div>
 					<div class = "row">
@@ -142,9 +153,9 @@
 						</div>
 
 						<div class="form-group col-sm-4">
-							<label for="jangka">Jangka (Semester) </label>
+							<label for="jangka">Jangka (Per Periode) </label>
 							<p> Jangka waktu pemberian beasiswa </p>
-							<input type="number" placeholder="4 (4 Semester)" class="form-control" name="jangka" min= "0" data-parsley-pattern="\d*" data-parsley-type="integer" data-parsley-maxlength="3" required>
+							<input type="number" placeholder="4" class="form-control" name="jangka" min= "0" data-parsley-pattern="\d*" data-parsley-type="integer" data-parsley-maxlength="3" required>
 						</div>
 					</div>
 					<div class = "row">
@@ -222,16 +233,13 @@
 	      </div>
 	    </div>
 	  </div>
-	        
+
 	  </footer>
 
 		<!-- script references -->
 
 
-		<script src='https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js'></script>
-		<script src="http://parsleyjs.org/dist/parsley.js"></script>
-		<script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'></script>
-		<script>
+	<script>
 			$("[name='alertDateModal']").hide();
 			$("[name='alertDanaModal']").hide();
 			counter=1;
@@ -288,6 +296,39 @@
 				});
 			});
 
+			$(function() {
+        $('#fakultasBeasiswa').change(function() {}).multipleSelect({
+            width: '100%'
+        });
+    });
+		$(document).ready(function(){
+		$("#jenjang").change(function(){
+			var jenjang = $("#jenjang").val();
+			console.log(jenjang);
+			fillProdi(jenjang);
+		});
+	});
+		function fillProdi(jenjang)
+		{
+			$.ajax({
+				 type:'POST',
+				 url:'/retrieve-prodi',
+				 data:{'_token' : '<?php echo csrf_token() ?>',
+			 					'jenjang': jenjang},
+				 success:function(data){
+					// var object = $.parseJSON(data);
+					console.log(data);
+					data[0].id_prodi;
+					$.each(data, function(i,item){
+				 	 	//$('#satuan'+idRow).append('<option value = "' + data[i].satuanpembelian +'">' + data[i].satuanpembelian + '</option>');
+					//	console.log(data[0].id_prodi);
+					//	console.log(data);
+						//console.log(data[i]["id_prodi"]);
+					});
+
+				 }
+			});
+		}
 		</script>
 
 	</body>

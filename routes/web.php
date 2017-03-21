@@ -49,7 +49,7 @@ Route::get('noaccess',[
   'middleware' => 'authSSO',
   'uses' => 'MainController@noaccess'
 ]);
-
-
+Route::get('test', 'ScholarshipController@retrieveProdi');
+Route::post('retrieve-prodi', 'ScholarshipController@retrieveProdi');
 Route::post('insert-beasiswa', 'ScholarshipController@insertBeasiswa');
 Route::post('update-beasiswa', 'ScholarshipController@updateBeasiswa');
