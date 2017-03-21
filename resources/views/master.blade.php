@@ -6,6 +6,8 @@
 	<title>@yield('title')</title>
 	<meta name="generator" content="Bootply" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<link rel="shortcut icon" href="{{ asset('img/favicon.ico') }}" type="image/x-icon">
+	<link rel="icon" href="{{ asset('img/favicon.ico') }}" type="image/x-icon">
 
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<link href="{{ asset('css/styles.css') }}" rel="stylesheet">
@@ -30,7 +32,7 @@
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="{{url('')}}"><span>M</span>odul Beasiswa</a>
+					<a class="navbar-brand" href="{{url('')}}"><span><img src="{{ asset('img/logo.png') }}" alt="Logo" style="width:80px;height:60px;">M</span>odul Beasiswa</a>
 				</div>
 				<div class="navbar-collapse collapse ">
 					<ul class="nav navbar-nav">
@@ -48,8 +50,9 @@
 		<div class="row">
 			<div class="col-sm-3">
 				<ul class="nav nav-stacked">
+					<hr>
 					<li><a href="#dashboard">Dashboard</a></li>
-					<li><a href="{{url('daftar-beasiswa')}}">List Beasiswa</a></li>
+					<li><a href="{{url('list-beasiswa')}}">List Beasiswa</a></li>
 					<li><a href="#lpj">LPJ</a></li>
 					<li><a href="#settings">Settings</a></li>
 					<hr>

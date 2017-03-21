@@ -87,7 +87,7 @@ class ScholarshipController extends Controller
 
       if($namarole=='Pegawai Universitas'){
       DB::update('update `beasiswa` SET flag = 0 WHERE id_beasiswa =?', [$id]);
-      return redirect('/daftar-beasiswa');
+      return redirect('/list-beasiswa');
       }
       else {
         return redirect('noaccess');
@@ -108,7 +108,7 @@ class ScholarshipController extends Controller
 
       if($namarole=='Pegawai Universitas'){
       DB::update('update `beasiswa` SET public = 1 WHERE id_beasiswa =?', [$id]);
-      return redirect('/daftar-beasiswa');}
+      return redirect('/list-beasiswa');}
       else{
         return redirect('noaccess');
       }

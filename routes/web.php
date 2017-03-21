@@ -16,7 +16,7 @@ Route::get('/', function() {return redirect('/homepage');});
 Route::get('/login', 'MainController@login');
 Route::get('/logout', 'MainController@logout');
 
-Route::get('/daftar-beasiswa', [
+Route::get('/list-beasiswa', [
   'middleware' => 'authSSO',
   'uses' => 'MainController@daftarbeasiswa'
 ]);

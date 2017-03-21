@@ -7,6 +7,8 @@
   <meta name="description" content="" />
   <meta name="author" content="http://bootstraptaste.com" />
   <!-- css -->
+  <link rel="shortcut icon" href="{{ asset('img/favicon.ico') }}" type="image/x-icon">
+  <link rel="icon" href="{{ asset('img/favicon.ico') }}" type="image/x-icon">
 
   <link href="css/bootstrap.min.css" rel="stylesheet" />
   <link href="css/fancybox/jquery.fancybox.css" rel="stylesheet">
@@ -37,7 +39,7 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="{{url('')}}"><span>M</span>odul Beasiswa</a>
+            <a class="navbar-brand" href="{{url('')}}"><span><img src="{{ asset('img/logo.png') }}" alt="Logo" style="width:80px;height:60px;">M</span>odul Beasiswa</a>
           </div>
           <div class="navbar-collapse collapse ">
             <ul class="nav navbar-nav">
@@ -47,7 +49,7 @@
               <li><a href="{{url('login')}}">Log In</a></li>
               @else
               <li class="active"><a href="{{url('')}}">Home</a></li>
-              <li><a href="{{url('daftar-beasiswa')}}">List Beasiswa</a></li>
+              <li><a href="{{url('list-beasiswa')}}">List Beasiswa</a></li>
                 @if ($namarole=='pendonor')
                 <li><a href="#donate">Donate</a></li>
                 @elseif ($namarole=='mahasiswa')
@@ -156,7 +158,7 @@
               <div class="col-lg-12">
                 <div class="big-cta">
                   <div class="cta-text">
-                    <a href="{{url('daftar-beasiswa')}}"><h2><span>Lihat</span> Daftar Beasiswa</h2></a>
+                    <a href="{{url('list-beasiswa')}}"><h2><span>Lihat</span> list beasiswa</h2></a>
                   </div>
                 </div>
               </div>
