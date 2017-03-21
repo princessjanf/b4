@@ -37,19 +37,28 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="."><span>M</span>odul Beasiswa</a>
+            <a class="navbar-brand" href="{{url('')}}"><span>M</span>odul Beasiswa</a>
           </div>
           <div class="navbar-collapse collapse ">
             <ul class="nav navbar-nav">
-              <li class="active"><a href="./homepage">Home</a></li>
-              <li><a href="{{url('daftar-beasiswa')}}">Daftar Beasiswa</a></li>
-              <li><a href="{{url('')}}">Donasi</a></li>
-              <li><a href="{{url('./')}}">LPJ</a></li>
 
               @if($user==null)
+              <li class="active"><a href="{{url('')}}">Home</a></li>
               <li><a href="{{url('login')}}">Log In</a></li>
               @else
-              <li><a href="{{url('profil')}}">{{$user->username}} ({{$namarole}})</a></li>
+              <li class="active"><a href="{{url('')}}">Home</a></li>
+              <li><a href="{{url('daftar-beasiswa')}}">Daftar Beasiswa</a></li>
+                @if ($namarole=='pendonor')
+                <li><a href="#donate">Donate</a></li>
+                @elseif ($namarole=='mahasiswa')
+                <li><a href="#isilpj">Isi LPJ</a></li>
+                @elseif ($namarole=='Pegawai Universitas')
+                <li><a href="#kelolalpj">Kelola LPJ</a></li>
+                @endif
+                @if ($namarole=='pendonor'||$namarole=='Pegawai Universitas'||$namarole=='Pegawai Fakultas')
+                <li><a href="#dashboard">Dashboard</a></li>
+                @endif
+              <li><a href="#profil">{{$user->username}} ({{$namarole}})</a></li>
               <li><a href="{{url('logout')}}">Log Out</a></li>
               @endif
             </ul>
@@ -68,7 +77,7 @@
             <div id="main-slider" class="flexslider">
               <ul class="slides">
                 <li>
-                  <img src="img/slides/beasiswa.jpg" alt="" />
+                  <img src="{{asset('img/slides/beasiswa.jpg')}}" alt="" />
                   <div class="flex-caption">
                     <h3>Beasiswa 1</h3>
                     <p>Duis fermentum auctor ligula ac malesuada. Mauris et metus odio, in pulvinar urna</p>
@@ -76,7 +85,7 @@
                   </div>
                 </li>
                 <li>
-                  <img src="img/slides/2.jpg" alt="" />
+                  <img src="{{asset('img/slides/2.jpg')}}" alt="" />
                   <div class="flex-caption">
                     <h3>BEASISWA 2</h3>
                     <p>Sodales neque vitae justo sollicitudin aliquet sit amet diam curabitur sed fermentum.</p>
@@ -84,7 +93,7 @@
                   </div>
                 </li>
                 <li>
-                  <img src="img/slides/3.jpg" alt="" />
+                  <img src="{{asset('img/slides/3.jpg')}}" alt="" />
                   <div class="flex-caption">
                     <h3>BEASISWA 3</h3>
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit donec mer lacinia.</p>
@@ -108,12 +117,20 @@
               <div class="col-lg-3">
                 <div class="box">
                   <div class="box-gray aligncenter">
-                    <h4>{{$beasiswa->nama_beasiswa}}</h4>
+                    <h4>
+                      <?php
+                        $string = $beasiswa->nama_beasiswa;
+                        echo str_limit($string,39);
+                      ?>
+                    </h4>
                     <div class="icon">
                       <i class="fa fa-desktop fa-3x"></i>
                     </div>
                     <p>
-                      Voluptatem accusantium doloremque laudantium sprea totam rem aperiam.
+                      <?php
+                        $string = $beasiswa->deskripsi_beasiswa;
+                        echo str_limit($string,120);
+                      ?>
                     </p>
                   </div>
                   <div class="box-bottom">
@@ -210,59 +227,12 @@
     <footer>
       <div class="container">
         <div class="row">
-          <div class="col-lg-3">
-            <div class="widget">
-              <h5 class="widgetheading">Get in touch with us</h5>
-              <address>
-                <strong>Moderna company Inc</strong><br>
-                Modernbuilding suite V124, AB 01<br>
-                Someplace 16425 Earth </address>
-                <p>
-                  <i class="icon-phone"></i> (123) 456-7890 - (123) 555-7891 <br>
-                  <i class="icon-envelope-alt"></i> email@domainname.com
-                </p>
-              </div>
-            </div>
-            <div class="col-lg-3">
-              <div class="widget">
-                <h5 class="widgetheading">Pages</h5>
-                <ul class="link-list">
-                  <li><a href="#">Press release</a></li>
-                  <li><a href="#">Terms and conditions</a></li>
-                  <li><a href="#">Privacy policy</a></li>
-                  <li><a href="#">Career center</a></li>
-                  <li><a href="#">Contact us</a></li>
-                </ul>
-              </div>
-            </div>
-            <div class="col-lg-3">
-              <div class="widget">
-                <h5 class="widgetheading">Latest posts</h5>
-                <ul class="link-list">
-                  <li><a href="#">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</a></li>
-                  <li><a href="#">Pellentesque et pulvinar enim. Quisque at tempor ligula</a></li>
-                  <li><a href="#">Natus error sit voluptatem accusantium doloremque</a></li>
-                </ul>
-              </div>
-            </div>
-            <div class="col-lg-3">
-              <div class="widget">
-                <h5 class="widgetheading">Flickr photostream</h5>
-                <div class="flickr_badge">
-                  <script type="text/javascript" src="https://www.flickr.com/badge_code_v2.gne?count=8&amp;display=random&amp;size=s&amp;layout=x&amp;source=user&amp;user=34178660@N03"></script>
-                </div>
-                <div class="clear">
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div id="sub-footer">
+          <div id="sub-footer">
           <div class="container">
             <div class="row">
               <div class="col-lg-6">
                 <div class="copyright">
-                  <p>&copy; Moderna Theme. All right reserved.</p>
+                  <p>&copy; 2017 Copyright Kelompok B4</p>
                   <div class="credits">
                     <!--
                     All the links in the footer should remain intact.
@@ -270,13 +240,14 @@
                     Licensing information: https://bootstrapmade.com/license/
                     Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/buy/?theme=Moderna
                   -->
-                  <a href="https://bootstrapmade.com/">Free Bootstrap Themes</a> by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+                  <p>Modul Beasiswa created by Propensi B4</p>
                 </div>
               </div>
             </div>
             <div class="col-lg-6">
               <ul class="social-network">
-                <li><a href="#" data-placement="top" title="Facebook"><i class="fa fa-facebook"></i></a></li>
+
+                <li><a href="#" data-placement="top" title="Facebooook"><i class="fa fa-facebook"></i></a></li>
                 <li><a href="#" data-placement="top" title="Twitter"><i class="fa fa-twitter"></i></a></li>
                 <li><a href="#" data-placement="top" title="Linkedin"><i class="fa fa-linkedin"></i></a></li>
                 <li><a href="#" data-placement="top" title="Pinterest"><i class="fa fa-pinterest"></i></a></li>
@@ -286,15 +257,18 @@
           </div>
         </div>
       </div>
-    </footer>
+    </div>
+  </div>
+        
+  </footer>
   </div>
   <a href="#" class="scrollup"><i class="fa fa-angle-up active"></i></a>
   <!-- javascript
   ================================================== -->
   <!-- Placed at the end of the document so the pages load faster -->
-  <script src="js/jquery.js"></script>
-  <script src="js/jquery.easing.1.3.js"></script>
-  <script src="js/bootstrap.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.2.0.slim.min.js" integrity="sha256-qLAv0kBAihcHZLI3fv3WITKeRsUX27hd6upBBa0MSow=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
   <script src="js/jquery.fancybox.pack.js"></script>
   <script src="js/jquery.fancybox-media.js"></script>
   <script src="js/google-code-prettify/prettify.js"></script>
