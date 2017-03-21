@@ -186,7 +186,6 @@
 	$(document).ready(function() {
 		$('#beasiswalist').DataTable();
 	});
-
 	$('#beasiswalist').dataTable( {
 	  "columnDefs": [
 	    { "width": "5%", "targets": 0 },
