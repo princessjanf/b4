@@ -47,7 +47,7 @@
               <li><a href="{{url('login')}}">Log In</a></li>
               @else
               <li class="active"><a href="{{url('')}}">Home</a></li>
-              <li><a href="{{url('daftar-beasiswa')}}">Daftar Beasiswa</a></li>
+              <li><a href="{{url('daftar-beasiswa')}}">List Beasiswa</a></li>
                 @if ($namarole=='pendonor')
                 <li><a href="#donate">Donate</a></li>
                 @elseif ($namarole=='mahasiswa')
@@ -259,7 +259,7 @@
       </div>
     </div>
   </div>
-        
+
   </footer>
   </div>
   <a href="#" class="scrollup"><i class="fa fa-angle-up active"></i></a>

@@ -28,7 +28,7 @@ class MainController extends Controller
           $namarole = $role->nama_role_pegawai;
         }
 
-          $beasiswas = DB::table('beasiswa')->where('flag', '1')->where('public', '1')->get();
+          $beasiswas = DB::table('beasiswa')->where('flag', '1')->where('public', '1')->take(4)->get();
           return view('pages.homepage')->withBeasiswas($beasiswas)->withUser($user)->withNamarole($namarole);
         }
 
