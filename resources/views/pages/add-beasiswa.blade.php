@@ -46,17 +46,18 @@
 	<!-- /Header -->
 
 	<!-- Main -->
-	<!-- upper section -->
-	<div class="row">
-		<div class="col-sm-3">
-			<!-- left -->
-			<ul class="nav nav-stacked">
-        <li><a href="{{url('')}}">Dashboard</a></li>
-        <li><a href="{{url('daftar-beasiswa')}}">Beasiswa</a></li>
-        <li><a href="#">LPJ</a></li>
-        <li><a href="#">Settings</a></li>
-				<hr>
-
+	<div class="container">
+		<!-- upper section -->
+		<div class="row">
+			<div class="col-sm-3">
+				<!-- left -->
+				<ul class="nav nav-stacked">
+					<li><a href="{{url('')}}">Dashboard</a></li>
+					<li><a href="{{url('daftar-beasiswa')}}">Beasiswa</a></li>
+					<li><a href="#">LPJ</a></li>
+					<li><a href="#">Settings</a></li>
+					<hr>
+				</ul>
 			</div><!-- /span-3 -->
 			<div class="col-sm-9">
 				<form id='createScholarshipForm' action = "./insert-beasiswa" onsubmit="return validateForm()" method = "post" data-parsley-validate="">
@@ -184,111 +185,105 @@
 				</div>
 
 			</div>
-
 		</div>
+	</div>
+	<!-- /Main -->
+	
+	<footer>
+		<div class="container">
+			<div class="row">
+				<div id="sub-footer">
+					<div class="container">
+						<div class="row">
+							<div class="col-lg-6">
+								<div class="copyright">
+									<p>&copy; Moderna Theme. All right reserved.</p>
+									<div class="credits">
+										<!--
+										All the links in the footer should remain intact.
+										You can delete the links only if you purchased the pro version.
+										Licensing information: https://bootstrapmade.com/license/
+										Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/buy/?theme=Moderna
+									-->
+									<p>Modul Beasiswa created by Propensi B4</p>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-6">
+								<ul class="social-network">
+									<li><a href="#" data-placement="top" title="Facebook"><i class="fa fa-facebook"></i></a></li>
+									<li><a href="#" data-placement="top" title="Twitter"><i class="fa fa-twitter"></i></a></li>
+									<li><a href="#" data-placement="top" title="Linkedin"><i class="fa fa-linkedin"></i></a></li>
+									<li><a href="#" data-placement="top" title="Pinterest"><i class="fa fa-pinterest"></i></a></li>
+									<li><a href="#" data-placement="top" title="Google plus"><i class="fa fa-google-plus"></i></a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</footer>
 
-
-		<footer>
-	      <div class="container">
-	        <div class="row">
-	          <div id="sub-footer">
-	          <div class="container">
-	            <div class="row">
-	              <div class="col-lg-6">
-	                <div class="copyright">
-	                  <p>&copy; Moderna Theme. All right reserved.</p>
-	                  <div class="credits">
-	                    <!--
-	                    All the links in the footer should remain intact.
-	                    You can delete the links only if you purchased the pro version.
-	                    Licensing information: https://bootstrapmade.com/license/
-	                    Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/buy/?theme=Moderna
-	                  -->
-	                  <p>Modul Beasiswa created by Propensi B4</p>
-	                </div>
-	              </div>
-	            </div>
-	            <div class="col-lg-6">
-	              <ul class="social-network">
-	                <li><a href="#" data-placement="top" title="Facebook"><i class="fa fa-facebook"></i></a></li>
-	                <li><a href="#" data-placement="top" title="Twitter"><i class="fa fa-twitter"></i></a></li>
-	                <li><a href="#" data-placement="top" title="Linkedin"><i class="fa fa-linkedin"></i></a></li>
-	                <li><a href="#" data-placement="top" title="Pinterest"><i class="fa fa-pinterest"></i></a></li>
-	                <li><a href="#" data-placement="top" title="Google plus"><i class="fa fa-google-plus"></i></a></li>
-	              </ul>
-	            </div>
-	          </div>
-	        </div>
-	      </div>
-	    </div>
-	  </div>
-	        
-	  </footer>
-
-		<!-- script references -->
-
-
-		<script src='https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js'></script>
-		<script src="http://parsleyjs.org/dist/parsley.js"></script>
-		<script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'></script>
-		<script>
-			$("[name='alertDateModal']").hide();
-			$("[name='alertDanaModal']").hide();
-			counter=1;
-			function insertRow(){
-				counter+=1;
-				document.getElementsByName("counter")[0].value = counter;
-				var theForm = document.getElementById('createScholarshipForm');
-				/*
-				var tmp = document.createElement("input");
-				tmp.name = "syarat"+counter;
-				tmp.type = "text";
-				console.log(tmp.name);
-				theForm.appendChild(tmp);
-				var r = document.createElement('span');
-				theForm.appendChild(r);
-				*/
-				var x = document.getElementsByName('syarat')[0];
-				var elem = document.createElement('div');
-				elem.innerHTML = '<input type = "text" class="form-control" name="syarat'+counter+'">';
-				x.appendChild(elem);
-				theForm.appendChild(x);
+	<!-- script references -->
+	<script src='https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js'></script>
+	<script src="http://parsleyjs.org/dist/parsley.js"></script>
+	<script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'></script>
+	<script>
+		$("[name='alertDateModal']").hide();
+		$("[name='alertDanaModal']").hide();
+		counter=1;
+		function insertRow(){
+			counter+=1;
+			document.getElementsByName("counter")[0].value = counter;
+			var theForm = document.getElementById('createScholarshipForm');
+			/*
+			var tmp = document.createElement("input");
+			tmp.name = "syarat"+counter;
+			tmp.type = "text";
+			console.log(tmp.name);
+			theForm.appendChild(tmp);
+			var r = document.createElement('span');
+			theForm.appendChild(r);
+			*/
+			var x = document.getElementsByName('syarat')[0];
+			var elem = document.createElement('div');
+			elem.innerHTML = '<input type = "text" class="form-control" name="syarat'+counter+'">';
+			x.appendChild(elem);
+			theForm.appendChild(x);
+		}
+		function validateForm(){
+			var totalDana = document.getElementsByName('totalDana')[0].value;
+			var kuota = document.getElementsByName('kuota')[0].value;
+			var nominal = document.getElementsByName('nominal')[0].value;
+			var jangka = document.getElementsByName('jangka')[0].value;
+			var jumlahDana = kuota*nominal*jangka;
+			var tanggalBuka = new Date(document.getElementsByName('tanggalBuka')[0].value);
+			var tanggalTutup = new Date(document.getElementsByName('tanggalTutup')[0].value);
+			if (tanggalBuka.getTime() < tanggalTutup.getTime() && totalDana == kuota*nominal*jangka)
+			{
+				return true;
+			}
+			else if(totalDana != jumlahDana){
+				$("[name='alertDanaModal']").show();
+				return false;
+			}
+			else{
+				$("[name='alertDateModal']").show();
+				return false;
 			}
 
-			function validateForm(){
-				var totalDana = document.getElementsByName('totalDana')[0].value;
-				var kuota = document.getElementsByName('kuota')[0].value;
-				var nominal = document.getElementsByName('nominal')[0].value;
-				var jangka = document.getElementsByName('jangka')[0].value;
-				var jumlahDana = kuota*nominal*jangka;
-				var tanggalBuka = new Date(document.getElementsByName('tanggalBuka')[0].value);
-				var tanggalTutup = new Date(document.getElementsByName('tanggalTutup')[0].value);
-				if (tanggalBuka.getTime() < tanggalTutup.getTime() && totalDana == kuota*nominal*jangka)
-				{
-					return true;
-				}
-				else if(totalDana != jumlahDana){
-					$("[name='alertDanaModal']").show();
-					return false;
-				}
-				else{
-					$("[name='alertDateModal']").show();
-					return false;
-				}
-
-			}
-			$(function () {
-				$('#createScholarshipForm').parsley().on('field:validated', function() {
-					var ok = $('.parsley-error').length === 0;
-					$('.bs-callout-info').toggleClass('hidden', !ok);
-					$('.bs-callout-warning').toggleClass('hidden', ok);
-				})
-				.on('form:submit', function() {
-					return true;
-				});
+		}
+		$(function () {
+			$('#createScholarshipForm').parsley().on('field:validated', function() {
+				var ok = $('.parsley-error').length === 0;
+				$('.bs-callout-info').toggleClass('hidden', !ok);
+				$('.bs-callout-warning').toggleClass('hidden', ok);
+			})
+			.on('form:submit', function() {
+				return true;
 			});
-
-		</script>
-
-	</body>
-	</html>
+		});
+	</script>
+</body>
+</html>

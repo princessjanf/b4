@@ -1,25 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
-	<meta charset="utf-8">
-	<title>Acces Denied!</title>
-	<meta name="generator" content="Bootply" />
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-
-	<!--[if lt IE 9]>
-	<script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
-	<![endif]-->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-	<link href="{{ asset('css/styles.css') }}" rel="stylesheet">
-	<link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet" />
-	<link href="{{ asset('css/fancybox/jquery.fancybox.css') }}" rel="stylesheet">
-	<link href="{{ asset('css/jcarousel.css') }}" rel="stylesheet" />
-	<link href="{{ asset('css/flexslider.css') }}" rel="stylesheet" />
-	<link href="{{ asset('css/style.css') }}" rel="stylesheet" />
-	<link href="{{ asset('css/parsley.css') }}" rel="stylesheet" />
-	<!-- Theme skin -->
-	<link href="{{ asset('skins/default.css') }}" rel="stylesheet" />
 </head>
 <body>
 	<!-- Header -->
@@ -45,23 +26,11 @@
 	</header>
 	<!-- /Header -->
 
-	<!-- Main -->
-	<div class="container">
-		<style>
-			img {
-				display: block;
-				margin: auto;
-				width: 35%;
-			}
-		</style>
-		<img src="http://www.clker.com/cliparts/a/K/l/k/C/w/light-blue-warning-sign-hi.png"  width="70">
-		<h1 style="text-align:center;"> Maaf, Anda tidak memiliki akses ke halaman ini </h1>
-		<h3 style="text-align:center;"> <a href="{{url('homepage')}}"> Kembali ke Homepage </a></h3>
-		<!--/container-->
-	</div>
-	<!-- /Main -->
+  <div class="container">
+    
+  </div>
 
-	<footer>
+  <footer>
 		<div class="container">
 			<div class="row">
 				<div id="sub-footer">
@@ -76,8 +45,8 @@
 										You can delete the links only if you purchased the pro version.
 										Licensing information: https://bootstrapmade.com/license/
 										Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/buy/?theme=Moderna
-										-->
-										<p>Modul Beasiswa created by Propensi B4</p>
+									-->
+									<p>Modul Beasiswa created by Propensi B4</p>
 									</div>
 								</div>
 							</div>
@@ -98,20 +67,5 @@
 	</footer>
 
 	<!-- script references -->
-	<script src="{{ asset('js/jquery-3.2.0.js') }}"></script>
-	<script src="js/bootstrap.min.js"></script>
-	<script type="text/javascript">
-		$(document).ready(function() {
-			$('#beasiswalist').DataTable();
-		});
-
-		$('#beasiswalist').dataTable( {
-			"columnDefs": [
-				{ "width": "5%", "targets": 0 },
-				{ "width": "40%", "targets": 1 },
-				{ "width": "5%", "targets": 2 }
-			]
-		} );
-	</script>
 </body>
 </html>
