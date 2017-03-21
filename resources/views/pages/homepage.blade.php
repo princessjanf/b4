@@ -7,6 +7,8 @@
   <meta name="description" content="" />
   <meta name="author" content="http://bootstraptaste.com" />
   <!-- css -->
+  <link rel="shortcut icon" href="{{ asset('img/favicon.ico') }}" type="image/x-icon">
+  <link rel="icon" href="{{ asset('img/favicon.ico') }}" type="image/x-icon">
 
   <link href="css/bootstrap.min.css" rel="stylesheet" />
   <link href="css/fancybox/jquery.fancybox.css" rel="stylesheet">
