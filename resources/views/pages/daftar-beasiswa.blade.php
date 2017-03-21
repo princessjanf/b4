@@ -82,7 +82,7 @@
 							<th>Nama Beasiswa</th>
 							<th>Status</th>
 							<th>Akhir Periode</th>
-							@if($namarole=="Pegawai Universitas" || $namarole=="mahasiswa" || $namarole=="Direktorat Kerjasama")
+							@if($namarole!="Pegawai Fakultas")
 							<th>More</th>
 							@endif
 						</tr>
@@ -176,7 +176,7 @@
       </div>
     </div>
   </div>
-        
+
   </footer>
 
 	<!-- script references -->
