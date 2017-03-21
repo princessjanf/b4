@@ -1,6 +1,6 @@
 @extends('master')
 
-@section('title', 'Daftar Beasiswa')
+@section('title', 'List beasiswa')
 
 @section('head')
 	<link href="{{ asset('css/jquery.dataTables.css')}}" rel="stylesheet" media="screen" />
@@ -10,9 +10,9 @@
 @section('content')
 		<div class="col-sm-9">
 			@if($namarole!="Pegawai Universitas")
-			<h4>Daftar Beasiswa</h4>
+			<h4>List beasiswa</h4>
 			@else
-			<h4>Daftar Beasiswa
+			<h4>List beasiswa
 			<button id="add-beasiswa" class="btn"><a href="{{url('add-beasiswa')}}"><b>Buat Beasiswa</b></a></button></h4>
 			@endif
 			<table id="beasiswalist" class="table table-striped">

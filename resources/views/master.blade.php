@@ -49,7 +49,7 @@
 			<div class="col-sm-3">
 				<ul class="nav nav-stacked">
 					<li><a href="#dashboard">Dashboard</a></li>
-					<li><a href="{{url('daftar-beasiswa')}}">List Beasiswa</a></li>
+					<li><a href="{{url('list-beasiswa')}}">List Beasiswa</a></li>
 					<li><a href="#lpj">LPJ</a></li>
 					<li><a href="#settings">Settings</a></li>
 					<hr>

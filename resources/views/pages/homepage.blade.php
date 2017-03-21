@@ -47,7 +47,7 @@
               <li><a href="{{url('login')}}">Log In</a></li>
               @else
               <li class="active"><a href="{{url('')}}">Home</a></li>
-              <li><a href="{{url('daftar-beasiswa')}}">List Beasiswa</a></li>
+              <li><a href="{{url('list-beasiswa')}}">List Beasiswa</a></li>
                 @if ($namarole=='pendonor')
                 <li><a href="#donate">Donate</a></li>
                 @elseif ($namarole=='mahasiswa')
@@ -156,7 +156,7 @@
               <div class="col-lg-12">
                 <div class="big-cta">
                   <div class="cta-text">
-                    <a href="{{url('daftar-beasiswa')}}"><h2><span>Lihat</span> Daftar Beasiswa</h2></a>
+                    <a href="{{url('list-beasiswa')}}"><h2><span>Lihat</span> list beasiswa</h2></a>
                   </div>
                 </div>
               </div>
