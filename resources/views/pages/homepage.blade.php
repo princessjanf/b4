@@ -43,12 +43,14 @@
           </div>
           <div class="navbar-collapse collapse ">
             <ul class="nav navbar-nav">
-
               @if($user==null)
               <li class="active"><a href="{{url('')}}">Home</a></li>
               <li><a href="{{url('login')}}">Log In</a></li>
               @else
               <li class="active"><a href="{{url('')}}">Home</a></li>
+              @if ($namarole=='pendonor'||$namarole=='Pegawai Universitas'||$namarole=='Pegawai Fakultas')
+                <li><a href="#dashboard">Dashboard</a></li>
+              @endif
               <li><a href="{{url('list-beasiswa')}}">List Beasiswa</a></li>
                 @if ($namarole=='pendonor')
                 <li><a href="#donate">Donate</a></li>
@@ -56,10 +58,7 @@
                 <li><a href="#isilpj">Isi LPJ</a></li>
                 @elseif ($namarole=='Pegawai Universitas')
                 <li><a href="#kelolalpj">Kelola LPJ</a></li>
-                @endif
-                @if ($namarole=='pendonor'||$namarole=='Pegawai Universitas'||$namarole=='Pegawai Fakultas')
-                <li><a href="#dashboard">Dashboard</a></li>
-                @endif
+                @endif    
               <li><a href="#profil">{{$user->username}} ({{$namarole}})</a></li>
               <li><a href="{{url('logout')}}">Log Out</a></li>
               @endif
