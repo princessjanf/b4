@@ -49,9 +49,9 @@
 
 						<td>
 							@if($namarole=="Pegawai Universitas")
-							<a href = "{{url('edit-beasiswa/'.$beasiswa->id_beasiswa)}}"><button><i class="glyphicon glyphicon-pencil"></i></button></a>
-							<a href = "{{url('delete-beasiswa/'.$beasiswa->id_beasiswa)}}"><button><i class="glyphicon glyphicon-trash"></i></button></a>
-							<a href = "{{url('make-public-beasiswa/'.$beasiswa->id_beasiswa)}}"><button><i class="glyphicon glyphicon-eye-close"></i></button></a>
+							<a href = "{{url('edit-beasiswa/'.$beasiswa->id_beasiswa)}}"><button><i class="glyphicon glyphicon-pencil" data-toggle="tooltip" title="Edit"></i></button></a>
+							<a href = "{{url('delete-beasiswa/'.$beasiswa->id_beasiswa)}}"><button><i class="glyphicon glyphicon-trash" data-toggle="tooltip" title="Hapus"></i></button></a>
+							<a href = "{{url('make-public-beasiswa/'.$beasiswa->id_beasiswa)}}"><button><i class="glyphicon glyphicon-eye-close" data-toggle="tooltip" title="Make Public"></i></button></a>
 
 							@elseif($namarole=="mahasiswa")
 							<a href = "#daftar"><button class="btn"><b>Daftar</b></button></a>
@@ -90,5 +90,9 @@
 			{ "width": "5%", "targets": 2 }
 			]
 		} );
+
+		$(document).ready(function(){
+		    $('[data-toggle="tooltip"]').tooltip(); 
+		});
 	</script>
 @endsection
