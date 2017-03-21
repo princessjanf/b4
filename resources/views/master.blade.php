@@ -32,7 +32,7 @@
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="{{url('')}}"><span>M</span>odul Beasiswa</a>
+					<a class="navbar-brand" href="{{url('')}}"><span><img src="{{ asset('img/logo.png') }}" alt="Logo" style="width:80px;height:60px;">M</span>odul Beasiswa</a>
 				</div>
 				<div class="navbar-collapse collapse ">
 					<ul class="nav navbar-nav">
