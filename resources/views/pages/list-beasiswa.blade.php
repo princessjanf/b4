@@ -54,8 +54,7 @@
 							<a href = "{{url('make-public-beasiswa/'.$beasiswa->id_beasiswa)}}"><button><i class="glyphicon glyphicon-eye-close"></i></button></a>
 
 							@elseif($namarole=="mahasiswa")
-							<a href = "#daftar"><button>Daftar</button></a>
-
+							<a href = "#daftar"><button class="btn"><b>Daftar</b></button></a>
 							@elseif($namarole=="Direktorat Kerjasama")
 							<style>
 								img {

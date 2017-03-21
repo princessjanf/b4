@@ -5,9 +5,9 @@
 @section('content')
     <div class="col-sm-9">
       @if ($namarole=='Direktorat Kerjasama')
-      <h4>Detail Beasiswa <button class="btn"><a href="#upload"><b>Upload</b></a></button></h4>
+      <h4>Detail Beasiswa &nbsp<a href="#upload"><button class="btn"><b>Upload</b></button></a></h4>
       @elseif ($namarole=='mahasiswa')
-      <h4>Detail Beasiswa <button class="btn"><a href="#daftar"><b>Daftar</b></a></button></h4>
+      <h4>Detail Beasiswa &nbsp<a href="#daftar"><button class="btn"><b>Daftar</b></button></a></h4>
       @elseif ($namarole=="Pegawai Universitas")
       <h4>Detail Beasiswa &nbsp
       <a href = "{{url('edit-beasiswa/'.$beasiswa->id_beasiswa)}}"><button><i class="glyphicon glyphicon-pencil"></i></button></a>
