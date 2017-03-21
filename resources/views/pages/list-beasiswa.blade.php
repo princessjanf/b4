@@ -64,7 +64,7 @@
 							<a href = "#upload"><img name = "upload-logo" src="img/upload.png" alt="" /></a>
 
 							@elseif($namarole="pendonor")
-							<a href = "{{url('edit-beasiswa/'.$beasiswa->id_beasiswa)}}"><button><i class="glyphicon glyphicon-pencil"></i></button></a>
+							<a href = "{{url('edit-beasiswa/'.$beasiswa->id_beasiswa)}}"><button><i class="glyphicon glyphicon-pencil" data-toggle="tooltip" title="Edit"></i></button></a>
 
 							@endif
 						</td>
@@ -92,7 +92,7 @@
 		} );
 
 		$(document).ready(function(){
-		    $('[data-toggle="tooltip"]').tooltip(); 
+		    $('[data-toggle="tooltip"]').tooltip();
 		});
 	</script>
 @endsection
