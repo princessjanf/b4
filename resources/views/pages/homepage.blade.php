@@ -79,7 +79,7 @@
             <div id="main-slider" class="flexslider">
               <ul class="slides">
                 <li>
-                  <img src="{{asset('img/slides/beasiswa.jpg')}}" alt="" />
+                  <img src="{{asset('img/slides/beasiswa.jpg')}}" alt="">
                   <div class="flex-caption">
                     <h3>Beasiswa 1</h3>
                     <p>Duis fermentum auctor ligula ac malesuada. Mauris et metus odio, in pulvinar urna</p>
@@ -87,7 +87,7 @@
                   </div>
                 </li>
                 <li>
-                  <img src="{{asset('img/slides/2.jpg')}}" alt="" />
+                  <img src="{{asset('img/slides/2.jpg')}}" alt="">
                   <div class="flex-caption">
                     <h3>BEASISWA 2</h3>
                     <p>Sodales neque vitae justo sollicitudin aliquet sit amet diam curabitur sed fermentum.</p>
@@ -95,7 +95,7 @@
                   </div>
                 </li>
                 <li>
-                  <img src="{{asset('img/slides/3.jpg')}}" alt="" />
+                  <img src="{{asset('img/slides/3.jpg')}}" alt="">
                   <div class="flex-caption">
                     <h3>BEASISWA 3</h3>
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit donec mer lacinia.</p>
@@ -268,7 +268,8 @@
   <!-- javascript
   ================================================== -->
   <!-- Placed at the end of the document so the pages load faster -->
-  <script src="https://code.jquery.com/jquery-3.2.0.slim.min.js" integrity="sha256-qLAv0kBAihcHZLI3fv3WITKeRsUX27hd6upBBa0MSow=" crossorigin="anonymous"></script>
+  {{-- <script src="https://code.jquery.com/jquery-3.2.0.slim.min.js" integrity="sha256-qLAv0kBAihcHZLI3fv3WITKeRsUX27hd6upBBa0MSow=" crossorigin="anonymous"></script> --}}
+  <script src="js/jquery-3.2.0.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
   <script src="js/jquery.fancybox.pack.js"></script>
