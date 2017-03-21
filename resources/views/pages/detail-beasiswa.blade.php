@@ -5,14 +5,20 @@
 @section('content')
     <div class="col-sm-9">
       @if ($namarole=='Direktorat Kerjasama')
-      <h4>Detail Beasiswa &nbsp<a href="#upload"><button class="btn"><b>Upload</b></button></a></h4>
+      <h4>Detail Beasiswa &nbsp;<a href="#upload"><button class="btn btn-success"><b>Upload</b></button></a></h4>
       @elseif ($namarole=='mahasiswa')
-      <h4>Detail Beasiswa &nbsp<a href="#daftar"><button class="btn"><b>Daftar</b></button></a></h4>
+      <h4>Detail Beasiswa &nbsp;<a href="#daftar"><button class="btn btn-default"><b>Daftar</b></button></a></h4>
       @elseif ($namarole=="Pegawai Universitas")
-      <h4>Detail Beasiswa &nbsp
-      <a href = "{{url('edit-beasiswa/'.$beasiswa->id_beasiswa)}}"><button><i class="glyphicon glyphicon-pencil"></i></button></a>
-      <a href = "{{url('delete-beasiswa/'.$beasiswa->id_beasiswa)}}"><button><i class="glyphicon glyphicon-trash"></i></button></a>
-      <a href = "{{url('make-public-beasiswa/'.$beasiswa->id_beasiswa)}}"><button><i class="glyphicon glyphicon-eye-close"></i></button></a>
+      <h4>Detail Beasiswa &nbsp;
+      <a href = "{{url('edit-beasiswa/'.$beasiswa->id_beasiswa)}}" class="btn btn-warning" data-toggle="tooltip" title="Edit" role="button"">
+        <span class="glyphicon glyphicon-pencil"></span>
+      </a>
+      <a href = "{{url('delete-beasiswa/'.$beasiswa->id_beasiswa)}}" class="btn btn-danger" data-toggle="tooltip" title="Hapus" role="button">
+        <span class="glyphicon glyphicon-trash"></span>
+      </a>
+      <a href = "{{url('make-public-beasiswa/'.$beasiswa->id_beasiswa)}}" class="btn btn-info" data-toggle="tooltip" title="Make Public" role="button"">
+        <span class="glyphicon glyphicon-eye-open"></span>  
+      </i></button></a>
       </h4>
       @else
       <h4>Detail Beasiswa</h4>
