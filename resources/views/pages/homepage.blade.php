@@ -81,25 +81,25 @@
                 <li>
                   <img src="{{asset('img/slides/beasiswa.jpg')}}" alt="">
                   <div class="flex-caption">
-                    <h3>Beasiswa 1</h3>
-                    <p>Duis fermentum auctor ligula ac malesuada. Mauris et metus odio, in pulvinar urna</p>
-                    <a href="#" class="btn btn-theme">Daftar</a>
+                    <h3>Modul Beasiswa Release!</h3>
+                    <p>Setelah melewati beberapa tahapan pengembangan aplikasi mulai dari perencanaan, analisis, desain, serta beberapa revisi, akhirnya Modul Beasiswa v1 sudah bisa dinikmati oleh civitas kampus.</p>
+                    <a href="#" class="btn btn-theme">Lebih Lanjut</a>
                   </div>
                 </li>
                 <li>
                   <img src="{{asset('img/slides/2.jpg')}}" alt="">
                   <div class="flex-caption">
-                    <h3>BEASISWA 2</h3>
-                    <p>Sodales neque vitae justo sollicitudin aliquet sit amet diam curabitur sed fermentum.</p>
-                    <a href="#" class="btn btn-theme">Daftar</a>
+                    <h3>Frequently Asked Question</h3>
+                    <p>Ketahui lebih lanjut tentang pertanyaan yang sering ditanyakan oleh pengguna modul beasiswa.</p>
+                    <a href="#" class="btn btn-theme">Lebih Lanjut</a>
                   </div>
                 </li>
                 <li>
                   <img src="{{asset('img/slides/3.jpg')}}" alt="">
                   <div class="flex-caption">
-                    <h3>BEASISWA 3</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit donec mer lacinia.</p>
-                    <a href="#" class="btn btn-theme">Daftar</a>
+                    <h3>Download Manual Modul Beasiswa</h3>
+                    <p>Ketahui lebih lanjut langkah-langkah resmi dari penggunaan modul beasiswa ini!</p>
+                    <a href="#" class="btn btn-theme">Download</a>
                   </div>
                 </li>
               </ul>
