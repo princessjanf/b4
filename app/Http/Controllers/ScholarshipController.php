@@ -113,7 +113,21 @@ class ScholarshipController extends Controller
         return redirect('noaccess');
       }
     }
+    public function retrieveProdi(Request $request)
+    {
+            $jenjang = $request ->get('jenjang');
 
+            // select id_prodi from jenjang_prodi where id_jenjang = jenjang
+            // select id_fakultas, id_prodi, nama_prodi from program_studi where id_prodi = id_prodisblmnya
+            // select id_fakultas, nama_fakultas where id_fakultas = id_fakultas sblmnya
+            $msg = DB::table('jenjang_prodi')
+            ->where('id_jenjang',$jenjang)->join('program_studi', 'jenjang_prodi.id_prodi', '=', 'program_studi.id_prodi')
+            ->join('fakultas', 'program_studi.id_fakultas','=','fakultas.id_fakultas')
+            ->select('program_studi.id_prodi', 'program_studi.nama_prodi', 'fakultas.id_fakultas', 'fakultas.nama_fakultas')
+            ->orderBy('id_fakultas', 'asc')->get();
+            //echo $msg;
+            return $msg;
+    }
     public function insertBeasiswa(Request $request)
     {
       DB::insert('INSERT INTO `beasiswa`(`nama_beasiswa`, `deskripsi_beasiswa`, `id_kategori`, `tanggal_buka`, `tanggal_tutup`,
@@ -137,6 +151,17 @@ class ScholarshipController extends Controller
       {
         DB::insert('insert into `persyaratan` (`id_beasiswa`, `syarat`) VALUES (?,?)', [$beasiswa->id_beasiswa, $request->input('syarat'.$i)]);
       }
+
+      $request->get('listProdi');
+      $hasil = explode(",",$request->get('listProdi'));
+      $jenjang = $request->get('jenjangBeasiswa');
+      for ($i = 0; $i < sizeof($hasil) ; $i++)
+      {
+        DB::insert('insert into `beasiswa_jenjang_prodi` (`id_beasiswa`, `id_jenjang`, `id_prodi`) VALUES (?,?,?)', [$beasiswa->id_beasiswa, $jenjang, $hasil[$i]]);
+
+        echo $hasil[$i];
+      }
+
       return redirect('/detail-beasiswa/'.$beasiswa->id_beasiswa);
     }
 

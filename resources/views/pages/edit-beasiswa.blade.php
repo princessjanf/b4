@@ -43,7 +43,7 @@
 
 					</div>
 					<div class = "row">
-						<div class="form-group col-sm-2">
+						<div class="form-group col-sm-12">
 							<label for="kategoriBeasiswa">Kategori Beasiswa</label>
 							<select class="form-control" name="kategoriBeasiswa">
 								@foreach ($kategoribeasiswa as $category)
@@ -55,22 +55,8 @@
 								@endforeach
 							</select>
 						</div>
-						<div class="form-group col-sm-3">
-							<label for="jenjangBeasiswa">Untuk Jenjang</label>
-							<select class="form-control" name="jenjangBeasiswa">
-								@foreach ($jenjang as $jenjangbeasiswa)
-								<option value= {{ $jenjangbeasiswa->id_jenjang}}> {{$jenjangbeasiswa->nama_jenjang}} </option>
-								@endforeach
-							</select>
-						</div>
-						<div class="form-group col-sm-4">
-							<label for="fakultasBeasiswa">Fakultas Beasiswa</label>
-							<select class="form-control" name="fakultasBeasiswa">
-								@foreach ($fakultasbeasiswa as $fakultas)
-								<option value= {{ $fakultas->id_fakultas}}> {{$fakultas->nama_fakultas}} </option>
-								@endforeach
-							</select>
-						</div>
+
+
 					</div>
 					<div class = "row">
 						<div class="form-group col-sm-5">
@@ -79,10 +65,39 @@
 							<input type="number" name="totalDana" class="form-control" value= {{$beasiswa->dana}} min= "0" data-parsley-pattern="\d*" data-parsley-type="integer" data-parsley-maxlength="20" required>
 						</div>
 						<div class="form-group col-sm-4">
-							<label for="periode">Periode</label>
-							<p> Periode beasiswa diberikan </p>
-							<input type="number" class="form-control" value= {{$beasiswa->periode}} name="periode" min= "0" data-parsley-pattern="\d*" data-parsley-type="integer" data-parsley-maxlength="8" required>
-						</div>
+ 							<label for="periode">Periode</label>
+ 							<p> Periode beasiswa diberikan </p>
+
+							<select class="form-control" name="periode">
+								<?php $periodeSelected = false;?>
+								@if ($beasiswa->periode == "bulan")
+								{
+									<option selected value= "bulan"> Bulan </option>
+									<?php $periodeSelected = true; ?>
+								}
+								@else
+								{
+									<option value= "bulan"> Bulan </option>
+								}
+								@endif
+
+								@if ($periodeSelected == false AND $beasiswa->periode == 'semester'){
+									<option selected value= "semester"> Semester </option>
+								}
+								@else{
+									<option value= "semester"> Semester </option>
+								}
+								@endif
+
+								@if($periodeSelected==false AND $beasiswa->periode == 'tahun'){
+										<option selected value= "tahun"> Tahun </option>
+								}
+								@else{
+									<option value= "tahun"> Tahun </option>
+								}
+								@endif
+							</select>
+							</div>
 					</div>
 					<div class = "row">
 						<div class="form-group col-sm-5">

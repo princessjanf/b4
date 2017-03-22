@@ -50,6 +50,6 @@ Route::get('noaccess',[
   'uses' => 'MainController@noaccess'
 ]);
 
-
+Route::post('retrieve-prodi', 'ScholarshipController@retrieveProdi');
 Route::post('insert-beasiswa', 'ScholarshipController@insertBeasiswa');
 Route::post('update-beasiswa', 'ScholarshipController@updateBeasiswa');
