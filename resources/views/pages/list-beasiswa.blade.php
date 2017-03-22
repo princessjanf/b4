@@ -55,9 +55,34 @@
 							<a href = "{{url('edit-beasiswa/'.$beasiswa->id_beasiswa)}}" class="btn btn-warning" data-toggle="tooltip" title="Edit" role="button"">
 								<span class="glyphicon glyphicon-pencil"></span>
 							</a>
-							<a href = "{{url('delete-beasiswa/'.$beasiswa->id_beasiswa)}}" class="btn btn-danger" data-toggle="tooltip" title="Hapus" role="button">
+
+
+							<button class="btn btn-danger" type="submit" data-toggle="modal" data-target="#confirmationModal" data-username="{{$beasiswa->id_beasiswa}}" data-username2="{{$beasiswa->nama_beasiswa}}">
 								<span class="glyphicon glyphicon-trash"></span>
-							</a>
+							</button>
+
+							<!-- Modal -->
+								  <div class="modal fade" id="confirmationModal" role="dialog">
+								    <div class="modal-dialog">
+								    
+								      <!-- Modal content-->
+								      <div class="modal-content">
+								        <div class="modal-header">
+								          <button type="button" class="close" data-dismiss="modal">&times;</button>
+								          <h4 class="modal-title">Hapus Beasiswa</h4>
+								        </div>
+								        <div class="modal-body">
+								          <p id='isi'>isinya</p>
+								        </div>
+								        <div class="modal-footer">
+								          <a href="#" id="link" ><button type="button" class="btn btn-success">Ya</button></a>
+								         <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
+								        </div>
+								      </div>
+								      
+								    </div>
+								  </div>
+
 							<a href = "{{url('make-public-beasiswa/'.$beasiswa->id_beasiswa)}}" class="btn btn-info" data-toggle="tooltip" title="Make Public" role="button"">
 								<span class="glyphicon glyphicon-eye-open"></span>
 							</a>
@@ -85,15 +110,23 @@
 			</table>
 		</div>
 @endsection
-
 @section('script')
 	<script src="{{ asset('js/jquery.dataTables.js') }}"></script>
 	<script src="{{ asset('js/dataTables.bootstrap.js') }}"></script>
+	<script>
+	$('#confirmationModal').on('show.bs.modal', function(e) {
+          var idBeasiswa = e.relatedTarget.dataset.username;
+          var namaBeasiswa = e.relatedTarget.dataset.username2;
+          document.getElementById("isi").innerHTML="Anda yakin ingin menghapus beasiswa "+namaBeasiswa+ " ?";
+          var link = document.getElementById("link");
+          var linkHapus = "./delete-beasiswa/"+idBeasiswa;
+        link.setAttribute("href", linkHapus);
+      });	
+	</script>
 	<script type="text/javascript">
 		$(document).ready(function() {
 			$('#beasiswalist').DataTable();
 		});
-
 		$('#beasiswalist').dataTable( {
 			"columnDefs": [
 			{ "width": "5%", "targets": 0 },
@@ -101,7 +134,6 @@
 			{ "width": "5%", "targets": 2 }
 			]
 		} );
-
 		$(document).ready(function(){
 		    $('[data-toggle="tooltip"]').tooltip();
 		});
