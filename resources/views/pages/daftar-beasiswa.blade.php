@@ -109,9 +109,37 @@
 
 							<td>
 								@if($namarole=="Pegawai Universitas")
-								<a href = "{{url('edit-beasiswa/'.$beasiswa->id_beasiswa)}}"><button><i class="glyphicon glyphicon-pencil"></i></button></a>
-								<a href = "{{url('delete-beasiswa/'.$beasiswa->id_beasiswa)}}"><button><i class="glyphicon glyphicon-trash"></i></button></a>
-								<a href = "{{url('make-public-beasiswa/'.$beasiswa->id_beasiswa)}}"><button><i class="glyphicon glyphicon-eye-close"></i></button></a>
+								<button><a href="{{url('edit-beasiswa/'.$beasiswa->id_beasiswa)}}" class="glyphicon glyphicon-pencil" role="button"></a></button>
+
+
+								<button class="glyphicon glyphicon-trash" type="submit" data-toggle="modal" data-target="#confirmationModal" data-username="{{$beasiswa->id_beasiswa}}" data-username2="{{$beasiswa->nama_beasiswa}}"></button>
+
+
+								  <!-- Modal -->
+								  <div class="modal fade" id="confirmationModal" role="dialog">
+								    <div class="modal-dialog">
+								    
+								      <!-- Modal content-->
+								      <div class="modal-content">
+								        <div class="modal-header">
+								          <button type="button" class="close" data-dismiss="modal">&times;</button>
+								          <h4 class="modal-title">Hapus Beasiswa</h4>
+								        </div>
+								        <div class="modal-body">
+								          <p id='isi'>isinya</p>
+								        </div>
+								        <div class="modal-footer">
+								          <a href="#" id="link" ><button type="button" class="btn btn-success">Ya</button></a>
+								         <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
+								        </div>
+								      </div>
+								      
+								    </div>
+								  </div>
+
+								<button><a href="{{url('make-public-beasiswa/'.$beasiswa->id_beasiswa)}}" class="glyphicon glyphicon-eye-open" role="button"></a></button>
+
+								
 
 								@elseif($namarole=="mahasiswa")
 								<a href = "#daftar"><button>Daftar</button></a>
@@ -180,6 +208,17 @@
   </footer>
 
 	<!-- script references -->
+	<script>
+	$('#confirmationModal').on('show.bs.modal', function(e) {
+          var idBeasiswa = e.relatedTarget.dataset.username;
+          var namaBeasiswa = e.relatedTarget.dataset.username2;
+          document.getElementById("isi").innerHTML="Anda yakin ingin menghapus beasiswa "+namaBeasiswa+ " ?";
+          var link = document.getElementById("link");
+          var linkHapus = "./delete-beasiswa/"+idBeasiswa;
+        link.setAttribute("href", linkHapus);
+      });	
+	</script>
+
 	{{-- <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script> --}}
 	<script src="js/bootstrap.min.js"></script>
 	<script type="text/javascript">
