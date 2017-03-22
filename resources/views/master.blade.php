@@ -53,7 +53,7 @@
 					<hr>
 					<li><a href="#dashboard">Dashboard</a></li>
 					<li><a href="{{url('list-beasiswa')}}">List Beasiswa</a></li>
-					<li><a href="#lpj">LPJ</a></li>
+					<li><a href="#lpj">Kelola LPJ</a></li>
 					<li><a href="#settings">Settings</a></li>
 					<hr>
 				</ul>
