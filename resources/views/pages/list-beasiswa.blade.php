@@ -1,13 +1,63 @@
-@extends('master')
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<meta charset="utf-8">
+	<title>@yield('title')</title>
+	<meta name="generator" content="Bootply" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<link rel="shortcut icon" href="{{ asset('img/favicon.ico') }}" type="image/x-icon">
+	<link rel="icon" href="{{ asset('img/favicon.ico') }}" type="image/x-icon">
 
-@section('title', 'List beasiswa')
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<link href="{{ asset('css/styles.css') }}" rel="stylesheet">
+	<link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet" />
+	<link href="{{ asset('css/fancybox/jquery.fancybox.css') }}" rel="stylesheet">
+	<link href="{{ asset('css/jcarousel.css') }}" rel="stylesheet" />
+	<link href="{{ asset('css/flexslider.css') }}" rel="stylesheet" />
+	<link href="{{ asset('css/style.css') }}" rel="stylesheet" />
+	<link href="{{ asset('css/parsley.css') }}" rel="stylesheet" />
+	<!-- Theme skin -->
+	<link href="{{ asset('skins/default.css') }}" rel="stylesheet" />
+	@yield('head')
+</head>
+<body>
+	<!-- Header -->
+	<header>
+		<div class="navbar navbar-default navbar-static-top">
+			<div class="container">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="{{url('')}}"><span><img src="{{ asset('img/logo.png') }}" alt="Logo" style="width:80px;height:60px;">M</span>odul Beasiswa</a>
+				</div>
+				<div class="navbar-collapse collapse ">
+					<ul class="nav navbar-nav">
+						<li><a href="{{url('')}}">Home</a></li>
+						<li><a href="#profile">{{$user->username}} ({{$namarole}})</a></li>
+						<li><a href="{{url('logout')}}">LOG OUT</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</header>
+	<!-- /Header -->
 
-@section('head')
-	<link href="{{ asset('css/jquery.dataTables.css')}}" rel="stylesheet" media="screen" />
-	<link href="{{ asset('css/dataTables.bootstrap.css')}}" rel="stylesheet" media="screen" />
-@endsection
-
-@section('content')
+  <div class="container">
+		<div class="row">
+			<div class="col-sm-3">
+				<ul class="nav nav-stacked">
+					<hr>
+					<li><a href="#dashboard">Dashboard</a></li>
+					<li><a href="{{url('list-beasiswa')}}">List Beasiswa</a></li>
+					<li><a href="#lpj">Kelola LPJ</a></li>
+					<li><a href="#settings">Settings</a></li>
+					<hr>
+				</ul>
+			</div>
 		<div class="col-sm-9">
 			@if($namarole!="Pegawai Universitas")
 			<h4>List beasiswa</h4>
@@ -16,7 +66,7 @@
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				<a data-toggle="tooltip" title="Tambah beasiswa" role="button" id="add-beasiswa" class="btn btn-success" href="{{url('add-beasiswa')}}"><span class="glyphicon glyphicon-plus">&nbsp;Tambah Beasiswa</span>
 				</a>
-			
+
 			@endif
 			<table id="beasiswalist" class="table table-striped">
 				<thead>
@@ -64,7 +114,7 @@
 							<!-- Modal -->
 								  <div class="modal fade" id="confirmationModal" role="dialog">
 								    <div class="modal-dialog">
-								    
+
 								      <!-- Modal content-->
 								      <div class="modal-content">
 								        <div class="modal-header">
@@ -79,11 +129,11 @@
 								         <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
 								        </div>
 								      </div>
-								      
+
 								    </div>
 								  </div>
 
-							<a href = "{{url('make-public-beasiswa/'.$beasiswa->id_beasiswa)}}" class="btn btn-info" data-toggle="tooltip" title="Make Public" role="button"">
+							<a href = "{{url('make-public-beasiswa/'.$beasiswa->id_beasiswa)}}" class="btn btn-info" data-toggle="tooltip" title="Make Public" role="button">
 								<span class="glyphicon glyphicon-eye-open"></span>
 							</a>
 
@@ -97,9 +147,9 @@
 							</style>
 							<a href = "#upload"><img name = "upload-logo" src="img/upload.png" alt="" /></a>
 
-							@elseif($namarole="pendonor")
-							
-								<a href = "{{url('edit-beasiswa/'.$beasiswa->id_beasiswa)}}" class="btn btn-warning" data-toggle="tooltip" title="Edit" role="button"">
+							@elseif($namarole=="Pegawai Fakultas")
+							@elseif($namarole=="pendonor")
+								<a href = "{{url('edit-beasiswa/'.$beasiswa->id_beasiswa)}}" class="btn btn-warning" data-toggle="tooltip" title="Edit" role="button">
 									<span class="glyphicon glyphicon-pencil"></span>
 								</a>
 							@endif
@@ -109,8 +159,8 @@
 				</tbody>
 			</table>
 		</div>
-@endsection
-@section('script')
+	</div>
+</div>
 	<script src="{{ asset('js/jquery.dataTables.js') }}"></script>
 	<script src="{{ asset('js/dataTables.bootstrap.js') }}"></script>
 	<script>
@@ -121,7 +171,7 @@
           var link = document.getElementById("link");
           var linkHapus = "./delete-beasiswa/"+idBeasiswa;
         link.setAttribute("href", linkHapus);
-      });	
+      });
 	</script>
 	<script type="text/javascript">
 		$(document).ready(function() {
@@ -137,5 +187,10 @@
 		$(document).ready(function(){
 		    $('[data-toggle="tooltip"]').tooltip();
 		});
+
+
 	</script>
-@endsection
+	<script src="{{ asset('js/jquery-3.2.0.js') }}"></script>
+	<script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'></script>
+</body>
+</html>
