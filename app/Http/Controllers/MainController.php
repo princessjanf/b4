@@ -80,7 +80,7 @@ class MainController extends Controller
       } else {
         $beasiswas = DB::table('beasiswa')->where('flag', '1')->get();
       }
-      return view('pages.daftar-beasiswa')->withBeasiswas($beasiswas)->withUser($user)->withNamarole($namarole);
+      return view('pages.list-beasiswa')->withBeasiswas($beasiswas)->withUser($user)->withNamarole($namarole);
     }
 
      function addbeasiswa()
