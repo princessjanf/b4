@@ -178,8 +178,10 @@
 					</div>
 
 					<div>
-						<button type="submit" id="submit-form" class="btn"> Submit </button>
+						<button type="submit" id="submit-form" class="btn btn-success"> Submit </button>
+						<button style ="text-decoration: none"id="cancel" class="btn btn-danger" formnovalidate><a href="{{url('list-beasiswa')}}" >Cancel </a></button>
 					</div>
+
 
 				</form>
 
@@ -258,7 +260,7 @@
 		*/
 		var x = document.getElementsByName('syarat')[0];
 		var elem = document.createElement('div');
-		elem.innerHTML = '</br><input type = "text" class="form-control" name="syarat'+counter+'" required>';
+		elem.innerHTML = '</br><input type = "text" class="form-control" name="syarat'+counter+'">';
 		x.appendChild(elem);
 	}
 

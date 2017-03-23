@@ -75,7 +75,7 @@
 							<th>Nama Beasiswa</th>
 							<th>Status</th>
 							<th>Akhir Periode</th>
-							@if($namarole!="Pegawai Fakultas")
+							@if($namarole=="Pegawai Universitas" || $namarole=="Pegawai Universitas" || $namarole=="Direktorat Kerjasama")
 							<th>More</th>
 							@endif
 						</tr>
@@ -100,60 +100,61 @@
 							</td>
 							<td>{{$beasiswa->tanggal_tutup}}</td>
 
-							<td>
 								@if($namarole=="Pegawai Universitas")
-								<a href = "{{url('edit-beasiswa/'.$beasiswa->id_beasiswa)}}" class="btn btn-warning" data-toggle="tooltip" title="Edit" role="button"">
+								<td>
+								<a href = "{{url('edit-beasiswa/'.$beasiswa->id_beasiswa)}}" class="btn btn-warning" data-toggle="tooltip" title="Edit" role="button">
 									<span class="glyphicon glyphicon-pencil"></span>
 								</a>
 
 
-								<button class="btn btn-danger" value="{{$beasiswa->id_beasiswa}}" type="submit" data-toggle="modal" data-target="#confirmationModal" data-username="{{$beasiswa->id_beasiswa}}" data-username2="{{$beasiswa->nama_beasiswa}}">
+								<!-- <button class="btn btn-danger" value="{{$beasiswa->id_beasiswa}}" type="submit" data-toggle="modal" data-target="#confirmationModal" data-username="{{$beasiswa->id_beasiswa}}" data-username2="{{$beasiswa->nama_beasiswa}}">
 									<span class="glyphicon glyphicon-trash"></span>
-								</button>
+								</button> -->
+
+								<button class="btn btn-danger" type="submit" title="Delete" data-toggle="modal" data-target="#confirmationDelete" data-username="{{$beasiswa->id_beasiswa}}" data-username2="{{$beasiswa->nama_beasiswa}}">
+					        <span class="glyphicon glyphicon-trash"></span>
+					      </button>
 
 								<!-- Modal -->
-								<div class="modal fade" id="confirmationModal" role="dialog">
-									<div class="modal-dialog">
+			          <div class="modal fade" id="confirmationDelete" role="dialog">
+			            <div class="modal-dialog">
 
-										<!-- Modal content-->
-										<div class="modal-content">
-											<div class="modal-header">
-												<button type="button" class="close" data-dismiss="modal">&times;</button>
-												<h4 class="modal-title">Hapus Beasiswa</h4>
-											</div>
-											<div class="modal-body">
-												<p id='isi'></p>
-											</div>
-											<div class="modal-footer">
-												<a href="#" id="link" ><button type="button" class="btn btn-success">Ya</button></a>
-												<button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
-											</div>
-										</div>
+			              <!-- Modal content-->
+			              <div class="modal-content">
+			                <div class="modal-header">
+			                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+			                  <h4 class="modal-title">Hapus Beasiswa</h4>
+			                </div>
+			                <div class="modal-body">
+			                  <p id='isi'></p>
+			                </div>
+			                <div class="modal-footer">
+			                  <a href="#" id="link" ><button type="button" class="btn btn-success">Ya</button></a>
+			                 <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
+			                </div>
+			              </div>
 
-									</div>
-								</div>
+			            </div>
+			          </div>
 
 								<a href = "{{url('make-public-beasiswa/'.$beasiswa->id_beasiswa)}}" class="btn btn-info" data-toggle="tooltip" title="Make Public" role="button">
 									<span class="glyphicon glyphicon-eye-open"></span>
 								</a>
-
+								</td>
 								@elseif($namarole=="mahasiswa")
+								<td>
 								<a href = "#daftar"><button class="btn"><b>Daftar</b></button></a>
+								</td>
 								@elseif($namarole=="Direktorat Kerjasama")
 								<style>
 									img {
 										width: 20px;
 									}
 								</style>
+								<td>
 								<a href = "#upload"><img name = "upload-logo" src="img/upload.png" alt="" /></a>
-
-								@elseif($namarole=="Pegawai Fakultas")
-								@elseif($namarole=="pendonor")
-								<a href = "{{url('edit-beasiswa/'.$beasiswa->id_beasiswa)}}" class="btn btn-warning" data-toggle="tooltip" title="Edit" role="button">
-									<span class="glyphicon glyphicon-pencil"></span>
-								</a>
-								@endif
 							</td>
+							@endif
 						</tr>
 						@endforeach
 					</tbody>
@@ -166,20 +167,16 @@
 	<script src="{{ asset('js/jquery.dataTables.js') }}"></script>
 	<script src="{{ asset('js/dataTables.bootstrap.js') }}"></script>
 	<script>
-		$('#confirmationModal').on('show.bs.modal', function(e) {
-			var idBeasiswa = e.relatedTarget.dataset.username;
-			var namaBeasiswa = e.relatedTarget.dataset.username2;
-			console.log(idBeasiswa);
-			var modal = $(this);
-			modal.find(".modal-body #isi").innerHTML="<p>Anda yakin ingin menghapus beasiswa "+namaBeasiswa+ " ?</p>";
+ $('#confirmationDelete').on('show.bs.modal', function(e) {
+          var idBeasiswa = e.relatedTarget.dataset.username;
+          var namaBeasiswa = e.relatedTarget.dataset.username2;
+          document.getElementById("isi").innerHTML="Anda yakin ingin menghapus beasiswa "+namaBeasiswa+ " ?";
+          var link = document.getElementById("link");
+          var linkHapus = "./delete-beasiswa/"+idBeasiswa;
+        link.setAttribute("href", linkHapus);
+      });
+ </script>
 
-			//document.getElementById('confirmationModal').document.getElementById('isi').innerHTML="Anda yakin ingin menghapus beasiswa "+namaBeasiswa+ " ?";
-			//document.getElementById("isi").innerHTML="Anda yakin ingin menghapus beasiswa "+namaBeasiswa+ " ?";
-			var link = document.getElementById("link");
-			var linkHapus = "delete-beasiswa/"+idBeasiswa;
-			link.setAttribute("href", linkHapus);
-		});
-	</script>
 	<script type="text/javascript">
 		$(document).ready(function() {
 			$('#beasiswalist').DataTable();
@@ -194,8 +191,11 @@
 		$(document).ready(function(){
 			$('[data-toggle="tooltip"]').tooltip();
 		});
-
-
 	</script>
+	<style media="screen">
+	.dataTables_filter {
+		margin-left: 175px;
+	}
+	</style>
 </body>
 </html>

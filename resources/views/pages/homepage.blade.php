@@ -58,7 +58,7 @@
                 <li><a href="#isilpj">Isi LPJ</a></li>
                 @elseif ($namarole=='Pegawai Universitas')
                 <li><a href="#kelolalpj">Kelola LPJ</a></li>
-                @endif    
+                @endif
               <li><a href="#profil">{{$user->username}} ({{$namarole}})</a></li>
               <li><a href="{{url('logout')}}">Log Out</a></li>
               @endif
@@ -157,7 +157,7 @@
               <div class="col-lg-12">
                 <div class="big-cta">
                   <div class="cta-text">
-                    <a href="{{url('list-beasiswa')}}"><h2><span>Lihat</span> list beasiswa</h2></a>
+                    <a href="{{url('list-beasiswa')}}"><h2><span>Lihat</span> List Beasiswa</h2></a>
                   </div>
                 </div>
               </div>

@@ -39,19 +39,25 @@ class MainController extends Controller
       if(!SSO::check())
         SSO::authenticate();
 			$user = SSO::getUser();
-
-      $pengguna = DB::table('user')->where('username', $user->username)->first();
-      $role = DB::table('role')->where('id_role', $pengguna->id_role)->first();
-      $namarole = $role->nama_role;
-
-      if($namarole=='pegawai'){
-        $pengguna = DB::table('pegawai')->where('username', $user->username)->first();
-        $role = DB::table('role_pegawai')->where('id_role_pegawai', $pengguna->id_role_pegawai)->first();
-        $namarole = $role->nama_role_pegawai;
+      $exist = DB::table('user')->where('username', $user->username)->first();
+      if ($exist == null)
+      {
+        DB::insert('INSERT INTO `user`(`username`, `nama`, `email`, `id_role`)
+                    VALUES (?,?,?,1)',
+                    [
+                       $user->username,
+                        $user->name,
+                        $user->username."@ui.ac.id"
+                    ]
+                  );
+        DB::insert('INSERT INTO `mahasiswa`(`username`, `npm`, `id_fakultas`, `id_prodi`)
+                    VALUES (?,?,1,1)',
+                    [
+                       $user->username,
+                        $user->npm
+                    ]
+                  );
       }
-
-        $beasiswas = DB::table('beasiswa')->where('flag', '1')->where('public', '1')->get();
-        // return view('pages.homepage')->withBeasiswas($beasiswas)->withUser($user)->withNamarole($namarole);
         return redirect('');
     }
 

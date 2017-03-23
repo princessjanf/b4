@@ -55,7 +55,7 @@
 				width: 35%;
 			}
 		</style>
-		<img src="http://www.clker.com/cliparts/a/K/l/k/C/w/light-blue-warning-sign-hi.png"  width="70">
+		<img src="{{asset('img/warning.png')}}"  width="70">
 		<h1 style="text-align:center;"> Maaf, Anda tidak memiliki akses ke halaman ini </h1>
 		<h3 style="text-align:center;"> <a href="{{url('homepage')}}"> Kembali ke Homepage </a></h3>
 		<!--/container-->
