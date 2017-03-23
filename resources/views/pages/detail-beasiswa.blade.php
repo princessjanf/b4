@@ -26,6 +26,7 @@
       <h2>{{$beasiswa->nama_beasiswa}}</h2>
       <p>{{$beasiswa->deskripsi_beasiswa}}</p>
       <p>Periode Beasiswa:  {{$beasiswa->tanggal_buka}} - {{$beasiswa->tanggal_tutup}}</p>
+       <p>Nominal : {{$beasiswa->nominal</p>
       <p>Persyaratan:
         @if (count($persyaratans) < 1)
         <br>1. -
