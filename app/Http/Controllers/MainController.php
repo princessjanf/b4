@@ -66,7 +66,7 @@ class MainController extends Controller
       SSO::logout(URL::to('/'));
     }
 
-    function daftarbeasiswa()
+    function listbeasiswa()
     {
       $user = SSO::getUser();
       $pengguna = DB::table('user')->where('username', $user->username)->first();
@@ -83,7 +83,9 @@ class MainController extends Controller
         $beasiswas = DB::table('beasiswa')->where('flag', '1')->where('public', '1')->get();
       } else if ($namarole == 'pendonor'){
         $pendonor = DB::table('pendonor')->where('username', $user->username)->first();
-        $beasiswas = DB::table('beasiswa')->where('flag', '1')->where('id_pendonor', $pendonor->id_pendonor)->get();
+        $beasiswas = collect(DB::table('beasiswa')->where('flag', '1')->where('public', '1')->get());
+        $beasiswas2= collect(DB::table('beasiswa')->where('flag', '1')->where('public', '0')->where('id_pendonor', $pendonor->id_pendonor)->get());
+        $beasiswas = $beasiswas->merge($beasiswas2)->sort()->values()->all();
       } else {
         $beasiswas = DB::table('beasiswa')->where('flag', '1')->get();
       }

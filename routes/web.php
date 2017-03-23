@@ -18,7 +18,7 @@ Route::get('/logout', 'MainController@logout');
 
 Route::get('/list-beasiswa', [
   'middleware' => 'authSSO',
-  'uses' => 'MainController@daftarbeasiswa'
+  'uses' => 'MainController@listbeasiswa'
 ]);
 Route::get('/detail-beasiswa/{id}', [
   'middleware' => 'authSSO',

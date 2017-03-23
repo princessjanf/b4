@@ -2,7 +2,7 @@
 <head>
 </head>
 <body>
-  <form id='createScholarshipForm' action = "{{url('insertScholarship')}}" method = "post" data-parsley-validate="">
+  <form id='createScholarshipForm' action = "{{ url('insertScholarship') }}" method = "post" data-parsley-validate="">
     <input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
     <head>
       <link href="multiple-select.css" rel="stylesheet"/>
