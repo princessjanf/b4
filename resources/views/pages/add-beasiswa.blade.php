@@ -10,6 +10,7 @@
 <form id='createScholarshipForm' action = "{{ url('insert-beasiswa') }}" onsubmit="return validateForm()" method = "post" data-parsley-validate="">
 	<div>
 		<h3> Informasi Beasiswa </h3>
+		<p> Semua Kolom Harus Diisi </p>
 	</div>
 
 	<input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
@@ -164,10 +165,16 @@
 		var jumlahDana = kuota*nominal*jangka;
 		var tanggalBuka = new Date(document.getElementsByName('tanggalBuka')[0].value);
 		var tanggalTutup = new Date(document.getElementsByName('tanggalTutup')[0].value);
+		var now = new Date();
+
 		var x = $('#fakultasBeasiswa').multipleSelect('getSelects');
 		document.getElementsByName('listProdi')[0].value = x;
 		console.log(document.getElementsByName('listProdi')[0].value);
-		if (tanggalBuka.getTime() < tanggalTutup.getTime() && totalDana == kuota*nominal*jangka)
+		if (tanggalTutup.getTime() < now.getTime() )
+		{
+			return false;
+		}
+		else if (tanggalBuka.getTime() < tanggalTutup.getTime() && totalDana == kuota*nominal*jangka)
 		{
 			return true;
 		}
