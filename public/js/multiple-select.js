@@ -169,7 +169,7 @@
             this.options.width ||
             this.$el.css('width') ||
             this.$el.outerWidth() + 20);
-
+        this.name="selectAll";
         this.selectAllName = 'data-name="selectAll' + name + '"';
         this.selectGroupName = 'data-name="selectGroup' + name + '"';
         this.selectItemName = 'data-name="selectItem' + name + '"';

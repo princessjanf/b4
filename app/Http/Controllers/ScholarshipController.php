@@ -130,6 +130,7 @@ class ScholarshipController extends Controller
     }
     public function insertBeasiswa(Request $request)
     {
+
       DB::insert('INSERT INTO `beasiswa`(`nama_beasiswa`, `deskripsi_beasiswa`, `id_kategori`, `tanggal_buka`, `tanggal_tutup`,
                                         `kuota`, `nominal`, `dana`, `periode`,  `id_pendonor`, `jangka`, `id_status`, `public`, `flag`)
                   VALUES (?,?,?,?,?,?,?,?,?,?,?,2,0,1)',
@@ -146,11 +147,13 @@ class ScholarshipController extends Controller
                   $request->input('jangka')]
                 );
       $beasiswa = DB::table('beasiswa')->orderBy('id_beasiswa', 'desc')->first();
-      $counter = $request->get('counter');
-      for($i = 1;$i<=($counter);$i++)
+
+      $arrSyarat = explode(",",$request->get('arraySyarat'));
+      for($i = 0;$i < sizeof($arrSyarat);$i++)
       {
-        DB::insert('insert into `persyaratan` (`id_beasiswa`, `syarat`) VALUES (?,?)', [$beasiswa->id_beasiswa, $request->input('syarat'.$i)]);
+        DB::insert('insert into `persyaratan` (`id_beasiswa`, `syarat`) VALUES (?,?)', [$beasiswa->id_beasiswa, $request->input('syarat'.$arrSyarat[$i])]);
       }
+
 
       $request->get('listProdi');
       $hasil = explode(",",$request->get('listProdi'));
