@@ -55,6 +55,15 @@ Route::get('daftar-beasiswa/{id}',[
   'uses' => 'ScholarshipController@daftarBeasiswa'
 ]);
 
+Route::post('insert-beasiswa',[
+  'middleware' => 'authSSO',
+  'uses' => 'ScholarshipController@insertBeasiswa'
+]);
+
+Route::post('update-beasiswa',[
+  'middleware' => 'authSSO',
+  'uses' => 'ScholarshipController@updateBeasiswa'
+]);
 Route::post('retrieve-prodi', 'ScholarshipController@retrieveProdi');
-Route::post('insert-beasiswa', 'ScholarshipController@insertBeasiswa');
-Route::post('update-beasiswa', 'ScholarshipController@updateBeasiswa');
+//Route::post('insert-beasiswa', 'ScholarshipController@insertBeasiswa');
+//Route::post('update-beasiswa', 'ScholarshipController@updateBeasiswa');

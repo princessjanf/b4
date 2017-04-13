@@ -90,7 +90,7 @@
 		<div class="form-group col-sm-5">
 			<label for="totalDana">Total Dana</label>
 			<p> Total dana yang akan diberikan ke universitas </p>
-			<input class="form-control" name="totalDana"  data-parsley-trigger="keyup" data-parsley-validation-threshold="1" data-parsley-pattern="\d|\d{1,3}(\,\d{3})*" data-parsley-maxlength="9" required>
+			<input class="form-control" name="totalDana"  data-parsley-trigger="keyup" data-parsley-validation-threshold="1" data-parsley-pattern="\d|\d{1,3}(\,\d{3})*" data-parsley-maxlength="13" required>
 		</div>
 		<div class="form-group col-sm-4">
 			<label for="periode">Periode</label>
@@ -108,7 +108,7 @@
 		<div class="form-group col-sm-5">
 			<label for="nominal">Nominal</label>
 			<p> Dana yang akan diberikan kepada  mahasiswa </p>
-			<input class="form-control" name="nominal"  data-parsley-trigger="keyup" data-parsley-validation-threshold="1" data-parsley-pattern="\d|\d{1,3}(\,\d{3})*" data-parsley-maxlength="9" required>
+			<input class="form-control" name="nominal"  data-parsley-trigger="keyup" data-parsley-validation-threshold="1" data-parsley-pattern="\d|\d{1,3}(\,\d{3})*" data-parsley-maxlength="13" required>
 		</div>
 
 		<div class="form-group col-sm-4">
@@ -210,8 +210,16 @@
 	}
 	function validateForm(){
 		var totalDana = document.getElementsByName('totalDana')[0].value;
+		totalDana = totalDana.replace (/,/g, "");
 		var kuota = document.getElementsByName('kuota')[0].value;
 		var nominal = document.getElementsByName('nominal')[0].value;
+		nominal = nominal.replace (/,/g, "");
+		totalDana = parseInt(totalDana);
+		nominal = parseInt(nominal);
+		document.getElementsByName('totalDana')[0].value = totalDana;
+		document.getElementsByName('nominal')[0].value = nominal;
+
+
 		var jangka = document.getElementsByName('jangka')[0].value;
 		var jumlahDana = kuota*nominal*jangka;
 		var tanggalBuka = new Date(document.getElementsByName('tanggalBuka')[0].value);
