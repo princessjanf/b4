@@ -72,7 +72,32 @@ class ScholarshipController extends Controller
         return redirect('noaccess');
       }
     }
+    public function daftarBeasiswa($id)
+    {
+      echo "dummy method untuk daftar beasiswa".$id;
+      /*$user = SSO::getUser();
 
+      $pengguna = DB::table('pegawai')->where('username', $user->username)->first();
+
+      if($pengguna==null){
+        return redirect('noaccess');
+      }
+
+      $role = DB::table('role_pegawai')->where('id_role_pegawai', $pengguna->id_role_pegawai)->first();
+      $namarole = $role->nama_role_pegawai;
+
+      $kategoribeasiswa = DB::table('kategori_beasiswa')->get();
+      $pendonor = DB::table('pendonor')->get();
+      $jenjang = DB::table('jenjang')->get();
+      $fakultas = DB::table('fakultas')->get();
+
+      if($namarole=='Pegawai Universitas'){
+        return view('pages.add-beasiswa')->withUser($user)->withNamarole($namarole)->withKategoribeasiswa($kategoribeasiswa)->withPendonor($pendonor)->withJenjang($jenjang)->withFakultasbeasiswa($fakultas);
+      }
+      else{
+        return redirect('noaccess');
+      }*/
+    }
     public function delete($id){
       $user = SSO::getUser();
 
@@ -188,4 +213,5 @@ class ScholarshipController extends Controller
           $idBeasiswa = $request->get('idBeasiswa');
           return redirect('/detail-beasiswa/'.$idBeasiswa);
       }
+
 }
