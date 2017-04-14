@@ -251,8 +251,16 @@
 	}
 	function validateForm(){
 		var totalDana = document.getElementsByName('totalDana')[0].value;
+		totalDana = totalDana.replace (/,/g, "");
 		var kuota = document.getElementsByName('kuota')[0].value;
 		var nominal = document.getElementsByName('nominal')[0].value;
+		nominal = nominal.replace (/,/g, "");
+		totalDana = parseInt(totalDana);
+		nominal = parseInt(nominal);
+		document.getElementsByName('totalDana')[0].value = totalDana;
+		document.getElementsByName('nominal')[0].value = nominal;
+
+
 		var jangka = document.getElementsByName('jangka')[0].value;
 		var jumlahDana = kuota*nominal*jangka;
 		var tanggalBuka = new Date(document.getElementsByName('tanggalBuka')[0].value);
