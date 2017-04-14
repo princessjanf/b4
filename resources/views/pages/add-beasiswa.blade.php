@@ -162,6 +162,10 @@
 		</div>
 	</div>
 
+//Dibawah ini untuk field konfigurasi-penyeleksi
+	<div class="form-group">
+		
+	</div>
 	<div>
 		<button type="submit" id="submit-form" class="btn btn-success"> Submit </button>
 		<button style ="text-decoration: none"id="cancel" class="btn btn-danger" formnovalidate><a href="{{ url('list-beasiswa') }}" >Cancel </a></button>
