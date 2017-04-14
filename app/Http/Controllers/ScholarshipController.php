@@ -188,4 +188,58 @@ class ScholarshipController extends Controller
           $idBeasiswa = $request->get('idBeasiswa');
           return redirect('/detail-beasiswa/'.$idBeasiswa);
       }
+
+      public function daftarBeasiswa($id)
+      {
+          $user = SSO::getUser();
+          $pengguna = DB::table('user')->where('username', $user->username)->first();
+          $role = DB::table('role')->where('id_role', $pengguna->id_role)->first();
+          $namarole = $role->nama_role;
+
+          // $pengguna = DB::table('pegawai')->where('username', $user->username)->first();
+          // $pendonor = DB::table('pendonor')->where('username', $user->username)->first();
+
+          // if ($pengguna != null){
+          // $role = DB::table('role_pegawai')->where('id_role_pegawai', $pengguna->id_role_pegawai)->first();
+          // $namarole = $role->nama_role_pegawai;
+          // }
+          // else if ($pendonor !=null)
+          // {
+          //   $entriPendonor = DB::table('user')->where('username', $pendonor->username)->first();
+          //   $role = DB::table('role')->where('id_role', $entriPendonor->id_role)->first();
+          //   $namarole = $role->nama_role;
+          // }
+          // else{
+          //   return redirect('noaccess');
+          // }
+          //$kategoribeasiswa = DB::table('kategori_beasiswa')->get();
+          // $pendonor = DB::table('pendonor')->get();
+          // $jenjang = DB::table('jenjang')->get();
+          // $fakultas = DB::table('fakultas')->get();
+          $beasiswa = DB::table('beasiswa')->where('id_beasiswa', $id)->first();
+          if($namarole=='mahasiswa'){
+            return view('pages.daftar-beasiswa')->withBeasiswa($beasiswa)->withUser($user)->withNamarole($namarole);
+          }
+          else{
+            return redirect('noaccess');
+          }
+       
+          
+      
+      }
+
+      public function registerBeasiswa(Request $request)
+      
+    {
+
+      $beasiswa = DB::table('beasiswa')->orderBy('id_beasiswa', 'desc')->first();
+
+      DB::insert('INSERT INTO `pendaftaran_beasiswa`(`id_beasiswa`, `npm_mahasiswa`)
+                  VALUES (?,?)',
+                  [$request->get('idBeasiswa'),
+                  $request->input('npm')]
+                );
+      
+      return redirect('/detail-beasiswa/'.$request->get('idBeasiswa'));
+    }
 }

@@ -86,7 +86,7 @@
 			</td>
 			@elseif($namarole=="mahasiswa")
 			<td>
-				<a href = "#daftar"><button class="btn"><b>Daftar</b></button></a>
+				<a href = "{{url('/daftar-beasiswa/'.$beasiswa->id_beasiswa)}}"><button class="btn"><b>Daftar</b></button></a>
 			</td>
 			@elseif($namarole=="Direktorat Kerjasama")
 			<td>
