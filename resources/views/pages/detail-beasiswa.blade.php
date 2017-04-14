@@ -6,7 +6,15 @@
 @if ($namarole=='Direktorat Kerjasama')
 <h4>Detail Beasiswa &nbsp;<a href="#upload"><button class="btn btn-success"><b>Upload</b></button></a></h4>
 @elseif ($namarole=='mahasiswa')
+<<<<<<< HEAD
 <h4>Detail Beasiswa &nbsp;<a href="{{url('/daftar-beasiswa/'.$beasiswa->id_beasiswa)}}"><button class="btn btn-default"><b>Daftar</b></button></a></h4>
+=======
+  @if($beasiswa -> link_seleksi == null)
+    <h4>Detail Beasiswa &nbsp;<a href= "{{ url('daftar-beasiswa/'.$beasiswa->id_beasiswa) }}"><button class="btn btn-default"><b>Daftar</b></button></a></h4>
+  @else
+    <h4>Detail Beasiswa &nbsp;<a href={{$beasiswa->link_seleksi}}><button class="btn btn-default"><b>Daftar</b></button></a></h4>
+  @endif
+>>>>>>> origin/development
 @elseif ($namarole=="Pegawai Universitas")
 <h4>Detail Beasiswa &nbsp;
   <a href = "{{ url('edit-beasiswa/'.$beasiswa->id_beasiswa) }}" class="btn btn-warning" data-toggle="tooltip" title="Edit" role="button"">
