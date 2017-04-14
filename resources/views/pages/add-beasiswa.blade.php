@@ -25,13 +25,14 @@
 		<label for="deskripsiBeasiswa">Deskripsi Beasiswa</label><br>
 		<textarea id="message" placeholder="Deskripsi Beasiswa" class="form-control" name="deskripsiBeasiswa" data-parsley-trigger="keyup" data-parsley-minlength="80"
 		data-parsley-maxlength="500" data-parsley-minlength-message="Come on! You need to enter at least a 80 character comment.."s
-		data-parsley-validation-threshold="10"></textarea>
+		data-parsley-validation-threshold="10" required></textarea>
 	</div>
 
 	<div class="form-group">
 		<div class="input-group col-sm-4">
 		<label for="pendonor">Pendonor</label><br>
-			<select class="form-control" name="pendonor">
+			<select class="form-control" id = "pendonor" name="pendonor" required>
+				<option selected disabled> --Pilih Pendonor-- </option>
 				@foreach ($pendonor as $pendonor)
 				<option value= {{ $pendonor->id_pendonor}}> {{$pendonor->nama_instansi}} </option>
 				@endforeach
@@ -42,7 +43,8 @@
 	<div class="form-group">
 		<div class="input-group col-sm-4">
 			<label for="kategoriBeasiswa">Kategori Beasiswa</label><br>
-			<select class="form-control" name="kategoriBeasiswa">
+			<select class="form-control" name="kategoriBeasiswa" required>
+				<option selected disabled> --Pilih Kategori Beasiswa-- </option>
 				@foreach ($kategoribeasiswa as $category)
 				<option value= {{ $category->id_kategori}}> {{$category->nama_kategori}} </option>
 				@endforeach
@@ -53,7 +55,7 @@
 	<div class="form-group">
 		<div class="input-group col-sm-4">
 			<label for="jenjangBeasiswa">Untuk Jenjang</label><br>
-			<select class="form-control" id="jenjang" name="jenjangBeasiswa">
+			<select class="form-control" id="jenjang" name="jenjangBeasiswa" required>
 				<option selected disabled> --Pilih Jenjang-- </option>
 				@foreach ($jenjang as $jenjangbeasiswa)
 				<option value= {{ $jenjangbeasiswa->id_jenjang}}> {{$jenjangbeasiswa->nama_jenjang}} </option>
@@ -65,7 +67,7 @@
 	<div class="form-group">
 		<div class="input-group col-sm-9">
 			<label for="fakultasBeasiswa">Fakultas Beasiswa</label><br>
-			<select id="fakultasBeasiswa" name="fakultasBeasiswa" data-toggle="dropdown">
+			<select id="fakultasBeasiswa" name="fakultasBeasiswa" data-toggle="dropdown" required>
 			</select>
 			<input type="hidden" name="listProdi">
 		</div>
@@ -82,8 +84,8 @@
 		<label for="totalDana">Mata Uang</label>
 		<p> Mata Uang Yang Digunakan </p>
 		<div class="input-group col-sm-4">
-			<select class="form-control" name="mataUang" id="mataUang">
-				<option selected disabled> --Pilih-- </option>
+			<select class="form-control" name="mataUang" id="mataUang" required>
+				<option selected disabled> --Pilih Mata Uang-- </option>
 				<option value= "IDR"> IDR </option>
 				<option value= "USD"> USD </option>
 				<option value= "EUR"> EUR </option>
@@ -119,7 +121,7 @@
 		<div class="input-group col-sm-4">
 			<label for="periode">Periode</label>
 			<p> Periode beasiswa diberikan setiap..</p>
-			<select class="form-control" name="periode" id="periode">
+			<select class="form-control" name="periode" id="periode" required>
 				<option selected disabled> --Pilih Periode-- </option>
 				<option value= "bulan"> Bulan </option>
 				<option value= "semester"> Semester </option>
@@ -162,10 +164,65 @@
 		</div>
 	</div>
 
-//Dibawah ini untuk field konfigurasi-penyeleksi
-	<div class="form-group">
-		
+<!-- Dibawah ini untuk field konfigurasi-penyeleksi -->
+
+	<div>
+		<h3> Konfigurasi Seleksi </h3>
 	</div>
+
+	<div class="form-group">
+		<div class="input-group col-sm-4">
+			<label for="jenisSeleksi">Jenis Seleksi</label><br>
+			<select onchange="cekJenis(this);" class="form-control" id="jenisSeleksi" name="jenisSeleksi" required>
+				<option selected disabled> --Pilih Jenis-- </option>
+				@foreach ($jenisseleksi as $jenis)
+				<option value= {{ $jenis->id_jenis_seleksi}}> {{$jenis->nama_jenis_seleksi}} </option>
+				@endforeach
+			</select>
+		</div>
+	</div>
+
+	<div id="fieldWebsite" class="form-group" style="display: none;">
+		<label for="websiteSeleksi">Website Seleksi</label><br>
+		<p>Masukkan website yang anda akan jadikan sebagai tempat untuk seleksi</p>
+		<input type="text" placeholder="Website seleksi" class="form-control" name="websiteSeleksi" required="">
+	</div>
+
+	<div id="penyeleksi" class="form-group" style="display: none;">
+		<label for="penyeleksi">Pilih Penyeleksi</label><br>
+		<p>Pihak yang akan melakukan tahapan seleksi terhadap beasiswa</p>
+		<div class="input-group col-sm-9">
+			<select style="overflow:auto" class="form-control" name="listPenyeleksi" id="listPenyeleksi" required>
+				<option selected disabled> --Pilih Penyeleksi-- </option>
+				<optgroup label="PENDONOR">
+					<option disabled style="color:red" id = "pendonorOpt" value="">Pilih pendonor terlebih dahulu!</option>
+				</optgroup>
+				<optgroup label="PEGAWAI UNIVERSITAS">
+					@foreach ($pegawaiuniversitas as $pu)
+					<option value= {{ $pu->username}}> {{$pu->jabatan}} - {{$pu->nama}} </option>
+					@endforeach
+				</optgroup>
+
+				<!-- masih belum sesuai pegawai fakultas yg dipilih di atasnya. baiknya gmn?-->
+				<optgroup label="PEGAWAI FAKULTAS">
+					@foreach ($pegawaifakultas as $pf)
+					<option value= {{ $pu->username}}> {{$pf->jabatan}} - {{$pf->nama}} </option>
+					@endforeach
+				</optgroup>
+			</select>
+		</div>
+	</div>
+	<div id="tahapanSeleksi" class="form-group" style="display: none;">
+		<div class="input-group col-sm-12">
+			<label for="syarat">Tahapan Seleksi &nbsp;</label>
+			<input type="hidden" id="tahapanSeleksi" name="tahapanSeleksi">
+			<button type="button" class="btn btn-default" id="buttonTambahTahapan" onclick="insertRowTahapan()"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+			<div class="form-group" name="tahapanSeleksi">
+				<br><input type = "text" class="input-control col-sm-9" name="tahapan1" required><br>
+			</div>
+		</div>
+	</div>
+<!-- Diatas ini untuk field konfigurasi-penyeleksi -->
 	<div>
 		<button type="submit" id="submit-form" class="btn btn-success"> Submit </button>
 		<button style ="text-decoration: none"id="cancel" class="btn btn-danger" formnovalidate><a href="{{ url('list-beasiswa') }}" >Cancel </a></button>
@@ -196,6 +253,21 @@
 <script src="http://parsleyjs.org/dist/parsley.js"></script>
 <script type="text/javascript" src="{{ URL::asset('js/multiple-select.js') }}"></script>
 <script>
+	function cekJenis(that){
+		if(that.value=="1"){
+			document.getElementById("fieldWebsite").style.display = "block";
+			document.getElementById("penyeleksi").style.display = "none";
+			document.getElementById("tahapanSeleksi").style.display = "none";
+		}else if(that.value=="2"){
+			document.getElementById("fieldWebsite").style.display = "none";
+			document.getElementById("penyeleksi").style.display = "block";
+			document.getElementById("tahapanSeleksi").style.display = "none";
+		}else{
+			document.getElementById("fieldWebsite").style.display = "none";
+			document.getElementById("penyeleksi").style.display = "none";
+			document.getElementById("tahapanSeleksi").style.display = "block";
+		}
+	}
 
 	$('#createScholarshipForm').parsley({
 	successClass: 'has-success',
@@ -228,7 +300,6 @@
 		elem.setAttribute("id","syarat"+counter);
 		elem.innerHTML = '<br><input type = "text" class="input-control col-sm-9" required name="syarat'+counter+'">&nbsp;<button class="btn btn-danger" onclick="removeSyarat('+counter+')"> x </button>';
 		x.appendChild(elem);
-
 	}
 	function removeSyarat(i){
 	//	counter-=1;
@@ -253,6 +324,50 @@
 		console.log(idSyarat);
 
 	}
+//--TODO ALVINSPRINT2
+	// counter=1;
+	// var idSyarat = [];
+	// idSyarat.push(1);
+	// function insertRowTahapan(){
+	// 	counter+=1;
+	// 	idSyarat.push(counter);
+	// 	console.log(idSyarat);
+	// 	document.getElementsByName("counter")[0].value = counter;
+	// 	var theForm = document.getElementById('createScholarshipForm');
+	// 	var x = document.getElementsByName('syarat')[0];
+	// 	var elem = document.createElement('div');
+	// 	elem.setAttribute("id","syarat"+counter);
+	// 	elem.innerHTML = '<br><input type = "text" class="input-control col-sm-9" required name="syarat'+counter+'">&nbsp;<button class="btn btn-danger" onclick="removeSyarat('+counter+')"> x </button>';
+	// 	x.appendChild(elem);
+	// }
+
+//--TODO ALVINSPRINT2
+	// function removeTahapan(i){
+	// //	counter-=1;
+	// 	var j;
+	// 	var l;
+	// 	$("#syarat"+i).remove();
+	// 	for (j = 0; j < idSyarat.length; j++) {
+	//
+	// 		console.log(idSyarat[j] + " " + i);
+	// 		if (idSyarat[j] == i)
+	// 		{
+	// 			 if (j == idSyarat.length)
+	// 			 {
+	// 				 idSyarat.pop();
+	// 			 }
+	// 			 else{
+	// 				 idSyarat.splice(j, 1);
+	// 			 }
+	// 			 break;
+	// 		}
+	// 	}
+	// 	console.log(idSyarat);
+	//
+	// }
+
+
+
 	function validateForm(){
 		var totalDana = document.getElementsByName('totalDana')[0].value;
 		totalDana = totalDana.replace (/,/g, "");
@@ -327,6 +442,17 @@
 			var periode = $("#periode").val();
 
 			document.getElementById("addon-jangka").innerHTML = periode;
+		});
+
+		//#ALVINSPRINT2
+		$("#pendonor").change(function(){
+			var idPendonor = $("#pendonor").val();
+			var pendonor = $("#pendonor").find('option:selected').text()
+
+			document.getElementById("pendonorOpt").removeAttribute("disabled");
+			document.getElementById("pendonorOpt").removeAttribute("style");
+			document.getElementById("pendonorOpt").value = idPendonor;
+			document.getElementById("pendonorOpt").innerHTML = pendonor;
 		});
 
 		$("#jenjang").change(function(){
