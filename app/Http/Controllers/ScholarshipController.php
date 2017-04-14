@@ -31,9 +31,13 @@ class ScholarshipController extends Controller
       $pendonor = DB::table('pendonor')->get();
       $jenjang = DB::table('jenjang')->get();
       $fakultas = DB::table('fakultas')->get();
+      $jenisseleksi = DB::table('jenis_seleksi')->get();
+
+      $pegawaiuniversitas = DB::table('user')->join('pegawai', 'user.username', '=', 'pegawai.username')->where('pegawai.id_role_pegawai', 1)->get();
+      $pegawaifakultas = DB::table('user')->join('pegawai', 'user.username', '=', 'pegawai.username')->where('pegawai.id_role_pegawai', 2)->get();
 
       if($namarole=='Pegawai Universitas'){
-        return view('pages.add-beasiswa')->withUser($user)->withNamarole($namarole)->withKategoribeasiswa($kategoribeasiswa)->withPendonor($pendonor)->withJenjang($jenjang)->withFakultasbeasiswa($fakultas);
+        return view('pages.add-beasiswa')->withUser($user)->withNamarole($namarole)->withKategoribeasiswa($kategoribeasiswa)->withPendonor($pendonor)->withJenjang($jenjang)->withFakultasbeasiswa($fakultas)->withJenisseleksi($jenisseleksi)->withPegawaiuniversitas($pegawaiuniversitas)->withPegawaifakultas($pegawaifakultas);
       }
       else{
         return redirect('noaccess');
