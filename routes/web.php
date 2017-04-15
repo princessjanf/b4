@@ -50,11 +50,9 @@ Route::get('noaccess',[
   'uses' => 'MainController@noaccess'
 ]);
 
-<<<<<<< HEAD
-Route::get('daftar-beasiswa/{id}', [
-=======
+
+
 Route::get('daftar-beasiswa/{id}',[
->>>>>>> origin/development
   'middleware' => 'authSSO',
   'uses' => 'ScholarshipController@daftarBeasiswa'
 ]);

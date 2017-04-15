@@ -217,7 +217,7 @@ class ScholarshipController extends Controller
           // $jenjang = DB::table('jenjang')->get();
           // $fakultas = DB::table('fakultas')->get();
           $beasiswa = DB::table('beasiswa')->where('id_beasiswa', $id)->first();
-          if($namarole=='mahasiswa'){
+          if($namarole='mahasiswa'){
             return view('pages.daftar-beasiswa')->withBeasiswa($beasiswa)->withUser($user)->withNamarole($namarole);
           }
           else{
