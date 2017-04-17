@@ -177,4 +177,52 @@ class MainController extends Controller
         return view('pages.detail-beasiswa')->withBeasiswa($beasiswa)->withPersyaratans($persyaratans)->withUser($user)->withNamarole($namarole);
       }
     }
+    function profil() 
+    {
+      $user = SSO::getUser();
+      $pengguna = DB::table('user')->where('username', $user->username)->first();
+      $role = DB::table('role')->where('id_role', $pengguna->id_role)->first();
+      $namarole = $role->nama_role;
+    
+          if($namarole=='pendonor')
+          {
+            $pendonor = DB::table('pendonor')->where('username', $user->username)->first();
+            $instansi = DB::table('pendonor')->where('id_pendonor', $pendonor->id_pendonor)->first();
+            $namaInstansi = $instansi->nama_instansi;
+
+            /* $profil = DB::table('pendonor')->where('id_pendonor', $id)->first();
+             $jabatans = DB::table('pegawai')->where('jabatan', $jabatan->id_role_pegawai)->get();*/
+          
+          $beasiswas = DB::table('beasiswa')->where('id_pendonor',$pendonor->id_pendonor)->get();
+
+
+            return view('pages.profil')
+            ->withPengguna($pengguna)
+            ->withPendonor($pendonor)
+            ->withUser($user)
+            ->withNamarole($namarole)->withBeasiswas($beasiswas);
+          }
+
+
+          else if($namarole=='mahasiswa')
+          {
+            $mahasiswa = DB::table('mahasiswa')->where('username',$user->username)->first();
+            $beasiswas = DB::table('pendaftaran_beasiswa')->where('npm_mahasiswa',$mahasiswa->npm)
+            ->join('beasiswa','beasiswa.id_beasiswa', '=', 'pendaftaran_beasiswa.id_beasiswa')
+            ->select('beasiswa.*')
+            ->get();
+
+            return view('pages.profil')->withPengguna($pengguna)->withUser($user)->withMahasiswa($mahasiswa)->withNamarole($namarole)->withBeasiswas($beasiswas);
+          }
+
+          else if($namarole=='pegawai')
+          {
+
+          $pegawai = DB::table('pegawai')->where('username',$user->username)->first();
+          $role_pegawai = DB::table('role_pegawai')->where('id_role_pegawai', $pegawai->id_role_pegawai)->first();
+          $namarole = $role_pegawai->nama_role_pegawai;
+
+          return view('pages.profil')->withPengguna($pengguna)->withUser($user)->withPegawai($pegawai)->withNamarole($namarole);
+          }
+    }
   }
