@@ -30,14 +30,26 @@ class ScholarshipController extends Controller
       $kategoribeasiswa = DB::table('kategori_beasiswa')->get();
       $pendonor = DB::table('pendonor')->get();
       $jenjang = DB::table('jenjang')->get();
+      $berkas = DB::table('berkas')->get();
       $fakultas = DB::table('fakultas')->get();
       $jenisseleksi = DB::table('jenis_seleksi')->get();
 
-      $pegawaiuniversitas = DB::table('user')->join('pegawai', 'user.id_user', '=', 'pegawai.id_user')->where('pegawai.id_role_pegawai', 1)->get();
-      $pegawaifakultas = DB::table('user')->join('pegawai', 'user.id_user', '=', 'pegawai.id_user')->where('pegawai.id_role_pegawai', 2)->get();
+      $pegawaiuniversitas = (DB::table('user')
+      ->join('pegawai', 'user.id_user', '=', 'pegawai.id_user')
+      ->join('pegawai_universitas', 'pegawai_universitas.id_user', '=', 'pegawai.id_user')
+      ->where('pegawai.id_role_pegawai', 1))->join('jabatan', 'jabatan.id_jabatan', '=', 'pegawai.id_jabatan')
+      ->get();
+
+      $pegawaifakultas = ((DB::table('user')
+          ->join('pegawai', 'user.id_user', '=', 'pegawai.id_user')
+          ->join('pegawai_fakultas', 'pegawai_fakultas.kode_fakultas', '=', 'pegawai.id_user')
+          ->where('pegawai.id_role_pegawai', 2))
+        ->join('fakultas', 'fakultas.id_fakultas', '=','pegawai_fakultas.kode_fakultas'))
+      ->join('jabatan', 'jabatan.id_jabatan', '=', 'pegawai.id_jabatan')
+      ->get();
 
       if($namarole=='Pegawai Universitas'){
-        return view('pages.add-beasiswa')->withUser($user)->withNamarole($namarole)->withKategoribeasiswa($kategoribeasiswa)->withPendonor($pendonor)->withJenjang($jenjang)->withFakultasbeasiswa($fakultas)->withJenisseleksi($jenisseleksi)->withPegawaiuniversitas($pegawaiuniversitas)->withPegawaifakultas($pegawaifakultas);
+        return view('pages.add-beasiswa')->withUser($user)->withNamarole($namarole)->withKategoribeasiswa($kategoribeasiswa)->withPendonor($pendonor)->withBerkas($berkas)->withJenjang($jenjang)->withFakultasbeasiswa($fakultas)->withJenisseleksi($jenisseleksi)->withPegawaiuniversitas($pegawaiuniversitas)->withPegawaifakultas($pegawaifakultas);
       }
       else{
         return redirect('noaccess');

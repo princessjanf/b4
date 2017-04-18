@@ -95,6 +95,11 @@
 		</div>
 	</footer>
 	<!-- script references -->
+	<script src="{{ asset('js/jquery-3.2.0.js') }}"></script>
+	<script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'></script>
+	<script src="{{ asset('js/jquery.dataTables.js') }}"></script>
+	<script src="{{ asset('js/dataTables.bootstrap.js') }}"></script>
 	@yield('script')
+
 </body>
 </html>

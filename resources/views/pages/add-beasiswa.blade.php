@@ -4,6 +4,12 @@
 
 @section('head')
 <link href="{{ asset('css/multiple-select.css') }}" rel="stylesheet" />
+<!-- Include the plugin's CSS and JS: -->
+<link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet" />
+<script src="{{ asset('js/jquery-3.2.0.js') }}"></script>
+<script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'></script>
+<script type="text/javascript" src="js/bootstrap-multiselect.js"></script>
+<link href="{{ asset('css/bootstrap-multiselect.css') }}" type="text/css"/>
 @endsection
 
 @section('content')
@@ -100,8 +106,8 @@
 	</div>
 
 	<div class="form-group">
-		<label for="totalDana">Total Dana</label>
-		<p> Total dana yang akan diberikan ke universitas </p>
+		<label for="totalDana">Dana Pendidikan</label>
+		<p> Besaran dana pendidikan yang akan diberikan secara total. <br>Dana ini akan dipergunakan untuk membantu membayar uang kuliah (BOP) </p>
 		<div class="input-group col-sm-4">
 			<input class="form-control" name="totalDana" data-parsley-trigger="keyup"  data-parsley-validation-threshold="1" data-parsley-pattern="\d|\d{1,3}(\,\d{3})*" data-parsley-maxlength="9" required>
 			<span class="input-group-addon" id="addon-mataUang" name="addon-mataUang"></span>
@@ -109,8 +115,17 @@
 	</div>
 
 	<div class="form-group">
+		<label for="totalDana">Dana Biaya Hidup</label>
+		<p> Besaran dana biaya hidup yang akan diberikan secara total. <br>Contoh biaya hidup ini seperti biaya makan, transportasi, dan tempat tinggal. </p>
+		<div class="input-group col-sm-4">
+			<input class="form-control" name="totalDana" data-parsley-trigger="keyup"  data-parsley-validation-threshold="1" data-parsley-pattern="\d|\d{1,3}(\,\d{3})*" data-parsley-maxlength="9" required>
+			<span class="input-group-addon" id="addon-mataUang3" name="addon-mataUang"></span>
+		</div>
+	</div>
+
+	<div class="form-group">
 		<label for="nominal">Nominal</label>
-		<p> Dana yang akan diberikan kepada mahasiswa </p>
+		<p> Dana yang akan diberikan per mahasiswa </p>
 		<div class="input-group col-sm-4">
 			<input class="form-control" name="nominal" data-parsley-trigger="keyup" data-parsley-validation-threshold="1" data-parsley-pattern="\d|\d{1,3}(\,\d{3})*" data-parsley-maxlength="9" required>
 			<span class="input-group-addon" id="addon-mataUang2" name="addon-mataUang2"></span>
@@ -154,6 +169,14 @@
 	</div>
 
 	<div class="form-group">
+		<div class="input-group col-sm-4">
+			<label for="waktuTagih">Waktu Tagih</label><br>
+			<p>Masukkan waktu kapan akan dilakukannya penagihan kepada pendonor</p>
+			<input type="date" class="form-control" name="tanggalBuka" data-date-format="YYYY/MM/DD" required>
+		</div>
+	</div>
+
+	<div class="form-group">
 		<div class="input-group col-sm-12">
 			<label for="syarat">Syarat &nbsp;</label>
 			<input type="hidden" id="arraySyarat" name="arraySyarat">
@@ -164,6 +187,19 @@
 		</div>
 	</div>
 
+	<!-- css belum keluar -->
+	<div class="form-group">
+		<div class="input-group col-sm-4">
+			<label for="berkasPersyaratan">Berkas Persyaratan Pendaftaran</label><br>
+			<select class="form-control" id="berkas" multiple="multiple" name="jenjangBeasiswa" required>
+				<option selected disabled> --Pilih Berkas-- </option>
+				@foreach ($berkas as $berkas)
+				<option value= {{ $berkas->id_berkas}}> {{$berkas->nama_berkas}} </option>
+				@endforeach
+			</select>
+		</div>
+	</div>
+
 <!-- Dibawah ini untuk field konfigurasi-penyeleksi -->
 
 	<div>
@@ -171,7 +207,7 @@
 	</div>
 
 	<div class="form-group">
-		<div class="input-group col-sm-4">
+		<div class="input-group col-sm-9">
 			<label for="jenisSeleksi">Jenis Seleksi</label><br>
 			<select onchange="cekJenis(this);" class="form-control" id="jenisSeleksi" name="jenisSeleksi" required>
 				<option selected disabled> --Pilih Jenis-- </option>
@@ -197,16 +233,16 @@
 				<optgroup label="PENDONOR">
 					<option disabled style="color:red" id = "pendonorOpt" value="">Pilih pendonor terlebih dahulu!</option>
 				</optgroup>
-				<!-- <optgroup label="PEGAWAI UNIVERSITAS">
+				<optgroup label="PEGAWAI UNIVERSITAS">
 					@foreach ($pegawaiuniversitas as $pu)
-					<option value= {{ $pu->username}}> {{$pu->jabatan}} - {{$pu->nama}} </option>
+					<option value= {{ $pu->username}}> {{$pu->nama_jabatan}} Universitas - {{$pu->nama}} </option>
 					@endforeach
-				</optgroup> -->
+				</optgroup>
 
 				<!-- masih belum sesuai pegawai fakultas yg dipilih di atasnya. baiknya gmn?-->
 				<optgroup label="PEGAWAI FAKULTAS">
 					@foreach ($pegawaifakultas as $pf)
-					<option value= {{ $pf->username}}> {{$pf->jabatan}} - {{$pf->nama}} </option>
+							<option value= {{ $pf->username}}> {{$pf->nama_jabatan}} - {{$pf->nama_fakultas}} - {{$pf->nama}} </option>
 					@endforeach
 				</optgroup>
 			</select>
@@ -430,12 +466,14 @@
 	});
 
 	$(document).ready(function(){
+		$('#berkas').multiselect();
 
 		$("#mataUang").change(function(){
 			var mataUang = $("#mataUang").val();
 
 			document.getElementById("addon-mataUang").innerHTML = mataUang;
 			document.getElementById("addon-mataUang2").innerHTML = mataUang;
+			document.getElementById("addon-mataUang3").innerHTML = mataUang;
 		});
 
 		$("#periode").change(function(){
