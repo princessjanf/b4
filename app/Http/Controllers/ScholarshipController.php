@@ -17,8 +17,8 @@ class ScholarshipController extends Controller
     public function addbeasiswa()
     {
       $user = SSO::getUser();
-
-      $pengguna = DB::table('pegawai')->where('username', $user->username)->first();
+      $pengguna = DB::table('user')->where('username', $user->username)->first();
+      $pengguna = DB::table('pegawai')->where('id_user', $pengguna->id_user)->first();
 
       if($pengguna==null){
         return redirect('noaccess');
@@ -33,8 +33,8 @@ class ScholarshipController extends Controller
       $fakultas = DB::table('fakultas')->get();
       $jenisseleksi = DB::table('jenis_seleksi')->get();
 
-      $pegawaiuniversitas = DB::table('user')->join('pegawai', 'user.username', '=', 'pegawai.username')->where('pegawai.id_role_pegawai', 1)->get();
-      $pegawaifakultas = DB::table('user')->join('pegawai', 'user.username', '=', 'pegawai.username')->where('pegawai.id_role_pegawai', 2)->get();
+      $pegawaiuniversitas = DB::table('user')->join('pegawai', 'user.id_user', '=', 'pegawai.id_user')->where('pegawai.id_role_pegawai', 1)->get();
+      $pegawaifakultas = DB::table('user')->join('pegawai', 'user.id_user', '=', 'pegawai.id_user')->where('pegawai.id_role_pegawai', 2)->get();
 
       if($namarole=='Pegawai Universitas'){
         return view('pages.add-beasiswa')->withUser($user)->withNamarole($namarole)->withKategoribeasiswa($kategoribeasiswa)->withPendonor($pendonor)->withJenjang($jenjang)->withFakultasbeasiswa($fakultas)->withJenisseleksi($jenisseleksi)->withPegawaiuniversitas($pegawaiuniversitas)->withPegawaifakultas($pegawaifakultas);
@@ -46,8 +46,8 @@ class ScholarshipController extends Controller
     public function edit($id)
     {
       $user = SSO::getUser();
-
-      $pengguna = DB::table('pegawai')->where('username', $user->username)->first();
+      $pengguna = DB::table('user')->where('username', $user->username)->first();
+      $pengguna = DB::table('pegawai')->where('id_user', $pengguna->id_user)->first();
       $pendonor = DB::table('pendonor')->where('username', $user->username)->first();
 
       if ($pengguna != null){
@@ -56,7 +56,7 @@ class ScholarshipController extends Controller
       }
       else if ($pendonor !=null)
       {
-        $entriPendonor = DB::table('user')->where('username', $pendonor->username)->first();
+        $entriPendonor = DB::table('user')->where('id_user', $pendonor->id_user)->first();
         $role = DB::table('role')->where('id_role', $entriPendonor->id_role)->first();
         $namarole = $role->nama_role;
       }
@@ -80,8 +80,8 @@ class ScholarshipController extends Controller
     {
       echo "dummy method untuk daftar beasiswa".$id;
       /*$user = SSO::getUser();
-
-      $pengguna = DB::table('pegawai')->where('username', $user->username)->first();
+      $pengguna = DB::table('user')->where('username', $user->username)->first();
+      $pengguna = DB::table('pegawai')->where('id_user', $pengguna->id_user)->first();
 
       if($pengguna==null){
         return redirect('noaccess');
@@ -104,8 +104,8 @@ class ScholarshipController extends Controller
     }
     public function delete($id){
       $user = SSO::getUser();
-
-      $pengguna = DB::table('pegawai')->where('username', $user->username)->first();
+      $pengguna = DB::table('user')->where('username', $user->username)->first();
+      $pengguna = DB::table('pegawai')->where('id_user', $pengguna->id_user)->first();
 
       if($pengguna==null){
         return redirect('noaccess');
@@ -125,8 +125,8 @@ class ScholarshipController extends Controller
 
     public function makePublic($id){
       $user = SSO::getUser();
-
-      $pengguna = DB::table('pegawai')->where('username', $user->username)->first();
+      $pengguna = DB::table('user')->where('username', $user->username)->first();
+      $pengguna = DB::table('pegawai')->where('id_user', $pengguna->id_user)->first();
 
       if($pengguna==null){
         return redirect('noaccess');
