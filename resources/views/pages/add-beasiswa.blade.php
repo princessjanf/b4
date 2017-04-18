@@ -34,7 +34,7 @@
 			<select class="form-control" id = "pendonor" name="pendonor" required>
 				<option selected disabled> --Pilih Pendonor-- </option>
 				@foreach ($pendonor as $pendonor)
-				<option value= {{ $pendonor->id_pendonor}}> {{$pendonor->nama_instansi}} </option>
+				<option value= {{ $pendonor->id_user}}> {{$pendonor->nama_instansi}} </option>
 				@endforeach
 			</select>
 		</div>
@@ -197,16 +197,16 @@
 				<optgroup label="PENDONOR">
 					<option disabled style="color:red" id = "pendonorOpt" value="">Pilih pendonor terlebih dahulu!</option>
 				</optgroup>
-				<optgroup label="PEGAWAI UNIVERSITAS">
+				<!-- <optgroup label="PEGAWAI UNIVERSITAS">
 					@foreach ($pegawaiuniversitas as $pu)
 					<option value= {{ $pu->username}}> {{$pu->jabatan}} - {{$pu->nama}} </option>
 					@endforeach
-				</optgroup>
+				</optgroup> -->
 
 				<!-- masih belum sesuai pegawai fakultas yg dipilih di atasnya. baiknya gmn?-->
 				<optgroup label="PEGAWAI FAKULTAS">
 					@foreach ($pegawaifakultas as $pf)
-					<option value= {{ $pu->username}}> {{$pf->jabatan}} - {{$pf->nama}} </option>
+					<option value= {{ $pf->username}}> {{$pf->jabatan}} - {{$pf->nama}} </option>
 					@endforeach
 				</optgroup>
 			</select>
