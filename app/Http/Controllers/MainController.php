@@ -19,7 +19,7 @@ class MainController extends Controller
       else{
         $user = SSO::getUser();
         $pengguna = DB::table('user')->where('username', $user->username)->first();
-        $role = DB::table('role')->where('id_role', $pengguna->id_role)->first();
+        $role = DB::table('role')->where('id_role', $pengguna->role)->first();
         $namarole = $role->nama_role;
 
         if($namarole=='pegawai'){
@@ -70,8 +70,9 @@ class MainController extends Controller
     {
       $user = SSO::getUser();
       $pengguna = DB::table('user')->where('username', $user->username)->first();
-      $role = DB::table('role')->where('id_role', $pengguna->id_role)->first();
-      $namarole = $role->nama_role;
+      $role = DB::table('role')->where('id_role', $pengguna->role)->first();
+      $roles = DB::table('role_pegawai')->where('id_role_pegawai', $role->id_role)->first();
+      $namarole = $roles->nama_role_pegawai;
 
       if($namarole=='pegawai'){
         $pengguna = DB::table('pegawai')->where('username', $user->username)->first();
@@ -122,7 +123,7 @@ class MainController extends Controller
       else{
         $user = SSO::getUser();
         $pengguna = DB::table('user')->where('username', $user->username)->first();
-        $role = DB::table('role')->where('id_role', $pengguna->id_role)->first();
+        $role = DB::table('role')->where('id_role', $pengguna->role)->first();
         $namarole = $role->nama_role;
 
         if($namarole=='pegawai'){
@@ -140,7 +141,7 @@ class MainController extends Controller
     {
       $user = SSO::getUser();
       $pengguna = DB::table('user')->where('username', $user->username)->first();
-      $role = DB::table('role')->where('id_role', $pengguna->id_role)->first();
+      $role = DB::table('role')->where('id_role', $pengguna->role)->first();
       $namarole = $role->nama_role;
 
       if($namarole=='pegawai'){

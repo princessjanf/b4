@@ -26,6 +26,7 @@ class ScholarshipController extends Controller
 
       $role = DB::table('role_pegawai')->where('id_role_pegawai', $pengguna->id_role_pegawai)->first();
       $namarole = $role->nama_role_pegawai;
+      
 
       $kategoribeasiswa = DB::table('kategori_beasiswa')->get();
       $pendonor = DB::table('pendonor')->get();
@@ -193,7 +194,7 @@ class ScholarshipController extends Controller
       {
           $user = SSO::getUser();
           $pengguna = DB::table('user')->where('username', $user->username)->first();
-          $role = DB::table('role')->where('id_role', $pengguna->id_role)->first();
+          $role = DB::table('role')->where('id_role', $pengguna->role)->first();
           $namarole = $role->nama_role;
 
           // $pengguna = DB::table('pegawai')->where('username', $user->username)->first();

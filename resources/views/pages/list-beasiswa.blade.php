@@ -15,12 +15,12 @@
 		<tr>
 			<th>No</th>
 			<th>Nama Beasiswa</th>
-			@if($namarole=="pendonor" || $namarole=="Pegawai Universitas" || $namarole=="Direktorat Kerjasama")
+			@if($namarole=="Pendonor" || $namarole=="Pegawai Universitas" || $namarole=="Direktorat Kerjasama")
 			<th>Status</th>
 			@endif
 			<th>Pendaftaran</th>
 			<th>Tanggal Tutup</th>
-			@if($namarole=="mahasiswa" || $namarole=="Pegawai Universitas" || $namarole=="Direktorat Kerjasama")
+			@if($namarole=="Mahasiswa" || $namarole=="Pegawai Universitas" || $namarole=="Direktorat Kerjasama")
 			<th>More</th>
 			@endif
 		</tr>
