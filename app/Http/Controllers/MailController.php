@@ -11,7 +11,7 @@ class MailController extends Controller {
       $data = array('name'=>"Virat Gandhi");
    
       Mail::send(['text'=>'mail'], $data, function($message) {
-         $message->to('kalistalanti@gmail.com', 'Tutorials Point')->subject
+         $message->to('dwikism@gmail.com', 'Tutorials Point')->subject
             ('Laravel Basic Testing Mail');
          $message->from('adindanadinta@gmail.com','Virat Gandhi');
       });

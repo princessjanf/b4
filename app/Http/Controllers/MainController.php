@@ -202,7 +202,8 @@ class MainController extends Controller
              
               $beasiswas = DB::table('pendaftaran_beasiswa')->where('id_mahasiswa',$mahasiswa->id_user)
             ->join('beasiswa','beasiswa.id_beasiswa', '=', 'pendaftaran_beasiswa.id_beasiswa')
-            ->select('beasiswa.*')
+            ->join('status_lamaran', 'status_lamaran.id_status_lamaran',"=", 'pendaftaran_beasiswa.status_lamaran')
+            ->select('beasiswa.*','status_lamaran.nama_lamaran')
             ->get();
            
             return view('pages.profil')->withPengguna($pengguna)->withNama($nama)->withUser($user)->withMahasiswa($mahasiswa)->withNamarole($namarole)->withBeasiswas($beasiswas)->withFakultas($fakultas)->withProdi($prodi)->withJenjangmahasiswa($jenjangMahasiswa);
@@ -243,9 +244,7 @@ class MainController extends Controller
           {            
             $nama = DB::table('user')->where('username',$user->username)->first();
             $pendonor = DB::table('pendonor')->where('id_user', $nama->id_user)->first();
-         $jenjang = DB::table('jenjang_prodi')->where('id_prodi',$mahasiswa->id_prodi)->first();
-             $jenjangMahasiswa = DB::table('jenjang')->where('id_jenjang',$jenjang->id_jenjang)->first();
-             
+        
           $beasiswas = DB::table('beasiswa')->where('id_pendonor',$pendonor->id_user)->get();
 
 

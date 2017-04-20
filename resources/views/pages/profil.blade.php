@@ -56,7 +56,8 @@
 
     DAFTAR BEASISWA YANG DIDAFTAR:
     @foreach($beasiswas as $index => $beasiswa)
-    <p><label>{{$index+1}} {{$beasiswa->nama_beasiswa}}</label></p>
+    <p><label>{{$index+1}}. {{$beasiswa->nama_beasiswa}} - {{$beasiswa->nama_lamaran}}</label></p>
+
     @endforeach
 
  
