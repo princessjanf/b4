@@ -19,11 +19,11 @@ class MainController extends Controller
       else{
         $user = SSO::getUser();
         $pengguna = DB::table('user')->where('username', $user->username)->first();
-        $role = DB::table('role')->where('id_role', $pengguna->role)->first();
+        $role = DB::table('role')->where('id_role', $pengguna->id_role)->first();
         $namarole = $role->nama_role;
 
-        if($namarole=='pegawai'){
-          $pengguna = DB::table('pegawai')->where('username', $user->username)->first();
+        if($namarole=='Pegawai'){
+          $pengguna = DB::table('pegawai')->where('id_user', $pengguna->id_user)->first();
           $role = DB::table('role_pegawai')->where('id_role_pegawai', $pengguna->id_role_pegawai)->first();
           $namarole = $role->nama_role_pegawai;
         }
@@ -70,20 +70,27 @@ class MainController extends Controller
     {
       $user = SSO::getUser();
       $pengguna = DB::table('user')->where('username', $user->username)->first();
-      $role = DB::table('role')->where('id_role', $pengguna->role)->first();
-      $roles = DB::table('role_pegawai')->where('id_role_pegawai', $role->id_role)->first();
-      $namarole = $roles->nama_role_pegawai;
+      $role = DB::table('role')->where('id_role', $pengguna->id_role)->first();
+      if ($role->nama_role == 'Pegawai')
+      {
+        $roles = DB::table('role_pegawai')->where('id_role_pegawai', $role->id_role)->first();
+        $namarole = $roles->nama_role_pegawai;
+      }
+      else 
+      {
+        $namarole = $role->nama_role;
+      }
 
-      if($namarole=='pegawai'){
-        $pengguna = DB::table('pegawai')->where('username', $user->username)->first();
+      if($namarole=='Pegawai'){
+        $pengguna = DB::table('pegawai')->where('id_user', $pengguna->id_user)->first();
         $role = DB::table('role_pegawai')->where('id_role_pegawai', $pengguna->id_role_pegawai)->first();
         $namarole = $role->nama_role_pegawai;
       }
 
-      if ($namarole == 'mahasiswa' || $namarole == 'Pegawai Fakultas') {
+      if ($namarole == 'Mahasiswa' || $namarole == 'Pegawai Fakultas') {
         $beasiswas = DB::table('beasiswa')->where('flag', '1')->where('public', '1')->get();
       } else if ($namarole == 'pendonor'){
-        $pendonor = DB::table('pendonor')->where('username', $user->username)->first();
+        $pendonor = DB::table('pendonor')->where('id_user', $pengguna->id_user)->first();
         $beasiswas = collect(DB::table('beasiswa')->where('flag', '1')->where('public', '1')->get());
         $beasiswas2= collect(DB::table('beasiswa')->where('flag', '1')->where('public', '0')->where('id_pendonor', $pendonor->id_pendonor)->get());
         $beasiswas = $beasiswas->merge($beasiswas2)->sort()->values()->all();
@@ -97,7 +104,7 @@ class MainController extends Controller
     {
       $user = SSO::getUser();
 
-      $pengguna = DB::table('pegawai')->where('username', $user->username)->first();
+      $pengguna = DB::table('pegawai')->where('id_user', $pengguna->id_user)->first();
 
       if($pengguna==null){
         return redirect('/');
@@ -123,11 +130,11 @@ class MainController extends Controller
       else{
         $user = SSO::getUser();
         $pengguna = DB::table('user')->where('username', $user->username)->first();
-        $role = DB::table('role')->where('id_role', $pengguna->role)->first();
+        $role = DB::table('role')->where('id_role', $pengguna->id_role)->first();
         $namarole = $role->nama_role;
 
-        if($namarole=='pegawai'){
-          $pengguna = DB::table('pegawai')->where('username', $user->username)->first();
+        if($namarole=='Pegawai'){
+          $pengguna = DB::table('pegawai')->where('id_user', $pengguna->id_user)->first();
           $role = DB::table('role_pegawai')->where('id_role_pegawai', $pengguna->id_role_pegawai)->first();
           $namarole = $role->nama_role_pegawai;
         }
@@ -141,11 +148,11 @@ class MainController extends Controller
     {
       $user = SSO::getUser();
       $pengguna = DB::table('user')->where('username', $user->username)->first();
-      $role = DB::table('role')->where('id_role', $pengguna->role)->first();
+      $role = DB::table('role')->where('id_role', $pengguna->id_role)->first();
       $namarole = $role->nama_role;
 
-      if($namarole=='pegawai'){
-        $pengguna = DB::table('pegawai')->where('username', $user->username)->first();
+      if($namarole=='Pegawai'){
+        $pengguna = DB::table('pegawai')->where('id_user', $pengguna->id_user)->first();
         $role = DB::table('role_pegawai')->where('id_role_pegawai', $pengguna->id_role_pegawai)->first();
         $namarole = $role->nama_role_pegawai;
       }

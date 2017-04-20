@@ -15,6 +15,8 @@
 
 	<input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
 	<input type = "hidden" name = "idBeasiswa" value= {{$beasiswa->id_beasiswa}}>
+	<input type = "hidden" name = "user_id" value= {{$pengguna->id_user}}>
+
 
 
 	<div class="form-group">
@@ -29,12 +31,12 @@
 			<input type="text" placeholder="NPM" class="form-control" name="npm" required="">
 		</div>
 		<div class="form-group col-sm-3">
-			<label for="NPM">Email</label>
+			<label for="Email">Email</label>
 			<input type="email" placeholder="Email" class="form-control" name="email" required="">
 		</div>
 		<div class="form-group col-sm-3">
 			<label for="IPK">IPK</label>
-			<input type="number" placeholder="IPK" class="form-control" name="ipk" required="">
+			<input type="number" placeholder="IPK" class="form-control" name="ipk" required="" step="0.01">
 		</div>
 	</div>
 
@@ -51,7 +53,7 @@
 		</div>
 		<div class="form-group col-sm-5">
 			<label for="NoIdentitas">No. Identitas</label>
-			<input type="text" placeholder="No. Identitas" class="form-control" name="NoIdentitas" required="">
+			<input type="text" placeholder="No. Identitas" class="form-control" name="noidentitas" required="">
 		</div>
 	</div>
 
@@ -81,12 +83,12 @@
 
 		<div class="form-group">
 			<label for="namapemilik">Nama Pemilik Rekening</label>
-			<input type="text" placeholder="Nama Pemilik Rekening" class="form-control" name="namapemilik" required="">
+			<input type="text" placeholder="Nama Pemilik Rekening" class="form-control" name="namapemilik" required="" maxlength="20">
 		</div>
 
 		<div class="form-group">
 			<label for="alamat">Alamat</label>
-			<input type="text" placeholder="Alamat" class="form-control" name="Alamat" required="">
+			<input type="text" placeholder="Alamat" class="form-control" name="alamat" required="">
 		</div>
 
 	<div class = "row">
@@ -104,8 +106,8 @@
 	
 	<div class="row">
 		<div class="form-group col-sm-4">
-				<label for="penghasilan">Penghasilan Orang Tua</label>
-				<input type="text" placeholder="Rp1.000.000" class="form-control" name="penghasilan" required="">
+				<label for="penghasilan">Penghasilan Orang Tua (Rp.)</label>
+				<input type="text" placeholder="1.000.000" class="form-control" name="penghasilan" required="">
 		</div>
 	</div>
 	

@@ -4,6 +4,7 @@
 
 @section('content')
 @if($namarole=="Pegawai Universitas")
+
 <h4>List beasiswa &nbsp;&nbsp;
 	<a data-toggle="tooltip" title="Tambah beasiswa" role="button" id="add-beasiswa" class="btn btn-success" href="{{ url('add-beasiswa') }}"><span class="glyphicon glyphicon-plus">&nbsp;Tambah Beasiswa</span></a>
 </h4>
@@ -84,7 +85,7 @@
 					<span class="glyphicon glyphicon-eye-open"></span>
 				</a>
 			</td>
-			@elseif($namarole=="mahasiswa")
+			@elseif($namarole=="Mahasiswa")
 			<td>
 				<a href = "{{url('/daftar-beasiswa/'.$beasiswa->id_beasiswa)}}"><button class="btn"><b>Daftar</b></button></a>
 			</td>
