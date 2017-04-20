@@ -30,13 +30,23 @@ class UploadController extends Controller
   public function uploadSubmit(UploadRequest $request)
   {
     // $product = Product::create($request->all());
-    foreach ($request->photos as $photo) {
-      $filename = $photo->store('photos');
-      // ProductsPhoto::create([
-      //   'product_id' => $product->id,
-      //   'filename' => $filename
-      // ]);
+    $idBeasiswa = $request->get('idBeasiswa');
+    $idBerkas = $request->get('idBerkas');
+    $idMahasiswa = $request->get('idMahasiswa');
+
+    foreach ($request->berkases as $index=>$berkas) {
+      $file = $berkas->storeAs('berkas', $idMahasiswa.'-'.$request->nama[$index]);
+
+      DB::insert('INSERT INTO `beasiswa_berkas`(`id_beasiswa`, `id_berkas`, `id_mahasiswa`, `file`)
+      VALUES (?,?,?,?)',
+      [$idBeasiswa, $idBerkas, $idMahasiswa, $file]
+    );
+
+    // ProductsPhoto::create([
+    //   'product_id' => $product->id,
+    //   'filename' => $filename
+    // ]);
     }
-    return 'Upload successful!';
+    return redirect('upload');
   }
 }
