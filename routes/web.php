@@ -68,6 +68,11 @@ Route::post('retrieve-prodi', 'ScholarshipController@retrieveProdi');
 //Route::post('insert-beasiswa', 'ScholarshipController@insertBeasiswa');
 //Route::post('update-beasiswa', 'ScholarshipController@updateBeasiswa');
 
+Route::post('update-profil',[
+  'middleware' => 'authSSO',
+  'uses' => 'MainController@updateProfil'
+]);
+
 Route::get('/profil', [
   'middleware' => 'authSSO',
   'uses' => 'MainController@profil'

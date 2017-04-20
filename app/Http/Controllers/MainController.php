@@ -163,23 +163,25 @@ class MainController extends Controller
    function profil() 
     {
       $user = SSO::getUser();
-      $pengguna = DB::table('user')->where('id_user', $user->id_user)->first();
+      $pengguna = DB::table('user')->where('username', $user->username)->first();
+      $pengguna = DB::table('user')->where('id_user', $pengguna->id_user)->first();
       $role = DB::table('role')->where('id_role', $pengguna->id_role)->first();
       $namarole = $role->nama_role;
-    
-          if($namarole=='pendonor')
-          {
-            $pendonor = DB::table('pendonor')->where('username', $user->username)->first();
-            $instansi = DB::table('pendonor')->where('id_pendonor', $pendonor->id_pendonor)->first();
-            $namaInstansi = $instansi->nama_instansi;
+     
+          if($namarole=='Pendonor')
+          {            
+            $nama = DB::table('user')->where('username',$user->username)->first();
+            $pendonor = DB::table('pendonor')->where('id_user', $nama->id_user)->first();
+          /*  $instansi = DB::table('pendonor')->where('id_pendonor', $pendonor->id_pendonor)->first();
+            $namaInstansi = $instansi->nama_instansi;*/
 
             /* $profil = DB::table('pendonor')->where('id_pendonor', $id)->first();
              $jabatans = DB::table('pegawai')->where('jabatan', $jabatan->id_role_pegawai)->get();*/
           
-          $beasiswas = DB::table('beasiswa')->where('id_pendonor',$pendonor->id_pendonor)->get();
+          $beasiswas = DB::table('beasiswa')->where('id_pendonor',$pendonor->id_user)->get();
 
 
-            return view('pages.profil')
+            return view('pages.profil')->withNama($nama)
             ->withPengguna($pengguna)
             ->withPendonor($pendonor)
             ->withUser($user)
@@ -187,18 +189,25 @@ class MainController extends Controller
           }
 
 
-          else if($namarole=='mahasiswa')
+          else if($namarole=='Mahasiswa')
           {
-            $mahasiswa = DB::table('mahasiswa')->where('id_user', $user->id_user)->first();
-            $fakultas = DB::table('fakultas')->where('id_fakultas',$mahasiswa->id_fakultas)->first();
+
+              $nama = DB::table('user')->where('username', $user->username)->first();
+              $mahasiswa = DB::table('mahasiswa')->where('id_user',$nama->id_user)->first();
+            /* $idmahasiswa = DB::table('user')->where('id_user', $user->id_user)->first();*/           
+             $fakultas = DB::table('fakultas')->where('id_fakultas',$mahasiswa->id_fakultas)->first();
              $prodi = DB::table('program_studi')->where('id_prodi',$mahasiswa->id_prodi)->first();
+           $jenjang = DB::table('jenjang_prodi')->where('id_prodi',$mahasiswa->id_prodi)->first();
+             $jenjangMahasiswa = DB::table('jenjang')->where('id_jenjang',$jenjang->id_jenjang)->first();
+             
               $beasiswas = DB::table('pendaftaran_beasiswa')->where('id_mahasiswa',$mahasiswa->id_user)
             ->join('beasiswa','beasiswa.id_beasiswa', '=', 'pendaftaran_beasiswa.id_beasiswa')
             ->select('beasiswa.*')
             ->get();
-
-            return view('pages.profil')->withPengguna($pengguna)->withUser($user)->withMahasiswa($mahasiswa)->withNamarole($namarole)->withBeasiswas($beasiswas)->withFakultas($fakultas)->withProdi($prodi);
+           
+            return view('pages.profil')->withPengguna($pengguna)->withNama($nama)->withUser($user)->withMahasiswa($mahasiswa)->withNamarole($namarole)->withBeasiswas($beasiswas)->withFakultas($fakultas)->withProdi($prodi)->withJenjangmahasiswa($jenjangMahasiswa);
             /*$mahasiswa = DB::table('mahasiswa')->where('username',$user->username)->first();
+
             $fakultas = DB::table('fakultas')->where('id_fakultas',$mahasiswa->id_fakultas)->first();
             $prodi = DB::table('program_studi')->where('id_prodi',$mahasiswa->id_prodi)->first();
             $beasiswas = DB::table('pendaftaran_beasiswa')->where('npm_mahasiswa',$mahasiswa->npm)
@@ -209,37 +218,38 @@ class MainController extends Controller
             return view('pages.profil')->withPengguna($pengguna)->withUser($user)->withMahasiswa($mahasiswa)->withNamarole($namarole)->withBeasiswas($beasiswas)->withFakultas($fakultas)->withProdi($prodi);*/
           }
 
-          else if($namarole=='pegawai')
+          else if($namarole=='Pegawai')
           {
-
-          $pegawai = DB::table('pegawai')->where('username',$user->username)->first();
+           $nama = DB::table('user')->where('username', $user->username)->first();
+           $pegawai = DB::table('pegawai')->where('id_user',$nama->id_user)->first();
+         /* $pegawai = DB::table('pegawai')->where('username',$user->username)->first();*/
           $role_pegawai = DB::table('role_pegawai')->where('id_role_pegawai', $pegawai->id_role_pegawai)->first();
           $namarole = $role_pegawai->nama_role_pegawai;
+          $jabatan = DB::table('jabatan')->where('id_jabatan', $pegawai->id_jabatan)->first();
 
-          return view('pages.profil')->withPengguna($pengguna)->withUser($user)->withPegawai($pegawai)->withNamarole($namarole);
+          return view('pages.profil')->withPengguna($pengguna)->withUser($user)->withPegawai($pegawai)->withNamarole($namarole)->withNama($nama)->withJabatan($jabatan);
           }
     }
 
      function editProfil() 
     {
-      $user = SSO::getUser();
+            $user = SSO::getUser();
       $pengguna = DB::table('user')->where('username', $user->username)->first();
+      $pengguna = DB::table('user')->where('id_user', $pengguna->id_user)->first();
       $role = DB::table('role')->where('id_role', $pengguna->id_role)->first();
       $namarole = $role->nama_role;
-    
-          if($namarole=='pendonor')
-          {
-            $pendonor = DB::table('pendonor')->where('username', $user->username)->first();
-            $instansi = DB::table('pendonor')->where('id_pendonor', $pendonor->id_pendonor)->first();
-            $namaInstansi = $instansi->nama_instansi;
-
-            /* $profil = DB::table('pendonor')->where('id_pendonor', $id)->first();
-             $jabatans = DB::table('pegawai')->where('jabatan', $jabatan->id_role_pegawai)->get();*/
-          
-          $beasiswas = DB::table('beasiswa')->where('id_pendonor',$pendonor->id_pendonor)->get();
+     
+          if($namarole=='Pendonor')
+          {            
+            $nama = DB::table('user')->where('username',$user->username)->first();
+            $pendonor = DB::table('pendonor')->where('id_user', $nama->id_user)->first();
+         $jenjang = DB::table('jenjang_prodi')->where('id_prodi',$mahasiswa->id_prodi)->first();
+             $jenjangMahasiswa = DB::table('jenjang')->where('id_jenjang',$jenjang->id_jenjang)->first();
+             
+          $beasiswas = DB::table('beasiswa')->where('id_pendonor',$pendonor->id_user)->get();
 
 
-            return view('pages.edit-profil')
+            return view('pages.profil')->withNama($nama)
             ->withPengguna($pengguna)
             ->withPendonor($pendonor)
             ->withUser($user)
@@ -247,29 +257,58 @@ class MainController extends Controller
           }
 
 
-          else if($namarole=='mahasiswa')
+          else if($namarole=='Mahasiswa')
           {
-            $mahasiswa = DB::table('mahasiswa')->where('username',$user->username)->first();
-            $fakultas = DB::table('fakultas')->where('id_fakultas',$mahasiswa->id_fakultas)->first();
-            $prodi = DB::table('program_studi')->where('id_prodi',$mahasiswa->id_prodi)->first();
-            $beasiswas = DB::table('pendaftaran_beasiswa')->where('npm_mahasiswa',$mahasiswa->npm)
+
+              $nama = DB::table('user')->where('username', $user->username)->first();
+              $mahasiswa = DB::table('mahasiswa')->where('id_user',$nama->id_user)->first();
+           
+             $fakultas = DB::table('fakultas')->where('id_fakultas',$mahasiswa->id_fakultas)->first();
+             $prodi = DB::table('program_studi')->where('id_prodi',$mahasiswa->id_prodi)->first();
+              $jenjang = DB::table('jenjang_prodi')->where('id_prodi',$mahasiswa->id_prodi)->first();
+             $jenjangMahasiswa = DB::table('jenjang')->where('id_jenjang',$jenjang->id_jenjang)->first();
+
+              $beasiswas = DB::table('pendaftaran_beasiswa')->where('id_mahasiswa',$mahasiswa->id_user)
             ->join('beasiswa','beasiswa.id_beasiswa', '=', 'pendaftaran_beasiswa.id_beasiswa')
             ->select('beasiswa.*')
             ->get();
-
-            return view('pages.edit-profil')->withPengguna($pengguna)->withUser($user)->withMahasiswa($mahasiswa)->withNamarole($namarole)->withBeasiswas($beasiswas)->withFakultas($fakultas)->withProdi($prodi);
+         
+             
+            return view('pages.edit-profil')->withPengguna($pengguna)->withNama($nama)->withUser($user)->withMahasiswa($mahasiswa)->withNamarole($namarole)->withBeasiswas($beasiswas)->withFakultas($fakultas)->withProdi($prodi)->withJenjangmahasiswa($jenjangMahasiswa);
+           
           }
 
-          else if($namarole=='pegawai')
+          else if($namarole=='Pegawai')
           {
-
-          $pegawai = DB::table('pegawai')->where('username',$user->username)->first();
+           $nama = DB::table('user')->where('username', $user->username)->first();
+           $pegawai = DB::table('pegawai')->where('id_user',$nama->id_user)->first();
+         /* $pegawai = DB::table('pegawai')->where('username',$user->username)->first();*/
           $role_pegawai = DB::table('role_pegawai')->where('id_role_pegawai', $pegawai->id_role_pegawai)->first();
           $namarole = $role_pegawai->nama_role_pegawai;
+          $jabatan = DB::table('jabatan')->where('id_jabatan', $pegawai->id_jabatan)->first();
 
-          return view('pages.edit-profil')->withPengguna($pengguna)->withUser($user)->withPegawai($pegawai)->withNamarole($namarole);
+          return view('pages.profil')->withPengguna($pengguna)->withUser($user)->withPegawai($pegawai)->withNamarole($namarole)->withNama($nama)->withJabatan($jabatan);
           }
     }
 
-  }
+ function updateProfil(Request $request) 
+{
+   DB::table('mahasiswa')
+          ->where('id_user', $request->get('idUser'))
+          ->update(['jenis_identitas'=>$request->input('jenisIdentitas'),
+                    'nomor_identitas'=>$request->input('nomorIdentitas'),
+                    'nama_pemilik_rekening'=>$request->input('pemilikRekening'),
+                  ]);
+          $idUser = $request->get('idUser');
+
+
+          $user = SSO::getUser();
+          $pengguna = DB::table('user')->where('username', $user->username)->first();
+
+        // DB::insert('insert into `log_beasiswa` (`id_beasiswa`, `tipe_perubahan`, `id_user`) VALUES (?,?,?)', [$beasiswa->id_beasiswa, 'modifikasi', $pengguna->username]);
+
+          return redirect('profil');
+}
+
+}
 

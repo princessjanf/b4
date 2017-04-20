@@ -3,7 +3,7 @@
 @section('title', 'Profil')
 
 @section('content')
-      <li><a href="{{ url('edit-profil') }}">Edit</a></li>
+      <li><a href="{{url('edit-profil')}}">Edit</a></li>
       <p></p>
     <div class="col-sm-9">
     
@@ -13,9 +13,9 @@
      NIK:
      <p><label>{{$pegawai->no_identitas}}</label></p>
      JABATAN:
-      <p><label>{{$pegawai->jabatan}}</label></p>
+      <p><label>{{$jabatan->nama_jabatan}}</label></p>
     
-    @elseif($namarole=='pendonor')
+    @elseif($namarole=='Pendonor')
     NAMA INSTANSI:
      <p><label>{{$pendonor->nama_instansi}}</label></p>
      NAMA:
@@ -26,15 +26,15 @@
     <p><label>{{$index+1}} {{$beasiswa->nama_beasiswa}}</label></p>
     @endforeach
 
-   @elseif($namarole=='mahasiswa')
+   @elseif($namarole=='Mahasiswa')
    NAMA:
-   <p><label>{{$user->nama}}</label></p>
+   <p><label>{{$pengguna->nama}}</label></p>
    FAKULTAS
    <p><label>{{$fakultas->nama_fakultas}}</label></p>
    PROGRAM STUDI
    <p><label>{{$prodi->nama_prodi}}</label></p>
    JENJANG:
-   <p><label></label></p>
+   <p><label>{{$jenjangmahasiswa->nama_jenjang}}</label></p>
    IPK:
    <p><label>{{$mahasiswa->IPK}}</label></p>
    NO. REKENING:
@@ -59,6 +59,7 @@
     <p><label>{{$index+1}} {{$beasiswa->nama_beasiswa}}</label></p>
     @endforeach
 
+ 
     @endif
     </div>
 @endsection

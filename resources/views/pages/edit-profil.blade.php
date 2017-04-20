@@ -11,9 +11,9 @@
      NIK:
      <p>{{$pegawai->no_identitas}}</p>
      JABATAN:
-      <p>{{$pegawai->jabatan}}</p>
+      <p>{{$jabatan->nama_jabatan}}</p>
     
-    @elseif($namarole=='pendonor')
+    @elseif($namarole=='Pendonor')
     NAMA INSTANSI:
      <p>{{$pendonor->nama_instansi}}</p>
      NAMA:
@@ -24,8 +24,10 @@
     <p>{{$index+1}} {{$beasiswa->nama_beasiswa}}</p>
     @endforeach
 
-   @elseif($namarole=='mahasiswa')
-   <form id='editProfil' action = "{{ url('edit-profil') }}" onsubmit="return validateForm()" method = "post" data-parsley-validate="">
+   @elseif($namarole=='Mahasiswa')
+   <form id='editProfil' action = "{{ url('update-profil') }}" onsubmit="return validateForm()" method = "post" data-parsley-validate="">
+   <input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
+   <input type = "hidden" name = "idUser" value= {{$mahasiswa->id_user}}>
    NAMA:
  <p><label> {{$pengguna->nama}}</label></p>
    FAKULTAS
@@ -33,7 +35,7 @@
    PROGRAM STUDI
    <p><label>{{$prodi->nama_prodi}}</label></p>
    JENJANG:
-   <p></p>
+<p><label>{{$jenjangmahasiswa->nama_jenjang}}</label></p>
    IPK:
    <p><label>{{$mahasiswa->IPK}}</label></p>
    NOMOR REKENING:
@@ -41,34 +43,49 @@
    NAMA BANK:
     <p>{{$mahasiswa->nama_bank}}</p>
    JENIS IDENTITAS:
-   <input type="text" class="form-control" name="jenisIdentitas" required value= "{{ $mahasiswa->jenis_identitas }}">
+   <div class="form-group">
+    <label for="jenisIdentitas">Jenis Identitas</label>
+    <div class="input-group col-sm-4">
+      <select class="form-control" name="jenisIdentitas" id="jenisIdentitas" required>
+        <option> {{ $mahasiswa->jenis_identitas }}</option>
+       @if( $mahasiswa->jenis_identitas  != 'KTP')
+        <option value= "KTP"> KTP </option>
+       @endif
+       @if( $mahasiswa->jenis_identitas  != 'SIM')
+        <option value= "SIM"> SIM </option>
+       @endif
+       @if( $mahasiswa->jenis_identitas  != 'Kartu Pelajar')
+        <option value= "KartuPelajar"> Kartu Pelajar </option>
+       @endif
+      </select>
+    </div>
+  </div>
+   
+
     NO. IDENTITAS:
-  <input type="text" class="form-control" name="nomorIdentitas" required value= "{{ $mahasiswa->nomor_identitas }}">
+  <input type="number" class="form-control" name="nomorIdentitas" required value= "{{ $mahasiswa->nomor_identitas }}">
     NO.TELEPON:
-     <p>{{$mahasiswa->nomor_telepon}}</p>
+     <p><label>{{$mahasiswa->nomor_telepon}}</label></p>
     NO. HANDPHONE:
-     <p>{{$mahasiswa->nomor_telepon}}</p>
+     <p><label>{{$mahasiswa->nomor_telepon}}</label></p>
     NAMA PEMILIK REKENING:
     <input type="text" class="form-control" name="pemilikRekening" required value= "{{ $mahasiswa->nama_pemilik_rekening }}">
     PENGHASILAN ORANG TUA:
-     <p>{{$mahasiswa->penghasilan_orang_tua}}</p>
+     <p><label>{{$mahasiswa->penghasilan_orang_tua}}</label></p>
 
-    DAFTAR BEASISWA YANG DIDAFTAR:
-    @foreach($beasiswas as $index => $beasiswa)
-    <p>{{$index+1}} {{$beasiswa->nama_beasiswa}}</p>
-    @endforeach
+
+   <div>
+      <button type="submit" id="submit-form" class="btn"> Submit</button>
+      <button style ="text-decoration: none"id="cancel" class="btn btn-danger" formnovalidate><a href="{{ url('profil') }}" >Cancel </a></button>
+    </div>
 </form>
-
-    @endif
-   
+<br>
 <div name= "alertNomorIdentitas" class="alert alert-danger alert-dismissable fade in">
   <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
   <strong>Nomor identitas harus berupa angka</strong>
 </div>
- <div>
-    <button type="submit" id="submit-form" class="btn"> <a href="{{ url('profil') }}" >Submit</a></button>
-    <button style ="text-decoration: none"id="cancel" class="btn btn-danger" formnovalidate><a href="{{ url('profil') }}" >Cancel </a></button>
-  </div>
+    @endif
+   
 @endsection
 
 @section('script')
@@ -78,84 +95,16 @@
 <script>
   $("[name='alertNomorIdentitas']").hide();
   $("[name='alertDanaModal']").hide();
-  counter=1;
-  /*function insertRow(){
-    counter+=1;
-    document.getElementsByName("counter")[0].value = counter;
-    var theForm = document.getElementById('editScholarshipForm');*/
-    /*
-    var tmp = document.createElement("input");
-    tmp.name = "syarat"+counter;
-    tmp.type = "text";
-    console.log(tmp.name);
-    theForm.appendChild(tmp);
-    var r = document.createElement('span');
-    theForm.appendChild(r);
-    */
-   /* var x = document.getElementsByName('syarat')[0];
-    var elem = document.createElement('div');
-    elem.innerHTML = '<input type = "text" class="form-control" name="syarat'+counter+'">';
-    x.appendChild(elem);
-    theForm.appendChild(x);
-  }*/
-  /*if (nomorIdentitas)
-    {
-      return true;
-    }
-    else if(totalDana != jumlahDana){
-      $("[name='alertDanaModal']").show();
-      return false;
-    }*/
+  
+
     function validateForm(){
-    var jenisIdentitas = document.getElementsByName('jenisIdentitas').value;
-    var nomorIdentitas = document.getElementsByName('nomorIdentitas').value;
-     var number = /^[0-9]+$/;  
-     if((nomorIdentitas.value.match(number))   
-     {  
-       return true;  
-     }  
-     else  
-     {   
-       alert("alertNomorIdentitas");   
+
        return true;   
      }  
-   /* var kuota = document.getElementsByName('kuota')[0].value;
-    var nominal = document.getElementsByName('nominal')[0].value;
-    var jangka = document.getElementsByName('jangka')[0].value;
-    var jumlahDana = kuota*nominal*jangka;
-    var tanggalBuka = new Date(document.getElementsByName('tanggalBuka')[0].value);
-    var tanggalTutup = new Date(document.getElementsByName('tanggalTutup')[0].value);
-    if (tanggalBuka.getTime() < tanggalTutup.getTime() && totalDana == kuota*nominal*jangka)
-    {
-      return true;
-    }
-    else if(totalDana != jumlahDana){
-      $("[name='alertDanaModal']").show();
-      return false;
-    }
-    else{
-      $("[name='alertDateModal']").show();
-      return false;
-    }
-*/
-  }
-   /* function numeric(nomorIdentitas)  
-{  
- var number = /^[0-9]+$/;  
- if((nomorIdentitas.value.match(number))   
-  {  
-   return true;  
-  }  
-else  
-  {   
-   alert("alertNomorIdentitas");   
-   return false;   
-  }  
-}  */
-
+  
   
   $(function () {
-    $('#editScholarshipForm').parsley().on('field:validated', function() {
+    $('#editProfil').parsley().on('field:validated', function() {
       var ok = $('.parsley-error').length === 0;
       $('.bs-callout-info').toggleClass('hidden', !ok);
       $('.bs-callout-warning').toggleClass('hidden', ok);
