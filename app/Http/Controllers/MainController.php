@@ -18,6 +18,7 @@ class MainController extends Controller
         $pengguna = DB::table('user')->where('username', $user->username)->first();
         $role = DB::table('role')->where('id_role', $pengguna->id_role)->first();
         $namarole = $role->nama_role;
+
         if($namarole=='Pegawai'){
           $pengguna = DB::table('pegawai')->where('id_user', $pengguna->id_user)->first();
           $role = DB::table('role_pegawai')->where('id_role_pegawai', $pengguna->id_role_pegawai)->first();
@@ -63,6 +64,7 @@ class MainController extends Controller
       $pengguna = DB::table('user')->where('username', $user->username)->first();
       $role = DB::table('role')->where('id_role', $pengguna->id_role)->first();
       $namarole = $role->nama_role;
+
       if($namarole=='Pegawai'){
         $pengguna = DB::table('pegawai')->where('id_user', $pengguna->id_user)->first();
         $role = DB::table('role_pegawai')->where('id_role_pegawai', $pengguna->id_role_pegawai)->first();
@@ -83,7 +85,9 @@ class MainController extends Controller
      function addbeasiswa()
     {
       $user = SSO::getUser();
+
       $pengguna = DB::table('pegawai')->where('id_user', $pengguna->id_user)->first();
+
       if($pengguna==null){
         return redirect('/');
       }
@@ -107,6 +111,7 @@ class MainController extends Controller
         $pengguna = DB::table('user')->where('username', $user->username)->first();
         $role = DB::table('role')->where('id_role', $pengguna->id_role)->first();
         $namarole = $role->nama_role;
+
         if($namarole=='Pegawai'){
           $pengguna = DB::table('pegawai')->where('id_user', $pengguna->id_user)->first();
           $role = DB::table('role_pegawai')->where('id_role_pegawai', $pengguna->id_role_pegawai)->first();
@@ -122,6 +127,7 @@ class MainController extends Controller
       $pengguna = DB::table('user')->where('username', $user->username)->first();
       $role = DB::table('role')->where('id_role', $pengguna->id_role)->first();
       $namarole = $role->nama_role;
+
       if($namarole=='Pegawai'){
         $pengguna = DB::table('pegawai')->where('id_user', $pengguna->id_user)->first();
         $role = DB::table('role_pegawai')->where('id_role_pegawai', $pengguna->id_role_pegawai)->first();
