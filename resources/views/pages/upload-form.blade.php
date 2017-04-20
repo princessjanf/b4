@@ -13,16 +13,20 @@
 @endif
 
 <form action="{{url('upload')}}" method="post" enctype="multipart/form-data">
-  {{ csrf_field() }}
-  Product name:
-  <br />
-  <input type="text" name="name" />
-  <br /><br />
-  Product photos (can attach more than one):
-  <br />
-  <input type="file" name="photos[]" multiple />
-  <br /><br />
-  <input type="submit" value="Upload" />
+  <input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
+  <input type = "hidden" name = "idBeasiswa" value="1" >
+  <input type = "hidden" name = "idBerkas" value="1" >
+  <input type = "hidden" name = "idMahasiswa" value="2" >
+
+  1. Judulnya:
+  <input type = "hidden" name = "nama[0]" value="Judulnya" >
+  <input type="file" name="berkases[0]" />
+  <br>
+  2. Judulnya2:
+  <input type = "hidden" name = "nama[0]" value="Judulnya2" >
+  <input type="file" name="berkases[1]" />
+  <br><br>
+  <input type="submit" name="submit" value="Upload" />
 </form>
 
 @endsection
