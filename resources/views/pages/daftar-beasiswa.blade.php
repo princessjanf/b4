@@ -28,78 +28,62 @@
 	<div class = "row">
 		<div class="form-group col-sm-3">
 			<label for="NPM">NPM</label>
-			<input type="text" placeholder="NPM" class="form-control" name="npm" required="">
+			<input type="text" placeholder="NPM" class="form-control" name="npm" value={{$mahasiswa->npm}} readonly>
 		</div>
-		<div class="form-group col-sm-3">
+		<div class="form-group col-sm-4">
 			<label for="Email">Email</label>
-			<input type="email" placeholder="Email" class="form-control" name="email" required="">
+			<input type="email" placeholder="Email" class="form-control" name="email" value={{$mahasiswa->email}} readonly>
 		</div>
-		<div class="form-group col-sm-3">
+		<div class="form-group col-sm-2">
 			<label for="IPK">IPK</label>
-			<input type="number" placeholder="IPK" class="form-control" name="ipk" required="" step="0.01">
+			<input type="number" placeholder="IPK" class="form-control" name="ipk" value={{$mahasiswa->IPK}} readonly>
 		</div>
 	</div>
 
 	<div class = "row">
 		<div class="form-group col-sm-4">
 			<label for="jenisidentitas">Jenis Identitas</label>
-			<select class="form-control" id="identitas" name="jenisidentitas">
-				<option selected disabled> --Pilih Identitas-- </option>
-				<option value= "KTP"> KTP </option>
-				<option value= "SIM"> SIM </option>
-				<option value= "KTM"> KTM </option>
-				<option value= "Paspor"> Paspor </option>
-			</select>
+			<input type="text" placeholder="Jenis. Identitas" class="form-control" name="jenisidentitas" value={{$mahasiswa->jenis_identitas}} readonly>
 		</div>
+
 		<div class="form-group col-sm-5">
 			<label for="NoIdentitas">No. Identitas</label>
-			<input type="text" placeholder="No. Identitas" class="form-control" name="noidentitas" required="">
+			<input type="text" placeholder="No. Identitas" class="form-control" name="noidentitas" value={{$mahasiswa->nomor_identitas}} readonly>
 		</div>
 	</div>
 
 
 	<div class = "row">
 		<div class="form-group col-sm-4">
-			<label for="jenisrek">Nama Bank</label>
-			<select class="form-control" id="jenisrek" name="jenisrek">
-				<option selected disabled> --Pilih Bank-- </option>
-				<option value= "BNI"> BNI </option>
-				<option value= "BRI"> BRI </option>
-				<option value= "Mandiri"> Mandiri </option>
-				<option value= "BCA"> BCA </option>
-				<option value= "CIMB Niaga"> CIMB Niaga </option>
-				<option value= "DKI"> DKI </option>
-				<option value= "Danamon"> Danamon </option>
-				<option value= "OCBC NISP"> OCBC NISP </option>
-				<option value= "Bukopin"> Bukopin </option>
-			</select>
+			<label for="namaBank">Nama Bank</label>
+			<input type="text" placeholder="No. Identitas" class="form-control" name="namaBank" value={{$mahasiswa->nama_bank}} readonly>
 		</div>
 
 		<div class="form-group col-sm-5">
 			<label for="norek">No. Rekening</label>
-			<input type="text" placeholder="No. Rekening" class="form-control" name="norek" required="">
+			<input type="text" placeholder="No. Rekening" class="form-control" name="norek" value={{$mahasiswa->nomor_rekening}} readonly>
 		</div>
 	</div>
 
 		<div class="form-group">
 			<label for="namapemilik">Nama Pemilik Rekening</label>
-			<input type="text" placeholder="Nama Pemilik Rekening" class="form-control" name="namapemilik" required="" maxlength="20">
+			<input type="text" placeholder="Nama Pemilik Rekening" class="form-control" name="namapemilik" required="" value={{$mahasiswa->nama_pemilik_rekening}} readonly>
 		</div>
 
 		<div class="form-group">
 			<label for="alamat">Alamat</label>
-			<input type="text" placeholder="Alamat" class="form-control" name="alamat" required="">
+			<input type="text" placeholder="Alamat" class="form-control" name="alamat" value={{$mahasiswa->alamat}} readonly>
 		</div>
 
 	<div class = "row">
 		<div class="form-group col-sm-4">
 			<label for="telp">No. Telpon</label>
-			<input type="text" placeholder="No. Telpon" class="form-control" name="telp" required="">
+			<input type="text" placeholder="No. Telpon" class="form-control" name="telp" value={{$mahasiswa->nomor_telepon}} readonly>
 		</div>
 
 		<div class="form-group col-sm-5">
 			<label for="nohp">No. HP</label>
-			<input type="text" placeholder="No. HP" class="form-control" name="nohp" required="">
+			<input type="text" placeholder="No. HP" class="form-control" name="nohp" value={{$mahasiswa->nomor_hp}} readonly>
 		</div>
 	
 	</div>
@@ -107,7 +91,7 @@
 	<div class="row">
 		<div class="form-group col-sm-4">
 				<label for="penghasilan">Penghasilan Orang Tua (Rp.)</label>
-				<input type="text" placeholder="1.000.000" class="form-control" name="penghasilan" required="">
+				<input type="text" placeholder="1.000.000" class="form-control" name="penghasilan" value={{$mahasiswa->penghasilan_orang_tua}} readonly>
 		</div>
 	</div>
 	

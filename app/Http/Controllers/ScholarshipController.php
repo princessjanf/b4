@@ -85,8 +85,10 @@ class ScholarshipController extends Controller
           $namarole = $role->nama_role;
 
           $beasiswa = DB::table('beasiswa')->where('id_beasiswa', $id)->first();
+          $mahasiswa = DB::table('mahasiswa')->where('id_user', $pengguna->id_user)->first();
+
           if($namarole=='Mahasiswa'){
-            return view('pages.daftar-beasiswa')->withBeasiswa($beasiswa)->withUser($user)->withNamarole($namarole)->withPengguna($pengguna);
+            return view('pages.daftar-beasiswa')->withBeasiswa($beasiswa)->withUser($user)->withNamarole($namarole)->withPengguna($pengguna)->withMahasiswa($mahasiswa);
           }
           else{
             return redirect('noaccess');
@@ -104,9 +106,9 @@ class ScholarshipController extends Controller
                   [$request->get('idBeasiswa'),
                   $request->get('userid'),
                   $request->input('alamat'),
-                  $request->get('jenisrek'),
+                  $request->input('namaBank'),
                   $request->input('norek'),
-                  $request->get('jenisidentitas'),
+                  $request->input('jenisidentitas'),
                   $request->input('noidentitas'),
                   $request->input('namapemilik'),
                   $request->input('telp'),
