@@ -9,16 +9,12 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 
-
 @extends('master')
 
 @section('title', 'Profil')
 
 @section('content')
-      <li><a href="{{url('edit-profil')}}">Edit</a></li>
-      <p></p>
     <div class="col-sm-9">
-    
     @if($namarole=='Pegawai Universitas'||$namarole=='Pegawai Fakultas'||$namarole=='Direktorat Kerjasama')
      NAMA:
      <p><label>{{$pengguna->nama}}</label></p>
@@ -51,11 +47,12 @@
    @endforeach
    </tbody>
     </table>
-      <!--  @foreach($beasiswas as $index => $beasiswa) -->
-   <!--  <p><label>{{$index+1}} {{$beasiswa->nama_beasiswa}}</label></p>
-    @endforeach -->
 
    @elseif($namarole=='Mahasiswa')
+   <div class="container">
+  <p><a href="{{url('edit-profil')}}"><button type="button" class="btn btn-info">Edit Profil</button></a></p>
+   </div>
+   <p></p>
    NAMA:
    <p><label>{{$pengguna->nama}}</label></p>
    FAKULTAS
@@ -111,7 +108,3 @@
 @endsection
 
 </html>
-
-.table table-striped {
-  
-}

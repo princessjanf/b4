@@ -297,6 +297,7 @@ class MainController extends Controller
           ->update(['jenis_identitas'=>$request->input('jenisIdentitas'),
                     'nomor_identitas'=>$request->input('nomorIdentitas'),
                     'nama_pemilik_rekening'=>$request->input('pemilikRekening'),
+                    'nama_bank'=>$request->input('namaBank')
                   ]);
           $idUser = $request->get('idUser');
 

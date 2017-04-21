@@ -41,10 +41,45 @@
    NOMOR REKENING:
    <p><label>{{$mahasiswa->nomor_rekening}}</label></p>
    NAMA BANK:
-    <p>{{$mahasiswa->nama_bank}}</p>
+   <div class="form-group">
+   <!--  <label for="namaBank"></label> -->
+    <div class="input-group col-sm-4">
+      <select class="form-control" name="namaBank" id="namaBank" required>
+        <option> {{ $mahasiswa->nama_bank }}</option>
+       @if( $mahasiswa->nama_bank  != 'BNI')
+        <option value= "BNI"> BNI </option>
+       @endif
+       @if( $mahasiswa->nama_bank  != 'BRI')
+        <option value= "BRI"> BRI </option>
+       @endif
+       @if( $mahasiswa->nama_bank  != 'Mandiri')
+        <option value= "Mandiri"> Mandiri </option>
+       @endif
+        @if( $mahasiswa->nama_bank  != 'BCA')
+        <option value= "BCA"> BCA </option>
+       @endif
+       @if( $mahasiswa->nama_bank  != 'CIMB Niaga')
+        <option value= "CIMB Niaga"> CIMB Niaga </option>
+       @endif
+        @if( $mahasiswa->nama_bank  != 'DKI')
+        <option value= "DKI"> DKI </option>
+       @endif
+        @if( $mahasiswa->nama_bank  != 'Danamon')
+        <option value= "Danamon"> Danamon </option>
+       @endif
+        @if( $mahasiswa->nama_bank  != 'OCBC NISP')
+        <option value= "OCBC NISP"> OCBC NISP </option>
+       @endif
+        @if( $mahasiswa->nama_bank  != 'Bukopin')
+        <option value= "Bukopin"> Bukopin </option>
+       @endif
+      </select>
+    </div>
+  </div>
+  
    JENIS IDENTITAS:
    <div class="form-group">
-    <label for="jenisIdentitas">Jenis Identitas</label>
+   <!--  <label for="jenisIdentitas"></label> -->
     <div class="input-group col-sm-4">
       <select class="form-control" name="jenisIdentitas" id="jenisIdentitas" required>
         <option> {{ $mahasiswa->jenis_identitas }}</option>
@@ -57,6 +92,9 @@
        @if( $mahasiswa->jenis_identitas  != 'Kartu Pelajar')
         <option value= "KartuPelajar"> Kartu Pelajar </option>
        @endif
+       @if( $mahasiswa->jenis_identitas  != 'Paspor')
+        <option value= "Paspor"> Paspor </option>
+       @endif
       </select>
     </div>
   </div>
@@ -64,12 +102,14 @@
 
     NO. IDENTITAS:
   <input type="number" class="form-control" name="nomorIdentitas" required value= "{{ $mahasiswa->nomor_identitas }}">
+   <p></p>
     NO.TELEPON:
      <p><label>{{$mahasiswa->nomor_telepon}}</label></p>
     NO. HANDPHONE:
      <p><label>{{$mahasiswa->nomor_telepon}}</label></p>
     NAMA PEMILIK REKENING:
     <input type="text" class="form-control" name="pemilikRekening" required value= "{{ $mahasiswa->nama_pemilik_rekening }}">
+    <p></p>
     PENGHASILAN ORANG TUA:
      <p><label>{{$mahasiswa->penghasilan_orang_tua}}</label></p>
 
