@@ -23,7 +23,7 @@
   <input type="file" name="berkases[0]" />
   <br>
   2. Judulnya2:
-  <input type = "hidden" name = "nama[0]" value="Judulnya2" >
+  <input type = "hidden" name = "nama[1]" value="Judulnya2" >
   <input type="file" name="berkases[1]" />
   <br><br>
   <input type="submit" name="submit" value="Upload" />
