@@ -48,9 +48,9 @@
 			</td>
 			<td>
 				@if ($beasiswa->tanggal_buka <= Carbon\Carbon::now() and Carbon\Carbon::now() <= $beasiswa->tanggal_tutup)
-				Dibuka
+				<p><b><font color="green">Dibuka</font></b></p>
 				@else
-				Ditutup
+				<p><b><font color="red">Ditutup</font></b></p>
 				@endif
 			</td>
 			<td>{{$beasiswa->tanggal_tutup}}</td>
@@ -84,16 +84,19 @@
 						</div>
 					</div>
 				</div>
-				@if($beasiswa->public==1)
+				@if($beasiswa->public==0)
 				<a href = "{{ url('make-public-beasiswa/'.$beasiswa->id_beasiswa) }}" class="btn btn-info" data-toggle="tooltip" title="Make Public" role="button">
 					<span class="glyphicon glyphicon-eye-open"></span>
 				</a>
 				@else
+				
 				@endif
 			</td>
 			@elseif($namarole=="Mahasiswa")
-			<td>
-				<a href = "{{url('/daftar-beasiswa/'.$beasiswa->id_beasiswa)}}"><button class="btn"><b>Daftar</b></button></a>
+			<td>	@if ($beasiswa->tanggal_buka <= Carbon\Carbon::now() and Carbon\Carbon::now() <= $beasiswa->tanggal_tutup)
+					<a href = "{{url('/daftar-beasiswa/'.$beasiswa->id_beasiswa)}}"><button class="btn"><b>Daftar</b></button></a>
+					@endif
+
 			</td>
 			@elseif($namarole=="Direktorat Kerjasama")
 			<td>
