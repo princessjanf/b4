@@ -1,3 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Edit Profil</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+
+
 @extends('master')
 
 @section('title', 'Profil')
@@ -22,9 +34,26 @@
       <p><label>{{$pengguna->nama}}</label></p>
 
       NAMA BEASISWA YANG DI DONORKAN:
-       @foreach($beasiswas as $index => $beasiswa)
-    <p><label>{{$index+1}} {{$beasiswa->nama_beasiswa}}</label></p>
-    @endforeach
+       <p></p>
+    <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>No.</th>
+        <th>Nama Beasiswa</th>
+      </tr>
+    </thead>
+    <tbody>
+    <tr>
+   @foreach($beasiswas as $index => $beasiswa)
+    <th><label>{{$index+1}}.</label></th>
+   <th><label>{{$beasiswa->nama_beasiswa}}</label></th>
+   </tr>
+   @endforeach
+   </tbody>
+    </table>
+      <!--  @foreach($beasiswas as $index => $beasiswa) -->
+   <!--  <p><label>{{$index+1}} {{$beasiswa->nama_beasiswa}}</label></p>
+    @endforeach -->
 
    @elseif($namarole=='Mahasiswa')
    NAMA:
@@ -55,14 +84,34 @@
      <p><label>{{$mahasiswa->penghasilan_orang_tua}}</label></p>
 
     DAFTAR BEASISWA YANG DIDAFTAR:
+   <p></p>
+    <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>No.</th>
+        <th>Nama Beasiswa</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+    <tr>
     @foreach($beasiswas as $index => $beasiswa)
-    <p><label>{{$index+1}}. {{$beasiswa->nama_beasiswa}} - {{$beasiswa->nama_lamaran}}</label></p>
-
+    <th><label>{{$index+1}}.</label></th>
+   <th><label>{{$beasiswa->nama_beasiswa}}</label></th>
+   <th><label>{{$beasiswa->nama_lamaran}}</label></th>
+   </tr>
     @endforeach
+   </tbody>
+    </table>
+    
 
  
     @endif
     </div>
 @endsection
 
+</html>
 
+.table table-striped {
+  
+}
