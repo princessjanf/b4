@@ -73,13 +73,13 @@ class MainController extends Controller
       $role = DB::table('role')->where('id_role', $pengguna->id_role)->first();
       $namarole = $role->nama_role;
 
-      if($namarole=='pegawai'){
-        $pengguna = DB::table('pegawai')->where('username', $user->username)->first();
+      if($namarole=='Pegawai'){
+        $pengguna = DB::table('pegawai')->where('id_user', $pengguna->id_user)->first();
         $role = DB::table('role_pegawai')->where('id_role_pegawai', $pengguna->id_role_pegawai)->first();
         $namarole = $role->nama_role_pegawai;
       }
 
-      if ($namarole == 'mahasiswa' || $namarole == 'Pegawai Fakultas') {
+      if ($namarole == 'Mahasiswa' || $namarole == 'Pegawai Fakultas') {
         $beasiswas = DB::table('beasiswa')->where('flag', '1')->where('public', '1')->get();
       } else if ($namarole == 'pendonor'){
         $pendonor = DB::table('pendonor')->where('username', $user->username)->first();
@@ -89,6 +89,7 @@ class MainController extends Controller
       } else {
         $beasiswas = DB::table('beasiswa')->where('flag', '1')->get();
       }
+
       return view('pages.list-beasiswa')->withBeasiswas($beasiswas)->withUser($user)->withNamarole($namarole);
     }
 
@@ -177,4 +178,160 @@ class MainController extends Controller
         return view('pages.detail-beasiswa')->withBeasiswa($beasiswa)->withPersyaratans($persyaratans)->withUser($user)->withNamarole($namarole);
       }
     }
+
+    function seleksi($id)
+    {
+      /*
+          Cek if user adalah penyeleksi beasiswa
+            Jika iya, tunjukkan page seleksi beasiswa beserta tahapannya tapi di disabled kalau dia bukan penyeleksi tahapan tsb
+              Jika dia penyeleksi tahapan tsb. tunjukkan tombol lakukan seleksiBeasiswa
+          Jika tidak, tunjukkan no acces
+
+          ------------------------------------------SELEKSI
+      */
+      $user = SSO::getUser();
+      $pengguna = DB::table('user')->where('username', $user->username)->first();
+      $role = DB::table('role')->where('id_role', $pengguna->id_role)->first();
+      $namarole = $role->nama_role;
+
+      if ($namarole=='Mahasiswa')
+      {
+        return view('pages.noaccess')->withUser($user)->withNamarole($namarole);
+      }
+
+      //Retrieve role pegawai
+      else if($namarole=='Pegawai'){
+        $pengguna = DB::table('pegawai')->where('id_user', $pengguna->id_user)->first();
+        $role = DB::table('role_pegawai')->where('id_role_pegawai', $pengguna->id_role_pegawai)->first();
+        $namarole = $role->nama_role_pegawai;
+      }
+
+      //Cek if user adalah penyeleksi untuk beasiswa tersebut
+      $retrievePenyeleksi = DB::table('beasiswa_penyeleksi')->where('id_beasiswa',$id)->where('id_penyeleksi', $pengguna->id_user)->first();
+
+
+      if (empty($retrievePenyeleksi))
+      {
+          return view('pages.noaccess')->withUser($user)->withNamarole($namarole);
+      }
+      else{
+
+          //Retrieve Akses Beasiswa: didapat dari get semua bp dgn beasiswa dan penyeleksi tertentu
+
+          $retrAksesTahapan = DB::table('beasiswa_penyeleksi')->where('id_beasiswa',$id)->where('id_penyeleksi', $pengguna->id_user)
+                              ->join('beasiswa_penyeleksi_tahapan','beasiswa_penyeleksi.id_bp','=','beasiswa_penyeleksi_tahapan.id_bp')
+                              ->select('beasiswa_penyeleksi_tahapan.id_tahapan')->get();
+
+          //Retrieve Tahapan Beasiswa: tahapan yang ada dari sebuah beasiswa
+          $retrTahapan = DB::table('beasiswa_penyeleksi')->where('id_beasiswa', $id)
+                        ->join('beasiswa_penyeleksi_tahapan','beasiswa_penyeleksi.id_bp','=','beasiswa_penyeleksi_tahapan.id_bp')
+                        ->join('tahapan','beasiswa_penyeleksi_tahapan.id_tahapan','=','tahapan.id_tahapan')
+                        ->join('user','beasiswa_penyeleksi.id_penyeleksi','=','user.id_user')
+                        ->select('beasiswa_penyeleksi_tahapan.id_tahapan', 'tahapan.nama_tahapan','user.nama')
+                        ->orderBy('beasiswa_penyeleksi_tahapan.id_tahapan', 'asc')->get();
+
+            /*$retrTahapan = DB::table('beasiswa_penyeleksi_tahapan')->where('id_bp', $retrievePenyeleksi->id_bp)
+                           ->join('tahapan','beasiswa_penyeleksi_tahapan.id_tahapan','=','tahapan.id_tahapan')
+                           ->select('beasiswa_penyeleksi_tahapan.id_tahapan', 'tahapan.nama_tahapan')
+                           ->orderBy('beasiswa_penyeleksi_tahapan.id_tahapan', 'asc')->get();
+            */
+
+
+            return view('pages.seleksi-beasiswa')->withUser($user)->withNamarole($namarole)->withAksestahapan($retrAksesTahapan)->withTahapan($retrTahapan)->withIdbeasiswa($id);
+
+
+      }
+    }
+
+    function seleksiBeasiswa($idBeasiswa, $idTahapan){
+      $user = SSO::getUser();
+      $pengguna = DB::table('user')->where('username', $user->username)->first();
+      $role = DB::table('role')->where('id_role', $pengguna->id_role)->first();
+      $namarole = $role->nama_role;
+
+      if ($namarole=='Mahasiswa')
+      {
+        return view('pages.noaccess')->withUser($user)->withNamarole($namarole);
+      }
+
+      //Retrieve role pegawai
+      else if($namarole=='Pegawai'){
+        $pengguna = DB::table('pegawai')->where('id_user', $pengguna->id_user)->first();
+        $role = DB::table('role_pegawai')->where('id_role_pegawai', $pengguna->id_role_pegawai)->first();
+        $namarole = $role->nama_role_pegawai;
+      }
+
+      //Check apakah penyeleksi ini memiliki akses ke tahapan tertentu dari beasiswa tertentu
+      $cekPenyeleksi = DB::table('beasiswa_penyeleksi')->where('id_beasiswa', $idBeasiswa)->where('id_penyeleksi', $pengguna->id_user)
+                       ->join('beasiswa_penyeleksi_tahapan','beasiswa_penyeleksi.id_bp','=','beasiswa_penyeleksi_tahapan.id_bp')
+                       ->where('id_tahapan',$idTahapan)->get();
+
+       if ($cekPenyeleksi->count() == 0)
+       {
+           return view('pages.noaccess')->withUser($user)->withNamarole($namarole);
+       }
+      else{
+        // BELUM: cek if tahapan ini udah final atau belum, kalau udah final cuma bisa lihat hasil seleksi
+        //get nama dan nilai pendaftar beasiswa untuk tahap ini
+
+        $cekFinal = DB::table('seleksi_beasiswa')->where('id_beasiswa', $idBeasiswa)->where('id_tahapan', $idTahapan)->first();
+        if (empty($cekFinal))
+        {
+          echo "belum ada pendaftar bleh";
+        }
+        else if($cekFinal -> final == '1')
+        {
+          echo "lihat seleksi";
+        }
+        else{
+        $pendaftar = DB::table('pendaftaran_beasiswa')->where('pendaftaran_beasiswa.id_beasiswa', $idBeasiswa)
+                    ->join('seleksi_beasiswa','pendaftaran_beasiswa.id_beasiswa','=','seleksi_beasiswa.id_beasiswa')
+                    ->where('id_tahapan','=',$idTahapan)
+                    ->join('user','seleksi_beasiswa.id_mahasiswa','=','user.id_user')
+                    ->select('seleksi_beasiswa.id_mahasiswa', 'seleksi_beasiswa.nilai_seleksi', 'seleksi_beasiswa.final', 'user.nama')->get();
+
+          return view('pages.seleksi-tahapan')->withUser($user)->withPengguna($pengguna)->withNamarole($namarole)->withPendaftar($pendaftar)->withIdtahapan($idTahapan)->withIdbeasiswa($idBeasiswa);
+        }
+      }
+
+    }
+    function savedraftest()
+    {
+      $table = "2=90&2=33&3=21";
+      $table = explode("&",$table);
+      echo $table[0];
+      $idbeasiswa = 5;
+      $pengguna=3;
+
+    //  for($i = 0;$i < sizeof($table);$i++)
+      //{
+        $row = explode("=",$table[0]);
+        echo $row[0] ."yay". $row[1];
+        DB::table('seleksi_beasiswa')
+            ->where('id_beasiswa', $idbeasiswa)->where('id_penyeleksi', $pengguna)
+            ->where('id_mahasiswa', $row[0])
+            ->update(['nilai_seleksi' => $row[1]]);
+      //}
+      //$msg = "This is a simple message.";
+
+
+    }
+    function saveDraft(Request $request)
+    {
+
+      $table = explode("&",$request->get('table'));
+
+      for($i = 0;$i < sizeof($table);$i++)
+      {
+        $row = explode("=",$table[0]);
+        DB::table('seleksi_beasiswa')
+            ->where('id_beasiswa', $request->idbeasiswa)->where('id_penyeleksi', $request->pengguna)
+            ->where('id_tahapan', $request->idtahapan)->where('id_mahasiswa', $row[0])
+            ->update(['nilai_seleksi' => $row[1]]);
+      }
+      //$msg = "This is a simple message.";
+      return response()->json(array('msg'=> $request->pengguna), 200);
+    }
+
+
   }

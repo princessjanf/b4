@@ -60,6 +60,22 @@ Route::post('insert-beasiswa',[
   'uses' => 'ScholarshipController@insertBeasiswa'
 ]);
 
+Route::get('seleksi/{id}', [
+  'middleware' => 'authSSO',
+  'uses' => 'MainController@seleksi'
+]);
+
+Route::get('seleksi-beasiswa/{idBeasiswa}/{idTahapan}', [
+  'middleware' => 'authSSO',
+  'uses' => 'MainController@seleksiBeasiswa'
+]);
+
+Route::post('save-draft', 'MainController@saveDraft');
+
+Route::get('savedraft', 'MainController@savedraftest');
+
+//seleksi-tahapan/{id_beasiswa}/{id_tahapan}/{id_penyeleksi}
+
 Route::post('update-beasiswa',[
   'middleware' => 'authSSO',
   'uses' => 'ScholarshipController@updateBeasiswa'
