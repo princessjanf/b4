@@ -103,7 +103,7 @@ class ScholarshipController extends Controller
        DB::insert('INSERT INTO `pendaftaran_beasiswa`(`id_beasiswa`, `id_mahasiswa`,`status_lamaran`,`alamat`,`nama_bank`,`nomor_rekening`,`jenis_identitas`,`nomor_identitas`,`nama_pemilik_rekening`,`nomor_telepon`,`nomor_hp`,`penghasilan_orang_tua`,`IPK` )
                   VALUES (?,?,1,?,?,?,?,?,?,?,?,?,?)',
                   [$request->get('idBeasiswa'),
-                  $request->get('user_id'),
+                  $request->get('userid'),
                   $request->input('alamat'),
                   $request->get('jenisrek'),
                   $request->input('norek'),

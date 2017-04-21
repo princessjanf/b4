@@ -15,7 +15,7 @@
 
 	<input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
 	<input type = "hidden" name = "idBeasiswa" value= {{$beasiswa->id_beasiswa}}>
-	<input type = "hidden" name = "user_id" value= {{$pengguna->id_user}}>
+	<input type = "hidden" name = "userid" value= {{$pengguna->id_user}}>
 
 
 

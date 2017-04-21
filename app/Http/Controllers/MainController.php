@@ -71,6 +71,10 @@ class MainController extends Controller
       $user = SSO::getUser();
       $pengguna = DB::table('user')->where('username', $user->username)->first();
       $role = DB::table('role')->where('id_role', $pengguna->id_role)->first();
+      $beasiswa1 = DB::table('beasiswa')->first();
+      $pendonorBeasiswa = DB::table('pendonor')->where('id_user', $beasiswa1->id_pendonor)->first();
+      $pendonor_beasiswa = $pendonorBeasiswa->nama_instansi;
+
       if ($role->nama_role == 'Pegawai')
       {
         $roles = DB::table('role_pegawai')->where('id_role_pegawai', $role->id_role)->first();
@@ -97,7 +101,7 @@ class MainController extends Controller
       } else {
         $beasiswas = DB::table('beasiswa')->where('flag', '1')->get();
       }
-      return view('pages.list-beasiswa')->withBeasiswas($beasiswas)->withUser($user)->withNamarole($namarole);
+      return view('pages.list-beasiswa')->withBeasiswas($beasiswas)->withUser($user)->withNamarole($namarole)->withPendonorBeasiswa($pendonor_beasiswa);
     }
 
      function addbeasiswa()
