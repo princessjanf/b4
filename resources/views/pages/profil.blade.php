@@ -53,6 +53,8 @@
   <p><a href="{{url('edit-profil')}}"><button type="button" class="btn btn-info">Edit Profil</button></a></p>
    </div>
    <p></p>
+    <div class="row">
+    <div class = "col-sm-6">
    NAMA:
    <p><label>{{$pengguna->nama}}</label></p>
    FAKULTAS
@@ -67,6 +69,8 @@
    <p><label>{{$mahasiswa->nomor_rekening}}</label></p>
    NAMA BANK:
     <p><label>{{$mahasiswa->nama_bank}}</label></p>
+    </div>
+    <div class = "col-sm-6">
    JENIS IDENTITAS:
     <p><label>{{$mahasiswa->jenis_identitas}}</label></p>
     NO. IDENTITAS:
@@ -79,7 +83,8 @@
      <p><label>{{$mahasiswa->nama_pemilik_rekening}}</label></p> 
     PENGHASILAN ORANG TUA:
      <p><label>{{$mahasiswa->penghasilan_orang_tua}}</label></p>
-
+     </div>
+     </div>
     DAFTAR BEASISWA YANG DIDAFTAR:
    <p></p>
     <table class="table table-striped">
