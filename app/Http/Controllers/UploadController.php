@@ -35,7 +35,7 @@ class UploadController extends Controller
     $idMahasiswa = $request->get('idMahasiswa');
 
     foreach ($request->berkases as $index=>$berkas) {
-      $file = $berkas->storeAs('berkas', $idMahasiswa.'-'.$request->nama[$index]);
+      $file = $berkas->storeAs('berkas', $idMahasiswa.'-'.$request->nama[$index].'.pdf');
 
       DB::insert('INSERT INTO `beasiswa_berkas`(`id_beasiswa`, `id_berkas`, `id_mahasiswa`, `file`)
       VALUES (?,?,?,?)',

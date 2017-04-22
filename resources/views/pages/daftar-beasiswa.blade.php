@@ -7,7 +7,7 @@
 @endsection
 
 @section('content')
-<form id='daftarScholarshipForm' action = "{{ url('register-beasiswa') }}" onsubmit="return validateForm()" method = "post" data-parsley-validate="">
+<form id='daftarScholarshipForm' action = "{{ url('register-beasiswa') }}" onsubmit="return validateForm()" method = "post" data-parsley-validate="" enctype="multipart/form-data">
 	<div>
 		<h3> Daftar Beasiswa </h3>
 		<p style="font-weight:bold"> Semua Kolom Harus Diisi </p>
@@ -16,7 +16,7 @@
 	<input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
 	<input type = "hidden" name = "idBeasiswa" value= {{$beasiswa->id_beasiswa}}>
 	<input type = "hidden" name = "userid" value= {{$pengguna->id_user}}>
-
+  <input type = "hidden" name = "idMahasiswa" value={{$pengguna->id_user}} >
 
 
 	<div class="form-group">
@@ -101,16 +101,31 @@
 			<label for="nohp">No. HP</label>
 			<input type="text" placeholder="No. HP" class="form-control" name="nohp" required="">
 		</div>
-	
+
 	</div>
-	
+
 	<div class="row">
 		<div class="form-group col-sm-4">
 				<label for="penghasilan">Penghasilan Orang Tua (Rp.)</label>
 				<input type="text" placeholder="1.000.000" class="form-control" name="penghasilan" required="">
 		</div>
 	</div>
-	
+
+	<div>
+		@if (count($berkas) > 0)
+		<h5>Berkas:</h5>
+		<div class="row">
+			@foreach ($berkas as $index => $tmp)
+			<div class="form-group col-sm-8">
+				<input name = "nama[{{$index}}]" value="{{$tmp->nama_berkas}}" hidden>
+				<input name = "idBerkas[{{$index}}]" value="{{$tmp->id_berkas}}" hidden>
+				<label for="berkases[{{$index}}]">{{$index+1}}. {{$tmp->nama_berkas}}</label>
+				<input type="file" class="form-control" name="berkases[{{$index}}]" required>
+			</div>
+			@endforeach
+		</div>
+		@endif
+	</div>
 
 	<div>
 		<button type="submit" id="submit-form" class="btn btn-success"> Submit </button>

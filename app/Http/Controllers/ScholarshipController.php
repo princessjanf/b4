@@ -7,6 +7,7 @@ use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\DB;
+use App\Http\Requests\UploadRequest;
 use Illuminate\Http\Request;
 use SSO\SSO;
 
@@ -26,7 +27,7 @@ class ScholarshipController extends Controller
 
       $role = DB::table('role_pegawai')->where('id_role_pegawai', $pengguna->id_role_pegawai)->first();
       $namarole = $role->nama_role_pegawai;
-      
+
 
       $kategoribeasiswa = DB::table('kategori_beasiswa')->get();
       $pendonor = DB::table('pendonor')->get();
@@ -87,16 +88,23 @@ class ScholarshipController extends Controller
 
           $beasiswa = DB::table('beasiswa')->where('id_beasiswa', $id)->first();
           if($namarole=='Mahasiswa'){
-            return view('pages.daftar-beasiswa')->withBeasiswa($beasiswa)->withUser($user)->withNamarole($namarole)->withPengguna($pengguna);
+
+            $berkas = DB::table('assignment_berkas_beasiswa')
+                              ->where('id_beasiswa', $id)
+                              ->join('berkas', 'berkas.id_berkas', '=', 'assignment_berkas_beasiswa.id_berkas')
+                              ->select('berkas.*')
+                              ->get();
+
+            return view('pages.daftar-beasiswa')->withBeasiswa($beasiswa)->withUser($user)->withNamarole($namarole)->withPengguna($pengguna)->withBerkas($berkas);
           }
           else{
             return redirect('noaccess');
           }
       }
 
-      public function registerBeasiswa(Request $request) 
+      public function registerBeasiswa(UploadRequest $request)
     {
-        
+
         $beasiswa = DB::table('beasiswa')->orderBy('id_beasiswa', 'desc')->first();
 
        /** waktu melamar belom*/
@@ -116,8 +124,21 @@ class ScholarshipController extends Controller
                   $request->input('ipk')
                   ]
                 );
-      
+                $this->uploadSubmit($request);
       return redirect('/detail-beasiswa/'.$request->get('idBeasiswa'));
+    }
+
+    public function uploadSubmit(UploadRequest $request)
+    {
+      $idBeasiswa = $request->get('idBeasiswa');
+      $idMahasiswa = $request->get('userid');
+
+      foreach ($request->berkases as $index=>$berkas) {
+        $idBerkas = $request->idBerkas[$index];
+        $file = $berkas->storeAs('berkas', $idMahasiswa.'-'.$request->nama[$index].'.pdf');
+        DB::insert('INSERT INTO `beasiswa_berkas`(`id_beasiswa`, `id_berkas`, `id_mahasiswa`, `file`)
+                    VALUES (?,?,?,?)', [$idBeasiswa, $idBerkas, $idMahasiswa, $file]);
+      }
     }
 
     public function delete($id){
@@ -248,5 +269,5 @@ class ScholarshipController extends Controller
           return redirect('/detail-beasiswa/'.$idBeasiswa);
       }
 
-      
+
 }
