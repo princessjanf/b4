@@ -8,14 +8,37 @@
 
 @section('content')
 <!-- user : username, name, role
-		 pengguna : username, nama, email
-		 namarole
-     idtahapan
-		 idbeasiswa
-		 pendaftar: id_mahasiswa, nilai_seleksi, final, nama
+	pengguna : username, nama, email
+	namarole
+	idtahapan
+	idbeasiswa
+	pendaftar: id_mahasiswa, nilai_seleksi, final, nama
 -->
 
+<div class='modal fade' id='resultConfirmationModal' role='dialog'>
+	<div class='modal-dialog'>
+		<div class='modal-content'>
+			<div class='modal-header'>
+				<button type='button' class='close' data-dismiss='modal'></button>
+				<h4 class='modal-title'>Penerima Beasiswa</h4>
+			</div>
+			<div class='modal-body'>
+					<p> Terpilih
+					<span id="jumlahChecked"> </span>
+					dari kuota {{$beasiswa->kuota}} mahasiswa </p>
 
+			</div>
+			<div class='modal-footer'>
+				<div  id= "alertChecked" class="alert alert-danger alert-dismissable fade in">
+								<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+								<strong>Pilihan Mahasiswa Melebihi Kuota!</strong>
+				</div>
+				<button type='button' id="submitResult" class='btn btn-default' data-dismiss='modal' onclick="finalizeResult()">Submit</button>
+				<button type='button' class='btn btn-default' data-dismiss='modal'>Close</button>
+			</div>
+		</div>
+	</div>
+</div>
 
 <table id='tableSeleksi' class="table table-striped col-sm-8">
 	<thead>
@@ -31,30 +54,30 @@
 		<tr>
 			<td>{{$index+1}}</td>
 			<td>
-        {{$pendaftar->nama}}
+				{{$pendaftar->nama}}
 			</td>
-      <td>
-			  <input type = "number" id="{{$pendaftar->id_mahasiswa}}" name = "{{$pendaftar->id_mahasiswa}}" value= "{{$pendaftar->nilai_seleksi}}" min="0" max="100">
-      </td>
+			<td>
+				<input type = "number" id="{{$pendaftar->id_mahasiswa}}" name = "{{$pendaftar->id_mahasiswa}}" value= "{{$pendaftar->nilai_seleksi}}" min="0" max="100">
+			</td>
 		</tr>
 		@endforeach
 
-	<!--
-	@for ($i = 0; $i < 15; $i++)
-	<tr>
-		<td>1</td>
-		<td>
+		<!--
+			@for ($i = 0; $i < 15; $i++)
+			<tr>
+			<td>1</td>
+			<td>
 			a
-		</td>
-		<td>
+			</td>
+			<td>
 			<input type = "number" value= "2" min="0" max="100">
-		</td>
+			</td>
 
-	</tr>
+			</tr>
 
 
-	@endfor
-	-->
+			@endfor
+		-->
 	</tbody>
 </table>
 
@@ -62,10 +85,10 @@
 	<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 	<strong>Nilai sementara berhasil disimpan</strong>
 </div>
-
-<button onclick="saveDraft()"> Save As Draft </button>
-
-<button> Finalize Result </button>
+<div id = "fix">
+	<button onclick="saveDraft()"> Save As Draft </button>
+</div>
+<button onclick="showResult()"> Finalize Result </button>
 
 @endsection
 
@@ -75,35 +98,112 @@
 <script src="{{ asset('js/jquery.dataTables.js') }}"></script>
 <script src="{{ asset('js/dataTables.bootstrap.js') }}"></script>
 <script>
-$(document).ready(function() {
-  $('#tableSeleksi').DataTable();
-	$("[name='alertSaveDraft']").hide();
-});
-function saveDraft(){
-	var table = $('#tableSeleksi').DataTable().$('input').serialize();
-	console.log({{$pengguna->id_user}});
-	$.ajax({
-		type:'POST',
-		url:'/save-draft',
-		dataType:'json',
-		data:{'_token' : '<?php echo csrf_token() ?>',
-		'table': table,
-		'idtahapan': {{$idtahapan}},
-		'idbeasiswa': {{$idbeasiswa}},
-		'pengguna': {{$pengguna->id_user}}
-		},
-		success:function(data){
-			alert("Nilai sementara berhasil disimpan!");
+	$(document).ready(function() {
+		$('#tableSeleksi').DataTable();
+		$("[name='alertSaveDraft']").hide();
+
+		//$('#resultConfirmationModal').find('.modal-body #jumlahChecked').text = 1;
+	});
+	function saveDraft(){
+		var table = $('#tableSeleksi').DataTable().$('input').serialize();
+		console.log({{$pengguna->id_user}});
+		$.ajax({
+			type:'POST',
+			url:'/save-draft',
+			dataType:'json',
+			data:{'_token' : '<?php echo csrf_token() ?>',
+				'table': table,
+				'idtahapan': {{$idtahapan}},
+				'idbeasiswa': {{$idbeasiswa}},
+				'pengguna': {{$pengguna->id_user}}
+			},
+			success:function(data){
+				console.log(data.msg[0]);
+				alert("Nilai sementara berhasil disimpan!");
+			}
+		});
+	}
+
+	$("#resultConfirmationModal").change(function(){
+		$("#resultConfirmationModal .modal-body #jumlahChecked").text(document.querySelectorAll('input[type="checkbox"]:checked').length);
+		if(document.querySelectorAll('input[type="checkbox"]:checked').length > {{$beasiswa->kuota}}){
+			$('#resultConfirmationModal').find('.modal-footer #alertChecked').show();
+			 $('#resultConfirmationModal .modal-footer #submitResult').attr("disabled", true);
 		}
 	});
-}
+
+	function showResult(){
+
+		var table = $('#tableSeleksi').DataTable().$('input').serialize();
+		$.ajax({
+			type:'POST',
+			url:'/save-draft',
+			dataType:'json',
+			data:{'_token' : '<?php echo csrf_token() ?>',
+				'table': table,
+				'idtahapan': {{$idtahapan}},
+				'idbeasiswa': {{$idbeasiswa}},
+				'pengguna': {{$pengguna->id_user}}
+			},
+			success:function(data){
+				var html='';
+				var count=0;
+				html+='<table id="resultTable" name="resultTable" class="table"><thead><tr><th>Nama</th><th>Status Penerimaan</th></tr></thead><tbody>';
+				$.each(data, function(i,item){
+						$.each(item, function(j,datum){
+						count=+1;
+						if(count<={{$beasiswa->kuota}}){
+						html = html + '<tr><td>' + datum[0] + '</td><td> <input type="checkbox" value='+datum[0]+' checked> Diterima </td></tr>';
+
+						}
+						else{
+							html = html + '<tr><td>' + datum[0] + '</td><td> <input type="checkbox" value='+datum[0]+'> Diterima </td></tr>';
+						}
+						});
+				});
+				html = html+ '</tbody></table>'
+
+			$('#resultConfirmationModal').find('.modal-body').append(html);
+			 $("#resultConfirmationModal .modal-body #jumlahChecked").text(count);
+			$('#resultConfirmationModal').find('.modal-footer #alertChecked').hide();
+			$('#resultConfirmationModal').modal('show');
+			}
+		});
+
+
+
+		// Ke page baru untuk ngasih liat list yang keterima berdasarkan nilai tertinggi
+		// They can make final selection by nge undo tick atau ngasih tick
+		// trus klik finalize result
+		// ada limitasi kuota
+		// informasi yang harus dikirim: Nama pendaftar, Nilai tertinggi yang ada disini
+
+	}
+	function finalizeResult(){
+		var table = $('#tableSeleksi').DataTable().$('input').serialize();
+		console.log({{$pengguna->id_user}});
+		$.ajax({
+			type:'POST',
+			url:'/finalize-result',
+			dataType:'json',
+			data:{'_token' : '<?php echo csrf_token() ?>',
+				'table': table,
+				'idtahapan': {{$idtahapan}},
+				'idbeasiswa': {{$idbeasiswa}},
+				'pengguna': {{$pengguna->id_user}}
+			},
+			success:function(data){
+				alert("Nilai sementara berhasil disimpan!");
+			}
+		});
+	}
 </script>
 <style>
-#fix {
+	#fix {
     position: fixed;
     top: 8em;
-    right: 15em;
-}
+    right: 5em;
+	}
 
 </style>
 @endsection

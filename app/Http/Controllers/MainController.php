@@ -273,6 +273,8 @@ class MainController extends Controller
       else{
         // BELUM: cek if tahapan ini udah final atau belum, kalau udah final cuma bisa lihat hasil seleksi
         //get nama dan nilai pendaftar beasiswa untuk tahap ini
+        $beasiswa = DB::table('beasiswa')->where('id_beasiswa',$idBeasiswa)->first();
+
 
         $cekFinal = DB::table('seleksi_beasiswa')->where('id_beasiswa', $idBeasiswa)->where('id_tahapan', $idTahapan)->first();
         if (empty($cekFinal))
@@ -290,32 +292,48 @@ class MainController extends Controller
                     ->join('user','seleksi_beasiswa.id_mahasiswa','=','user.id_user')
                     ->select('seleksi_beasiswa.id_mahasiswa', 'seleksi_beasiswa.nilai_seleksi', 'seleksi_beasiswa.final', 'user.nama')->get();
 
-          return view('pages.seleksi-tahapan')->withUser($user)->withPengguna($pengguna)->withNamarole($namarole)->withPendaftar($pendaftar)->withIdtahapan($idTahapan)->withIdbeasiswa($idBeasiswa);
+          return view('pages.seleksi-tahapan')->withUser($user)->withPengguna($pengguna)->withNamarole($namarole)->withPendaftar($pendaftar)->withIdtahapan($idTahapan)->withIdbeasiswa($idBeasiswa)->withBeasiswa($beasiswa);
         }
       }
 
     }
     function savedraftest()
     {
-      $table = "2=90&2=33&3=21";
-      $table = explode("&",$table);
-      echo $table[0];
-      $idbeasiswa = 5;
-      $pengguna=3;
+      $table = "1=90&2=90&3=21";
+      $return_2d_array = array_map (
+        function ($_) {return explode ('=', $_);},
+        explode ('&', $table)
+        );
+        print_r( $return_2d_array);
+        echo $return_2d_array[0][1];
+        echo "</br>";
+        usort($return_2d_array, array($this,'sort'));
+        print_r($return_2d_array);
+        }
+
+      function sort($a,$b)
+       {
+         return ($a[1] >= $b[1]) ? -1 : 1;
+       }
+
+      // $table = explode("&",$table);
+      // echo $table[0];
+      // $idbeasiswa = 5;
+      // $pengguna=3;
 
     //  for($i = 0;$i < sizeof($table);$i++)
       //{
-        $row = explode("=",$table[0]);
-        echo $row[0] ."yay". $row[1];
-        DB::table('seleksi_beasiswa')
-            ->where('id_beasiswa', $idbeasiswa)->where('id_penyeleksi', $pengguna)
-            ->where('id_mahasiswa', $row[0])
-            ->update(['nilai_seleksi' => $row[1]]);
+        // $row = explode("=",$table[0]);
+        // echo $row[0] ."yay". $row[1];
+        // // DB::table('seleksi_beasiswa')
+        //     ->where('id_beasiswa', $idbeasiswa)->where('id_penyeleksi', $pengguna)
+        //     ->where('id_mahasiswa', $row[0])
+        //     ->update(['nilai_seleksi' => $row[1]]);
       //}
       //$msg = "This is a simple message.";
 
 
-    }
+
     function saveDraft(Request $request)
     {
 
@@ -329,6 +347,63 @@ class MainController extends Controller
             ->where('id_tahapan', $request->idtahapan)->where('id_mahasiswa', $row[0])
             ->update(['nilai_seleksi' => $row[1]]);
       }
+      $return_2d_array = array_map (
+        function ($_) {return explode ('=', $_);},
+        explode ('&', $request->get('table'))
+        );
+      usort($return_2d_array, array($this,'sort'));
+      //$msg = "This is a simple message.";
+      return response()->json(array('msg'=> $return_2d_array), 200);
+      //  return view('pages.noaccess')->withUser($user)->withNamarole($namarole);
+    }
+
+    function finalizeResult(Request $request)
+    {
+
+      $table = explode("&",$request->get('table'));
+
+      for($i = 0;$i < sizeof($table);$i++)
+      {
+        $row = explode("=",$table[0]);
+        DB::table('seleksi_beasiswa')
+            ->where('id_beasiswa', $request->idbeasiswa)->where('id_penyeleksi', $request->pengguna)
+            ->where('id_tahapan', $request->idtahapan)->where('id_mahasiswa', $row[0])
+            ->update(['nilai_seleksi' => $row[1],
+                      'final' => '1']);
+      }
+
+      //if masih ada tahapan setelah ini, masukkin ke db berikutnya
+      //Retrieve Tahapan Beasiswa: tahapan yang ada dari sebuah beasiswa
+      //Harus tambah
+      $retrTahapan = DB::table('beasiswa_penyeleksi')->where('id_beasiswa', $request->idbeasiswa)
+                    ->join('beasiswa_penyeleksi_tahapan','beasiswa_penyeleksi.id_bp','=','beasiswa_penyeleksi_tahapan.id_bp')
+                    ->join('tahapan','beasiswa_penyeleksi_tahapan.id_tahapan','=','tahapan.id_tahapan')
+                    ->join('user','beasiswa_penyeleksi.id_penyeleksi','=','user.id_user')
+                    ->select('beasiswa_penyeleksi_tahapan.id_tahapan', 'tahapan.nama_tahapan','beasiswa_penyeleksi.id_penyeleksi')
+                    ->orderBy('beasiswa_penyeleksi_tahapan.id_tahapan', 'asc')->get();
+      $set = 0;
+      /*
+        KALO FINALIZE HARUS THROW NAMA FINAL NYA
+      */
+      foreach ($retrTahapan as $key => $tahapan) {
+        if ($set == 1)
+        {
+          DB::table('seleksi_beasiswa')->insert(
+              ['id_beasiswa' => $request->idbeasiswa,
+              'id_penyeleksi'=>$request->pengguna,
+              'id_tahapan'=>$tahapan->id_tahapan,
+              'id_mahasiswa'=>$request->daftarmahasiswa
+              ]
+          );
+          //Db insert to next tahapan
+        }
+        else if ($tahapan->id_tahapan == $request->idtahapan)
+        {
+          $set == 0;
+        }
+      }
+
+
       //$msg = "This is a simple message.";
       return response()->json(array('msg'=> $request->pengguna), 200);
     }
