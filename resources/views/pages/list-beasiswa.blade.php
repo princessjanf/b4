@@ -89,6 +89,7 @@
 					<span class="glyphicon glyphicon-eye-open"></span>
 				</a>
 				@else
+
 				
 				@endif
 			</td>
@@ -96,7 +97,7 @@
 			<td>	@if ($beasiswa->tanggal_buka <= Carbon\Carbon::now() and Carbon\Carbon::now() <= $beasiswa->tanggal_tutup)
 					<a href = "{{url('/daftar-beasiswa/'.$beasiswa->id_beasiswa)}}"><button class="btn"><b>Daftar</b></button></a>
 					@endif
-
+          
 			</td>
 			@elseif($namarole=="Direktorat Kerjasama")
 			<td>

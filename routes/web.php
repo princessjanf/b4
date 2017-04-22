@@ -50,6 +50,8 @@ Route::get('noaccess',[
   'uses' => 'MainController@noaccess'
 ]);
 
+
+
 Route::get('daftar-beasiswa/{id}',[
 
   'middleware' => 'authSSO',
@@ -71,3 +73,10 @@ Route::post('update-beasiswa',[
   'uses' => 'ScholarshipController@updateBeasiswa'
 ]);
 Route::post('retrieve-prodi', 'ScholarshipController@retrieveProdi');
+
+//test only
+Route::get('/upload',[
+  'middleware' => 'authSSO',
+  'uses' => 'UploadController@uploadForm'
+]);
+Route::post('/upload', 'UploadController@uploadSubmit');
