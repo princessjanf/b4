@@ -68,8 +68,13 @@ Route::post('update-beasiswa',[
 ]);
 Route::post('retrieve-prodi', 'ScholarshipController@retrieveProdi');
 
+Route::get('/upload',[
+  'middleware' => 'authSSO',
+  'uses' => 'UploadController@uploadForm'
+]);
+Route::post('/upload', 'UploadController@uploadSubmit');
+
 Route::post('register-beasiswa', [
 'middleware' => 'authSSO',
   'uses' => 'ScholarshipController@registerBeasiswa'
 ]);
-
