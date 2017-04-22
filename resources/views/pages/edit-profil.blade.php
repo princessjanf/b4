@@ -28,6 +28,8 @@
    <form id='editProfil' action = "{{ url('update-profil') }}" onsubmit="return validateForm()" method = "post" data-parsley-validate="">
    <input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
    <input type = "hidden" name = "idUser" value= {{$mahasiswa->id_user}}>
+   <div class="row">
+    <div class = "col-sm-6">
    NAMA:
  <p><label> {{$pengguna->nama}}</label></p>
    FAKULTAS
@@ -76,7 +78,8 @@
       </select>
     </div>
   </div>
-  
+  </div>
+   <div class = "col-sm-6">
    JENIS IDENTITAS:
    <div class="form-group">
    <!--  <label for="jenisIdentitas"></label> -->
@@ -112,7 +115,8 @@
     <p></p>
     PENGHASILAN ORANG TUA:
      <p><label>{{$mahasiswa->penghasilan_orang_tua}}</label></p>
-
+     </div>
+     </div>
 
    <div>
       <button type="submit" id="submit-form" class="btn"> Submit</button>
