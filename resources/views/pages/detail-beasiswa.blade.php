@@ -5,8 +5,8 @@
 @section('content')
 @if ($namarole=='Direktorat Kerjasama')
 <h4>Detail Beasiswa &nbsp;<a href="#upload"><button class="btn btn-success"><b>Upload</b></button></a></h4>
-@elseif ($namarole=='mahasiswa')
 
+@elseif ($namarole=='Mahasiswa')
   @if($beasiswa -> link_seleksi == null)
     <h4>Detail Beasiswa &nbsp;<a href= "{{ url('daftar-beasiswa/'.$beasiswa->id_beasiswa) }}"><button class="btn btn-default"><b>Daftar</b></button></a></h4>
   @else

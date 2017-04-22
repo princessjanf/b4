@@ -87,20 +87,21 @@ class ScholarshipController extends Controller
           $namarole = $role->nama_role;
 
           $beasiswa = DB::table('beasiswa')->where('id_beasiswa', $id)->first();
-          if($namarole=='Mahasiswa'){
+          $mahasiswa = DB::table('mahasiswa')->where('id_user', $pengguna->id_user)->first();
 
+          if($namarole=='Mahasiswa'){
             $berkas = DB::table('assignment_berkas_beasiswa')
                               ->where('id_beasiswa', $id)
                               ->join('berkas', 'berkas.id_berkas', '=', 'assignment_berkas_beasiswa.id_berkas')
                               ->select('berkas.*')
                               ->get();
-
-            return view('pages.daftar-beasiswa')->withBeasiswa($beasiswa)->withUser($user)->withNamarole($namarole)->withPengguna($pengguna)->withBerkas($berkas);
+            return view('pages.daftar-beasiswa')->withBeasiswa($beasiswa)->withUser($user)->withNamarole($namarole)->withPengguna($pengguna)->withMahasiswa($mahasiswa)->withBerkas($berkas);
           }
           else{
             return redirect('noaccess');
           }
       }
+
 
       public function registerBeasiswa(UploadRequest $request)
     {
@@ -113,9 +114,9 @@ class ScholarshipController extends Controller
                   [$request->get('idBeasiswa'),
                   $request->get('userid'),
                   $request->input('alamat'),
-                  $request->get('jenisrek'),
+                  $request->input('namaBank'),
                   $request->input('norek'),
-                  $request->get('jenisidentitas'),
+                  $request->input('jenisidentitas'),
                   $request->input('noidentitas'),
                   $request->input('namapemilik'),
                   $request->input('telp'),
@@ -269,5 +270,57 @@ class ScholarshipController extends Controller
           return redirect('/detail-beasiswa/'.$idBeasiswa);
       }
 
+    //   public function daftarBeasiswa($id)
+    //   {
+    //       $user = SSO::getUser();
+    //       $pengguna = DB::table('user')->where('username', $user->username)->first();
+    //       $role = DB::table('role')->where('id_role', $pengguna->id_role)->first();
+    //       $namarole = $role->nama_role;
 
+    //       // $pengguna = DB::table('pegawai')->where('username', $user->username)->first();
+    //       // $pendonor = DB::table('pendonor')->where('username', $user->username)->first();
+
+    //       // if ($pengguna != null){
+    //       // $role = DB::table('role_pegawai')->where('id_role_pegawai', $pengguna->id_role_pegawai)->first();
+    //       // $namarole = $role->nama_role_pegawai;
+    //       // }
+    //       // else if ($pendonor !=null)
+    //       // {
+    //       //   $entriPendonor = DB::table('user')->where('username', $pendonor->username)->first();
+    //       //   $role = DB::table('role')->where('id_role', $entriPendonor->id_role)->first();
+    //       //   $namarole = $role->nama_role;
+    //       // }
+    //       // else{
+    //       //   return redirect('noaccess');
+    //       // }
+    //       //$kategoribeasiswa = DB::table('kategori_beasiswa')->get();
+    //       // $pendonor = DB::table('pendonor')->get();
+    //       // $jenjang = DB::table('jenjang')->get();
+    //       // $fakultas = DB::table('fakultas')->get();
+    //       $beasiswa = DB::table('beasiswa')->where('id_beasiswa', $id)->first();
+    //       if($namarole=='mahasiswa'){
+    //         return view('pages.daftar-beasiswa')->withBeasiswa($beasiswa)->withUser($user)->withNamarole($namarole);
+    //       }
+    //       else{
+    //         return redirect('noaccess');
+    //       }
+       
+          
+      
+    //   }
+
+    //   public function registerBeasiswa(Request $request)
+      
+    // {
+
+    //   $beasiswa = DB::table('beasiswa')->orderBy('id_beasiswa', 'desc')->first();
+
+    //   DB::insert('INSERT INTO `pendaftaran_beasiswa`(`id_beasiswa`, `npm_mahasiswa`)
+    //               VALUES (?,?)',
+    //               [$request->get('idBeasiswa'),
+    //               $request->input('npm')]
+    //             );
+      
+    //   return redirect('/detail-beasiswa/'.$request->get('idBeasiswa'));
+    // }
 }
