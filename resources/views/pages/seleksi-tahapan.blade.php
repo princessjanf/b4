@@ -7,14 +7,10 @@
 @endsection
 
 @section('content')
-<!-- user : username, name, role
-	pengguna : username, nama, email
-	namarole
-	idtahapan
-	idbeasiswa
-	pendaftar: id_mahasiswa, nilai_seleksi, final, nama
--->
-
+@if ($final == '1' )
+<h3> Tidak ada mahasiswa yang dapat diseleksi untuk tahapan ini </h4>
+<h4> Hal ini bisa terjadi karena tidak ada mahasiswa yang mendaftar atau seleksi tahap sebelumnya belum selesai </h4>
+@else
 <div class='modal fade' id='resultConfirmationModal' role='dialog'>
 	<div class='modal-dialog'>
 		<div class='modal-content'>
@@ -43,7 +39,6 @@
 		</div>
 	</div>
 </div>
-
 <table id='tableSeleksi' class="table table-striped col-sm-8">
 	<thead>
 		<tr>
@@ -53,35 +48,25 @@
 		</tr>
 	</thead>
 	<tbody>
-
 		@foreach ($pendaftar as $index => $pendaftar)
 		<tr>
 			<td>{{$index+1}}</td>
 			<td>
 				{{$pendaftar->nama}}
 			</td>
+			@if ($final == 2)
+			<td>
+				{{$pendaftar->nilai_seleksi}}
+			</td>
+
+			@elseif ($final == 0)
 			<td>
 				<input type = "number" id="{{$pendaftar->id_mahasiswa}}" name = "{{$pendaftar->id_mahasiswa}}" value= "{{$pendaftar->nilai_seleksi}}" min="0" max="100">
 			</td>
+
+			@endif
 		</tr>
 		@endforeach
-
-		<!--
-			@for ($i = 0; $i < 15; $i++)
-			<tr>
-			<td>1</td>
-			<td>
-			a
-			</td>
-			<td>
-			<input type = "number" value= "2" min="0" max="100">
-			</td>
-
-			</tr>
-
-
-			@endfor
-		-->
 	</tbody>
 </table>
 
@@ -89,10 +74,17 @@
 	<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 	<strong>Nilai sementara berhasil disimpan</strong>
 </div>
+<div id="waktudaftar" name= "alertWaktuDaftar" class="alert alert-dismissable fade in">
+	<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+	<strong>Masa pendaftaran belum selesai</strong>
+</div>
+@if($final == 0)
 <div id = "fix">
 	<button onclick="saveDraft()"> Save As Draft </button>
 </div>
 <button onclick="showResult()"> Finalize Result </button>
+@endif
+@endif
 
 @endsection
 
@@ -105,8 +97,9 @@
 	$(document).ready(function() {
 		$('#tableSeleksi').DataTable();
 		$("[name='alertSaveDraft']").hide();
+		$("[name='alertWaktuDaftar']").hide();
 
-		//$('#resultConfirmationModal').find('.modal-body #jumlahChecked').text = 1;
+
 	});
 	function saveDraft(){
 		var table = $('#tableSeleksi').DataTable().$('input').serialize();
@@ -132,22 +125,29 @@
 		$("#resultConfirmationModal .modal-body #jumlahChecked").text(document.querySelectorAll('input[type="checkbox"]:checked').length);
 		if(document.querySelectorAll('input[type="checkbox"]:checked').length > {{$beasiswa->kuota}}){
 			$('#resultConfirmationModal').find('.modal-footer #alertChecked').show();
-			 $('#resultConfirmationModal .modal-footer #submitResult').attr("disabled", true);
+			$('#resultConfirmationModal .modal-footer #submitResult').attr("disabled", true);
 		}
 		else if(document.querySelectorAll('input[type="checkbox"]:checked').length == 0)
 		{
 			$('#resultConfirmationModal').find('.modal-footer #alertChecked2').show();
-			 $('#resultConfirmationModal .modal-footer #submitResult').attr("disabled", true);
+			$('#resultConfirmationModal .modal-footer #submitResult').attr("disabled", true);
 		}
 		else{
-			 $('#resultConfirmationModal .modal-footer #submitResult').attr("disabled", false);
+			$('#resultConfirmationModal .modal-footer #submitResult').attr("disabled", false);
 		}
 	});
 
 
 
 	function showResult(){
-
+		var x = "{{$beasiswa->tanggal_tutup}}".split('-');
+		var now = new Date();
+		var tgl = new Date().setFullYear(x[0], x[1]-1, x[2]-1);
+		if (tgl <= now)
+		{
+			$("[name='alertWaktuDaftar']").show();
+		}
+		else{
 		var table = $('#tableSeleksi').DataTable().$('input').serialize();
 		$.ajax({
 			type:'POST',
@@ -165,62 +165,55 @@
 				html+='<table id="resultTable" name="resultTable" class="table"><thead><tr><th>Nama</th><th>Status Penerimaan</th></tr></thead><tbody>';
 				var nama='';
 				$.each(data, function(i,item){
-						$.each(item, function(j,datum){
-							$.ajax({
-								async:false,
-								type:'POST',
-								url:'/retrieve-nama',
-								dataType:'json',
-								data:{'_token' : '<?php echo csrf_token() ?>',
-									'id_user': datum[0]
-								},
-								success:function(data){
-									nama = data.msg.nama;
-									console.log(nama);
+					$.each(item, function(j,datum){
+						$.ajax({
+							async:false,
+							type:'POST',
+							url:'/retrieve-nama',
+							dataType:'json',
+							data:{'_token' : '<?php echo csrf_token() ?>',
+								'id_user': datum[0]
+							},
+							success:function(data){
+								nama = data.msg.nama;
+								console.log(nama);
 
 								count=+1;
 								if(count<={{$beasiswa->kuota}}){
-								html = html + '<tr><td class="idMahasiswa" id='+datum[0]+'>' + nama + '</td><td> <input type="checkbox" class="chk" value='+datum[0]+' checked> Diterima </td></tr>';
+									html = html + '<tr><td class="idMahasiswa" id='+datum[0]+'>' + nama + '</td><td> <input type="checkbox" class="chk" value='+datum[0]+' checked> Diterima </td></tr>';
 								}
 								else{
 									html = html + '<tr><td class="idMahasiswa">' + nama + '</td><td> <input type="checkbox" class="chk" value='+datum[0]+'> </td></tr>';
 								}
-								}
-							});
-
+							}
 						});
+
+					});
 				});
 				html = html+ '</tbody></table>'
 
-			$('#resultConfirmationModal').find('.modal-body').append(html);
-			 $("#resultConfirmationModal .modal-body #jumlahChecked").text(count);
-			$('#resultConfirmationModal').find('.modal-footer #alertChecked').hide();
-		 $('#resultConfirmationModal').find('.modal-footer #alertChecked2').hide();
-			$('#resultConfirmationModal').modal('show');
+				$('#resultConfirmationModal').find('.modal-body').append(html);
+				$("#resultConfirmationModal .modal-body #jumlahChecked").text(count);
+				$('#resultConfirmationModal').find('.modal-footer #alertChecked').hide();
+				$('#resultConfirmationModal').find('.modal-footer #alertChecked2').hide();
+				$('#resultConfirmationModal').modal('show');
 			}
 		});
-
-
-
-		// Ke page baru untuk ngasih liat list yang keterima berdasarkan nilai tertinggi
-		// They can make final selection by nge undo tick atau ngasih tick
-		// trus klik finalize result
-		// ada limitasi kuota
-		// informasi yang harus dikirim: Nama pendaftar, Nilai tertinggi yang ada disini
-
+	}
 	}
 	function finalizeResult(){
+
 
 		var arrayResult = [];
 		$('#resultConfirmationModal .modal-body #resultTable .idMahasiswa').each(function(i, val){
 
-		// Find the previous sibling (td) and then find the input inside and see if it's checked
-		var checkbox_cell_is_checked = $(this).next().find('input').is(':checked');
-		// Is it checked?
-		if(checkbox_cell_is_checked){
-			arrayResult.push($(this).attr('id'));
-		}
-	});
+			// Find the previous sibling (td) and then find the input inside and see if it's checked
+			var checkbox_cell_is_checked = $(this).next().find('input').is(':checked');
+			// Is it checked?
+			if(checkbox_cell_is_checked){
+				arrayResult.push($(this).attr('id'));
+			}
+		});
 
 		$.ajax({
 			type:'POST',
@@ -233,16 +226,16 @@
 				'pengguna': {{$pengguna->id_user}}
 			},
 			success:function(data){
-				console.log(data);
+				window.location.href = "{{ url('seleksi-beasiswa/'.$idbeasiswa.'/'.$idtahapan) }}";
 			},
 			error: function(xhr, textStatus, errorThrown) {
-     alert(xhr.responseText);
-  }
+				alert(xhr.responseText);
+			}
 		});
 	}
 	$("#resultConfirmationModal").on("hidden.bs.modal", function(){
-    $("#resultConfirmationModal .modal-body").html("");
-});
+		$("#resultConfirmationModal .modal-body").html("");
+	});
 </script>
 <style>
 	#fix {
