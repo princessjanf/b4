@@ -39,9 +39,9 @@ class UploadController extends Controller
 
       DB::insert('INSERT INTO `berkas_umum`(`id_berkas`, `id_mahasiswa`, `file`)
       VALUES (?,?,?)',
-      [$idBerkas, $idMahasiswa, $file]
+      [$idBerkas[$index], $idMahasiswa, $file]
     );
-
+      // return response()->download(storage_path('app/'.$file));
     }
     return redirect('upload');
   }
