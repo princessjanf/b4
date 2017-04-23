@@ -72,6 +72,8 @@ Route::get('seleksi-beasiswa/{idBeasiswa}/{idTahapan}', [
 
 Route::post('save-draft', 'MainController@saveDraft');
 Route::post('finalize-result', 'MainController@finalizeResult');
+Route::post('retrieve-nama', 'MainController@retrieveNama');
+
 
 Route::get('savedraft', 'MainController@savedraftest');
 

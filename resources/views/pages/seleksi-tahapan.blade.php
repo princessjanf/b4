@@ -33,7 +33,11 @@
 								<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 								<strong>Pilihan Mahasiswa Melebihi Kuota!</strong>
 				</div>
-				<button type='button' id="submitResult" class='btn btn-default' data-dismiss='modal' onclick="finalizeResult()">Submit</button>
+				<div  id= "alertChecked2" class="alert alert-danger alert-dismissable fade in">
+								<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+								<strong>Tidak ada mahasiswa yang dipilih!</strong>
+				</div>
+				<button type='button' id="submitResult" class='btn btn-default' onclick="finalizeResult()">Submit</button>
 				<button type='button' class='btn btn-default' data-dismiss='modal'>Close</button>
 			</div>
 		</div>
@@ -130,7 +134,17 @@
 			$('#resultConfirmationModal').find('.modal-footer #alertChecked').show();
 			 $('#resultConfirmationModal .modal-footer #submitResult').attr("disabled", true);
 		}
+		else if(document.querySelectorAll('input[type="checkbox"]:checked').length == 0)
+		{
+			$('#resultConfirmationModal').find('.modal-footer #alertChecked2').show();
+			 $('#resultConfirmationModal .modal-footer #submitResult').attr("disabled", true);
+		}
+		else{
+			 $('#resultConfirmationModal .modal-footer #submitResult').attr("disabled", false);
+		}
 	});
+
+
 
 	function showResult(){
 
@@ -149,16 +163,31 @@
 				var html='';
 				var count=0;
 				html+='<table id="resultTable" name="resultTable" class="table"><thead><tr><th>Nama</th><th>Status Penerimaan</th></tr></thead><tbody>';
+				var nama='';
 				$.each(data, function(i,item){
 						$.each(item, function(j,datum){
-						count=+1;
-						if(count<={{$beasiswa->kuota}}){
-						html = html + '<tr><td>' + datum[0] + '</td><td> <input type="checkbox" value='+datum[0]+' checked> Diterima </td></tr>';
+							$.ajax({
+								async:false,
+								type:'POST',
+								url:'/retrieve-nama',
+								dataType:'json',
+								data:{'_token' : '<?php echo csrf_token() ?>',
+									'id_user': datum[0]
+								},
+								success:function(data){
+									nama = data.msg.nama;
+									console.log(nama);
 
-						}
-						else{
-							html = html + '<tr><td>' + datum[0] + '</td><td> <input type="checkbox" value='+datum[0]+'> Diterima </td></tr>';
-						}
+								count=+1;
+								if(count<={{$beasiswa->kuota}}){
+								html = html + '<tr><td class="idMahasiswa" id='+datum[0]+'>' + nama + '</td><td> <input type="checkbox" class="chk" value='+datum[0]+' checked> Diterima </td></tr>';
+								}
+								else{
+									html = html + '<tr><td class="idMahasiswa">' + nama + '</td><td> <input type="checkbox" class="chk" value='+datum[0]+'> </td></tr>';
+								}
+								}
+							});
+
 						});
 				});
 				html = html+ '</tbody></table>'
@@ -166,6 +195,7 @@
 			$('#resultConfirmationModal').find('.modal-body').append(html);
 			 $("#resultConfirmationModal .modal-body #jumlahChecked").text(count);
 			$('#resultConfirmationModal').find('.modal-footer #alertChecked').hide();
+		 $('#resultConfirmationModal').find('.modal-footer #alertChecked2').hide();
 			$('#resultConfirmationModal').modal('show');
 			}
 		});
@@ -180,23 +210,39 @@
 
 	}
 	function finalizeResult(){
-		var table = $('#tableSeleksi').DataTable().$('input').serialize();
-		console.log({{$pengguna->id_user}});
+
+		var arrayResult = [];
+		$('#resultConfirmationModal .modal-body #resultTable .idMahasiswa').each(function(i, val){
+
+		// Find the previous sibling (td) and then find the input inside and see if it's checked
+		var checkbox_cell_is_checked = $(this).next().find('input').is(':checked');
+		// Is it checked?
+		if(checkbox_cell_is_checked){
+			arrayResult.push($(this).attr('id'));
+		}
+	});
+
 		$.ajax({
 			type:'POST',
 			url:'/finalize-result',
 			dataType:'json',
 			data:{'_token' : '<?php echo csrf_token() ?>',
-				'table': table,
+				'table': arrayResult,
 				'idtahapan': {{$idtahapan}},
 				'idbeasiswa': {{$idbeasiswa}},
 				'pengguna': {{$pengguna->id_user}}
 			},
 			success:function(data){
-				alert("Nilai sementara berhasil disimpan!");
-			}
+				console.log(data);
+			},
+			error: function(xhr, textStatus, errorThrown) {
+     alert(xhr.responseText);
+  }
 		});
 	}
+	$("#resultConfirmationModal").on("hidden.bs.modal", function(){
+    $("#resultConfirmationModal .modal-body").html("");
+});
 </script>
 <style>
 	#fix {
