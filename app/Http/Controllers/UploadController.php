@@ -24,28 +24,24 @@ class UploadController extends Controller
       $namarole = $role->nama_role_pegawai;
     }
 
-    return view('pages.upload-form')->withUser($user)->withNamarole($namarole);
+    $berkas = DB::table('berkas')->whereIn('id_berkas', [20,11,10])->get();
+
+    return view('pages.berkas_umum')->withUser($user)->withNamarole($namarole)->withPengguna($pengguna)->withBerkas($berkas);
   }
 
   public function uploadSubmit(UploadRequest $request)
   {
-    // $product = Product::create($request->all());
-    $idBeasiswa = $request->get('idBeasiswa');
     $idBerkas = $request->get('idBerkas');
     $idMahasiswa = $request->get('idMahasiswa');
 
     foreach ($request->berkases as $index=>$berkas) {
       $file = $berkas->storeAs('berkas', $idMahasiswa.'-'.$request->nama[$index].'.pdf');
 
-      DB::insert('INSERT INTO `beasiswa_berkas`(`id_beasiswa`, `id_berkas`, `id_mahasiswa`, `file`)
-      VALUES (?,?,?,?)',
-      [$idBeasiswa, $idBerkas, $idMahasiswa, $file]
+      DB::insert('INSERT INTO `berkas_umum`(`id_berkas`, `id_mahasiswa`, `file`)
+      VALUES (?,?,?)',
+      [$idBerkas, $idMahasiswa, $file]
     );
 
-    // ProductsPhoto::create([
-    //   'product_id' => $product->id,
-    //   'filename' => $filename
-    // ]);
     }
     return redirect('upload');
   }
