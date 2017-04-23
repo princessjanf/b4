@@ -90,7 +90,20 @@
 				$beasiswas = DB::table('beasiswa')->where('flag', '1')->get();
 			}
 
-			return view('pages.list-beasiswa')->withBeasiswas($beasiswas)->withUser($user)->withNamarole($namarole);
+			$daftarBeasiswa = DB::table('beasiswa_penyeleksi')->where('id_penyeleksi', $pengguna->id_user)
+												->join('beasiswa','beasiswa_penyeleksi.id_beasiswa', 'beasiswa.id_beasiswa')
+												->select('beasiswa.id_beasiswa', 'beasiswa.nama_beasiswa')->get();
+			$seleksichecker = 0;
+			if ($daftarBeasiswa->count() == 0)
+			{
+				return view('pages.list-beasiswa')->withBeasiswas($beasiswas)->withUser($user)->withNamarole($namarole)->withSeleksichecker($seleksichecker);
+			}
+			else{
+				$seleksichecker = 1;
+				return view('pages.list-beasiswa')->withBeasiswas($beasiswas)->withUser($user)->withNamarole($namarole)->withSeleksichecker($seleksichecker);
+			}
+
+
 		}
 
 		function addbeasiswa()
@@ -176,6 +189,32 @@
 			else
 			{
 				return view('pages.detail-beasiswa')->withBeasiswa($beasiswa)->withPersyaratans($persyaratans)->withUser($user)->withNamarole($namarole);
+			}
+		}
+
+		function pageSeleksi(){
+			// get seleksi
+			$user = SSO::getUser();
+			$pengguna = DB::table('user')->where('username', $user->username)->first();
+			$role = DB::table('role')->where('id_role', $pengguna->id_role)->first();
+			$namarole = $role->nama_role;
+
+			if($namarole=='pegawai'){
+				$pengguna = DB::table('pegawai')->where('username', $user->username)->first();
+				$role = DB::table('role_pegawai')->where('id_role_pegawai', $pengguna->id_role_pegawai)->first();
+				$namarole = $role->nama_role_pegawai;
+			}
+
+
+			$daftarBeasiswa = DB::table('beasiswa_penyeleksi')->where('id_penyeleksi', $pengguna->id_user)
+												->join('beasiswa','beasiswa_penyeleksi.id_beasiswa', 'beasiswa.id_beasiswa')
+												->select('beasiswa.id_beasiswa', 'beasiswa.nama_beasiswa')->get();
+			if ($daftarBeasiswa->count() == 0)
+			{
+				return view('pages.noaccess')->withUser($user)->withNamarole($namarole);
+			}
+			else{
+			return view('pages.daftar-seleksi')->withDaftarbeasiswa($daftarBeasiswa)->withUser($user)->withNamarole($namarole);
 			}
 		}
 

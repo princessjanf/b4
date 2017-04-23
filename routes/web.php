@@ -65,6 +65,11 @@ Route::get('seleksi/{id}', [
   'uses' => 'MainController@seleksi'
 ]);
 
+Route::get('seleksi', [
+  'middleware' => 'authSSO',
+  'uses' => 'MainController@pageSeleksi'
+]);
+
 Route::get('seleksi-beasiswa/{idBeasiswa}/{idTahapan}', [
   'middleware' => 'authSSO',
   'uses' => 'MainController@seleksiBeasiswa'

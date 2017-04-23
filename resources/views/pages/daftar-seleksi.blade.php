@@ -7,38 +7,24 @@
 @endsection
 
 @section('content')
-<!-- user : username, name, role
-     namarole
-     aksestahapan : id_tahapan
-     tahapan : id_tahapan, nama_tahapan, nama
--->
-<a href = "{{ url('seleksi') }}">  Kembali Ke Daftar Tahapan  </a>
 
-<table id='tableSeleksi' class="table table-striped">
+<table id='daftarSeleksi' class="table table-striped">
 	<thead>
 		<tr>
 			<th>No</th>
-			<th>Nama Tahapan</th>
-			<th>Nama Penyeleksi</th>
+			<th>Nama Beasiswa</th>
 			<th>More</th>
 		</tr>
 	</thead>
 	<tbody>
-		@foreach ($tahapan as $index => $tahapan)
+		@foreach ($daftarbeasiswa as $index => $beasiswa)
 		<tr>
 			<td>{{$index+1}}</td>
 			<td>
-        {{$tahapan->nama_tahapan}}
+        {{$beasiswa->nama_beasiswa}}
 			</td>
       <td>
-        {{$tahapan->nama}}
-      </td>
-		  <td>
-        @foreach($aksestahapan as $akses)
-          @if ($akses->id_tahapan == $tahapan->id_tahapan)
-						<a href = "{{ url('seleksi-beasiswa/'.$idbeasiswa.'/'.$tahapan->id_tahapan) }}"> <button> Seleksi </button> </a>
-          @endif
-        @endforeach
+        		<a href = "{{ url('seleksi/'.$beasiswa->id_beasiswa) }}"> <button> Lihat Tahapan </button> </a>
       </td>
 		@endforeach
 	</tbody>
@@ -53,7 +39,7 @@
 <script src="{{ asset('js/dataTables.bootstrap.js') }}"></script>
 <script>
 $(document).ready(function() {
-  $('#tableSeleksi').DataTable();
+  $('#daftarSeleksi').DataTable();
 });
 </script>
 @endsection
