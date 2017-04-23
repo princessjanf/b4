@@ -83,6 +83,16 @@ Route::get('/edit-profil', [
   'uses' => 'MainController@editProfil'
 ]);
 
+Route::get('/pendaftar-beasiswa/{id}', [
+  'middleware' => 'authSSO',
+  'uses' => 'MainController@pendaftarBeasiswa'
+]);
+
+// Route::get('/lihat-berkas-mahasiswa/{id}', [
+//   'middleware' => 'authSSO',
+//   'uses' => 'MainController@lihatBerkas'
+// ]);
+
 Route::get('sendbasicemail','MailController@basic_email');
 Route::get('sendhtmlemail','MailController@html_email');
 Route::get('sendattachmentemail','MailController@attachment_email');

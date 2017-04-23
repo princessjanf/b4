@@ -310,5 +310,66 @@ class MainController extends Controller
           return redirect('profil');
 }
 
+function pendaftarBeasiswa($id) 
+    {
+      $user = SSO::getUser();
+      $pengguna = DB::table('user')->where('username', $user->username)->first();
+      $pengguna = DB::table('user')->where('id_user', $pengguna->id_user)->first();
+      $role = DB::table('role')->where('id_role', $pengguna->id_role)->first();
+      $namarole = $role->nama_role;
+      $beasiswa = DB::table('beasiswa')->where('id_beasiswa', $id)->first();
+
+          if($namarole=='Pendonor' && $pengguna->id_user == $beasiswa->id_pendonor)
+          {                
+            $mahasiswas = DB::table('pendaftaran_beasiswa')->where('id_beasiswa',$beasiswa->id_beasiswa)
+            ->join('mahasiswa','mahasiswa.id_user', '=', 'pendaftaran_beasiswa.id_mahasiswa')
+            ->join('user', 'user.id_user', '=', 'pendaftaran_beasiswa.id_mahasiswa')
+            ->join('fakultas', 'fakultas.id_fakultas', '=', 'mahasiswa.id_fakultas')
+            ->join('program_studi', 'program_studi.id_prodi', '=', 'mahasiswa.id_prodi')
+            ->select('mahasiswa.*','user.nama', 'fakultas.nama_fakultas', 'program_studi.nama_prodi')
+            ->get();
+          
+
+
+            return view('pages.pendaftar-beasiswa')
+            ->withPengguna($pengguna)
+            ->withUser($user)
+            ->withNamarole($namarole)->withBeasiswa($beasiswa)->withMahasiswas($mahasiswas);
+          }
+
+
+          else
+          {
+            return redirect('noaccess');
+          }
+    }
+
+
+  // function lihatBerkas($id) 
+  // {
+  //   $user = SSO::getUser();
+  //     $pengguna = DB::table('user')->where('username', $user->username)->first();
+  //     $pengguna = DB::table('user')->where('id_user', $pengguna->id_user)->first();
+  //     $role = DB::table('role')->where('id_role', $pengguna->id_role)->first();
+  //     $namarole = $role->nama_role;
+  //     $mahasiswa = DB::table('pendaftaran-beasiswa')->where('id_mahasiswa', $id)->first();
+  //     $beasiswa = DB::table('beasiswa')->where('id_beasiswa', $mahasiswa->id_beasiswa)->first();
+
+  //         if($namarole=='Pendonor' && $pengguna->id_user == $beasiswa->id_pendonor)
+  //         {                
+  //           return view('pages.lihat-berkas-mahasiswa')
+  //           ->withPengguna($pengguna)
+  //           ->withUser($user)
+  //           ->withNamarole($namarole)->withBeasiswa($beasiswa)->withMahasiswa($mahasiswa);
+  //         }
+
+
+  //         else
+  //         {
+  //           return redirect('noaccess');
+  //         }
+
+  // }
+
 }
 

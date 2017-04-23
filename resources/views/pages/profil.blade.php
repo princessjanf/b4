@@ -1,20 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <title>Edit Profil</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-</head>
-
 @extends('master')
 
 @section('title', 'Profil')
 
 @section('content')
+
     <div class="col-sm-9">
+    <H2>PROFIL</H2>
+    <HR></HR>
     @if($namarole=='Pegawai Universitas'||$namarole=='Pegawai Fakultas'||$namarole=='Direktorat Kerjasama')
      NAMA:
      <p><label>{{$pengguna->nama}}</label></p>
@@ -28,6 +20,7 @@
      <p><label>{{$pendonor->nama_instansi}}</label></p>
      NAMA:
       <p><label>{{$pengguna->nama}}</label></p>
+      <br>
 
       NAMA BEASISWA YANG DI DONORKAN:
        <p></p>
@@ -36,13 +29,17 @@
       <tr>
         <th>No.</th>
         <th>Nama Beasiswa</th>
+        <th>Dana Pendidikan</th>
+        <th>Dana Hidup</th>
       </tr>
     </thead>
     <tbody>
     <tr>
    @foreach($beasiswas as $index => $beasiswa)
     <th><label>{{$index+1}}.</label></th>
-   <th><label>{{$beasiswa->nama_beasiswa}}</label></th>
+    <th><label><a href="{{ url('pendaftar-beasiswa/'.$beasiswa->id_beasiswa) }}">{{$beasiswa->nama_beasiswa}}</a></label></th>
+    <th><label>{{$beasiswa->dana_pendidikan}}</label></th>
+    <th><label>{{$beasiswa->dana_hidup}}</label></th>
    </tr>
    @endforeach
    </tbody>
@@ -85,7 +82,7 @@
      <p><label>{{$mahasiswa->penghasilan_orang_tua}}</label></p>
      </div>
      </div>
-    DAFTAR BEASISWA YANG DIDAFTAR:
+    DAFTAR BEASISWA YANG DIDAFTARKAN:
    <p></p>
     <table class="table table-striped">
     <thead>
@@ -111,5 +108,3 @@
     @endif
     </div>
 @endsection
-
-</html>
