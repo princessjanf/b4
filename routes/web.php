@@ -65,5 +65,5 @@ Route::post('update-beasiswa',[
   'uses' => 'ScholarshipController@updateBeasiswa'
 ]);
 Route::post('retrieve-prodi', 'ScholarshipController@retrieveProdi');
-//Route::post('insert-beasiswa', 'ScholarshipController@insertBeasiswa');
-//Route::post('update-beasiswa', 'ScholarshipController@updateBeasiswa');
+
+Route::post('filter-pegawai-fakultas', 'ScholarshipController@filterPegawaiFakultas');

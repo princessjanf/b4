@@ -42,7 +42,7 @@ class ScholarshipController extends Controller
 
       $pegawaifakultas = ((DB::table('user')
           ->join('pegawai', 'user.id_user', '=', 'pegawai.id_user')
-          ->join('pegawai_fakultas', 'pegawai_fakultas.kode_fakultas', '=', 'pegawai.id_user')
+          ->join('pegawai_fakultas', 'pegawai_fakultas.id_user', '=', 'pegawai.id_user')
           ->where('pegawai.id_role_pegawai', 2))
         ->join('fakultas', 'fakultas.id_fakultas', '=','pegawai_fakultas.kode_fakultas'))
       ->join('jabatan', 'jabatan.id_jabatan', '=', 'pegawai.id_jabatan')
@@ -169,8 +169,23 @@ class ScholarshipController extends Controller
             //echo $msg;
             return $msg;
     }
-    public function insertBeasiswa(Request $request)
+
+    public function filterPegawaiFakultas(Request $request)
     {
+            $idFakultas = $request ->get('idFakultas');
+
+            $msg = ((DB::table('user')
+                ->join('pegawai', 'user.id_user', '=', 'pegawai.id_user')
+                ->join('pegawai_fakultas', 'pegawai_fakultas.id_user', '=', 'pegawai.id_user')
+                ->where('pegawai.id_role_pegawai', 2))
+              ->join('fakultas', 'fakultas.id_fakultas', '=','pegawai_fakultas.kode_fakultas'))
+            ->join('jabatan', 'jabatan.id_jabatan', '=', 'pegawai.id_jabatan')->where('pegawai_fakultas.kode_fakultas',$idFakultas)
+            ->get();
+
+            return $msg;
+    }
+
+    public function insertBeasiswa(Request $request){
       DB::insert('INSERT INTO `beasiswa`(`nama_beasiswa`, `deskripsi_beasiswa`, `id_kategori`, `tanggal_buka`, `tanggal_tutup`,
                                         `kuota`, `nominal`, `dana`, `periode`,  `id_pendonor`, `jangka`, `id_status`, `public`, `flag`, `currency`, `id_jenis_seleksi`, `link_seleksi`)
                   VALUES (?,?,?,?,?,?,?,?,?,?,?,2,0,1,?,1,"")',

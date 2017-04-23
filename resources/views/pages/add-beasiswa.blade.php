@@ -4,12 +4,6 @@
 
 @section('head')
 <link href="{{ asset('css/multiple-select.css') }}" rel="stylesheet" />
-<!-- Include the plugin's CSS and JS: -->
-<link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet" />
-<script src="{{ asset('js/jquery-3.2.0.js') }}"></script>
-<script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'></script>
-<script type="text/javascript" src="js/bootstrap-multiselect.js"></script>
-<link href="{{ asset('css/bootstrap-multiselect.css') }}" type="text/css"/>
 @endsection
 
 @section('content')
@@ -21,6 +15,7 @@
 
 	<input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
 	<input type = "hidden" name = "counter" value="1">
+	<input type = "hidden" name = "counterT" value="1">
 
 	<div class="form-group">
 		<label for="namaBeasiswa">Nama Beasiswa</label><br>
@@ -78,6 +73,8 @@
 			<input type="hidden" name="listProdi">
 		</div>
 	</div>
+
+	<span id="ahoy" style="display:none"></span>
 
 	<div class="form-group">
 		<div class="input-group col-sm-4">
@@ -177,22 +174,22 @@
 	</div>
 
 	<div class="form-group">
-		<div class="input-group col-sm-12">
+		<div class="input-group col-sm-9">
 			<label for="syarat">Syarat &nbsp;</label>
 			<input type="hidden" id="arraySyarat" name="arraySyarat">
 			<button type="button" class="btn btn-default" id="buttonTambahSyarat" onclick="insertRow()"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
 			<div class="form-group" name="syarat">
-				<br><input type = "text" class="input-control col-sm-9" name="syarat1" required><br>
+				<div class="input-group col-sm-12">
+					 <br><input type = "text" class="form-control col-sm-9" name="syarat1" required><br><br>
+				</div>
 			</div>
 		</div>
 	</div>
 
-	<!-- css belum keluar -->
 	<div class="form-group">
-		<div class="input-group col-sm-4">
+		<div class="input-group col-sm-9">
 			<label for="berkasPersyaratan">Berkas Persyaratan Pendaftaran</label><br>
-			<select class="form-control" id="berkas" multiple="multiple" name="jenjangBeasiswa" required>
-				<option selected disabled> --Pilih Berkas-- </option>
+			<select id="berkas" multiple="multiple" data-toggle="dropdown" name="berkas" required>
 				@foreach ($berkas as $berkas)
 				<option value= {{ $berkas->id_berkas}}> {{$berkas->nama_berkas}} </option>
 				@endforeach
@@ -201,7 +198,6 @@
 	</div>
 
 <!-- Dibawah ini untuk field konfigurasi-penyeleksi -->
-
 	<div>
 		<h3> Konfigurasi Seleksi </h3>
 	</div>
@@ -231,7 +227,7 @@
 			<select style="overflow:auto" class="form-control" name="listPenyeleksi" id="listPenyeleksi" required>
 				<option selected disabled> --Pilih Penyeleksi-- </option>
 				<optgroup label="PENDONOR">
-					<option disabled style="color:red" id = "pendonorOpt" value="">Pilih pendonor terlebih dahulu!</option>
+					<option disabled style="color:red" class = "pendonorOpt" value="">Pilih pendonor terlebih dahulu!</option>
 				</optgroup>
 				<optgroup label="PEGAWAI UNIVERSITAS">
 					@foreach ($pegawaiuniversitas as $pu)
@@ -239,22 +235,41 @@
 					@endforeach
 				</optgroup>
 
-				<!-- masih belum sesuai pegawai fakultas yg dipilih di atasnya. baiknya gmn?-->
-				<optgroup label="PEGAWAI FAKULTAS">
-					@foreach ($pegawaifakultas as $pf)
-							<option value= {{ $pf->username}}> {{$pf->nama_jabatan}} - {{$pf->nama_fakultas}} - {{$pf->nama}} </option>
-					@endforeach
+				<optgroup style="display: none;" class="pegawaifakultas" label="PEGAWAI FAKULTAS">
 				</optgroup>
 			</select>
 		</div>
 	</div>
+
 	<div id="tahapanSeleksi" class="form-group" style="display: none;">
-		<div class="input-group col-sm-12">
+		<div class="input-group col-sm-9">
 			<label for="syarat">Tahapan Seleksi &nbsp;</label>
-			<input type="hidden" id="tahapanSeleksi" name="tahapanSeleksi">
+			<input type="hidden" id="arrayTahapan" name="arrayTahapan">
 			<button type="button" class="btn btn-default" id="buttonTambahTahapan" onclick="insertRowTahapan()"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
-			<div class="form-group" name="tahapanSeleksi">
-				<br><input type = "text" class="input-control col-sm-9" name="tahapan1" required><br>
+			<div class="form-group" name="tahapanSeleksi"><br>
+				<div class="input-group col-sm-12">
+				  <input style="width:220px;" type="text" class="form-control input" placeholder="Nama tahapan seleksi" name="tahapan1" required/>
+				  <span class="input-group-btn" style="width:10px;"></span>
+					<p type="text" class="form-control" style="border:0;">oleh</p>
+					<span class="input-group-btn" style="width:0px;"></span>
+					<div id="penyeleksiTahapan" class="input-sm">
+						<div class="input-group col-sm-12">
+							<select style="overflow:auto" class="form-control" name="listPenyeleksi" id="listPenyeleksi" required>
+								<option disabled> --Pilih Penyeleksi-- </option>
+								<optgroup label="PENDONOR">
+									<option disabled style="color:red" class = "pendonorOpt" value="">Pilih pendonor terlebih dahulu!</option>
+								</optgroup>
+								<optgroup label="PEGAWAI UNIVERSITAS">
+									@foreach ($pegawaiuniversitas as $pu)
+									<option value= {{ $pu->username}}> {{$pu->nama_jabatan}} Universitas - {{$pu->nama}} </option>
+									@endforeach
+								</optgroup>
+								<optgroup style="display: none;" class="pegawaifakultas" label="PEGAWAI FAKULTAS">
+								</optgroup>
+							</select>
+						</div>
+					</div>
+				</div><br>
 			</div>
 		</div>
 	</div>
@@ -282,13 +297,16 @@
 @endsection
 
 @section('script')
-<!-- script references -->
-<script src="{{ asset('js/jquery-3.2.0.js') }}"></script>
-<script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/b ootstrap.min.js'></script>
-<script src='https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js'></script>
-<script src="http://parsleyjs.org/dist/parsley.js"></script>
+<!-- script references -->>
 <script type="text/javascript" src="{{ URL::asset('js/multiple-select.js') }}"></script>
+
 <script>
+
+  $('#berkas').multipleSelect({
+		placeholder: "Pilih berkas",
+		width: "100%"
+	});
+
 	function cekJenis(that){
 		if(that.value=="1"){
 			document.getElementById("fieldWebsite").style.display = "block";
@@ -302,6 +320,24 @@
 			document.getElementById("fieldWebsite").style.display = "none";
 			document.getElementById("penyeleksi").style.display = "none";
 			document.getElementById("tahapanSeleksi").style.display = "block";
+		}
+	}
+
+	function cekProdi(z, idFakultas){
+		//console.log("length nya: " +z);
+		if(z==1){
+			var p = document.getElementsByClassName("pegawaifakultas");
+			var i;
+			for (i = 0; i < p.length; i++) {
+			    p[i].style.display = "block";
+			}
+			filterPegawaiFakultas(idFakultas);
+		}else {
+			var p = document.getElementsByClassName("pegawaifakultas");
+			var i;
+			for (i = 0; i < p.length; i++) {
+			    p[i].style.display = "none";
+			}
 		}
 	}
 
@@ -334,7 +370,7 @@
 		var x = document.getElementsByName('syarat')[0];
 		var elem = document.createElement('div');
 		elem.setAttribute("id","syarat"+counter);
-		elem.innerHTML = '<br><input type = "text" class="input-control col-sm-9" required name="syarat'+counter+'">&nbsp;<button class="btn btn-danger" onclick="removeSyarat('+counter+')"> x </button>';
+		elem.innerHTML = '<div class="input-group col-sm-12"><input type = "text" class="form-control col-sm-9" name="syarat'+counter+'" required><span class="input-group-btn"><button class="btn btn-danger" onclick="removeSyarat('+counter+')"> x </button></span><br>';
 		x.appendChild(elem);
 	}
 	function removeSyarat(i){
@@ -358,51 +394,58 @@
 			}
 		}
 		console.log(idSyarat);
-
 	}
-//--TODO ALVINSPRINT2
-	// counter=1;
-	// var idSyarat = [];
-	// idSyarat.push(1);
-	// function insertRowTahapan(){
-	// 	counter+=1;
-	// 	idSyarat.push(counter);
-	// 	console.log(idSyarat);
-	// 	document.getElementsByName("counter")[0].value = counter;
-	// 	var theForm = document.getElementById('createScholarshipForm');
-	// 	var x = document.getElementsByName('syarat')[0];
-	// 	var elem = document.createElement('div');
-	// 	elem.setAttribute("id","syarat"+counter);
-	// 	elem.innerHTML = '<br><input type = "text" class="input-control col-sm-9" required name="syarat'+counter+'">&nbsp;<button class="btn btn-danger" onclick="removeSyarat('+counter+')"> x </button>';
-	// 	x.appendChild(elem);
-	// }
 
-//--TODO ALVINSPRINT2
-	// function removeTahapan(i){
-	// //	counter-=1;
-	// 	var j;
-	// 	var l;
-	// 	$("#syarat"+i).remove();
-	// 	for (j = 0; j < idSyarat.length; j++) {
-	//
-	// 		console.log(idSyarat[j] + " " + i);
-	// 		if (idSyarat[j] == i)
-	// 		{
-	// 			 if (j == idSyarat.length)
-	// 			 {
-	// 				 idSyarat.pop();
-	// 			 }
-	// 			 else{
-	// 				 idSyarat.splice(j, 1);
-	// 			 }
-	// 			 break;
-	// 		}
-	// 	}
-	// 	console.log(idSyarat);
-	//
-	// }
+	counterT=1;
+	var idTahapan = [];
+	idTahapan.push(1);
+	function insertRowTahapan(){
+		counterT+=1;
+		idTahapan.push(counterT);
+		console.log(idTahapan);
+		document.getElementsByName("counterT")[0].value = counterT;
+		var theForm = document.getElementById('createScholarshipForm');
+		var x = document.getElementsByName('tahapanSeleksi')[0];
+		var elem = document.createElement('div');
+		elem.setAttribute("id","tahapan"+counterT);
+		elem.innerHTML = '<div class="input-group col-sm-12"><input style="width:220px;" type = "text" class="form-control input" placeholder="Nama tahapan seleksi" name="tahapan'+counterT+'" required><span class="input-group-btn" style="width:10px;"></span><p type="text" class="form-control" style="border:0;">oleh</p><span class="input-group-btn" style="width:0px;"></span><div id="penyeleksiTahapan" class="input-sm"><div class="input-group col-sm-12"><select style="overflow:auto" class="form-control" name="listPenyeleksi" id="listPenyeleksi"><option disabled> --Pilih Penyeleksi-- </option><optgroup label="PENDONOR"><option disabled style="color:red" class = "pendonorOpt" value="">Pilih pendonor terlebih dahulu!</option></optgroup><optgroup label="PEGAWAI UNIVERSITAS">@foreach ($pegawaiuniversitas as $pu)<option value= {{ $pu->username}}> {{$pu->nama_jabatan}} Universitas - {{$pu->nama}} </option>@endforeach</optgroup><optgroup label="PEGAWAI FAKULTAS" style="display:none;" class="pegawaifakultas"></optgroup></select></div></div><span class="input-group-btn"><button class="btn btn-danger" onclick="removeTahapan('+counterT+')"> x </button></span><br>';
+		x.appendChild(elem);
+
+		var idPendonor = $("#pendonor").val();
+		var pendonor = $("#pendonor").find('option:selected').text()
+
+		var p = document.getElementsByClassName("pendonorOpt");
+		var i;
+		for (i = 0; i < p.length; i++) {
+				p[i].value = idPendonor;
+				p[i].innerHTML = pendonor;
+				p[i].removeAttribute("disabled");
+				p[i].removeAttribute("style");
+		}
+	}
 
 
+	function removeTahapan(i){
+	//	counter-=1;
+		var j;
+		var l;
+		$("#tahapan"+i).remove();
+		for (j = 0; j < idTahapan.length; j++) {
+			console.log(idTahapan[j] + " " + i);
+			if (idTahapan[j] == i)
+			{
+				 if (j == idTahapan.length)
+				 {
+					 idTahapan.pop();
+				 }
+				 else{
+					 idTahapan.splice(j, 1);
+				 }
+				 break;
+			}
+		}
+		console.log(idTahapan);
+	}
 
 	function validateForm(){
 		var totalDana = document.getElementsByName('totalDana')[0].value;
@@ -423,6 +466,8 @@
 		var now = new Date();
 
 		document.getElementsByName('arraySyarat')[0].value = idSyarat;
+		document.getElementsByName('arrayTahapan')[0].value = idTahapan;
+
 		var x = $('#fakultasBeasiswa').multipleSelect('getSelects');
 		document.getElementsByName('listProdi')[0].value = x;
 		if (!(tanggalBuka.getTime() < tanggalTutup.getTime()) )
@@ -466,7 +511,15 @@
 	});
 
 	$(document).ready(function(){
-		$('#berkas').multiselect();
+			$("#fakultasBeasiswa").change(function(){
+				var x = $('#fakultasBeasiswa').multipleSelect('getSelects');
+
+				document.getElementById("ahoy").innerHTML = x;
+				var idFakultas = document.getElementById("ahoy").innerHTML;
+				//console.log(idFakultas);
+				var z = document.getElementById("ahoy").innerHTML.length;
+				cekProdi(z,idFakultas);
+			});
 
 		$("#mataUang").change(function(){
 			var mataUang = $("#mataUang").val();
@@ -487,10 +540,14 @@
 			var idPendonor = $("#pendonor").val();
 			var pendonor = $("#pendonor").find('option:selected').text()
 
-			document.getElementById("pendonorOpt").removeAttribute("disabled");
-			document.getElementById("pendonorOpt").removeAttribute("style");
-			document.getElementById("pendonorOpt").value = idPendonor;
-			document.getElementById("pendonorOpt").innerHTML = pendonor;
+			var p = document.getElementsByClassName("pendonorOpt");
+			var i;
+			for (i = 0; i < p.length; i++) {
+			    p[i].value = idPendonor;
+					p[i].innerHTML = pendonor;
+					p[i].removeAttribute("disabled");
+					p[i].removeAttribute("style");
+			}
 		});
 
 		$("#jenjang").change(function(){
@@ -558,6 +615,28 @@
 
 				}
 			}
+		});
+	}
+
+	function filterPegawaiFakultas(idFakultas)
+	{
+		$.ajax({
+			type:'POST',
+			url:'filter-pegawai-fakultas',
+			dataType:'json',
+			data:{'_token' : '<?php echo csrf_token() ?>',
+			'idFakultas': idFakultas},
+			success:function(data){
+				$(".pegawaifakultas").empty();
+				$.each(data, function(i,item){
+					$('.pegawaifakultas').append(
+						$('<option value="' + data[i].id_user + '">' + data[i].nama_jabatan + ' - ' + data[i].nama_fakultas+ ' - ' + data[i].nama +'</option>')
+					);
+				});
+			},
+			 	error: function(data){
+    	 	alert("fail");
+    	}
 		});
 	}
 </script>
