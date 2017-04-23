@@ -187,8 +187,8 @@ class ScholarshipController extends Controller
 
     public function insertBeasiswa(Request $request){
       DB::insert('INSERT INTO `beasiswa`(`nama_beasiswa`, `deskripsi_beasiswa`, `id_kategori`, `tanggal_buka`, `tanggal_tutup`,
-                                        `kuota`, `nominal`, `dana`, `periode`,  `id_pendonor`, `jangka`, `id_status`, `public`, `flag`, `currency`, `id_jenis_seleksi`, `link_seleksi`)
-                  VALUES (?,?,?,?,?,?,?,?,?,?,?,2,0,1,?,1,"")',
+                                        `kuota`, `nominal`, `dana_pendidikan`, `dana_hidup`, `periode`,  `id_pendonor`, `jangka`, `id_status`, `public`, `flag`, `currency`, `id_jenis_seleksi`, `link_seleksi`)
+                  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,1,0,1,?,1,?)',
                   [$request->input('namaBeasiswa'),
                   $request->input('deskripsiBeasiswa'),
                   $request->get('kategoriBeasiswa'),
@@ -196,21 +196,25 @@ class ScholarshipController extends Controller
                   $request->input('tanggalTutup'),
                   $request->input('kuota'),
                   $request->input('nominal'),
-                  $request->input('totalDana'),
+                  $request->input('danaPendidikan'),
+                  $request->input('danaHidup'),
                   $request->input('periode'),
                   $request->get('pendonor'),
                   $request->input('jangka'),
-                  $request->get('mataUang')
+                  $request->get('mataUang'),
+                  $request->get('jenisSeleksi'),
+                  $request->input('websiteSeleksi')
                 ]
                 );
+
       $beasiswa = DB::table('beasiswa')->orderBy('id_beasiswa', 'desc')->first();
 
       $arrSyarat = explode(",",$request->get('arraySyarat'));
       for($i = 0;$i < sizeof($arrSyarat);$i++)
       {
-        DB::insert('insert into `persyaratan` (`id_beasiswa`, `syarat`) VALUES (?,?)', [$beasiswa->id_beasiswa, $request->input('syarat'.$arrSyarat[$i])]);
+        DB::insert('insert into `persyaratan` (`id_beasiswa`, `syarat`) VALUES (?,?)',
+        [$beasiswa->id_beasiswa, $request->input('syarat'.$arrSyarat[$i])]);
       }
-
 
       $request->get('listProdi');
       $hasil = explode(",",$request->get('listProdi'));

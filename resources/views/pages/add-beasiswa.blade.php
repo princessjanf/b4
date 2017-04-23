@@ -106,7 +106,7 @@
 		<label for="totalDana">Dana Pendidikan</label>
 		<p> Besaran dana pendidikan yang akan diberikan secara total. <br>Dana ini akan dipergunakan untuk membantu membayar uang kuliah (BOP) </p>
 		<div class="input-group col-sm-4">
-			<input class="form-control" name="totalDana" data-parsley-trigger="keyup"  data-parsley-validation-threshold="1" data-parsley-pattern="\d|\d{1,3}(\,\d{3})*" data-parsley-maxlength="9" required>
+			<input class="form-control" name="danaPendidikan" data-parsley-trigger="keyup"  data-parsley-validation-threshold="1" data-parsley-pattern="\d|\d{1,3}(\,\d{3})*" data-parsley-maxlength="9" required>
 			<span class="input-group-addon" id="addon-mataUang" name="addon-mataUang"></span>
 		</div>
 	</div>
@@ -115,7 +115,7 @@
 		<label for="totalDana">Dana Biaya Hidup</label>
 		<p> Besaran dana biaya hidup yang akan diberikan secara total. <br>Contoh biaya hidup ini seperti biaya makan, transportasi, dan tempat tinggal. </p>
 		<div class="input-group col-sm-4">
-			<input class="form-control" name="totalDana" data-parsley-trigger="keyup"  data-parsley-validation-threshold="1" data-parsley-pattern="\d|\d{1,3}(\,\d{3})*" data-parsley-maxlength="9" required>
+			<input class="form-control" name="danaHidup" data-parsley-trigger="keyup"  data-parsley-validation-threshold="1" data-parsley-pattern="\d|\d{1,3}(\,\d{3})*" data-parsley-maxlength="9" required>
 			<span class="input-group-addon" id="addon-mataUang3" name="addon-mataUang"></span>
 		</div>
 	</div>
@@ -224,7 +224,7 @@
 		<label for="penyeleksi">Pilih Penyeleksi</label><br>
 		<p>Pihak yang akan melakukan tahapan seleksi terhadap beasiswa</p>
 		<div class="input-group col-sm-9">
-			<select style="overflow:auto" class="form-control" name="listPenyeleksi" id="listPenyeleksi" required>
+			<select style="overflow:auto" class="form-control" required>
 				<option selected disabled> --Pilih Penyeleksi-- </option>
 				<optgroup label="PENDONOR">
 					<option disabled style="color:red" class = "pendonorOpt" value="">Pilih pendonor terlebih dahulu!</option>
@@ -234,7 +234,6 @@
 					<option value= {{ $pu->username}}> {{$pu->nama_jabatan}} Universitas - {{$pu->nama}} </option>
 					@endforeach
 				</optgroup>
-
 				<optgroup style="display: none;" class="pegawaifakultas" label="PEGAWAI FAKULTAS">
 				</optgroup>
 			</select>
@@ -245,17 +244,21 @@
 		<div class="input-group col-sm-9">
 			<label for="syarat">Tahapan Seleksi &nbsp;</label>
 			<input type="hidden" id="arrayTahapan" name="arrayTahapan">
-			<button type="button" class="btn btn-default" id="buttonTambahTahapan" onclick="insertRowTahapan()"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
-			<div class="form-group" name="tahapanSeleksi"><br>
-				<div class="input-group col-sm-12">
-				  <input style="width:220px;" type="text" class="form-control input" placeholder="Nama tahapan seleksi" name="tahapan1" required/>
+			<!-- <button type="button" class="btn btn-default" id="buttonTambahTahapan" onclick="insertRowTahapan()"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button> -->
+			<div class="form-group" name="tahapanSeleksi">
+
+				<a class="menu_links" id="tulisan3" style="display: block; cursor: pointer;" type="button" onclick="insertRowTahapan3()">+ Tambah Tes Tertulis</a>
+				<a class="menu_links" id="tulisan4" style="display: block; cursor: pointer;" type="button" onclick="insertRowTahapan4()">+ Tambah Wawancara</a>
+
+				<div id='tahapan1' class="input-group col-sm-12">
+				  <input style="width:220px;" type="text" class="form-control input" value="Seleksi Administratif" placeholder="Nama tahapan seleksi" name="tahapan1" required disabled/>
 				  <span class="input-group-btn" style="width:10px;"></span>
 					<p type="text" class="form-control" style="border:0;">oleh</p>
 					<span class="input-group-btn" style="width:0px;"></span>
-					<div id="penyeleksiTahapan" class="input-sm">
+					<div class="input-sm">
 						<div class="input-group col-sm-12">
-							<select style="overflow:auto" class="form-control" name="listPenyeleksi" id="listPenyeleksi" required>
-								<option disabled> --Pilih Penyeleksi-- </option>
+							<select style="overflow:auto" class="form-control" required>
+								<option selected disabled> --Pilih Penyeleksi-- </option>
 								<optgroup label="PENDONOR">
 									<option disabled style="color:red" class = "pendonorOpt" value="">Pilih pendonor terlebih dahulu!</option>
 								</optgroup>
@@ -270,6 +273,31 @@
 						</div>
 					</div>
 				</div><br>
+
+				<div id='tahapan2' class="input-group col-sm-12">
+				  <input style="width:220px;" type="text" class="form-control input" value="Seleksi Berkas" placeholder="Nama tahapan seleksi" name="tahapan2" required disabled/>
+				  <span class="input-group-btn" style="width:10px;"></span>
+					<p type="text" class="form-control" style="border:0;">oleh</p>
+					<span class="input-group-btn" style="width:0px;"></span>
+					<div class="input-sm">
+						<div class="input-group col-sm-12">
+							<select style="overflow:auto" class="form-control" name="listPenyeleksi" required>
+								<option selected disabled> --Pilih Penyeleksi-- </option>
+								<optgroup label="PENDONOR">
+									<option disabled style="color:red" class = "pendonorOpt" value="">Pilih pendonor terlebih dahulu!</option>
+								</optgroup>
+								<optgroup label="PEGAWAI UNIVERSITAS">
+									@foreach ($pegawaiuniversitas as $pu)
+									<option value= {{ $pu->username}}> {{$pu->nama_jabatan}} Universitas - {{$pu->nama}} </option>
+									@endforeach
+								</optgroup>
+								<optgroup style="display: none;" class="pegawaifakultas" label="PEGAWAI FAKULTAS">
+								</optgroup>
+							</select>
+						</div>
+					</div>
+				</div><br>
+
 			</div>
 		</div>
 	</div>
@@ -396,43 +424,59 @@
 		console.log(idSyarat);
 	}
 
-	counterT=1;
-	var idTahapan = [];
-	idTahapan.push(1);
-	function insertRowTahapan(){
-		counterT+=1;
+
+
+	var idTahapan = [1,2];
+	counterT=2;
+	function insertRowTahapan3(){
+		counterT=3;
 		idTahapan.push(counterT);
-		console.log(idTahapan);
-		document.getElementsByName("counterT")[0].value = counterT;
-		var theForm = document.getElementById('createScholarshipForm');
-		var x = document.getElementsByName('tahapanSeleksi')[0];
-		var elem = document.createElement('div');
-		elem.setAttribute("id","tahapan"+counterT);
-		elem.innerHTML = '<div class="input-group col-sm-12"><input style="width:220px;" type = "text" class="form-control input" placeholder="Nama tahapan seleksi" name="tahapan'+counterT+'" required><span class="input-group-btn" style="width:10px;"></span><p type="text" class="form-control" style="border:0;">oleh</p><span class="input-group-btn" style="width:0px;"></span><div id="penyeleksiTahapan" class="input-sm"><div class="input-group col-sm-12"><select style="overflow:auto" class="form-control" name="listPenyeleksi" id="listPenyeleksi"><option disabled> --Pilih Penyeleksi-- </option><optgroup label="PENDONOR"><option disabled style="color:red" class = "pendonorOpt" value="">Pilih pendonor terlebih dahulu!</option></optgroup><optgroup label="PEGAWAI UNIVERSITAS">@foreach ($pegawaiuniversitas as $pu)<option value= {{ $pu->username}}> {{$pu->nama_jabatan}} Universitas - {{$pu->nama}} </option>@endforeach</optgroup><optgroup label="PEGAWAI FAKULTAS" style="display:none;" class="pegawaifakultas"></optgroup></select></div></div><span class="input-group-btn"><button class="btn btn-danger" onclick="removeTahapan('+counterT+')"> x </button></span><br>';
-		x.appendChild(elem);
+			document.getElementById("tulisan3").style.display = "none";
+			var x = document.getElementsByName('tahapanSeleksi')[0];
+	 		var elem = document.createElement('div');
+	 		elem.setAttribute("id","tahapan3");
+			elem.innerHTML = '<div class="input-group col-sm-12"><input style="width:220px;" type = "text" class="form-control input" value = "Tes Tertulis" placeholder="Nama tahapan seleksi" name="tahapan3" required disabled><span class="input-group-btn" style="width:10px;"></span><p type="text" class="form-control" style="border:0;">oleh</p><span class="input-group-btn" style="width:0px;"></span><div id="penyeleksiTahapan" class="input-sm"><div class="input-group col-sm-12"><select style="overflow:auto" class="form-control" name="listPenyeleksi" id="listPenyeleksi"><option selected disabled> --Pilih Penyeleksi-- </option><optgroup label="PENDONOR"><option disabled style="color:red" class = "pendonorOpt" value="">Pilih pendonor terlebih dahulu!</option></optgroup><optgroup label="PEGAWAI UNIVERSITAS">@foreach ($pegawaiuniversitas as $pu)<option value= {{ $pu->username}}> {{$pu->nama_jabatan}} Universitas - {{$pu->nama}} </option>@endforeach</optgroup><optgroup label="PEGAWAI FAKULTAS" style="display:none;" class="pegawaifakultas"></optgroup></select></div></div><span class="input-group-btn"><button class="btn btn-danger" onclick="removeTahapan3()"> x </button></span><br><br>';
+	 		x.appendChild(elem);
 
-		var idPendonor = $("#pendonor").val();
-		var pendonor = $("#pendonor").find('option:selected').text()
+				var idPendonor = $("#pendonor").val();
+				var pendonor = $("#pendonor").find('option:selected').text()
+				if (idPendonor!=null) {
+					$(".pendonorOpt").val(idPendonor);
+					$(".pendonorOpt").html(pendonor);
+					$(".pendonorOpt").removeAttr("disabled");
+					$(".pendonorOpt").removeAttr("style");
+				}
 
-		var p = document.getElementsByClassName("pendonorOpt");
-		var i;
-		for (i = 0; i < p.length; i++) {
-				p[i].value = idPendonor;
-				p[i].innerHTML = pendonor;
-				p[i].removeAttribute("disabled");
-				p[i].removeAttribute("style");
-		}
+
 	}
 
+	function insertRowTahapan4(){
+		counterT=4;
+		idTahapan.push(counterT);
+			document.getElementById("tulisan4").style.display = "none";
+			var x = document.getElementsByName('tahapanSeleksi')[0];
+	 		var elem = document.createElement('div');
+	 		elem.setAttribute("id","tahapan4");
+			elem.innerHTML = '<div class="input-group col-sm-12"><input style="width:220px;" type = "text" class="form-control input" value = "Wawancara" placeholder="Nama tahapan seleksi" name="tahapan3" required disabled><span class="input-group-btn" style="width:10px;"></span><p type="text" class="form-control" style="border:0;">oleh</p><span class="input-group-btn" style="width:0px;"></span><div id="penyeleksiTahapan" class="input-sm"><div class="input-group col-sm-12"><select style="overflow:auto" class="form-control" name="listPenyeleksi" id="listPenyeleksi"><option selected disabled> --Pilih Penyeleksi-- </option><optgroup label="PENDONOR"><option disabled style="color:red" class = "pendonorOpt" value="">Pilih pendonor terlebih dahulu!</option></optgroup><optgroup label="PEGAWAI UNIVERSITAS">@foreach ($pegawaiuniversitas as $pu)<option value= {{ $pu->username}}> {{$pu->nama_jabatan}} Universitas - {{$pu->nama}} </option>@endforeach</optgroup><optgroup label="PEGAWAI FAKULTAS" style="display:none;" class="pegawaifakultas"></optgroup></select></div></div><span class="input-group-btn"><button class="btn btn-danger" onclick="removeTahapan4()"> x </button></span><br>';
+	 		x.appendChild(elem);
 
-	function removeTahapan(i){
-	//	counter-=1;
+				var idPendonor = $("#pendonor").val();
+				var pendonor = $("#pendonor").find('option:selected').text()
+				if (idPendonor!=null) {
+					$(".pendonorOpt").val(idPendonor);
+					$(".pendonorOpt").html(pendonor);
+					$(".pendonorOpt").removeAttr("disabled");
+					$(".pendonorOpt").removeAttr("style");
+				}
+	}
+
+	function removeTahapan3(){
+			document.getElementById("tulisan3").style.display = "block";
 		var j;
-		var l;
-		$("#tahapan"+i).remove();
+		$("#tahapan3").remove();
 		for (j = 0; j < idTahapan.length; j++) {
-			console.log(idTahapan[j] + " " + i);
-			if (idTahapan[j] == i)
+			console.log(idTahapan[j] + " " + 3);
+			if (idTahapan[j] == 3)
 			{
 				 if (j == idTahapan.length)
 				 {
@@ -442,10 +486,31 @@
 					 idTahapan.splice(j, 1);
 				 }
 				 break;
-			}
-		}
-		console.log(idTahapan);
-	}
+ 			}
+ 		}
+ 		console.log(idTahapan);
+ 	}
+
+	function removeTahapan4(){
+			document.getElementById("tulisan4").style.display = "block";
+		var j;
+		$("#tahapan4").remove();
+		for (j = 0; j < idTahapan.length; j++) {
+			console.log(idTahapan[j] + " " + 4);
+			if (idTahapan[j] == 4)
+			{
+				 if (j == idTahapan.length)
+				 {
+					 idTahapan.pop();
+				 }
+				 else{
+					 idTahapan.splice(j, 1);
+				 }
+				 break;
+ 			}
+ 		}
+ 		console.log(idTahapan);
+ 	}
 
 	function validateForm(){
 		var totalDana = document.getElementsByName('totalDana')[0].value;
@@ -539,15 +604,10 @@
 		$("#pendonor").change(function(){
 			var idPendonor = $("#pendonor").val();
 			var pendonor = $("#pendonor").find('option:selected').text()
-
-			var p = document.getElementsByClassName("pendonorOpt");
-			var i;
-			for (i = 0; i < p.length; i++) {
-			    p[i].value = idPendonor;
-					p[i].innerHTML = pendonor;
-					p[i].removeAttribute("disabled");
-					p[i].removeAttribute("style");
-			}
+			$(".pendonorOpt").val(idPendonor);
+			$(".pendonorOpt").html(pendonor);
+			$(".pendonorOpt").removeAttr("disabled");
+			$(".pendonorOpt").removeAttr("style");
 		});
 
 		$("#jenjang").change(function(){
