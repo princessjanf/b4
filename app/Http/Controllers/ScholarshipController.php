@@ -125,11 +125,12 @@ class ScholarshipController extends Controller
                   $request->input('ipk')
                   ]
                 );
-                $this->uploadSubmit($request);
+                $id_pendaftaran = DB::table('pendaftaran_beasiswa')->orderBy('id_pendaftaran', 'desc')->first()->id_pendaftaran;
+                $this->uploadSubmit($request, $id_pendaftaran);
       return redirect('/detail-beasiswa/'.$request->get('idBeasiswa'));
     }
 
-    public function uploadSubmit(UploadRequest $request)
+    public function uploadSubmit(UploadRequest $request, int $id_pendaftaran)
     {
       $idBeasiswa = $request->get('idBeasiswa');
       $idMahasiswa = $request->get('userid');
@@ -137,8 +138,8 @@ class ScholarshipController extends Controller
       foreach ($request->berkases as $index=>$berkas) {
         $idBerkas = $request->idBerkas[$index];
         $file = $berkas->storeAs('berkas', $idMahasiswa.'-'.$request->nama[$index].'.pdf');
-        DB::insert('INSERT INTO `beasiswa_berkas`(`id_beasiswa`, `id_berkas`, `id_mahasiswa`, `file`)
-                    VALUES (?,?,?,?)', [$idBeasiswa, $idBerkas, $idMahasiswa, $file]);
+        DB::insert('INSERT INTO `beasiswa_berkas`(`id_pendaftaran`, `id_beasiswa`, `id_berkas`, `id_mahasiswa`, `file`)
+                    VALUES (?,?,?,?,?)', [$id_pendaftaran, $idBeasiswa, $idBerkas, $idMahasiswa, $file]);
       }
     }
 
@@ -304,13 +305,13 @@ class ScholarshipController extends Controller
     //       else{
     //         return redirect('noaccess');
     //       }
-       
-          
-      
+
+
+
     //   }
 
     //   public function registerBeasiswa(Request $request)
-      
+
     // {
 
     //   $beasiswa = DB::table('beasiswa')->orderBy('id_beasiswa', 'desc')->first();
@@ -320,7 +321,7 @@ class ScholarshipController extends Controller
     //               [$request->get('idBeasiswa'),
     //               $request->input('npm')]
     //             );
-      
+
     //   return redirect('/detail-beasiswa/'.$request->get('idBeasiswa'));
     // }
 }
