@@ -12,7 +12,7 @@
      aksestahapan : id_tahapan
      tahapan : id_tahapan, nama_tahapan, nama
 -->
-<a href = "{{ url('seleksi') }}">  Kembali Ke Daftar Tahapan  </a>
+<a href = "{{ url('seleksi') }}">  Kembali Ke Daftar Beasiswa  </a>
 
 <table id='tableSeleksi' class="table table-striped">
 	<thead>
