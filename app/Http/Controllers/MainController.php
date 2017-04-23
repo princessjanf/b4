@@ -228,7 +228,7 @@
 				->join('tahapan','beasiswa_penyeleksi_tahapan.id_tahapan','=','tahapan.id_tahapan')
 				->join('user','beasiswa_penyeleksi.id_penyeleksi','=','user.id_user')
 				->select('beasiswa_penyeleksi_tahapan.id_tahapan', 'tahapan.nama_tahapan','user.nama')
-				->orderBy('beasiswa_penyeleksi_tahapan.id_tahapan', 'asc')->get();
+				->orderBy('beasiswa_penyeleksi_tahapan.id_bpt', 'asc')->get();
 
 				/*$retrTahapan = DB::table('beasiswa_penyeleksi_tahapan')->where('id_bp', $retrievePenyeleksi->id_bp)
 					->join('tahapan','beasiswa_penyeleksi_tahapan.id_tahapan','=','tahapan.id_tahapan')
@@ -315,7 +315,16 @@
 			->join('user','beasiswa_penyeleksi.id_penyeleksi','=','user.id_user')
 			->select('beasiswa_penyeleksi_tahapan.id_tahapan', 'tahapan.nama_tahapan','beasiswa_penyeleksi.id_penyeleksi')
 			->orderBy('beasiswa_penyeleksi_tahapan.id_bpt', 'asc')->get();
-			echo count($retrTahapan);
+			// echo count($retrTahapan);
+
+			foreach ($retrTahapan as $key => $tahapan) {
+					echo $key;
+					echo count($retrTahapan);
+					if (count($retrTahapan) == $key)
+					{
+						echo "happy";
+					}
+			}
 
 		}
 
@@ -356,7 +365,7 @@
 
 		function finalizeResult(Request $request)
 		{
-			$retrTahapan = DB::table('beasiswa_penyeleksi')->where('id_beasiswa', '5')
+			$retrTahapan = DB::table('beasiswa_penyeleksi')->where('id_beasiswa', $request->idbeasiswa)
 			->join('beasiswa_penyeleksi_tahapan','beasiswa_penyeleksi.id_bp','=','beasiswa_penyeleksi_tahapan.id_bp')
 			->join('tahapan','beasiswa_penyeleksi_tahapan.id_tahapan','=','tahapan.id_tahapan')
 			->join('user','beasiswa_penyeleksi.id_penyeleksi','=','user.id_user')
@@ -367,7 +376,7 @@
 				Jika ada tahapan berikutnya, maka masukkan nama finalis ke db untuk tahap berikutnya
 			*/
 			foreach ($retrTahapan as $key => $tahapan) {
-				if (count($retrTahapan) == $key)
+				if (count($retrTahapan)-1 == $key)
 				{
 					DB::table('seleksi_beasiswa')
 					->where('id_beasiswa', $request->idbeasiswa)->where('id_penyeleksi', $request->pengguna)

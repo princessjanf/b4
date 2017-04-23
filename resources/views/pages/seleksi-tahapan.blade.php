@@ -143,7 +143,8 @@
 		var x = "{{$beasiswa->tanggal_tutup}}".split('-');
 		var now = new Date();
 		var tgl = new Date().setFullYear(x[0], x[1]-1, x[2]-1);
-		if (tgl <= now)
+	
+		if (tgl > now)
 		{
 			$("[name='alertWaktuDaftar']").show();
 		}
