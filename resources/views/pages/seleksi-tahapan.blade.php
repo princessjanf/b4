@@ -7,6 +7,8 @@
 @endsection
 
 @section('content')
+<a href = "{{ url('seleksi/'.$idbeasiswa) }}">  Kembali Ke Daftar Tahapan  </a>
+
 @if ($final == '1' )
 <h3> Tidak ada mahasiswa yang dapat diseleksi untuk tahapan ini </h4>
 <h4> Hal ini bisa terjadi karena tidak ada mahasiswa yang mendaftar atau seleksi tahap sebelumnya belum selesai </h4>
@@ -143,7 +145,7 @@
 		var x = "{{$beasiswa->tanggal_tutup}}".split('-');
 		var now = new Date();
 		var tgl = new Date().setFullYear(x[0], x[1]-1, x[2]-1);
-	
+
 		if (tgl > now)
 		{
 			$("[name='alertWaktuDaftar']").show();
