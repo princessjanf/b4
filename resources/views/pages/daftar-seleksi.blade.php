@@ -7,12 +7,13 @@
 @endsection
 
 @section('content')
-
+<h4>Daftar Beasiswa Yang Dapat Diseleksi</h4>
 <table id='daftarSeleksi' class="table table-striped">
 	<thead>
 		<tr>
 			<th>No</th>
 			<th>Nama Beasiswa</th>
+			<th>Jumlah Pendaftar</th>
 			<th>More</th>
 		</tr>
 	</thead>
@@ -22,6 +23,9 @@
 			<td>{{$index+1}}</td>
 			<td>
         {{$beasiswa->nama_beasiswa}}
+			</td>
+			<td>
+				{{$jumlahpendaftar[$index]}}
 			</td>
       <td>
         		<a href = "{{ url('seleksi/'.$beasiswa->id_beasiswa) }}"> <button> Lihat Tahapan </button> </a>

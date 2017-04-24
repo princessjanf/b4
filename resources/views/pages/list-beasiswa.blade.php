@@ -6,10 +6,9 @@
 @if($namarole=="Pegawai Universitas")
 
 <h4>List beasiswa &nbsp;&nbsp;
-	<a data-toggle="tooltip" title="Tambah beasiswa" role="button" id="add-beasiswa" class="btn btn-success" href="{{ url('add-beasiswa') }}"><span class="glyphicon glyphicon-plus">&nbsp;Tambah Beasiswa</span></a>
+	<a data-toggle="tooltip" title="Tambah beasiswa" role="button" id="add-beasiswa" class="btn btn-success" href="{{ url('add-beasiswa') }}"><span class="glyphicon glyphicon-plus">&nbsp;</span>Tambah Beasiswa</a>
 	@if ($seleksichecker==1)
-		<a data-toggle="tooltip" title="Buka Halaman Seleksi" href="{{ url('seleksi') }}"><button>Seleksi Beasiswa</button></a>
-
+		<a data-toggle="tooltip" title="Buka Halaman Seleksi"  class="btn btn-info" href="{{ url('seleksi') }}">&nbsp;Seleksi Beasiswa</a>
 	@endif
 </h4>
 @else

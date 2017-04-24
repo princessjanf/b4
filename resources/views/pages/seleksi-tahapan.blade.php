@@ -7,8 +7,9 @@
 @endsection
 
 @section('content')
+<h4> Lihat Tahapan {{$tahapan->nama_tahapan}} </h4>
 <a href = "{{ url('seleksi/'.$idbeasiswa) }}">  Kembali Ke Daftar Tahapan  </a>
-
+</br>
 @if ($final == '1' )
 <h3> Tidak ada mahasiswa yang dapat diseleksi untuk tahapan ini </h4>
 <h4> Hal ini bisa terjadi karena tidak ada mahasiswa yang mendaftar atau seleksi tahap sebelumnya belum selesai </h4>
@@ -81,9 +82,9 @@
 </div>
 @if($final == 0)
 <div id = "fix">
-	<button onclick="saveDraft()"> Save As Draft </button>
 </div>
-<button onclick="showResult()"> Finalize Result </button>
+<button class="btn-primary" onclick="saveDraft()"> Save As Draft </button>
+<button class="btn-success" onclick="showResult()"> Finalize Result </button>
 @endif
 @endif
 
@@ -107,7 +108,7 @@
 		console.log(table);
 		$.ajax({
 			type:'POST',
-			url:'/save-draft',
+			url:'{{url('/save-draft')}}',
 			dataType:'json',
 			data:{'_token' : '<?php echo csrf_token() ?>',
 				'table': table,
@@ -153,7 +154,7 @@
 		var table = $('#tableSeleksi').DataTable().$('input').serialize();
 		$.ajax({
 			type:'POST',
-			url:'/save-draft',
+			url:'{{url('/save-draft')}}',
 			dataType:'json',
 			data:{'_token' : '<?php echo csrf_token() ?>',
 				'table': table,
@@ -171,7 +172,7 @@
 						$.ajax({
 							async:false,
 							type:'POST',
-							url:'/retrieve-nama',
+							url:'{{url('/retrieve-nama')}}',
 							dataType:'json',
 							data:{'_token' : '<?php echo csrf_token() ?>',
 								'id_user': datum[0]
@@ -219,7 +220,7 @@
 
 		$.ajax({
 			type:'POST',
-			url:'/finalize-result',
+			url:'{{url('/finalize-result')}}',
 			dataType:'json',
 			data:{'_token' : '<?php echo csrf_token() ?>',
 				'table': arrayResult,

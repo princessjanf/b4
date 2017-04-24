@@ -207,14 +207,23 @@
 
 
 			$daftarBeasiswa = DB::table('beasiswa_penyeleksi')->where('id_penyeleksi', $pengguna->id_user)
-												->join('beasiswa','beasiswa_penyeleksi.id_beasiswa', 'beasiswa.id_beasiswa')
-												->select('beasiswa.id_beasiswa', 'beasiswa.nama_beasiswa')->get();
+												->join('beasiswa','beasiswa_penyeleksi.id_beasiswa', '=','beasiswa.id_beasiswa')
+												->select('beasiswa.id_beasiswa', 'beasiswa.nama_beasiswa')->distinct()->get();
+
+			$b = [];
+			foreach ($daftarBeasiswa as $key=>$beasiswa)
+			{
+				 $a = DB::table('pendaftaran_beasiswa')->where('id_beasiswa',$beasiswa->id_beasiswa)->count();
+				 array_push($b, $a);
+				//	echo $beasiswa->id_beasiswa.'asd'.$a;
+			}
+
 			if ($daftarBeasiswa->count() == 0)
 			{
 				return view('pages.noaccess')->withUser($user)->withNamarole($namarole);
 			}
 			else{
-			return view('pages.daftar-seleksi')->withDaftarbeasiswa($daftarBeasiswa)->withUser($user)->withNamarole($namarole);
+			return view('pages.daftar-seleksi')->withDaftarbeasiswa($daftarBeasiswa)->withUser($user)->withNamarole($namarole)->withJumlahpendaftar($b);
 			}
 		}
 
@@ -269,14 +278,28 @@
 				->select('beasiswa_penyeleksi_tahapan.id_tahapan', 'tahapan.nama_tahapan','user.nama')
 				->orderBy('beasiswa_penyeleksi_tahapan.id_bpt', 'asc')->get();
 
-				/*$retrTahapan = DB::table('beasiswa_penyeleksi_tahapan')->where('id_bp', $retrievePenyeleksi->id_bp)
-					->join('tahapan','beasiswa_penyeleksi_tahapan.id_tahapan','=','tahapan.id_tahapan')
-					->select('beasiswa_penyeleksi_tahapan.id_tahapan', 'tahapan.nama_tahapan')
-					->orderBy('beasiswa_penyeleksi_tahapan.id_tahapan', 'asc')->get();
-				*/
+				$b=[];
+				foreach($retrTahapan as $key=>$tahapan)
+				{
+					$a = DB::table('seleksi_beasiswa')->where('id_beasiswa',$id)->where('id_tahapan', $tahapan->id_tahapan)->where('final', '0')->count();
+					array_push($b, $a);
+					if (count($retrTahapan)-1 == $key)
+					{
+						$final = DB::table('seleksi_beasiswa')->where('id_beasiswa', $id)->where('id_tahapan',$tahapan->id_tahapan)->first();
+						if ($final->final == 1)
+						{
+							$check = 1;
+						}
+						else{
+							$check=0;
+						}
+					}
+				}
 
 
-				return view('pages.seleksi-beasiswa')->withUser($user)->withNamarole($namarole)->withAksestahapan($retrAksesTahapan)->withTahapan($retrTahapan)->withIdbeasiswa($id);
+
+				$beasiswa= DB::table('beasiswa')->where('id_beasiswa', $id)->first();
+				return view('pages.seleksi-beasiswa')->withUser($user)->withNamarole($namarole)->withAksestahapan($retrAksesTahapan)->withTahapan($retrTahapan)->withIdbeasiswa($id)->withBeasiswa($beasiswa)->withJumlahpartisipan($b)->withCheck($check);
 
 
 			}
@@ -320,10 +343,11 @@
 				*		final = 2 -> lihat hasi
 				*/
 				$cekFinal = DB::table('seleksi_beasiswa')->where('id_beasiswa', $idBeasiswa)->where('id_tahapan', $idTahapan)->first();
+				$tahapan = DB::table('tahapan')->where('id_tahapan', $idTahapan)->first();
 				if (empty($cekFinal)) // Jika belum/ tidak ada pendaftar
 				{
 					$final = 1;
-					return view('pages.seleksi-tahapan')->withUser($user)->withPengguna($pengguna)->withNamarole($namarole)->withIdtahapan($idTahapan)->withIdbeasiswa($idBeasiswa)->withBeasiswa($beasiswa)->withFinal($final);
+					return view('pages.seleksi-tahapan')->withUser($user)->withPengguna($pengguna)->withNamarole($namarole)->withIdtahapan($idTahapan)->withIdbeasiswa($idBeasiswa)->withBeasiswa($beasiswa)->withFinal($final)->withTahapan($tahapan);
 
 				}
 				else{
@@ -341,10 +365,10 @@
 					if($cekFinal -> final == '1')
 					{
 						$final = 2;
-						return view('pages.seleksi-tahapan')->withUser($user)->withPengguna($pengguna)->withNamarole($namarole)->withPendaftar($pendaftar)->withIdtahapan($idTahapan)->withIdbeasiswa($idBeasiswa)->withBeasiswa($beasiswa)->withFinal($final);
+						return view('pages.seleksi-tahapan')->withUser($user)->withPengguna($pengguna)->withNamarole($namarole)->withPendaftar($pendaftar)->withIdtahapan($idTahapan)->withIdbeasiswa($idBeasiswa)->withBeasiswa($beasiswa)->withFinal($final)->withTahapan($tahapan);
 					}
 					else{
-						return view('pages.seleksi-tahapan')->withUser($user)->withPengguna($pengguna)->withNamarole($namarole)->withPendaftar($pendaftar)->withIdtahapan($idTahapan)->withIdbeasiswa($idBeasiswa)->withBeasiswa($beasiswa)->withFinal($final);
+						return view('pages.seleksi-tahapan')->withUser($user)->withPengguna($pengguna)->withNamarole($namarole)->withPendaftar($pendaftar)->withIdtahapan($idTahapan)->withIdbeasiswa($idBeasiswa)->withBeasiswa($beasiswa)->withFinal($final)->withTahapan($tahapan);
 					}
 
 				}
@@ -353,40 +377,10 @@
 		}
 		function savedraftest()
 		{
-			$partisipan = DB::table('seleksi_beasiswa')->where('id_beasiswa', '5')->where('id_tahapan', '1')->select('id_mahasiswa')->get();
-			//get nama tahapan
-			$namatahapan = DB::table('tahapan')->where('id_tahapan', '1')->select('nama_tahapan')->first();
+				$tahapan = DB::table('tahapan')->where('id_tahapan','1')->first();
+				echo $tahapan->nama_tahapan;
 
-			if ($namatahapan->nama_tahapan == 'Administratif')
-			{
-				$idstatus = 2;
-			}
-			else if ($namatahapan->nama_tahapan == 'Berkas')
-			{
-				$idstatus = 3;
-			}
-			else if ($namatahapan->nama_tahapan == 'Tes Tertulis')
-			{
-				$idstatus = 4;
-			}
-			else if ($namatahapan->nama_tahapan == 'Wawancara')
-			{
-				$idstatus = 5;
-			}
 
-			DB::table('pendaftaran_beasiswa')->where('id_mahasiswa', '2')->where('id_beasiswa', '5')->update(['status_lamaran' => $idstatus]);
-			$table = [4];
-			foreach($partisipan as $key => $partisipan)
-			{
-				DB::table('pendaftaran_beasiswa')->where('id_mahasiswa', $partisipan->id_mahasiswa)->where('id_beasiswa', '5')->update(['status_lamaran' => '7']);
-			}
-			foreach ($table as $key => $idMahasiswa) {
-					DB::table('pendaftaran_beasiswa')->where('id_mahasiswa', $idMahasiswa)->where('id_beasiswa', '5')->update(['status_lamaran' => $idstatus]);
-					// if ($partisipan->id_mahasiswa == $idMahasiswa)
-					// {
-					// 	DB::table('pendaftaran_beasiswa')->where('id_mahasiswa', $idMahasiswa)->where('id_beasiswa', $request->idbeasiswa)->update(['status_lamaran' => $idstatus]);
-					// }
-			}
 		}
 
 
@@ -460,10 +454,6 @@
 			}
 			foreach ($request->table as $key => $idMahasiswa) {
 					DB::table('pendaftaran_beasiswa')->where('id_mahasiswa', $idMahasiswa)->where('id_beasiswa', $request->idbeasiswa)->update(['status_lamaran' => $idstatus]);
-					// if ($partisipan->id_mahasiswa == $idMahasiswa)
-					// {
-					// 	DB::table('pendaftaran_beasiswa')->where('id_mahasiswa', $idMahasiswa)->where('id_beasiswa', $request->idbeasiswa)->update(['status_lamaran' => $idstatus]);
-					// }
 			}
 
 			/*
@@ -490,6 +480,7 @@
 								'id_mahasiswa'=>$idMahasiswa
 							]
 						);
+						DB::table('pendaftaran_beasiswa')->where('id_mahasiswa', $idMahasiswa)->where('id_beasiswa', $request->idbeasiswa)->update(['status_lamaran' => '6']);
 					}
 				}
 				if ($set==1)
@@ -515,8 +506,6 @@
 					$set=1;
 				}
 			}
-
-
 
 			return response()->json(array('msg'=> $set), 200);
 		}
