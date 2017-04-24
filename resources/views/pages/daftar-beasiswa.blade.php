@@ -9,27 +9,30 @@
 @section('content')
 <form id='daftarScholarshipForm' action = "{{ url('register-beasiswa') }}" onsubmit="return validateForm()" method = "post" data-parsley-validate="" enctype="multipart/form-data">
 	<div>
-		<h3> Daftar Beasiswa </h3>
-		<h4>{{$beasiswa->nama_beasiswa}}</h4>
-		<p style="font-weight:bold"><font color="red"> Semua Kolom Harus Diisi </font></p>
+		<h3> Daftar Beasiswa </h3> <h4><font color="#003366"> {{$beasiswa->nama_beasiswa}}</font></h4>
+		<hr>
+		
+		
 	</div>
 
 	<input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
 	<input type = "hidden" name = "idBeasiswa" value= {{$beasiswa->id_beasiswa}}>
 	<input type = "hidden" name = "userid" value= {{$pengguna->id_user}}>
-  <input type = "hidden" name = "idMahasiswa" value={{$pengguna->id_user}} >
+  	<input type = "hidden" name = "idMahasiswa" value={{$pengguna->id_user}} >
+
+
+	<h6 style="font-weight:bold"><font color="grey"> Semua data di bawah diambil dari profil. Jika ingin mengganti silahkan rubah dari profil</font></h6>
 
 	<div class="form-group">
 		<label for="namaMahasiswa">Nama Mahasiswa</label>
 
-		<input type="text" placeholder="Nama Mahasiswa" class="form-control" name="namaMahasiswa" required="">
+		<input type="text" placeholder="Nama Mahasiswa" class="form-control" name="namaMahasiswa" value="{{$pengguna->nama}}" readonly>
 	</div>
-	<h6 style="font-weight:bold"><font color="grey"> Semua data di bawah diambil dari profil. Jika ingin mengganti silahkan rubah dari profil</font></h6>
 	<div class = "row">
 
 		<div class="form-group col-sm-3">
 			<label for="NPM">NPM</label>
-			<input type="text" placeholder="NPM" class="form-control" name="npm" value={{$mahasiswa->npm}} readonly>
+			<input type="text" placeholder="NPM" class="form-control" name="npm" value="{{$mahasiswa->npm}}" readonly>
 		</div>
 		<div class="form-group col-sm-4">
 			<label for="Email">Email</label>
@@ -73,7 +76,7 @@
 
 		<div class="form-group">
 			<label for="alamat">Alamat</label>
-			<input type="text" placeholder="Alamat" class="form-control" name="ddd" value="{{$mahasiswa->alamat}}" readonly>
+			<input type="text" placeholder="Alamat" class="form-control" name="alamat" value="{{$mahasiswa->alamat}}" readonly>
 		</div>
 
 	<div class = "row">
