@@ -139,6 +139,11 @@
 	<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 	<strong>Tanggal Tutup Harus Lebih Besar Dari Tanggal Buka</strong>
 </div>
+<div name= "alertNomorIdentitas" class="alert alert-danger alert-dismissable fade in">
+  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+  <strong>Nomor identitas harus berupa angka</strong>
+</div>
+
 @endsection
 
 @section('script')

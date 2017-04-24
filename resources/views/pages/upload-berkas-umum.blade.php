@@ -1,6 +1,6 @@
 @extends('master')
 
-@section('title', 'Detail Beasiswa')
+@section('title', 'Upload Berkas Umum')
 
 @section('content')
 
@@ -18,15 +18,19 @@
   <input type = "hidden" name = "idBerkas" value="1" >
   <input type = "hidden" name = "idMahasiswa" value="2" >
 
-  1. Judulnya:
-  <input type = "hidden" name = "nama[0]" value="Judulnya" >
-  <input type="file" name="berkases[0]" />
-  <br>
-  2. Judulnya2:
-  <input type = "hidden" name = "nama[1]" value="Judulnya2" >
-  <input type="file" name="berkases[1]" />
-  <br><br>
-  <input type="submit" name="submit" value="Upload" />
+  <h5>Berkas:</h5>
+  <div class="row">
+    @foreach ($berkas as $index => $tmp)
+    <div class="form-group col-sm-8">
+      <input name = "nama[{{$index}}]" value="{{$tmp->nama_berkas}}" hidden>
+      <input name = "idBerkas[{{$index}}]" value="{{$tmp->id_berkas}}" hidden>
+      <label for="berkases[{{$index}}]">{{$index+1}}. {{$tmp->nama_berkas}}</label>
+      <input type="file" class="form-control" name="berkases[{{$index}}]">
+    </div>
+    @endforeach
+  </div>
+
+  <input type="submit" class="btn btn-info" name="submit" value="Upload" />
 </form>
 
 @endsection

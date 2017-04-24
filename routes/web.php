@@ -74,9 +74,48 @@ Route::post('update-beasiswa',[
 ]);
 Route::post('retrieve-prodi', 'ScholarshipController@retrieveProdi');
 
-//test only
-Route::get('/upload',[
+//Route::post('insert-beasiswa', 'ScholarshipController@insertBeasiswa');
+//Route::post('update-beasiswa', 'ScholarshipController@updateBeasiswa');
+
+Route::post('update-profil',[
+  'middleware' => 'authSSO',
+  'uses' => 'MainController@updateProfil'
+]);
+
+Route::get('/profil', [
+  'middleware' => 'authSSO',
+  'uses' => 'MainController@profil'
+]);
+
+Route::get('/edit-profil', [
+  'middleware' => 'authSSO',
+  'uses' => 'MainController@editProfil'
+]);
+
+Route::get('/pendaftar-beasiswa/{id}', [
+  'middleware' => 'authSSO',
+  'uses' => 'MainController@pendaftarBeasiswa'
+]);
+
+Route::get('/lihat-berkas-mahasiswa/{idbeasiswa}/{iduser}', [
+  'middleware' => 'authSSO',
+'as' => 'lihatBerkas', 'uses' => 'MainController@lihatBerkas']);
+
+// Route::get('/lihat-berkas-mahasiswa/{id}', [
+//   'middleware' => 'authSSO',
+//   'uses' => 'MainController@lihatBerkas'
+// ]);
+
+Route::post('download-berkas', 'MainController@download');
+Route::get('sendbasicemail','MailController@basic_email');
+Route::get('sendhtmlemail','MailController@html_email');
+Route::get('sendattachmentemail','MailController@attachment_email');
+
+Route::get('upload-berkas-umum',[
   'middleware' => 'authSSO',
   'uses' => 'UploadController@uploadForm'
 ]);
-Route::post('/upload', 'UploadController@uploadSubmit');
+Route::post('upload',[
+  'middleware' => 'authSSO',
+  'uses' => 'UploadController@uploadSubmit'
+]);
