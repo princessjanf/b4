@@ -63,14 +63,26 @@ class MainController extends Controller
       $user = SSO::getUser();
       $pengguna = DB::table('user')->where('username', $user->username)->first();
       $role = DB::table('role')->where('id_role', $pengguna->id_role)->first();
-      $namarole = $role->nama_role;
+      $beasiswa1 = DB::table('beasiswa')->first();
+      $pendonorBeasiswa = DB::table('pendonor')->where('id_user', $beasiswa1->id_pendonor)->first();
+      $pendonor_beasiswa = $pendonorBeasiswa->nama_instansi;
+
+      if ($role->nama_role == 'Pegawai')
+      {
+        $roles = DB::table('role_pegawai')->where('id_role_pegawai', $role->id_role)->first();
+        $namarole = $roles->nama_role_pegawai;
+      }
+      else 
+      {
+        $namarole = $role->nama_role;
+      }
 
       if($namarole=='Pegawai'){
         $pengguna = DB::table('pegawai')->where('id_user', $pengguna->id_user)->first();
         $role = DB::table('role_pegawai')->where('id_role_pegawai', $pengguna->id_role_pegawai)->first();
         $namarole = $role->nama_role_pegawai;
       }
-      if ($namarole == 'mahasiswa' || $namarole == 'Pegawai Fakultas') {
+      if ($namarole == 'Mahasiswa' || $namarole == 'Pegawai Fakultas') {
         $beasiswas = DB::table('beasiswa')->where('flag', '1')->where('public', '1')->get();
       } else if ($namarole == 'pendonor'){
         $pendonor = DB::table('pendonor')->where('id_user', $pengguna->id_user)->first();
@@ -80,7 +92,7 @@ class MainController extends Controller
       } else {
         $beasiswas = DB::table('beasiswa')->where('flag', '1')->get();
       }
-      return view('pages.list-beasiswa')->withBeasiswas($beasiswas)->withUser($user)->withNamarole($namarole);
+      return view('pages.list-beasiswa')->withBeasiswas($beasiswas)->withUser($user)->withNamarole($namarole)->withPendonorBeasiswa($pendonor_beasiswa);
     }
      function addbeasiswa()
     {

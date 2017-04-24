@@ -52,7 +52,7 @@
 					<li><a href="{{ url('list-beasiswa') }}">List Beasiswa</a></li>
 					@if ($namarole=='pendonor')
 					<li><a href="#kelolalpj">Kelola LPJ</a></li>
-					@elseif ($namarole=='mahasiswa')
+					@elseif ($namarole=='Mahasiswa')
 					<li><a href="#isilpj">Isi LPJ</a></li>
 					@endif
 					<li><a href="#settings">Settings</a></li>
