@@ -24,29 +24,30 @@ class UploadController extends Controller
       $namarole = $role->nama_role_pegawai;
     }
 
-    return view('pages.upload-form')->withUser($user)->withNamarole($namarole);
+    $nomorberkasumum = [20,19,11,10,3];
+    $berkas = DB::table('berkas')
+                      ->whereIn('id_berkas', $nomorberkasumum)
+                      ->get();
+
+    return view('pages.upload-berkas-umum', compact('user','namarole','berkas'));
   }
 
   public function uploadSubmit(UploadRequest $request)
   {
-    // $product = Product::create($request->all());
     $idBeasiswa = $request->get('idBeasiswa');
-    $idBerkas = $request->get('idBerkas');
     $idMahasiswa = $request->get('idMahasiswa');
 
     foreach ($request->berkases as $index=>$berkas) {
-      $file = $berkas->storeAs('berkas', $idMahasiswa.'-'.$request->nama[$index].'.pdf');
-
-      DB::insert('INSERT INTO `beasiswa_berkas`(`id_beasiswa`, `id_berkas`, `id_mahasiswa`, `file`)
-      VALUES (?,?,?,?)',
-      [$idBeasiswa, $idBerkas, $idMahasiswa, $file]
-    );
-
-    // ProductsPhoto::create([
-    //   'product_id' => $product->id,
-    //   'filename' => $filename
-    // ]);
+      $idBerkas = $request->idBerkas[$index];
+      $file = $idMahasiswa.'-'.$request->nama[$index].'.pdf';
+      $oldfile = DB::table('berkas_umum')->where('file', $file)->first();
+      if($oldfile == null) {
+         DB::insert('INSERT INTO `berkas_umum`(`id_berkas`, `id_mahasiswa`, `file`)
+           VALUES (?,?,?)', [$idBerkas, $idMahasiswa, $file]
+         );
+      }
+      $berkas->storeAs('berkas', $file);
     }
-    return redirect('upload');
+    return redirect('profil');
   }
 }

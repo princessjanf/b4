@@ -17,7 +17,7 @@ class UploadRequest extends FormRequest
   {
     $jumlah = count($this->input('berkases'));
     foreach(range(0, $jumlah) as $index) {
-      $rules['berkases.' . $index] = 'mimes:pdf';
+      $rules['berkases.' . $index] = 'pic';
     }
     return $rules;
   }

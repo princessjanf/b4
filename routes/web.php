@@ -74,9 +74,11 @@ Route::post('update-beasiswa',[
 ]);
 Route::post('retrieve-prodi', 'ScholarshipController@retrieveProdi');
 
-//test only
-Route::get('/upload',[
+Route::get('upload-berkas-umum',[
   'middleware' => 'authSSO',
   'uses' => 'UploadController@uploadForm'
 ]);
-Route::post('/upload', 'UploadController@uploadSubmit');
+Route::post('upload',[
+  'middleware' => 'authSSO',
+  'uses' => 'UploadController@uploadSubmit'
+]);
