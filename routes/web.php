@@ -88,10 +88,14 @@ Route::get('/pendaftar-beasiswa/{id}', [
   'uses' => 'MainController@pendaftarBeasiswa'
 ]);
 
-Route::get('/lihat-berkas-mahasiswa/{id}', [
+Route::get('/lihat-berkas-mahasiswa/{idbeasiswa}/{iduser}', [
   'middleware' => 'authSSO',
-  'uses' => 'MainController@lihatBerkas'
-]);
+'as' => 'lihatBerkas', 'uses' => 'MainController@lihatBerkas']);
+
+// Route::get('/lihat-berkas-mahasiswa/{id}', [
+//   'middleware' => 'authSSO',
+//   'uses' => 'MainController@lihatBerkas'
+// ]);
 
 Route::post('/download-berkas/', 'MainController@download');
 Route::get('sendbasicemail','MailController@basic_email');

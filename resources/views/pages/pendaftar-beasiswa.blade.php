@@ -23,7 +23,7 @@
          <tr>
            @foreach($mahasiswas as $index => $mahasiswa)
             <th><label>{{$index+1}}.</label></th>
-           <th><label><a href="{{ url('lihat-berkas-mahasiswa/'.$mahasiswa->id_user) }}">{{$mahasiswa->nama}}</a></label></th>
+           <th><label><a href="{{ url('lihat-berkas-mahasiswa/'.$beasiswa->id_beasiswa. '/' .$mahasiswa->id_user) }}">{{$mahasiswa->nama}}</a></label></th>
            <th><label>{{$mahasiswa->npm}}</label></th>
            <th><label>{{$mahasiswa->email}}</label></th>
            <th><label>{{$mahasiswa->nama_fakultas}}</label></th>
