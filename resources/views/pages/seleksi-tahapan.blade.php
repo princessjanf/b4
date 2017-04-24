@@ -54,7 +54,7 @@
 		<tr>
 			<td>{{$index+1}}</td>
 			<td>
-				{{$pendaftar->nama}}
+					{{$pendaftar->nama}}
 			</td>
 			@if ($final == 2)
 			<td>
@@ -65,7 +65,6 @@
 			<td>
 				<input type = "number" id="{{$pendaftar->id_mahasiswa}}" name = "{{$pendaftar->id_mahasiswa}}" value= "{{$pendaftar->nilai_seleksi}}" min="0" max="100">
 			</td>
-
 			@endif
 		</tr>
 		@endforeach
@@ -105,7 +104,7 @@
 	});
 	function saveDraft(){
 		var table = $('#tableSeleksi').DataTable().$('input').serialize();
-		console.log({{$pengguna->id_user}});
+		console.log(table);
 		$.ajax({
 			type:'POST',
 			url:'/save-draft',
@@ -244,7 +243,7 @@
 	#fix {
     position: fixed;
     top: 8em;
-    right: 5em;
+    right: 3em;
 	}
 
 </style>
