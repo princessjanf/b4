@@ -14,7 +14,7 @@ class MainController extends Controller
         return view('pages.homepage')->withBeasiswas($beasiswas)->withUser($user);
       }
       else{
-        $user = SSO::getUser(); 
+        $user = SSO::getUser();
         $pengguna = DB::table('user')->where('username', $user->username)->first();
         $role = DB::table('role')->where('id_role', $pengguna->id_role)->first();
         $namarole = $role->nama_role;
@@ -159,17 +159,17 @@ class MainController extends Controller
         return view('pages.detail-beasiswa')->withBeasiswa($beasiswa)->withPersyaratans($persyaratans)->withUser($user)->withNamarole($namarole);
       }
     }
-  
-   function profil() 
+
+   function profil()
     {
       $user = SSO::getUser();
       $pengguna = DB::table('user')->where('username', $user->username)->first();
       $pengguna = DB::table('user')->where('id_user', $pengguna->id_user)->first();
       $role = DB::table('role')->where('id_role', $pengguna->id_role)->first();
       $namarole = $role->nama_role;
-     
+
           if($namarole=='Pendonor')
-          {            
+          {
             $nama = DB::table('user')->where('username',$user->username)->first();
             $pendonor = DB::table('pendonor')->where('id_user', $nama->id_user)->first();
           /*  $instansi = DB::table('pendonor')->where('id_pendonor', $pendonor->id_pendonor)->first();
@@ -177,7 +177,7 @@ class MainController extends Controller
 
             /* $profil = DB::table('pendonor')->where('id_pendonor', $id)->first();
              $jabatans = DB::table('pegawai')->where('jabatan', $jabatan->id_role_pegawai)->get();*/
-          
+
           $beasiswas = DB::table('beasiswa')->where('id_pendonor',$pendonor->id_user)->get();
 
 
@@ -194,19 +194,25 @@ class MainController extends Controller
 
               $nama = DB::table('user')->where('username', $user->username)->first();
               $mahasiswa = DB::table('mahasiswa')->where('id_user',$nama->id_user)->first();
-            /* $idmahasiswa = DB::table('user')->where('id_user', $user->id_user)->first();*/           
+            /* $idmahasiswa = DB::table('user')->where('id_user', $user->id_user)->first();*/
              $fakultas = DB::table('fakultas')->where('id_fakultas',$mahasiswa->id_fakultas)->first();
              $prodi = DB::table('program_studi')->where('id_prodi',$mahasiswa->id_prodi)->first();
            $jenjang = DB::table('jenjang_prodi')->where('id_prodi',$mahasiswa->id_prodi)->first();
              $jenjangMahasiswa = DB::table('jenjang')->where('id_jenjang',$jenjang->id_jenjang)->first();
-             
+
               $beasiswas = DB::table('pendaftaran_beasiswa')->where('id_mahasiswa',$mahasiswa->id_user)
             ->join('beasiswa','beasiswa.id_beasiswa', '=', 'pendaftaran_beasiswa.id_beasiswa')
             ->join('status_lamaran', 'status_lamaran.id_status_lamaran',"=", 'pendaftaran_beasiswa.status_lamaran')
             ->select('beasiswa.*','status_lamaran.nama_lamaran','pendaftaran_beasiswa.waktu_melamar')
             ->get();
-           
-            return view('pages.profil')->withPengguna($pengguna)->withNama($nama)->withUser($user)->withMahasiswa($mahasiswa)->withNamarole($namarole)->withBeasiswas($beasiswas)->withFakultas($fakultas)->withProdi($prodi)->withJenjangmahasiswa($jenjangMahasiswa);
+
+            $berkas = DB::table('berkas_umum')
+                              ->where('id_mahasiswa', $pengguna->id_user)
+                              ->join('berkas', 'berkas.id_berkas', '=', 'berkas_umum.id_berkas')
+                              ->select('berkas_umum.*', 'berkas.nama_berkas')
+                              ->get();
+
+            return view('pages.profil')->withPengguna($pengguna)->withNama($nama)->withUser($user)->withMahasiswa($mahasiswa)->withNamarole($namarole)->withBeasiswas($beasiswas)->withFakultas($fakultas)->withProdi($prodi)->withJenjangmahasiswa($jenjangMahasiswa)->withBerkas($berkas);
             /*$mahasiswa = DB::table('mahasiswa')->where('username',$user->username)->first();
 
             $fakultas = DB::table('fakultas')->where('id_fakultas',$mahasiswa->id_fakultas)->first();
@@ -232,19 +238,19 @@ class MainController extends Controller
           }
     }
 
-     function editProfil() 
+     function editProfil()
     {
             $user = SSO::getUser();
       $pengguna = DB::table('user')->where('username', $user->username)->first();
       $pengguna = DB::table('user')->where('id_user', $pengguna->id_user)->first();
       $role = DB::table('role')->where('id_role', $pengguna->id_role)->first();
       $namarole = $role->nama_role;
-     
+
           if($namarole=='Pendonor')
-          {            
+          {
             $nama = DB::table('user')->where('username',$user->username)->first();
             $pendonor = DB::table('pendonor')->where('id_user', $nama->id_user)->first();
-        
+
           $beasiswas = DB::table('beasiswa')->where('id_pendonor',$pendonor->id_user)->get();
 
 
@@ -261,7 +267,7 @@ class MainController extends Controller
 
               $nama = DB::table('user')->where('username', $user->username)->first();
               $mahasiswa = DB::table('mahasiswa')->where('id_user',$nama->id_user)->first();
-           
+
              $fakultas = DB::table('fakultas')->where('id_fakultas',$mahasiswa->id_fakultas)->first();
              $prodi = DB::table('program_studi')->where('id_prodi',$mahasiswa->id_prodi)->first();
               $jenjang = DB::table('jenjang_prodi')->where('id_prodi',$mahasiswa->id_prodi)->first();
@@ -271,10 +277,10 @@ class MainController extends Controller
             ->join('beasiswa','beasiswa.id_beasiswa', '=', 'pendaftaran_beasiswa.id_beasiswa')
             ->select('beasiswa.*')
             ->get();
-         
-             
+
+
             return view('pages.edit-profil')->withPengguna($pengguna)->withNama($nama)->withUser($user)->withMahasiswa($mahasiswa)->withNamarole($namarole)->withBeasiswas($beasiswas)->withFakultas($fakultas)->withProdi($prodi)->withJenjangmahasiswa($jenjangMahasiswa);
-           
+
           }
 
           else if($namarole=='Pegawai')
@@ -290,7 +296,7 @@ class MainController extends Controller
           }
     }
 
- function updateProfil(Request $request) 
+ function updateProfil(Request $request)
 {
    DB::table('mahasiswa')
           ->where('id_user', $request->get('idUser'))
@@ -313,7 +319,7 @@ class MainController extends Controller
           return redirect('profil');
 }
 
-function pendaftarBeasiswa($id) 
+function pendaftarBeasiswa($id)
     {
       $user = SSO::getUser();
       $pengguna = DB::table('user')->where('username', $user->username)->first();
@@ -323,7 +329,7 @@ function pendaftarBeasiswa($id)
       $beasiswa = DB::table('beasiswa')->where('id_beasiswa', $id)->first();
 
           if($namarole=='Pendonor' && $pengguna->id_user == $beasiswa->id_pendonor)
-          {                
+          {
             $mahasiswas = DB::table('pendaftaran_beasiswa')->where('id_beasiswa',$beasiswa->id_beasiswa)
             ->join('mahasiswa','mahasiswa.id_user', '=', 'pendaftaran_beasiswa.id_mahasiswa')
             ->join('user', 'user.id_user', '=', 'pendaftaran_beasiswa.id_mahasiswa')
@@ -331,7 +337,7 @@ function pendaftarBeasiswa($id)
             ->join('program_studi', 'program_studi.id_prodi', '=', 'mahasiswa.id_prodi')
             ->select('mahasiswa.*','user.nama', 'fakultas.nama_fakultas', 'program_studi.nama_prodi')
             ->get();
-          
+
 
 
             return view('pages.pendaftar-beasiswa')
@@ -348,7 +354,7 @@ function pendaftarBeasiswa($id)
     }
 
 
-  function lihatBerkas($idbeasiswa,$iduser) 
+  function lihatBerkas($idbeasiswa,$iduser)
   {
     $user = SSO::getUser();
       $pengguna = DB::table('user')->where('username', $user->username)->first();
@@ -360,14 +366,14 @@ function pendaftarBeasiswa($id)
       $beasiswa = DB::table('beasiswa')->where('id_beasiswa', $idbeasiswa)->first();
 
           if($namarole=='Pendonor')
-          {          
+          {
             $berkas = DB::table('beasiswa_berkas')->where('beasiswa_berkas.id_mahasiswa', $mahasiswa->id_user)->where('beasiswa_berkas.id_beasiswa', $beasiswa->id_beasiswa)
             ->join('mahasiswa','mahasiswa.id_user', '=', 'beasiswa_berkas.id_mahasiswa')
             ->join('beasiswa', 'beasiswa.id_beasiswa', '=', 'beasiswa_berkas.id_beasiswa')
             ->join('berkas', 'berkas.id_berkas', '=', 'beasiswa_berkas.id_berkas')
             ->join('pendaftaran_beasiswa', 'pendaftaran_beasiswa.id_pendaftaran', '=', 'beasiswa_berkas.id_pendaftaran')
             ->select('mahasiswa.*','beasiswa_berkas.*','berkas.nama_berkas', 'pendaftaran_beasiswa.id_pendaftaran')
-            ->get();  
+            ->get();
 
 
 
@@ -392,4 +398,3 @@ function pendaftarBeasiswa($id)
   }
 
 }
-

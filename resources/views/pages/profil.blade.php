@@ -14,7 +14,7 @@
      <p><label>{{$pegawai->no_identitas}}</label></p>
      JABATAN:
       <p><label>{{$jabatan->nama_jabatan}}</label></p>
-    
+
     @elseif($namarole=='Pendonor')
     NAMA INSTANSI:
      <p><label>{{$pendonor->nama_instansi}}</label></p>
@@ -77,12 +77,26 @@
     NO. HANDPHONE:
      <p><label>{{$mahasiswa->nomor_telepon}}</label></p>
     NAMA PEMILIK REKENING:
-     <p><label>{{$mahasiswa->nama_pemilik_rekening}}</label></p> 
+     <p><label>{{$mahasiswa->nama_pemilik_rekening}}</label></p>
     PENGHASILAN ORANG TUA:
      <p><label>{{$mahasiswa->penghasilan_orang_tua}}</label></p>
      </div>
      </div>
-    DAFTAR BEASISWA YANG DIDAFTARKAN:
+
+     <h4>Berkas:</h4>
+     @foreach($berkas as $index => $file)
+     <form action="{{url('download-berkas')}}" method="POST">
+       <input type="text" value="{{$file->file}}" name="berkas" hidden>
+       <input type="hidden" value="<?php echo csrf_token(); ?>" name="_token">
+       <label class="form-group">{{$index+1}}.</label>
+       <button class="btn" type="submit">lihat</button>
+       <label>{{$file->nama_berkas}}</label>
+     </form>
+     @endforeach
+     <a href=""><button class="btn btn-info">Upload Baru</button></a>
+     <br><br>
+
+    <h4>Daftar Beasiswa yang Ddidaftarkan:</h4>
    <p></p>
     <table class="table table-striped">
     <thead>
@@ -105,9 +119,9 @@
     @endforeach
    </tbody>
     </table>
-    
 
- 
+
+
     @endif
     </div>
 @endsection
