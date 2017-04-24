@@ -87,8 +87,9 @@
     <table class="table table-striped">
     <thead>
       <tr>
-        <th>No.</th>
+        <th >No.</th>
         <th>Nama Beasiswa</th>
+        <th width="25%">Waktu Melamar</th>
         <th>Status</th>
       </tr>
     </thead>
@@ -96,7 +97,9 @@
     <tr>
     @foreach($beasiswas as $index => $beasiswa)
     <th><label>{{$index+1}}.</label></th>
-   <th><label>{{$beasiswa->nama_beasiswa}}</label></th>
+    <th><label><a href="{{ url('detail-beasiswa/'.$beasiswa->id_beasiswa) }}">{{$beasiswa->nama_beasiswa}}</a></label></th>
+   <!--  <th><label>{{$beasiswa->nama_beasiswa}}</label></th> -->
+   <th><label>{{$beasiswa->waktu_melamar}}</label></th>
    <th><label>{{$beasiswa->nama_lamaran}}</label></th>
    </tr>
     @endforeach

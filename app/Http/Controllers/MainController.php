@@ -203,7 +203,7 @@ class MainController extends Controller
               $beasiswas = DB::table('pendaftaran_beasiswa')->where('id_mahasiswa',$mahasiswa->id_user)
             ->join('beasiswa','beasiswa.id_beasiswa', '=', 'pendaftaran_beasiswa.id_beasiswa')
             ->join('status_lamaran', 'status_lamaran.id_status_lamaran',"=", 'pendaftaran_beasiswa.status_lamaran')
-            ->select('beasiswa.*','status_lamaran.nama_lamaran')
+            ->select('beasiswa.*','status_lamaran.nama_lamaran','pendaftaran_beasiswa.waktu_melamar')
             ->get();
            
             return view('pages.profil')->withPengguna($pengguna)->withNama($nama)->withUser($user)->withMahasiswa($mahasiswa)->withNamarole($namarole)->withBeasiswas($beasiswas)->withFakultas($fakultas)->withProdi($prodi)->withJenjangmahasiswa($jenjangMahasiswa);
@@ -297,7 +297,10 @@ class MainController extends Controller
           ->update(['jenis_identitas'=>$request->input('jenisIdentitas'),
                     'nomor_identitas'=>$request->input('nomorIdentitas'),
                     'nama_pemilik_rekening'=>$request->input('pemilikRekening'),
-                    'nama_bank'=>$request->input('namaBank')
+                    'nama_bank'=>$request->input('namaBank'),
+                    'nomor_rekening'=>$request->input('nomorRekening'),
+                    'nomor_telepon'=>$request->input('nomorTelepon'),
+                    'nomor_hp'=>$request->input('nomorHandphone')
                   ]);
           $idUser = $request->get('idUser');
 
