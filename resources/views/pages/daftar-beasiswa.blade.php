@@ -19,6 +19,8 @@
 	<input type = "hidden" name = "idBeasiswa" value= {{$beasiswa->id_beasiswa}}>
 	<input type = "hidden" name = "userid" value= {{$pengguna->id_user}}>
   	<input type = "hidden" name = "idMahasiswa" value={{$pengguna->id_user}} >
+  	<input type = "hidden" name = "idPenyeleksi" value= {{$bepe->id_penyeleksi}}>
+  	<input type = "hidden" name = "idTahapan" value={{$bepe->id_tahapan}} >
 
 
 	<h6 style="font-weight:bold"><font color="grey"> Semua data di bawah diambil dari profil. Jika ingin mengganti silahkan rubah dari profil</font></h6>

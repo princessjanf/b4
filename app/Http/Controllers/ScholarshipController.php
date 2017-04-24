@@ -88,6 +88,17 @@ class ScholarshipController extends Controller
 
           $beasiswa = DB::table('beasiswa')->where('id_beasiswa', $id)->first();
           $mahasiswa = DB::table('mahasiswa')->where('id_user', $pengguna->id_user)->first();
+          
+          $bp = DB::table('beasiswa_penyeleksi')->where('id_beasiswa', $beasiswa->id_beasiswa)->first();
+          $id_penyeleksi = $bp->id_penyeleksi;
+
+          $bepe = DB::table('beasiswa_penyeleksi_tahapan')
+                              ->where('beasiswa_penyeleksi_tahapan.id_bp', $bp->id_bp)
+                              ->join('beasiswa_penyeleksi', 'beasiswa_penyeleksi.id_bp', '=', 'beasiswa_penyeleksi_tahapan.id_bp')
+                              ->select('beasiswa_penyeleksi.id_penyeleksi', 'beasiswa_penyeleksi_tahapan.id_tahapan')
+                              ->get();
+                              //return var_dump($bepe);
+
 
           if($namarole=='Mahasiswa' && $beasiswa->public == 1){
             $berkas = DB::table('assignment_berkas_beasiswa')
@@ -95,7 +106,7 @@ class ScholarshipController extends Controller
                               ->join('berkas', 'berkas.id_berkas', '=', 'assignment_berkas_beasiswa.id_berkas')
                               ->select('berkas.*')
                               ->get();
-            return view('pages.daftar-beasiswa')->withBeasiswa($beasiswa)->withUser($user)->withNamarole($namarole)->withPengguna($pengguna)->withMahasiswa($mahasiswa)->withBerkas($berkas);
+            return view('pages.daftar-beasiswa')->withBeasiswa($beasiswa)->withUser($user)->withNamarole($namarole)->withPengguna($pengguna)->withMahasiswa($mahasiswa)->withBerkas($berkas)->withBepe($bepe);
           }
           else{
             return redirect('noaccess');
@@ -108,7 +119,7 @@ class ScholarshipController extends Controller
 
         $beasiswa = DB::table('beasiswa')->orderBy('id_beasiswa', 'desc')->first();
 
-       /** waktu melamar belom*/
+       
        DB::insert('INSERT INTO `pendaftaran_beasiswa`(`id_beasiswa`, `id_mahasiswa`,`status_lamaran`,`alamat`,`nama_bank`,`nomor_rekening`,`jenis_identitas`,`nomor_identitas`,`nama_pemilik_rekening`,`nomor_telepon`,`nomor_hp`,`penghasilan_orang_tua`,`IPK` )
                   VALUES (?,?,1,?,?,?,?,?,?,?,?,?,?)',
                   [$request->get('idBeasiswa'),
@@ -125,6 +136,17 @@ class ScholarshipController extends Controller
                   $request->input('ipk')
                   ]
                 );
+
+       DB::insert('INSERT INTO `seleksi_beasiswa`(`id_beasiswa`, `id_penyeleksi`,`id_mahasiswa`,`id_tahapan`)
+                  VALUES (?,?,?,?)',
+                  [$request->get('idBeasiswa'),
+                  $request->get('idPenyeleksi'),
+                  $request->get('userid'),
+                  $request->get('idTahapan')
+                  ]
+                );
+
+
                 $id_pendaftaran = DB::table('pendaftaran_beasiswa')->orderBy('id_pendaftaran', 'desc')->first()->id_pendaftaran;
                 $this->uploadSubmit($request, $id_pendaftaran);
       return redirect('/detail-beasiswa/'.$request->get('idBeasiswa'));
