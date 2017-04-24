@@ -101,12 +101,30 @@ class ScholarshipController extends Controller
 
 
           if($namarole=='Mahasiswa' && $beasiswa->public == 1){
+            $nomorberkasumum = [20,19,11,10,3];
+
+            $berkasumum = DB::table('assignment_berkas_beasiswa')
+                                  ->whereIn('berkas.id_berkas', $nomorberkasumum)
+                                  ->where('id_beasiswa', $id)
+                                  ->join('berkas', 'berkas.id_berkas', '=', 'assignment_berkas_beasiswa.id_berkas')
+                                  ->select('berkas.*')
+                                  ->get();
+
+            $berkasumumup = DB::table('berkas_umum')
+                                  ->whereIn('id_berkas', $berkasumum->pluck('id_berkas'))
+                                  ->get();
+            if (count($berkasumum) != count($berkasumumup)) {
+              return 'lengkapi berkas umum '.$berkasumum->pluck('nama_berkas'). ' di profil';
+            }
+
             $berkas = DB::table('assignment_berkas_beasiswa')
-                              ->where('id_beasiswa', $id)
-                              ->join('berkas', 'berkas.id_berkas', '=', 'assignment_berkas_beasiswa.id_berkas')
-                              ->select('berkas.*')
-                              ->get();
-            return view('pages.daftar-beasiswa')->withBeasiswa($beasiswa)->withUser($user)->withNamarole($namarole)->withPengguna($pengguna)->withMahasiswa($mahasiswa)->withBerkas($berkas)->withBepe($bepe);
+                                  ->whereNotIn('berkas.id_berkas', $nomorberkasumum)
+                                  ->where('id_beasiswa', $id)
+                                  ->join('berkas', 'berkas.id_berkas', '=', 'assignment_berkas_beasiswa.id_berkas')
+                                  ->select('berkas.*')
+                                  ->get();
+
+            return view('pages.daftar-beasiswa')->withBeasiswa($beasiswa)->withUser($user)->withNamarole($namarole)->withPengguna($pengguna)->withMahasiswa($mahasiswa)->withBerkas($berkas)->withBepe($bepe)->withBerkasumum($berkasumum);
           }
           else{
             return redirect('noaccess');

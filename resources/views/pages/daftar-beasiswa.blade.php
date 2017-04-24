@@ -101,6 +101,22 @@
 	</div>
 
 	<div>
+		@if (count($berkasumum) > 0)
+		<h5>Berkas Umum:</h5>
+		<div class="row">
+			@foreach ($berkasumum as $index => $tmp)
+			<div class="col-sm-8">
+				<label>{{$index+1}}. {{$tmp->nama_berkas}} - link lihatt</label>
+			</div>
+			@endforeach
+			<div class="col-sm-8">
+				link ke profil buat update
+			</div>
+		</div>
+		@endif
+	</div>
+
+	<div>
 		@if (count($berkas) > 0)
 		<h5>Berkas:</h5>
 		<div class="row">
@@ -115,6 +131,7 @@
 		</div>
 		@endif
 	</div>
+
 	<div>
 		<button type="submit" id="submit-form" class="btn btn-success"> Submit </button>
 		<button style ="text-decoration: none"id="cancel" class="btn btn-danger" formnovalidate><a href="{{ url('list-beasiswa	') }}" >Cancel </a></button>
