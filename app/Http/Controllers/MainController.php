@@ -345,31 +345,47 @@ function pendaftarBeasiswa($id)
     }
 
 
-  // function lihatBerkas($id) 
-  // {
-  //   $user = SSO::getUser();
-  //     $pengguna = DB::table('user')->where('username', $user->username)->first();
-  //     $pengguna = DB::table('user')->where('id_user', $pengguna->id_user)->first();
-  //     $role = DB::table('role')->where('id_role', $pengguna->id_role)->first();
-  //     $namarole = $role->nama_role;
-  //     $mahasiswa = DB::table('pendaftaran-beasiswa')->where('id_mahasiswa', $id)->first();
-  //     $beasiswa = DB::table('beasiswa')->where('id_beasiswa', $mahasiswa->id_beasiswa)->first();
+  function lihatBerkas($id) 
+  {
+    $user = SSO::getUser();
+      $pengguna = DB::table('user')->where('username', $user->username)->first();
+      $pengguna = DB::table('user')->where('id_user', $pengguna->id_user)->first();
+      $role = DB::table('role')->where('id_role', $pengguna->id_role)->first();
+      $namarole = $role->nama_role;
 
-  //         if($namarole=='Pendonor' && $pengguna->id_user == $beasiswa->id_pendonor)
-  //         {                
-  //           return view('pages.lihat-berkas-mahasiswa')
-  //           ->withPengguna($pengguna)
-  //           ->withUser($user)
-  //           ->withNamarole($namarole)->withBeasiswa($beasiswa)->withMahasiswa($mahasiswa);
-  //         }
+      $mahasiswa = DB::table('mahasiswa')->where('id_user', $id)->first();
+
+          if($namarole=='Pendonor')
+          {          
+            $berkas = DB::table('beasiswa_berkas')->where('beasiswa_berkas.id_mahasiswa', $mahasiswa->id_user)
+            ->join('mahasiswa','mahasiswa.id_user', '=', 'beasiswa_berkas.id_mahasiswa')
+            ->join('beasiswa', 'beasiswa.id_beasiswa', '=', 'beasiswa_berkas.id_beasiswa')
+            ->join('berkas', 'berkas.id_berkas', '=', 'beasiswa_berkas.id_berkas')
+            ->join('pendaftaran_beasiswa', 'pendaftaran_beasiswa.id_pendaftaran', '=', 'beasiswa_berkas.id_pendaftaran')
+            ->select('mahasiswa.*','beasiswa_berkas.*','berkas.nama_berkas', 'pendaftaran_beasiswa.id_pendaftaran')
+            ->get();  
 
 
-  //         else
-  //         {
-  //           return redirect('noaccess');
-  //         }
 
-  // }
+            return view('pages.lihat-berkas-mahasiswa')
+            ->withPengguna($pengguna)
+            ->withUser($user)
+            ->withNamarole($namarole)->withMahasiswa($mahasiswa)->withBerkas($berkas);
+          }
+
+
+          else
+          {
+            return redirect('noaccess');
+          }
+
+  }
+
+
+  function download(Request $request)
+  {
+      return response()->download(storage_path('app/'.$request->berkas));
+  }
 
 }
 
