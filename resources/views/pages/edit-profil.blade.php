@@ -25,6 +25,7 @@
     @endforeach
 
    @elseif($namarole=='Mahasiswa')
+   <h2>Edit Profil</h2>
    <form id='editProfil' action = "{{ url('update-profil') }}" onsubmit="return validateForm()" method = "post" data-parsley-validate="">
    <input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
    <input type = "hidden" name = "idUser" value= {{$mahasiswa->id_user}}>
