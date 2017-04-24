@@ -96,8 +96,8 @@ class ScholarshipController extends Controller
                               ->where('beasiswa_penyeleksi_tahapan.id_bp', $bp->id_bp)
                               ->join('beasiswa_penyeleksi', 'beasiswa_penyeleksi.id_bp', '=', 'beasiswa_penyeleksi_tahapan.id_bp')
                               ->select('beasiswa_penyeleksi.id_penyeleksi', 'beasiswa_penyeleksi_tahapan.id_tahapan')
-                              ->get();
-                              //return var_dump($bepe);
+                              ->first();
+                              // return var_dump($bepe->id_penyeleksi);
 
 
           if($namarole=='Mahasiswa' && $beasiswa->public == 1){
@@ -111,8 +111,10 @@ class ScholarshipController extends Controller
                                   ->get();
 
             $berkasumumup = DB::table('berkas_umum')
-                                  ->whereIn('id_berkas', $berkasumum->pluck('id_berkas'))
+                                  ->whereIn('berkas_umum.id_berkas', $berkasumum->pluck('id_berkas'))
+                                  ->where('id_mahasiswa', $pengguna->id_user)
                                   ->get();
+            //reminderneedbugfix
             if (count($berkasumum) != count($berkasumumup)) {
               return 'lengkapi berkas umum '.$berkasumum->pluck('nama_berkas'). ' di profil';
             }

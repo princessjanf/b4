@@ -14,9 +14,7 @@
 
 <form action="{{url('upload')}}" method="post" enctype="multipart/form-data">
   <input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
-  <input type = "hidden" name = "idBeasiswa" value="1" >
-  <input type = "hidden" name = "idBerkas" value="1" >
-  <input type = "hidden" name = "idMahasiswa" value="2" >
+  <input type = "hidden" name = "idMahasiswa" value="{{$pengguna->id_user}}" >
 
   <h5>Berkas:</h5>
   <div class="row">

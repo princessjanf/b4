@@ -29,7 +29,7 @@ class UploadController extends Controller
                       ->whereIn('id_berkas', $nomorberkasumum)
                       ->get();
 
-    return view('pages.upload-berkas-umum', compact('user','namarole','berkas'));
+    return view('pages.upload-berkas-umum', compact('user','pengguna','namarole','berkas'));
   }
 
   public function uploadSubmit(UploadRequest $request)

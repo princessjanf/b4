@@ -102,16 +102,14 @@
 
 	<div>
 		@if (count($berkasumum) > 0)
-		<h5>Berkas Umum:</h5>
+		<h5>Berkas Umum dari Profil: &nbsp;</h5>
 		<div class="row">
 			@foreach ($berkasumum as $index => $tmp)
 			<div class="col-sm-8">
-				<label>{{$index+1}}. {{$tmp->nama_berkas}} - link lihatt</label>
+				<label>{{$index+1}}. {{$tmp->nama_berkas}}</label>
 			</div>
 			@endforeach
-			<div class="col-sm-8">
-				link ke profil buat update
-			</div>
+			<a href="{{url('upload-berkas-umum')}}"><button class="btn btn-info">Upload Baru</button></a>
 		</div>
 		@endif
 	</div>
@@ -131,7 +129,7 @@
 		</div>
 		@endif
 	</div>
-
+	<hr>
 	<div>
 		<button type="submit" id="submit-form" class="btn btn-success"> Submit </button>
 		<button style ="text-decoration: none"id="cancel" class="btn btn-danger" formnovalidate><a href="{{ url('list-beasiswa	') }}" >Cancel </a></button>

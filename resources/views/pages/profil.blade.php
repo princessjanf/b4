@@ -89,11 +89,11 @@
        <input type="text" value="{{$file->file}}" name="berkas" hidden>
        <input type="hidden" value="<?php echo csrf_token(); ?>" name="_token">
        <label class="form-group">{{$index+1}}.</label>
-       <button class="btn" type="submit">lihat</button>
+       <button class="btn" type="submit">Download</button>
        <label>{{$file->nama_berkas}}</label>
      </form>
      @endforeach
-     <a href=""><button class="btn btn-info">Upload Baru</button></a>
+     <a href="{{url('upload-berkas-umum')}}"><button class="btn btn-info">Upload Baru</button></a>
      <br><br>
 
     <h4>Daftar Beasiswa yang Ddidaftarkan:</h4>

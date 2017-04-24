@@ -72,7 +72,7 @@ class MainController extends Controller
         $roles = DB::table('role_pegawai')->where('id_role_pegawai', $role->id_role)->first();
         $namarole = $roles->nama_role_pegawai;
       }
-      else 
+      else
       {
         $namarole = $role->nama_role;
       }
@@ -217,7 +217,7 @@ class MainController extends Controller
             ->join('status_lamaran', 'status_lamaran.id_status_lamaran',"=", 'pendaftaran_beasiswa.status_lamaran')
             ->select('beasiswa.*','status_lamaran.nama_lamaran','pendaftaran_beasiswa.waktu_melamar')
             ->get();
-
+            
             $berkas = DB::table('berkas_umum')
                               ->where('id_mahasiswa', $pengguna->id_user)
                               ->join('berkas', 'berkas.id_berkas', '=', 'berkas_umum.id_berkas')
