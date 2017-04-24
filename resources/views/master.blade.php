@@ -32,7 +32,7 @@
 				</div>
 				<div class="navbar-collapse collapse ">
 					<ul class="nav navbar-nav">
-						<li><a href="#profile">{{$user->username}} ({{$namarole}})</a></li>
+						<li><a href="{{ url('profil') }}">{{$user->username}} ({{$namarole}})</a></li>
 						<li><a href="{{ url('logout') }}">LOG OUT</a></li>
 					</ul>
 				</div>
