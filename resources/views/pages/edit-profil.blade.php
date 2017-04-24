@@ -41,8 +41,6 @@
 <p><label>{{$jenjangmahasiswa->nama_jenjang}}</label></p>
    IPK:
    <p><label>{{$mahasiswa->IPK}}</label></p>
-   NOMOR REKENING:
-   <p><label>{{$mahasiswa->nomor_rekening}}</label></p>
    NAMA BANK:
    <div class="form-group">
    <!--  <label for="namaBank"></label> -->
@@ -78,6 +76,11 @@
        @endif
       </select>
     </div>
+    <p></p>
+    NOMOR REKENING:
+   <input type="number" class="form-control" name="nomorRekening" required value= "{{ $mahasiswa->nomor_rekening }}">
+   <p></p>
+   <!-- <p><label>{{$mahasiswa->nomor_rekening}}</label></p> -->
   </div>
   </div>
    <div class = "col-sm-6">
@@ -108,9 +111,13 @@
   <input type="number" class="form-control" name="nomorIdentitas" required value= "{{ $mahasiswa->nomor_identitas }}">
    <p></p>
     NO.TELEPON:
-     <p><label>{{$mahasiswa->nomor_telepon}}</label></p>
+    <input type="number" class="form-control" name="nomorTelepon" required value= "{{ $mahasiswa->nomor_telepon }}">
+   <p></p>
+    <!--  <p><label>{{$mahasiswa->nomor_telepon}}</label></p> -->
     NO. HANDPHONE:
-     <p><label>{{$mahasiswa->nomor_telepon}}</label></p>
+     <input type="number" class="form-control" name="nomorHandphone" required value= "{{ $mahasiswa->nomor_telepon }}">
+   <p></p>
+    <!--  <p><label>{{$mahasiswa->nomor_telepon}}</label></p> -->
     NAMA PEMILIK REKENING:
     <input type="text" class="form-control" name="pemilikRekening" required value= "{{ $mahasiswa->nama_pemilik_rekening }}">
     <p></p>
