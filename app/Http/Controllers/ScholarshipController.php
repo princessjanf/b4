@@ -89,7 +89,7 @@ class ScholarshipController extends Controller
           $beasiswa = DB::table('beasiswa')->where('id_beasiswa', $id)->first();
           $mahasiswa = DB::table('mahasiswa')->where('id_user', $pengguna->id_user)->first();
 
-          if($namarole=='Mahasiswa'){
+          if($namarole=='Mahasiswa' && $beasiswa->public == 1){
             $berkas = DB::table('assignment_berkas_beasiswa')
                               ->where('id_beasiswa', $id)
                               ->join('berkas', 'berkas.id_berkas', '=', 'assignment_berkas_beasiswa.id_berkas')
