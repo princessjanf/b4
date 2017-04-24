@@ -90,12 +90,30 @@ class ScholarshipController extends Controller
           $mahasiswa = DB::table('mahasiswa')->where('id_user', $pengguna->id_user)->first();
 
           if($namarole=='Mahasiswa' && $beasiswa->public == 1){
+            $nomorberkasumum = [20,19,11,10,3];
+
+            $berkasumum = DB::table('assignment_berkas_beasiswa')
+                                  ->whereIn('berkas.id_berkas', $nomorberkasumum)
+                                  ->where('id_beasiswa', $id)
+                                  ->join('berkas', 'berkas.id_berkas', '=', 'assignment_berkas_beasiswa.id_berkas')
+                                  ->select('berkas.*')
+                                  ->get();
+
+            $berkasumumup = DB::table('berkas_umum')
+                                  ->whereIn('id_berkas', $berkasumum->pluck('id_berkas'))
+                                  ->get();
+            if (count($berkasumum) != count($berkasumumup)) {
+              return 'lengkapi berkas umum '.$berkasumum->pluck('nama_berkas'). ' di profil';
+            }
+
             $berkas = DB::table('assignment_berkas_beasiswa')
-                              ->where('id_beasiswa', $id)
-                              ->join('berkas', 'berkas.id_berkas', '=', 'assignment_berkas_beasiswa.id_berkas')
-                              ->select('berkas.*')
-                              ->get();
-            return view('pages.daftar-beasiswa')->withBeasiswa($beasiswa)->withUser($user)->withNamarole($namarole)->withPengguna($pengguna)->withMahasiswa($mahasiswa)->withBerkas($berkas);
+                                  ->whereNotIn('berkas.id_berkas', $nomorberkasumum)
+                                  ->where('id_beasiswa', $id)
+                                  ->join('berkas', 'berkas.id_berkas', '=', 'assignment_berkas_beasiswa.id_berkas')
+                                  ->select('berkas.*')
+                                  ->get();
+
+            return view('pages.daftar-beasiswa')->withBeasiswa($beasiswa)->withUser($user)->withNamarole($namarole)->withPengguna($pengguna)->withMahasiswa($mahasiswa)->withBerkas($berkas)->withBerkasumum($berkasumum);
           }
           else{
             return redirect('noaccess');
@@ -137,7 +155,8 @@ class ScholarshipController extends Controller
 
       foreach ($request->berkases as $index=>$berkas) {
         $idBerkas = $request->idBerkas[$index];
-        $file = $berkas->storeAs('berkas', $idMahasiswa.'-'.$request->nama[$index].'.pdf');
+        $file = $idMahasiswa.'-'.$request->nama[1].'.pdf';
+        $berkas->storeAs('berkas', $file);
         DB::insert('INSERT INTO `beasiswa_berkas`(`id_pendaftaran`, `id_beasiswa`, `id_berkas`, `id_mahasiswa`, `file`)
                     VALUES (?,?,?,?,?)', [$id_pendaftaran, $idBeasiswa, $idBerkas, $idMahasiswa, $file]);
       }
