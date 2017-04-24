@@ -11,28 +11,71 @@
 	<input type = "hidden" name = "idBeasiswa" value= {{$beasiswa->id_beasiswa}}>
 
 	<div class="form-group">
-		<label for="namaBeasiswa">Nama Beasiswa</label>
-		<input type="text" class="form-control" name="namaBeasiswa" required value= "{{ $beasiswa->nama_beasiswa }}">
+		<label for="namaBeasiswa">Nama Beasiswa</label><br>
+		<input type="text" placeholder="Nama Beasiswa" class="form-control" name="namaBeasiswa" required value= "{{ $beasiswa->nama_beasiswa }}">
 	</div>
 
 	<div class="form-group">
-		<label for="deskripsiBeasiswa">Deskripsi Beasiswa</label>
-		<textarea id="message" class="form-control" name="deskripsiBeasiswa" data-parsley-trigger="keyup" data-parsley-minlength="20"
-		data-parsley-maxlength="500" data-parsley-minlength-message="Come on! You need to enter at least a 20 character comment.."s
-		data-parsley-validation-threshold="10">{{$beasiswa->deskripsi_beasiswa}}</textarea>
+		<label for="deskripsiBeasiswa">Deskripsi Beasiswa</label><br>
+		<textarea id="message" placeholder="Deskripsi Beasiswa" class="form-control" name="deskripsiBeasiswa" data-parsley-trigger="keyup" data-parsley-minlength="80"
+		data-parsley-maxlength="500" data-parsley-minlength-message="Come on! You need to enter at least a 80 character comment.."s
+		data-parsley-validation-threshold="10" required>{{$beasiswa->deskripsi_beasiswa}}</textarea>
 	</div>
-	<div class = "row">
-		<div class="form-group col-sm-6">
-			<label for="pendonor">Pendonor</label>
-			<select class="form-control" name="pendonor">
-				@foreach ($pendonor as $pendonor)
-				@if ($pendonor->id_pendonor == $beasiswa->id_pendonor)
-				<option selected value= {{ $pendonor->id_pendonor}}> {{$pendonor->nama_instansi}} </option>
-				@else
-				<option value= {{ $pendonor->id_pendonor}}> {{$pendonor->nama_instansi}} </option>
-				@endif
-				@endforeach
-			</select>
+
+		<div class="form-group">
+			<div class="input-group col-sm-4">
+			<label for="pendonor">Pendonor</label><br>
+				<select class="form-control" id = "pendonor" name="pendonor" required>
+					<option selected disabled> --Pilih Pendonor-- </option>
+					@foreach ($pendonor as $pendonor)
+						@if ($pendonor->id_user == $beasiswa->id_pendonor)
+						<option selected value= {{ $pendonor->id_user}}> {{$pendonor->nama_instansi}} </option>
+						@else
+						<option value= {{ $pendonor->id_user}}> {{$pendonor->nama_instansi}} </option>
+						@endif
+					@endforeach
+				</select>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="input-group col-sm-4">
+				<label for="kategoriBeasiswa">Kategori Beasiswa</label><br>
+				<select class="form-control" name="kategoriBeasiswa" required>
+					@foreach ($kategoribeasiswa as $category)
+						@if ($category->id_kategori == $beasiswa->id_kategori)
+						<option selected value= {{ $category->id_kategori}}> {{$category->nama_kategori}} </option>
+						@else
+						<option value= {{ $category->id_kategori}}> {{$category->nama_kategori}} </option>
+						@endif
+					@endforeach
+				</select>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="input-group col-sm-4">
+				<label for="jenjangBeasiswa">Untuk Jenjang</label><br>
+				<select class="form-control" id="jenjang" name="jenjangBeasiswa" required>
+					<option selected disabled> --Pilih Jenjang-- </option>
+					@foreach ($jenjang as $jenjangbeasiswa)
+						@if ($jenjangbeasiswa->id_jenjang == $beasiswa->id_jenjang)
+						<option selected value= {{$jenjangbeasiswa->id_jenjang}}> {{$jenjangbeasiswa->nama_jenjang}} </option>
+						@else
+						<option value= {{$jenjangbeasiswa->id_jenjang}}> {{$jenjangbeasiswa->nama_jenjang}} </option>
+						@endif
+					@endforeach
+				</select>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="input-group col-sm-9">
+				<label for="fakultasBeasiswa">Fakultas Beasiswa</label><br>
+				<select id="fakultasBeasiswa" name="fakultasBeasiswa" data-toggle="dropdown" required>
+				</select>
+				<input type="hidden" name="listProdi">
+			</div>
 		</div>
 
 		<div class="form-group col-sm-3">
@@ -41,27 +84,18 @@
 		</div>
 
 	</div>
-	<div class = "row">
-		<div class="form-group col-sm-12">
-			<label for="kategoriBeasiswa">Kategori Beasiswa</label>
-			<select class="form-control" name="kategoriBeasiswa">
-				@foreach ($kategoribeasiswa as $category)
-				@if ($category->id_kategori == $beasiswa->id_kategori)
-				<option selected value= {{ $category->id_kategori}}> {{$category->nama_kategori}} </option>
-				@else
-				<option value= {{ $category->id_kategori}}> {{$category->nama_kategori}} </option>
-				@endif
-				@endforeach
-			</select>
-		</div>
-
 
 	</div>
 	<div class = "row">
 		<div class="form-group col-sm-5">
-			<label for="totalDana">Total Dana</label>
+			<label for="totalDana">Dana Pendidikan</label>
 			<p> Total dana yang akan diberikan ke universitas </p>
-			<input type="number" name="totalDana" class="form-control" value= {{$beasiswa->dana}} min= "0" data-parsley-pattern="\d*" data-parsley-type="integer" data-parsley-maxlength="20" required>
+			<input type="number" name="totalDana" class="form-control" value= {{$beasiswa->dana_pendidikan}} min= "0" data-parsley-pattern="\d*" data-parsley-type="integer" data-parsley-maxlength="20" required>
+		</div>
+		<div class="form-group col-sm-5">
+			<label for="totalDana">Dana Biaya Hidup</label>
+			<p> Total dana yang akan diberikan ke universitas </p>
+			<input type="number" name="totalDana" class="form-control" value= {{$beasiswa->dana_hidup}} min= "0" data-parsley-pattern="\d*" data-parsley-type="integer" data-parsley-maxlength="20" required>
 		</div>
 		<div class="form-group col-sm-4">
 			<label for="periode">Periode</label>
