@@ -72,32 +72,7 @@ class ScholarshipController extends Controller
         return redirect('noaccess');
       }
     }
-    public function daftarBeasiswa($id)
-    {
-      echo "dummy method untuk daftar beasiswa".$id;
-      /*$user = SSO::getUser();
 
-      $pengguna = DB::table('pegawai')->where('username', $user->username)->first();
-
-      if($pengguna==null){
-        return redirect('noaccess');
-      }
-
-      $role = DB::table('role_pegawai')->where('id_role_pegawai', $pengguna->id_role_pegawai)->first();
-      $namarole = $role->nama_role_pegawai;
-
-      $kategoribeasiswa = DB::table('kategori_beasiswa')->get();
-      $pendonor = DB::table('pendonor')->get();
-      $jenjang = DB::table('jenjang')->get();
-      $fakultas = DB::table('fakultas')->get();
-
-      if($namarole=='Pegawai Universitas'){
-        return view('pages.add-beasiswa')->withUser($user)->withNamarole($namarole)->withKategoribeasiswa($kategoribeasiswa)->withPendonor($pendonor)->withJenjang($jenjang)->withFakultasbeasiswa($fakultas);
-      }
-      else{
-        return redirect('noaccess');
-      }*/
-    }
     public function delete($id){
       $user = SSO::getUser();
 
@@ -156,8 +131,8 @@ class ScholarshipController extends Controller
     public function insertBeasiswa(Request $request)
     {
       DB::insert('INSERT INTO `beasiswa`(`nama_beasiswa`, `deskripsi_beasiswa`, `id_kategori`, `tanggal_buka`, `tanggal_tutup`,
-                                        `kuota`, `nominal`, `dana`, `periode`,  `id_pendonor`, `jangka`, `id_status`, `public`, `flag`, `currency`, `id_jenis_seleksi`, `link_seleksi`)
-                  VALUES (?,?,?,?,?,?,?,?,?,?,?,2,0,1,?,1,"")',
+                                        `kuota`, `nominal`, `dana`, `periode`,  `id_pendonor`, `jangka`, `id_status`, `public`, `flag`)
+                  VALUES (?,?,?,?,?,?,?,?,?,?,?,2,0,1)',
                   [$request->input('namaBeasiswa'),
                   $request->input('deskripsiBeasiswa'),
                   $request->get('kategoriBeasiswa'),
@@ -168,18 +143,14 @@ class ScholarshipController extends Controller
                   $request->input('totalDana'),
                   $request->input('periode'),
                   $request->get('pendonor'),
-                  $request->input('jangka'),
-                  $request->get('mataUang')
-                ]
+                  $request->input('jangka')]
                 );
       $beasiswa = DB::table('beasiswa')->orderBy('id_beasiswa', 'desc')->first();
-
-      $arrSyarat = explode(",",$request->get('arraySyarat'));
-      for($i = 0;$i < sizeof($arrSyarat);$i++)
+      $counter = $request->get('counter');
+      for($i = 1;$i<=($counter);$i++)
       {
-        DB::insert('insert into `persyaratan` (`id_beasiswa`, `syarat`) VALUES (?,?)', [$beasiswa->id_beasiswa, $request->input('syarat'.$arrSyarat[$i])]);
+        DB::insert('insert into `persyaratan` (`id_beasiswa`, `syarat`) VALUES (?,?)', [$beasiswa->id_beasiswa, $request->input('syarat'.$i)]);
       }
-
 
       $request->get('listProdi');
       $hasil = explode(",",$request->get('listProdi'));
@@ -187,13 +158,9 @@ class ScholarshipController extends Controller
       for ($i = 0; $i < sizeof($hasil) ; $i++)
       {
         DB::insert('insert into `beasiswa_jenjang_prodi` (`id_beasiswa`, `id_jenjang`, `id_prodi`) VALUES (?,?,?)', [$beasiswa->id_beasiswa, $jenjang, $hasil[$i]]);
+
         echo $hasil[$i];
       }
-
-      $user = SSO::getUser();
-      $pengguna = DB::table('user')->where('username', $user->username)->first();
-
-      DB::insert('insert into `log_beasiswa` (`id_beasiswa`, `tipe_perubahan`, `id_user`) VALUES (?,?,?)', [$beasiswa->id_beasiswa, 'initial setup', $pengguna->username]);
 
       return redirect('/detail-beasiswa/'.$beasiswa->id_beasiswa);
     }
@@ -216,14 +183,6 @@ class ScholarshipController extends Controller
                     'jangka'=>$request->input('jangka')
                   ]);
           $idBeasiswa = $request->get('idBeasiswa');
-
-
-          $user = SSO::getUser();
-          $pengguna = DB::table('user')->where('username', $user->username)->first();
-
-          DB::insert('insert into `log_beasiswa` (`id_beasiswa`, `tipe_perubahan`, `id_user`) VALUES (?,?,?)', [$beasiswa->id_beasiswa, 'modifikasi', $pengguna->username]);
-
           return redirect('/detail-beasiswa/'.$idBeasiswa);
       }
-
 }
