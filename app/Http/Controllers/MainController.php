@@ -133,6 +133,30 @@ class MainController extends Controller
           return view('pages.noaccess')->withUser($user)->withNamarole($namarole);
         }
     }
+
+    function sudahDaftar()
+    {
+      if(!SSO::check()) {
+        $user = null;
+        $beasiswas = DB::table('beasiswa')->where('flag', '1')->where('public', '1')->take(4)->get();
+        return view('pages.homepage')->withBeasiswas($beasiswas)->withUser($user);
+      }
+      else{
+        $user = SSO::getUser();
+        $pengguna = DB::table('user')->where('username', $user->username)->first();
+        $role = DB::table('role')->where('id_role', $pengguna->id_role)->first();
+        $namarole = $role->nama_role;
+
+        if($namarole=='Pegawai'){
+          $pengguna = DB::table('pegawai')->where('id_user', $pengguna->id_user)->first();
+          $role = DB::table('role_pegawai')->where('id_role_pegawai', $pengguna->id_role_pegawai)->first();
+          $namarole = $role->nama_role_pegawai;
+        }
+          $beasiswas = DB::table('beasiswa')->where('flag', '1')->where('public', '1')->get();
+          return view('pages.sudah-mendaftar')->withUser($user)->withNamarole($namarole);
+        }
+    }
+
     function detailbeasiswa($id)
     {
       $user = SSO::getUser();

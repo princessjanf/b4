@@ -129,6 +129,21 @@ class ScholarshipController extends Controller
           $beasiswa = DB::table('beasiswa')->where('id_beasiswa', $id)->first();
           $mahasiswa = DB::table('mahasiswa')->where('id_user', $pengguna->id_user)->first();
 
+          $isDaftar = false;
+
+          $mahasiswaDaftar = DB::table('pendaftaran_beasiswa')
+                  ->where('pendaftaran_beasiswa.id_mahasiswa', $pengguna->id_user)
+                  ->where('pendaftaran_beasiswa.id_beasiswa', $id)
+                  ->join('mahasiswa', 'mahasiswa.id_user', '=', 'pendaftaran_beasiswa.id_mahasiswa')
+                  ->join('beasiswa', 'beasiswa.id_beasiswa', '=', 'pendaftaran_beasiswa.id_beasiswa')
+                  ->select('pendaftaran_beasiswa.id_beasiswa')
+                  ->first();
+
+          //kalo mahasiswa udah daftar
+          if ($mahasiswaDaftar != null) {
+            $isDaftar = true;
+          }
+
           $bp = DB::table('beasiswa_penyeleksi')->where('id_beasiswa', $beasiswa->id_beasiswa)->first();
           $id_penyeleksi = $bp->id_penyeleksi;
 
@@ -139,8 +154,13 @@ class ScholarshipController extends Controller
                               ->first();
                               // return var_dump($bepe->id_penyeleksi);
 
+          //tanggal sekarang                      
+          $now = new \DateTime();
 
-          if($namarole=='Mahasiswa' && $beasiswa->public == 1){
+          $date = $now->format('Y-m-d');
+          
+
+          if($namarole=='Mahasiswa' && $beasiswa->public == 1 && $beasiswa->tanggal_tutup > $date){
             $nomorberkasumum = [20,19,10,9,3];
 
             $berkasumum = DB::table('assignment_berkas_beasiswa')
@@ -169,8 +189,13 @@ class ScholarshipController extends Controller
                                   ->join('berkas', 'berkas.id_berkas', '=', 'assignment_berkas_beasiswa.id_berkas')
                                   ->select('berkas.*')
                                   ->get();
-
+            if ($isDaftar == false){                      
             return view('pages.daftar-beasiswa')->withBeasiswa($beasiswa)->withUser($user)->withNamarole($namarole)->withPengguna($pengguna)->withMahasiswa($mahasiswa)->withBerkas($berkas)->withBepe($bepe)->withBerkasumum($berkasumum);
+            }
+            else {
+              return redirect('sudah-mendaftar');
+
+            }
           }
           else{
             return redirect('noaccess');

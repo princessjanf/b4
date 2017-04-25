@@ -50,6 +50,11 @@ Route::get('noaccess',[
   'uses' => 'MainController@noaccess'
 ]);
 
+Route::get('sudah-mendaftar',[
+  'middleware' => 'authSSO',
+  'uses' => 'MainController@sudahDaftar'
+]);
+
 
 
 Route::get('daftar-beasiswa/{id}',[
@@ -119,3 +124,5 @@ Route::post('upload',[
   'middleware' => 'authSSO',
   'uses' => 'UploadController@uploadSubmit'
 ]);
+
+Route::post('filter-pegawai-fakultas', 'ScholarshipController@filterPegawaiFakultas');
