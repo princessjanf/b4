@@ -34,7 +34,7 @@
 			<td>
 				<a href="{{ url('detail-beasiswa/'.$beasiswa->id_beasiswa) }}">{{$beasiswa->nama_beasiswa}}</a>
 			</td>
-			@if($namarole=="pendonor" || $namarole=="Pegawai Universitas" || $namarole=="Direktorat Kerjasama")
+			@if($namarole=="Pendonor" || $namarole=="Pegawai Universitas" || $namarole=="Direktorat Kerjasama")
 			<td>
 				@if ($beasiswa->public == 1)
 				Sudah Publik
@@ -111,10 +111,8 @@
 @endsection
 
 @section('script')
-<script src="{{ asset('js/jquery-3.2.0.js') }}"></script>
-<script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'></script>
-<script src="{{ asset('js/jquery.dataTables.js') }}"></script>
-<script src="{{ asset('js/dataTables.bootstrap.js') }}"></script>
+
+
 <script>
 	$('#confirmationDelete').on('show.bs.modal', function(e) {
 		var idBeasiswa = e.relatedTarget.dataset.username;
