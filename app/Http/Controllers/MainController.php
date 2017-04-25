@@ -1,9 +1,11 @@
 <?php
+
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use SSO\SSO;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\DB;
+
 class MainController extends Controller
 {
     function index()
@@ -24,10 +26,13 @@ class MainController extends Controller
           $role = DB::table('role_pegawai')->where('id_role_pegawai', $pengguna->id_role_pegawai)->first();
           $namarole = $role->nama_role_pegawai;
         }
+
           $beasiswas = DB::table('beasiswa')->where('flag', '1')->where('public', '1')->take(4)->get();
           return view('pages.homepage')->withBeasiswas($beasiswas)->withUser($user)->withNamarole($namarole);
         }
+
     }
+
     function login()
     {
       if(!SSO::check())
@@ -54,10 +59,12 @@ class MainController extends Controller
       }
         return redirect('');
     }
+
     function logout()
     {
       SSO::logout(URL::to('/'));
     }
+
     function listbeasiswa()
     {
       $user = SSO::getUser();
@@ -103,10 +110,13 @@ class MainController extends Controller
       if($pengguna==null){
         return redirect('/');
       }
+
         $role = DB::table('role_pegawai')->where('id_role_pegawai', $pengguna->id_role_pegawai)->first();
         $namarole = $role->nama_role_pegawai;
+
         $kategoribeasiswa = DB::table('kategori_beasiswa')->get();
         $pendonor = DB::table('pendonor')->get();
+
         if($namarole=='Pegawai Universitas'){
           return view('pages.createScholarship')->withUser($user)->withNamarole($namarole)->withKategoribeasiswa($kategoribeasiswa)->withPendonor($pendonor);
         }
@@ -129,9 +139,11 @@ class MainController extends Controller
           $role = DB::table('role_pegawai')->where('id_role_pegawai', $pengguna->id_role_pegawai)->first();
           $namarole = $role->nama_role_pegawai;
         }
+
           $beasiswas = DB::table('beasiswa')->where('flag', '1')->where('public', '1')->get();
           return view('pages.noaccess')->withUser($user)->withNamarole($namarole);
         }
+
     }
     function detailbeasiswa($id)
     {
@@ -145,9 +157,11 @@ class MainController extends Controller
         $role = DB::table('role_pegawai')->where('id_role_pegawai', $pengguna->id_role_pegawai)->first();
         $namarole = $role->nama_role_pegawai;
       }
+
       $beasiswa = DB::table('beasiswa')->where('id_beasiswa', $id)->first();
       $kategori = DB::table('kategori_beasiswa')->where('id_kategori', $beasiswa->id_kategori)->get();
       $persyaratans = DB::table('persyaratan')->where('id_beasiswa', $beasiswa->id_beasiswa)->get();
+
       if ($namarole=='pendonor')
       {
         $isPendonor = false;
@@ -160,6 +174,7 @@ class MainController extends Controller
         {
           $isPendonor = true;
         }
+
         $pendaftars = DB::table('melamar')
                     ->where('id_beasiswa', $beasiswa->id_beasiswa)
                     ->join('user', 'melamar.username', '=', 'user.username')
