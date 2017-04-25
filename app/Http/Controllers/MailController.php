@@ -16,6 +16,11 @@ public function sendEmail($idBeasiswa)
       $role = DB::table('role')->where('id_role', $pengguna->id_role)->first();
       $namarole = $role->nama_role;
 
+        if ($namarole=='Mahasiswa')
+      {
+        return view('pages.noaccess')->withUser($user)->withNamarole($namarole);
+      }
+
        if($namarole=='Pegawai'){
         $pengguna = DB::table('pegawai')->where('id_user', $pengguna->id_user)->first();
         $role = DB::table('role_pegawai')->where('id_role_pegawai', $pengguna->id_role_pegawai)->first();
@@ -84,6 +89,55 @@ foreach ($namaPenerima as $np) {
 
 
 }
+else if ($namarole=='Pendonor'){
+  // return var_dump($pengguna->id_user);
+        $pendonor = DB::table('pendonor')->where('id_user', $pengguna->id_user)->first();
+        //get nama dan nilai pendaftar beasiswa untuk tahap ini
+        $beasiswa = DB::table('beasiswa')->where('id_beasiswa',$idBeasiswa)->first();
+        $penerima = DB::table('penerima_beasiswa')->where('id_beasiswa',$beasiswa->id_beasiswa)->get();
+          
+          
+    if ($beasiswa->id_pendonor==$pendonor->id_user) {
+
+        /*$namaPenerima = DB::table('user')->where('id_user',$penerima->id_mahasiswa)->get();*/
+        // return var_dump($penerima->pluck('id_mahasiswa'));
+        $namaPenerima = DB::table('user as us')
+        ->join('penerima_beasiswa as pb', 'pb.id_mahasiswa', '=', 'us.id_user')
+        ->join('beasiswa as b','b.id_beasiswa' , '=' , 'pb.id_beasiswa')
+        ->where('pb.id_beasiswa', $idBeasiswa)
+        ->select('us.nama as nama', 'b.nama_beasiswa as nama_beasiswa','us.email as email')
+        ->get();
+
+
+foreach ($namaPenerima as $np) {
+
+   $data = array(
+   'name'=> $np->nama,
+   'email'=> $np->email,
+   'subject'=> 'Informasi Penerimaan Beasiswa',
+   'messagea' =>' Selamat Anda diterima di beasiswa '.$beasiswa->nama_beasiswa
+   );
+
+    //kirim email
+  Mail::send('pages.send-mail', $data, function($message) use ($data)
+  { 
+   $message->to($data['email']);
+    $message->from('adindanadinta@gmail.com');
+    $message->subject($data['subject']);
+     //echo ("Basic Email Sent. Check your inbox.");
+  });   
+   return view('pages.notif-email')->withUser($user)->withNamarole($namarole);
+
+}
+        // BELUM: cek if tahapan ini udah final atau belum, kalau udah final cuma bisa lihat hasil seleksi
+} else {
+  return view('pages.noaccess')->withUser($user)->withNamarole($namarole);
+}
+        //get nama dan nilai pendaftar beasiswa untuk tahap ini
+        $beasiswa = DB::table('beasiswa')->where('id_beasiswa',$idBeasiswa)->first();
+       
+        
+      }
 }
    /* Mail::send('pages.send-mail', ['name'=> 'Novica'], function($message)
   {
