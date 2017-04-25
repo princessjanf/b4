@@ -24,7 +24,7 @@ class UploadController extends Controller
       $namarole = $role->nama_role_pegawai;
     }
 
-    $nomorberkasumum = [20,19,11,10,3];
+    $nomorberkasumum = [20,19,10,9,3];
     $berkas = DB::table('berkas')
                       ->whereIn('id_berkas', $nomorberkasumum)
                       ->get();
@@ -37,17 +37,19 @@ class UploadController extends Controller
     $idBeasiswa = $request->get('idBeasiswa');
     $idMahasiswa = $request->get('idMahasiswa');
 
-    foreach ($request->berkases as $index=>$berkas) {
-      $idBerkas = $request->idBerkas[$index];
-      $file = $idMahasiswa.'-'.$request->nama[$index].'.pdf';
-      $oldfile = DB::table('berkas_umum')->where('file', $file)->first();
-      if($oldfile == null) {
-         DB::insert('INSERT INTO `berkas_umum`(`id_berkas`, `id_mahasiswa`, `file`)
-           VALUES (?,?,?)', [$idBerkas, $idMahasiswa, $file]
-         );
+    if(count($request->berkases)>0) {
+      foreach ($request->berkases as $index=>$berkas) {
+        $idBerkas = $request->idBerkas[$index];
+        $file = $idMahasiswa.'-'.$request->nama[$index].'.pdf';
+        $oldfile = DB::table('berkas_umum')->where('file', $file)->first();
+        if($oldfile == null) {
+          DB::insert('INSERT INTO `berkas_umum`(`id_berkas`, `id_mahasiswa`, `file`)
+          VALUES (?,?,?)', [$idBerkas, $idMahasiswa, $file]
+        );
       }
-      $berkas->storeAs('berkas', $file);
     }
+    $berkas->storeAs('berkas', $file);
+  }
     return redirect('profil');
   }
 }

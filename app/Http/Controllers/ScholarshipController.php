@@ -101,22 +101,26 @@ class ScholarshipController extends Controller
 
 
           if($namarole=='Mahasiswa' && $beasiswa->public == 1){
-            $nomorberkasumum = [20,19,11,10,3];
+            $nomorberkasumum = [20,19,10,9,3];
 
             $berkasumum = DB::table('assignment_berkas_beasiswa')
                                   ->whereIn('berkas.id_berkas', $nomorberkasumum)
                                   ->where('id_beasiswa', $id)
                                   ->join('berkas', 'berkas.id_berkas', '=', 'assignment_berkas_beasiswa.id_berkas')
-                                  ->select('berkas.*')
+                                  ->orderBy('berkas.id_berkas', 'desc')
                                   ->get();
 
             $berkasumumup = DB::table('berkas_umum')
                                   ->whereIn('berkas_umum.id_berkas', $berkasumum->pluck('id_berkas'))
                                   ->where('id_mahasiswa', $pengguna->id_user)
+                                  ->orderBy('berkas_umum.id_berkas', 'desc')
                                   ->get();
-            //reminderneedbugfix
-            if (count($berkasumum) != count($berkasumumup)) {
-              return 'lengkapi berkas umum '.$berkasumum->pluck('nama_berkas'). ' di profil';
+
+            // return var_dump($berkasumum->pluck('id_berkas')==$berkasumumup->pluck('id_berkas'));
+            if ($berkasumum->pluck('id_berkas')!=$berkasumumup->pluck('id_berkas')) {
+              // return 'lengkapi berkas umum '.$berkasumum->pluck('nama_berkas'). ' di profil';
+              return view('pages.upload-berkas-umum', compact('user','pengguna','namarole'))->withBerkas($berkasumum);
+              // return redirect('upload-berkas-umum');
             }
 
             $berkas = DB::table('assignment_berkas_beasiswa')

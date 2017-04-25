@@ -102,14 +102,14 @@
 
 	<div>
 		@if (count($berkasumum) > 0)
-		<h5>Berkas Umum dari Profil: &nbsp;</h5>
+		<h5>Berkas Umum dari Profil:</h5>
+		<h6 style="font-weight:bold"><font color="grey">Upload baru di halaman profil</font></h6>
 		<div class="row">
 			@foreach ($berkasumum as $index => $tmp)
 			<div class="col-sm-8">
 				<label>{{$index+1}}. {{$tmp->nama_berkas}}</label>
 			</div>
 			@endforeach
-			<a href="{{url('upload-berkas-umum')}}"><button class="btn btn-info">Upload Baru</button></a>
 		</div>
 		@endif
 	</div>

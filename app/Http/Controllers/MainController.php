@@ -217,7 +217,7 @@ class MainController extends Controller
             ->join('status_lamaran', 'status_lamaran.id_status_lamaran',"=", 'pendaftaran_beasiswa.status_lamaran')
             ->select('beasiswa.*','status_lamaran.nama_lamaran','pendaftaran_beasiswa.waktu_melamar')
             ->get();
-            
+
             $berkas = DB::table('berkas_umum')
                               ->where('id_mahasiswa', $pengguna->id_user)
                               ->join('berkas', 'berkas.id_berkas', '=', 'berkas_umum.id_berkas')
@@ -406,7 +406,7 @@ function pendaftarBeasiswa($id)
 
   function download(Request $request)
   {
-      return response()->download(storage_path('app/'.$request->berkas));
+      return response()->download(storage_path('app/berkas'.$request->berkas));
   }
 
 }
