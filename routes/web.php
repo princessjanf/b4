@@ -50,6 +50,52 @@ Route::get('noaccess',[
   'uses' => 'MainController@noaccess'
 ]);
 
+Route::get('daftar-beasiswa/{id}',[
+  'middleware' => 'authSSO',
+  'uses' => 'ScholarshipController@daftarBeasiswa'
+]);
+
+Route::post('insert-beasiswa',[
+  'middleware' => 'authSSO',
+  'uses' => 'ScholarshipController@insertBeasiswa'
+]);
+
+Route::get('seleksi/{id}', [
+  'middleware' => 'authSSO',
+  'uses' => 'MainController@seleksi'
+]);
+
+Route::get('seleksi', [
+  'middleware' => 'authSSO',
+  'uses' => 'MainController@pageSeleksi'
+]);
+
+Route::get('seleksi-beasiswa/{idBeasiswa}/{idTahapan}', [
+  'middleware' => 'authSSO',
+  'uses' => 'MainController@seleksiBeasiswa'
+]);
+
+Route::get('seleksi-luar/{idBeasiswa}', [
+  'middleware' => 'authSSO',
+  'uses' => 'MainController@seleksiLuar'
+]);
+
+
+Route::post('save-draft', 'MainController@saveDraft');
+Route::post('save-draft-check', 'MainController@saveDraftCheck');
+Route::post('finalize-result', 'MainController@finalizeResult');
+Route::post('finalize-result-checked', 'MainController@finalizeResultChecked');
+Route::post('retrieve-nama', 'MainController@retrieveNama');
+
+
+Route::get('savedraft', 'MainController@savedraftest');
+
+//seleksi-tahapan/{id_beasiswa}/{id_tahapan}/{id_penyeleksi}
+
+Route::post('update-beasiswa',[
+  'middleware' => 'authSSO',
+  'uses' => 'ScholarshipController@updateBeasiswa'
+]);
 Route::post('retrieve-prodi', 'ScholarshipController@retrieveProdi');
-Route::post('insert-beasiswa', 'ScholarshipController@insertBeasiswa');
-Route::post('update-beasiswa', 'ScholarshipController@updateBeasiswa');
+//Route::post('insert-beasiswa', 'ScholarshipController@insertBeasiswa');
+//Route::post('update-beasiswa', 'ScholarshipController@updateBeasiswa');
