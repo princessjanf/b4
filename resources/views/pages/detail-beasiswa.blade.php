@@ -29,8 +29,12 @@
 @endif
 <h2>{{$beasiswa->nama_beasiswa}}</h2>
 <p>{{$beasiswa->deskripsi_beasiswa}}</p>
-<p>Periode Beasiswa:  {{$beasiswa->tanggal_buka}} - {{$beasiswa->tanggal_tutup}}</p>
-<p>Persyaratan:
+<!-- <p><b>Kategori Beasiswa:</b> {{$kategori}}</p> -->
+<p><b>Kuota:</b> {{$beasiswa->kuota}}</p>
+<p><b>Dana Pendidikan:</b> Rp.{{$beasiswa->dana_pendidikan}}</p>
+<p><b>Dana Hidup:</b> Rp.{{$beasiswa->dana_hidup}}</p>
+<p><b>Periode Pendaftaran Beasiswa</b>:  {{$beasiswa->tanggal_buka}} s/d {{$beasiswa->tanggal_tutup}}</p>
+<p><b>Persyaratan</b>:
   @if (count($persyaratans) < 1)
   <br>1. -
   @else

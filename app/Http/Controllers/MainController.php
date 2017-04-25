@@ -146,6 +146,7 @@ class MainController extends Controller
         $namarole = $role->nama_role_pegawai;
       }
       $beasiswa = DB::table('beasiswa')->where('id_beasiswa', $id)->first();
+      $kategori = DB::table('kategori_beasiswa')->where('id_kategori', $beasiswa->id_kategori)->get();
       $persyaratans = DB::table('persyaratan')->where('id_beasiswa', $beasiswa->id_beasiswa)->get();
       if ($namarole=='pendonor')
       {
@@ -164,11 +165,11 @@ class MainController extends Controller
                     ->join('user', 'melamar.username', '=', 'user.username')
                     ->select('melamar.*', 'user.nama')
                     ->get();
-        return view('pages.detail-beasiswa')->withBeasiswa($beasiswa)->withPersyaratans($persyaratans)->withUser($user)->withNamarole($namarole)->withPendaftars($pendaftars)->withIspendonor($isPendonor);
+        return view('pages.detail-beasiswa')->withBeasiswa($beasiswa)->withPersyaratans($persyaratans)->withUser($user)->withNamarole($namarole)->withPendaftars($pendaftars)->withIspendonor($isPendonor)->withKategori($kategori);
       }
       else
       {
-        return view('pages.detail-beasiswa')->withBeasiswa($beasiswa)->withPersyaratans($persyaratans)->withUser($user)->withNamarole($namarole);
+        return view('pages.detail-beasiswa')->withBeasiswa($beasiswa)->withPersyaratans($persyaratans)->withUser($user)->withNamarole($namarole)->withKategori($kategori);
       }
     }
 
@@ -387,12 +388,12 @@ function pendaftarBeasiswa($id)
             ->select('mahasiswa.*','beasiswa_berkas.*','berkas.nama_berkas', 'pendaftaran_beasiswa.id_pendaftaran')
             ->get();
 
-
+            $namaMhs = DB::table('user')->where('id_user', $iduser)->first();
 
             return view('pages.lihat-berkas-mahasiswa')
             ->withPengguna($pengguna)
             ->withUser($user)
-            ->withNamarole($namarole)->withMahasiswa($mahasiswa)->withBerkas($berkas);
+            ->withNamarole($namarole)->withMahasiswa($mahasiswa)->withNamaMhs($namaMhs)->withBerkas($berkas);
           }
 
 

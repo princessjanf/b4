@@ -6,7 +6,9 @@
 <div class="col-sm-9">
     <H2>PENDAFTAR BEASISWA</H2>
     <HR></HR>
+    <h3>{{$namaMhs}}</h3>
 
+    <p>BERKAS YANG DIMILIKI MAHASISWA</p>
     <table class="table table-bordered">
       <thead>
         <tr>
@@ -35,7 +37,7 @@
     </table>
 
     <div>
-      <button id="cancel" class="btn btn-danger" formnovalidate><a href="{{ url('profil') }}">Back </a></button>
+      <a href="{{ url('pendaftar_beasiswa/' .$mahasiswa->id_user) }}"><button id="cancel" class="btn btn-info" formnovalidate>BACK</button></a>
     </div>
 
 </div>

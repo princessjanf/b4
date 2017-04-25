@@ -6,6 +6,7 @@
 <div class="col-sm-9">
     <H2>PENDAFTAR BEASISWA</H2>
     <HR></HR>
+    <h3>{{$beasiswa->nama_beasiswa}}</h3>
 
     <table class="table table-bordered">
       <thead>

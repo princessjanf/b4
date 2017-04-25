@@ -46,9 +46,9 @@
     </table>
 
    @elseif($namarole=='Mahasiswa')
-   <div class="container">
+   
   <p><a href="{{url('edit-profil')}}"><button type="button" class="btn btn-info">Edit Profil</button></a></p>
-   </div>
+   
    <p></p>
     <div class="row">
     <div class = "col-sm-6">
@@ -83,7 +83,7 @@
      </div>
      </div>
 
-     <h4>Berkas:</h4>
+     <h4>Berkas Umum:</h4>
      @foreach($berkas as $index => $file)
      <form action="{{url('download-berkas')}}" method="POST">
        <input type="text" value="{{$file->file}}" name="berkas" hidden>
@@ -96,7 +96,7 @@
      <a href="{{url('upload-berkas-umum')}}"><button class="btn btn-info">Upload Baru</button></a>
      <br><br>
 
-    <h4>Daftar Beasiswa yang Ddidaftarkan:</h4>
+    <h4>Daftar Beasiswa yang Didaftarkan:</h4>
    <p></p>
     <table class="table table-striped">
     <thead>
