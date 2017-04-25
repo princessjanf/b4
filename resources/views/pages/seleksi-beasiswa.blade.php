@@ -12,14 +12,23 @@
      aksestahapan : id_tahapan
      tahapan : id_tahapan, nama_tahapan, nama
 -->
-<a href = "{{ url('seleksi') }}">  Kembali Ke Daftar Beasiswa  </a>
+<h4>Seleksi {{$beasiswa->nama_beasiswa}}</h4>
 
+<a href = "{{ url('seleksi') }}">  Kembali Ke Daftar Beasiswa  </a>
+@if ($check == 1)
+
+	 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<a href = "{{ url('/nama-penerima/'.$idbeasiswa) }}">  Lihat Penerima Beasiswa  </a>
+
+@endif
+</br></br></br>s
 <table id='tableSeleksi' class="table table-striped">
 	<thead>
 		<tr>
 			<th>No</th>
 			<th>Nama Tahapan</th>
 			<th>Nama Penyeleksi</th>
+			<th>Jumlah Partisipan Seleksi</th>
 			<th>More</th>
 		</tr>
 	</thead>
@@ -33,6 +42,9 @@
       <td>
         {{$tahapan->nama}}
       </td>
+			<td>
+				{{$jumlahpartisipan[$index]}}
+			</td>
 		  <td>
         @foreach($aksestahapan as $akses)
           @if ($akses->id_tahapan == $tahapan->id_tahapan)

@@ -8,7 +8,11 @@
 
 @section('content')
 <h4> Lihat Tahapan {{$tahapan->nama_tahapan}} </h4>
-<a href = "{{ url('seleksi/'.$idbeasiswa) }}">  Kembali Ke Daftar Tahapan  </a>
+<a href = "{{ url('seleksi') }}">  Kembali Ke Daftar Seleksi  </a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+@if($final=='2')
+<a href = "{{ url('nama-penerima/'.$idbeasiswa) }}">  Lihat Pendaftar Beasiswa  </a>
+@endif
 </br>
 @if ($final == '1' )
 <h3> Tidak ada mahasiswa yang dapat diseleksi untuk tahapan ini </h4>
@@ -42,12 +46,13 @@
 		</div>
 	</div>
 </div>
+
 <table id='tableSeleksi' class="table table-striped col-sm-8">
 	<thead>
 		<tr>
 			<th>No</th>
 			<th>Nama Pendaftar</th>
-			<th>Nilai Seleksi</th>
+			<th>Hasil Seleksi</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -57,16 +62,21 @@
 			<td>
 					{{$pendaftar->nama}}
 			</td>
-			@if ($final == 2)
 			<td>
-				{{$pendaftar->nilai_seleksi}}
+				@if($final == 0)
+						@if ($pendaftar->nilai_seleksi == 1)
+						<input type="checkbox" class="chk" id="{{$pendaftar->id_mahasiswa}}" checked> Diterima
+						@else
+						<input type="checkbox" class="chk" id="{{$pendaftar->id_mahasiswa}}"> Diterima
+						@endif
+				@elseif ($final == 2)
+						@if ($pendaftar->nilai_seleksi == 1)
+						 Diterima
+						@else
+						 Ditolak
+						@endif
+				@endif
 			</td>
-
-			@elseif ($final == 0)
-			<td>
-				<input type = "number" id="{{$pendaftar->id_mahasiswa}}" name = "{{$pendaftar->id_mahasiswa}}" value= "{{$pendaftar->nilai_seleksi}}" min="0" max="100">
-			</td>
-			@endif
 		</tr>
 		@endforeach
 	</tbody>
@@ -80,11 +90,22 @@
 	<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 	<strong>Masa pendaftaran belum selesai</strong>
 </div>
+<div  id= "alertCheck" class="alert alert-danger alert-dismissable fade in">
+				<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+				<strong>Pilihan Mahasiswa Melebihi Kuota!</strong>
+</div>
+<div  id= "alertCheck2" class="alert alert-danger alert-dismissable fade in">
+				<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+				<strong>Tidak ada mahasiswa yang dipilih!</strong>
+</div>
 @if($final == 0)
 <div id = "fix">
+	<p> Terpilih
+	<span id="kuotaChecker"> </span>
+	dari </br>  {{$beasiswa->kuota}} mahasiswa </p>
+	<button class="btn-primary" onclick="saveDraft()"> Save As Draft </button>
 </div>
-<button class="btn-primary" onclick="saveDraft()"> Save As Draft </button>
-<button class="btn-success" onclick="showResult()"> Finalize Result </button>
+<button id="showResult" class="btn-success" onclick="showResult()"> Finalize Result </button>
 @endif
 @endif
 
@@ -100,42 +121,49 @@
 		$('#tableSeleksi').DataTable();
 		$("[name='alertSaveDraft']").hide();
 		$("[name='alertWaktuDaftar']").hide();
+		$("#alertCheck").hide();
+		$("#alertCheck2").hide();
 
-
+		$("#fix #kuotaChecker").text(document.querySelectorAll('input[type="checkbox"]:checked').length);
 	});
 	function saveDraft(){
-		var table = $('#tableSeleksi').DataTable().$('input').serialize();
-		console.log(table);
-		$.ajax({
-			type:'POST',
-			url:'{{url('/save-draft')}}',
-			dataType:'json',
-			data:{'_token' : '<?php echo csrf_token() ?>',
-				'table': table,
-				'idtahapan': {{$idtahapan}},
-				'idbeasiswa': {{$idbeasiswa}},
-				'pengguna': {{$pengguna->id_user}}
-			},
-			success:function(data){
-				console.log(data.msg[0]);
-				alert("Nilai sementara berhasil disimpan!");
-			}
-		});
+				var arrayResult = [];
+				$('#tableSeleksi .chk').each(function(i, val){
+					var checkbox_cell_is_checked = $(this).is(':checked');
+					if(checkbox_cell_is_checked){
+						arrayResult.push($(this).attr('id'));
+					}
+				});
+
+			$.ajax({
+				type:'POST',
+				url:'{{url('/save-draft-check')}}',
+				dataType:'json',
+				data:{'_token' : '<?php echo csrf_token() ?>',
+					'table': arrayResult,
+					'idtahapan': {{$idtahapan}},
+					'idbeasiswa': {{$idbeasiswa}},
+					'pengguna': {{$pengguna->id_user}}
+				},
+				success:function(data){
+					console.log(data.msg[0]);
+					alert("Nilai sementara berhasil disimpan!");
+				}
+			});
 	}
 
-	$("#resultConfirmationModal").change(function(){
-		$("#resultConfirmationModal .modal-body #jumlahChecked").text(document.querySelectorAll('input[type="checkbox"]:checked').length);
+	$("#tableSeleksi").change(function(){
+		$("#fix #kuotaChecker").text(document.querySelectorAll('input[type="checkbox"]:checked').length);
 		if(document.querySelectorAll('input[type="checkbox"]:checked').length > {{$beasiswa->kuota}}){
-			$('#resultConfirmationModal').find('.modal-footer #alertChecked').show();
-			$('#resultConfirmationModal .modal-footer #submitResult').attr("disabled", true);
+			$('#alertCheck').show();
+			$('#showResult').attr("disabled", true);
 		}
 		else if(document.querySelectorAll('input[type="checkbox"]:checked').length == 0)
 		{
-			$('#resultConfirmationModal').find('.modal-footer #alertChecked2').show();
-			$('#resultConfirmationModal .modal-footer #submitResult').attr("disabled", true);
+			$('#showResult').attr("disabled", true);
 		}
 		else{
-			$('#resultConfirmationModal .modal-footer #submitResult').attr("disabled", false);
+			$('#showResult').attr("disabled", false);
 		}
 	});
 
@@ -151,13 +179,19 @@
 			$("[name='alertWaktuDaftar']").show();
 		}
 		else{
-		var table = $('#tableSeleksi').DataTable().$('input').serialize();
+			var arrayResult = [];
+			$('#tableSeleksi .chk').each(function(i, val){
+				var checkbox_cell_is_checked = $(this).is(':checked');
+				if(checkbox_cell_is_checked){
+					arrayResult.push($(this).attr('id'));
+				}
+			});
 		$.ajax({
 			type:'POST',
-			url:'{{url('/save-draft')}}',
+			url:'{{url('/save-draft-check')}}',
 			dataType:'json',
 			data:{'_token' : '<?php echo csrf_token() ?>',
-				'table': table,
+				'table': arrayResult,
 				'idtahapan': {{$idtahapan}},
 				'idbeasiswa': {{$idbeasiswa}},
 				'pengguna': {{$pengguna->id_user}}
@@ -179,21 +213,13 @@
 							},
 							success:function(data){
 								nama = data.msg.nama;
-								console.log(nama);
-
-								count=+1;
-								if(count<={{$beasiswa->kuota}}){
-									html = html + '<tr><td class="idMahasiswa" id='+datum[0]+'>' + nama + '</td><td> <input type="checkbox" class="chk" value='+datum[0]+' checked> Diterima </td></tr>';
-								}
-								else{
-									html = html + '<tr><td class="idMahasiswa">' + nama + '</td><td> <input type="checkbox" class="chk" value='+datum[0]+'> </td></tr>';
-								}
-							}
-						});
-
+								html = html + '<tr><td class="idMahasiswa" id='+datum[0]+'>' + nama + '</td><td> Diterima </td> </tr>';
+								count++;
+						}
+					});
 					});
 				});
-				html = html+ '</tbody></table>'
+				 html = html+ '</tbody></table>'
 
 				$('#resultConfirmationModal').find('.modal-body').append(html);
 				$("#resultConfirmationModal .modal-body #jumlahChecked").text(count);
@@ -208,19 +234,17 @@
 
 
 		var arrayResult = [];
-		$('#resultConfirmationModal .modal-body #resultTable .idMahasiswa').each(function(i, val){
-
-			// Find the previous sibling (td) and then find the input inside and see if it's checked
-			var checkbox_cell_is_checked = $(this).next().find('input').is(':checked');
-			// Is it checked?
+		$('#tableSeleksi .chk').each(function(i, val){
+			var checkbox_cell_is_checked = $(this).is(':checked');
 			if(checkbox_cell_is_checked){
 				arrayResult.push($(this).attr('id'));
 			}
 		});
+		console.log(arrayResult);
 
 		$.ajax({
 			type:'POST',
-			url:'{{url('/finalize-result')}}',
+			url:'{{url('/finalize-result-checked')}}',
 			dataType:'json',
 			data:{'_token' : '<?php echo csrf_token() ?>',
 				'table': arrayResult,
@@ -229,10 +253,11 @@
 				'pengguna': {{$pengguna->id_user}}
 			},
 			success:function(data){
-				window.location.href = "{{ url('seleksi-beasiswa/'.$idbeasiswa.'/'.$idtahapan) }}";
+				window.location.href = "{{ url('seleksi-luar/'.$idbeasiswa) }}";
+				console.log(data);
 			},
 			error: function(xhr, textStatus, errorThrown) {
-				alert(xhr.responseText);
+
 			}
 		});
 	}
