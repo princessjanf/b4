@@ -61,32 +61,6 @@ foreach ($namaPenerima as $np) {
 
 }
 
-//  $data = array(
-//    'name'=> $namaPenerima->pluck('nama'),
-//    'email'=> $namaPenerima->pluck('email'),
-//    'subject'=> 'Informasi Penerimaan Beasiswa',
-//    'message' =>'Halo '.$namaPenerima->nama.' Selamat kamu diterima di beasiswa'.$beasiswa->nama_beasiswa
-//    );
-//  // return var_dump($data['email'][0]);
-
-
-//  //kirim email
-//   Mail::send('pages.send-mail', $data, function($message) use ($data)
-//   {  
-//    for ($i=0; $i < count($data['email']); $i++)
-//     { 
-//       $message->to($data['email'][$i]);
-//     }
-//    /*foreach($data as $idx => $data2) {
-    
-//    }
-// }*/
-//     $message->from('adindanadinta@gmail.com');
-//     $message->subject($data['subject']);
-//      echo ("Basic Email Sent. Check your inbox.");
-//   });
-
-
 
 }
 else if ($namarole=='Pendonor'){
@@ -139,41 +113,5 @@ foreach ($namaPenerima as $np) {
         
       }
 }
-   /* Mail::send('pages.send-mail', ['name'=> 'Novica'], function($message)
-  {
-    $message->to('alvinwardhana7@gmail.com', 'Adinda Nadinta')->from('adindanadinta@gmail.com')->subject('Welcome!');
 
-  });*/
-   /*public function basic_email(){
-      $data = array('name'=>"Virat Gandhi");
-   
-      Mail::send(['text'=>'mail'], $data, function($message) {
-         $message->to('dwikism@gmail.com', 'Tutorials Point')->subject
-            ('Laravel Basic Testing Mail');
-         $message->from('adindanadinta@gmail.com','Virat Gandhi');
-      });
-      echo "Basic Email Sent. Check your inbox.";
-   }
-
-   public function html_email(){
-      $data = array('name'=>"Virat Gandhi");
-      Mail::send('mail', $data, function($message) {
-         $message->to('abc@gmail.com', 'Tutorials Point')->subject
-            ('Laravel HTML Testing Mail');
-         $message->from('xyz@gmail.com','Virat Gandhi');
-      });
-      echo "HTML Email Sent. Check your inbox.";
-   }
-   
-   public function attachment_email(){
-      $data = array('name'=>"Virat Gandhi");
-      Mail::send('mail', $data, function($message) {
-         $message->to('abc@gmail.com', 'Tutorials Point')->subject
-            ('Laravel Testing Mail with Attachment');
-         $message->attach('C:\laravel-master\laravel\public\uploads\image.png');
-         $message->attach('C:\laravel-master\laravel\public\uploads\test.txt');
-         $message->from('xyz@gmail.com','Virat Gandhi');
-      });
-      echo "Email Sent with attachment. Check your inbox.";
-   }*/
 }
