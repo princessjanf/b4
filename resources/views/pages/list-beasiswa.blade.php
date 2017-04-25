@@ -34,7 +34,7 @@
 			<td>
 				<a href="{{ url('detail-beasiswa/'.$beasiswa->id_beasiswa) }}">{{$beasiswa->nama_beasiswa}}</a>
 			</td>
-			@if($namarole=="pendonor" || $namarole=="Pegawai Universitas" || $namarole=="Direktorat Kerjasama")
+			@if($namarole=="Pendonor" || $namarole=="Pegawai Universitas" || $namarole=="Direktorat Kerjasama")
 			<td>
 				@if ($beasiswa->public == 1)
 				Sudah Publik
