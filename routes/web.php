@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Mail;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -75,6 +76,10 @@ Route::get('seleksi-beasiswa/{idBeasiswa}/{idTahapan}', [
   'uses' => 'MainController@seleksiBeasiswa'
 ]);
 
+Route::get('nama-penerima/{idBeasiswa}',[
+  'middleware' => 'authSSO',
+  'uses' => 'MainController@penerimaBeasiswa'
+]);
 Route::post('save-draft', 'MainController@saveDraft');
 Route::post('finalize-result', 'MainController@finalizeResult');
 Route::post('retrieve-nama', 'MainController@retrieveNama');
@@ -91,3 +96,9 @@ Route::post('update-beasiswa',[
 Route::post('retrieve-prodi', 'ScholarshipController@retrieveProdi');
 //Route::post('insert-beasiswa', 'ScholarshipController@insertBeasiswa');
 //Route::post('update-beasiswa', 'ScholarshipController@updateBeasiswa');
+
+Route::get('email/{idBeasiswa}', 'MailController@sendEmail')->middleware('authSSO');
+// Route::post('email',[
+//   'middleware' => 'authSSO',
+//   'uses' => 'MailController@sendEmail'
+// ]);
