@@ -119,3 +119,5 @@ Route::post('upload',[
   'middleware' => 'authSSO',
   'uses' => 'UploadController@uploadSubmit'
 ]);
+
+Route::post('filter-pegawai-fakultas', 'ScholarshipController@filterPegawaiFakultas');
