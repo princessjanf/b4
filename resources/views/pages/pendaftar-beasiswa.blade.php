@@ -6,7 +6,7 @@
 <div class="col-sm-9">
     <H2>PENDAFTAR BEASISWA</H2>
     <HR></HR>
-
+    <h3>{{$beasiswa->nama_beasiswa}}</h3>
     <table class="table table-bordered">
       <thead>
         <tr>
@@ -35,7 +35,7 @@
     </table>
 
     <div>
-      <button id="cancel" class="btn btn-danger" formnovalidate><a href="{{ url('profil') }}">Back </a></button>
+      <a href="{{ url('profil') }}"><button id="cancel" class="btn btn-info" formnovalidate>Back</button></a>
     </div>
 
 </div>
