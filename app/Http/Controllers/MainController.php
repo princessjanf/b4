@@ -286,6 +286,7 @@
 					if (count($retrTahapan)-1 == $key)
 					{
 						$final = DB::table('seleksi_beasiswa')->where('id_beasiswa', $id)->where('id_tahapan',$tahapan->id_tahapan)->first();
+						
 						if ($final->final == 1)
 						{
 							$check = 1;
@@ -333,9 +334,9 @@
 				return view('pages.noaccess')->withUser($user)->withNamarole($namarole);
 			}
 			else{
-				// BELUM: cek if tahapan ini udah final atau belum, kalau udah final cuma bisa lihat hasil seleksi
-
+				// Cek if tahapan ini udah final atau belum, kalau udah final cuma bisa lihat hasil seleksi
 				//get nama dan nilai pendaftar beasiswa untuk tahap ini
+
 				$beasiswa = DB::table('beasiswa')->where('id_beasiswa',$idBeasiswa)->first();
 
 				$final = 0;
