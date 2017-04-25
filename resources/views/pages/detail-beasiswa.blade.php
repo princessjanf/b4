@@ -12,6 +12,7 @@
     <h4>Detail Beasiswa &nbsp;<a href={{$beasiswa->link_seleksi}}><button class="btn btn-default"><b>Daftar</b></button></a></h4>
   @endif
 @elseif ($namarole=="Pegawai Universitas")
+
 <h4>Detail Beasiswa &nbsp;
   <a href = "{{ url('edit-beasiswa/'.$beasiswa->id_beasiswa) }}" class="btn btn-warning" data-toggle="tooltip" title="Edit" role="button"">
     <span class="glyphicon glyphicon-pencil"></span>
@@ -22,6 +23,7 @@
   <a href = "{{ url('make-public-beasiswa/'.$beasiswa->id_beasiswa) }}" class="btn btn-info" data-toggle="tooltip" title="Make Public" role="button">
     <span class="glyphicon glyphicon-eye-open"></span>
   </i></button></a>
+  <a href = "{{ url('/nama-penerima/'.$beasiswa->id_beasiswa) }}"> <button class="btn btn-default"><b> Lihat Penerima Beasiswa</b></button>  </a>
 </h4>
 @else
 <h4>Detail Beasiswa</h4>

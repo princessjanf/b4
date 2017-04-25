@@ -75,8 +75,16 @@ Route::get('seleksi-beasiswa/{idBeasiswa}/{idTahapan}', [
   'uses' => 'MainController@seleksiBeasiswa'
 ]);
 
+Route::get('seleksi-luar/{idBeasiswa}', [
+  'middleware' => 'authSSO',
+  'uses' => 'MainController@seleksiLuar'
+]);
+
+
 Route::post('save-draft', 'MainController@saveDraft');
+Route::post('save-draft-check', 'MainController@saveDraftCheck');
 Route::post('finalize-result', 'MainController@finalizeResult');
+Route::post('finalize-result-checked', 'MainController@finalizeResultChecked');
 Route::post('retrieve-nama', 'MainController@retrieveNama');
 
 

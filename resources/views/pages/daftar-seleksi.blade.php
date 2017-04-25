@@ -28,7 +28,11 @@
 				{{$jumlahpendaftar[$index]}}
 			</td>
       <td>
-        		<a href = "{{ url('seleksi/'.$beasiswa->id_beasiswa) }}"> <button> Lihat Tahapan </button> </a>
+						@if($beasiswa->id_jenis_seleksi == '2')
+							<a href = "{{ url('seleksi-luar/'.$beasiswa->id_beasiswa) }}"> Seleksi Beasiswa </a>
+						@elseif($beasiswa->id_jenis_seleksi == '3')
+							<a href = "{{ url('seleksi/'.$beasiswa->id_beasiswa) }}"> Lihat Tahapan </a>
+						@endif
       </td>
 		@endforeach
 	</tbody>
