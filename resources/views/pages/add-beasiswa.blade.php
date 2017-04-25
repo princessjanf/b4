@@ -67,7 +67,7 @@
 
 	<div class="form-group">
 		<div class="input-group col-sm-9">
-			<label for="fakultasBeasiswa">Fakultas Beasiswa</label><br>
+			<label for="fakultasBeasiswa">Program Studi</label><br>
 			<select id="fakultasBeasiswa" name="fakultasBeasiswa" data-toggle="dropdown" required>
 			</select>
 			<input type="hidden" name="listProdi">
@@ -89,15 +89,9 @@
 		<div class="input-group col-sm-4">
 			<select class="form-control" name="mataUang" id="mataUang" required>
 				<option selected disabled> --Pilih Mata Uang-- </option>
-				<option value= "IDR"> IDR </option>
-				<option value= "USD"> USD </option>
-				<option value= "EUR"> EUR </option>
-				<option value= "CAD"> CAD </option>
-				<option value= "GBP"> GBP </option>
-				<option value= "CHF"> CHF </option>
-				<option value= "NZD"> NZD </option>
-				<option value= "AUD"> AUD </option>
-				<option value= "JPY"> JPY </option>
+				@foreach ($matauang as $mu)
+				<option value= {{ $mu->nama_mata_uang}}> {{$mu->nama_mata_uang}} </option>
+				@endforeach
 			</select>
 		</div>
 	</div>
@@ -135,9 +129,9 @@
 			<p> Periode beasiswa diberikan setiap..</p>
 			<select class="form-control" name="periode" id="periode" required>
 				<option selected disabled> --Pilih Periode-- </option>
-				<option value= "bulan"> Bulan </option>
-				<option value= "semester"> Semester </option>
-				<option value= "tahun"> Tahun </option>
+				@foreach ($periode as $periode)
+				<option value= {{ $periode->nama_periode}}> {{ $periode->nama_periode}} </option>
+				@endforeach
 			</select>
 		</div>
 	</div>
@@ -215,17 +209,19 @@
 		</div>
 	</div>
 
+	<!-- 1 -->
 	<div id="fieldWebsite" class="form-group" style="display: none;">
 		<label for="websiteSeleksi">Website Seleksi</label><br>
 		<p>Masukkan website yang anda akan jadikan sebagai tempat untuk seleksi</p>
-		<input type="text" placeholder="Website seleksi" class="form-control" name="websiteSeleksi" required="">
+		<input type="text" placeholder="Website seleksi" class="form-control" id="websiteSeleksi" required="">
 	</div>
 
+	<!-- 2 -->
 	<div id="penyeleksi" class="form-group" style="display: none;">
 		<label for="penyeleksi">Pilih Penyeleksi</label><br>
 		<p>Pihak yang akan melakukan tahapan seleksi terhadap beasiswa</p>
 		<div class="input-group col-sm-9">
-			<select name="penyeleksi" style="overflow:auto" class="form-control" required>
+			<select name="penyeleksi" style="overflow:auto" id=penyeleksiTahapan class="form-control" required="">
 				<option selected disabled> --Pilih Penyeleksi-- </option>
 				<optgroup label="PENDONOR">
 					<option disabled style="color:red" class = "pendonorOpt" value="">Pilih pendonor terlebih dahulu!</option>
@@ -241,24 +237,26 @@
 		</div>
 	</div>
 
+	<!-- 3 -->
 	<div id="tahapanSeleksi" class="form-group" style="display: none;">
 		<div class="input-group col-sm-9">
 			<label for="syarat">Tahapan Seleksi &nbsp;</label>
-			<input type="hidden" id="arrayTahapan" name="arrayTahapan">
-			<!-- <button type="button" class="btn btn-default" id="buttonTambahTahapan" onclick="insertRowTahapan()"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button> -->
+			<input value="" type="hidden" id="arrayTahapan" name="arrayTahapan">
+
 			<div class="form-group" name="tahapanSeleksi">
 
 				<a class="menu_links" id="tulisan3" style="display: block; cursor: pointer;" type="button" onclick="insertRowTahapan3()">+ Tambah Tes Tertulis</a>
 				<a class="menu_links" id="tulisan4" style="display: block; cursor: pointer;" type="button" onclick="insertRowTahapan4()">+ Tambah Wawancara</a>
 
 				<div id='tahapan1' class="input-group col-sm-12">
-				  <input style="width:220px;" type="text" class="form-control input" value="Seleksi Administratif" placeholder="Nama tahapan seleksi" name="tahapan1" required disabled/>
+					<input style="width:220px;" type="hidden" class="form-control input" value="Tahapan seleksi di luar modul" placeholder="Nama tahapan seleksi" name="tahapan5" required="" disabled/>
+				  <input style="width:220px;" type="text" class="form-control input" value="Seleksi Administratif" placeholder="Nama tahapan seleksi" name="tahapan1" required="" disabled/>
 				  <span class="input-group-btn" style="width:10px;"></span>
 					<p type="text" class="form-control" style="border:0;">oleh</p>
 					<span class="input-group-btn" style="width:0px;"></span>
 					<div class="input-sm">
 						<div class="input-group col-sm-12">
-							<select style="overflow:auto" class="form-control" name="penyeleksi1" required>
+							<select style="overflow:auto" class="form-control" id="penyeleksi1" required>
 								<option selected disabled> --Pilih Penyeleksi-- </option>
 								<optgroup label="PENDONOR">
 									<option disabled style="color:red" class = "pendonorOpt" value="">Pilih pendonor terlebih dahulu!</option>
@@ -276,13 +274,13 @@
 				</div><br>
 
 				<div id='tahapan2' class="input-group col-sm-12">
-				  <input style="width:220px;" type="text" class="form-control input" value="Seleksi Berkas" placeholder="Nama tahapan seleksi" name="tahapan2" required disabled/>
+				  <input style="width:220px;" type="text" class="form-control input" value="Seleksi Berkas" placeholder="Nama tahapan seleksi" name="tahapan2" required="" disabled/>
 				  <span class="input-group-btn" style="width:10px;"></span>
 					<p type="text" class="form-control" style="border:0;">oleh</p>
 					<span class="input-group-btn" style="width:0px;"></span>
 					<div class="input-sm">
 						<div class="input-group col-sm-12">
-							<select style="overflow:auto" class="form-control" name="penyeleksi2" required>
+							<select style="overflow:auto" class="form-control" id="penyeleksi2" required>
 								<option selected disabled> --Pilih Penyeleksi-- </option>
 								<optgroup label="PENDONOR">
 									<option disabled style="color:red" class = "pendonorOpt" value="">Pilih pendonor terlebih dahulu!</option>
@@ -311,7 +309,7 @@
 
 <div name= "alertDanaModal" class="alert alert-danger alert-dismissable fade in">
 	<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-	<strong>Jumlah total dana harus sama dengan jumlah kuota x nominal x jangka</strong>
+	<strong>Jumlah dana biaya hidup ditambah denga  biaya pendidikan harus sama dengan jumlah kuota x nominal x jangka</strong>
 </div>
 
 <div name= "alertDateModal" class="alert alert-danger alert-dismissable fade in">
@@ -341,14 +339,34 @@
 			document.getElementById("fieldWebsite").style.display = "block";
 			document.getElementById("penyeleksi").style.display = "none";
 			document.getElementById("tahapanSeleksi").style.display = "none";
+			$('#websiteSeleksi').attr('required',true);
+			$('#penyeleksiTahapan').attr('required',false);
+			$('#penyeleksi1').attr('required',false);
+			$('#penyeleksi2').attr('required',false);
+			$('#penyeleksi3').attr('required',false);
+			$('#penyeleksi4').attr('required',false);
+
 		}else if(that.value=="2"){
 			document.getElementById("fieldWebsite").style.display = "none";
 			document.getElementById("penyeleksi").style.display = "block";
 			document.getElementById("tahapanSeleksi").style.display = "none";
+			$('#websiteSeleksi').attr('required',false);
+			$('#penyeleksiTahapan').attr('required',true);
+			$('#penyeleksi1').attr('required',false);
+			$('#penyeleksi2').attr('required',false);
+			$('#penyeleksi3').attr('required',false);
+			$('#penyeleksi4').attr('required',false);
+
 		}else{
 			document.getElementById("fieldWebsite").style.display = "none";
 			document.getElementById("penyeleksi").style.display = "none";
 			document.getElementById("tahapanSeleksi").style.display = "block";
+			$('#websiteSeleksi').attr('required',false);
+			$('#penyeleksiTahapan').attr('required',false);
+			$('#penyeleksi1').attr('required',false);
+			$('#penyeleksi2').attr('required',true);
+			$('#penyeleksi3').attr('required',true);
+			$('#penyeleksi4').attr('required',true);
 		}
 	}
 
@@ -433,7 +451,7 @@
 			var x = document.getElementsByName('tahapanSeleksi')[0];
 	 		var elem = document.createElement('div');
 	 		elem.setAttribute("id","tahapan3");
-			elem.innerHTML = '<div class="input-group col-sm-12"><input style="width:220px;" type = "text" class="form-control input" value = "Tes Tertulis" name="tahapan3" required disabled><span class="input-group-btn" style="width:10px;"></span><p type="text" class="form-control" style="border:0;">oleh</p><span class="input-group-btn" style="width:0px;"></span><div id="penyeleksiTahapan" class="input-sm"><div class="input-group col-sm-12"><select style="overflow:auto" class="form-control" name="penyeleksi3" id="listPenyeleksi3"><option selected disabled> --Pilih Penyeleksi-- </option><optgroup label="PENDONOR"><option disabled style="color:red" class = "pendonorOpt" value="">Pilih pendonor terlebih dahulu!</option></optgroup><optgroup label="PEGAWAI UNIVERSITAS">@foreach ($pegawaiuniversitas as $pu)<option value= {{ $pu->username}}> {{$pu->nama_jabatan}} Universitas - {{$pu->nama}} </option>@endforeach</optgroup><optgroup label="PEGAWAI FAKULTAS" style="display:none;" class="pegawaifakultas"></optgroup></select></div></div><span class="input-group-btn"><button class="btn btn-danger" onclick="removeTahapan3()"> x </button></span><br><br>';
+			elem.innerHTML = '<div class="input-group col-sm-12"><input style="width:220px;" type = "text" class="form-control input" value = "Tes Tertulis" name="tahapan3" required="" disabled><span class="input-group-btn" style="width:10px;"></span><p type="text" class="form-control" style="border:0;">oleh</p><span class="input-group-btn" style="width:0px;"></span><div id="penyeleksiTahapan" class="input-sm"><div class="input-group col-sm-12"><select style="overflow:auto" class="form-control" id="penyeleksi3"><option selected disabled> --Pilih Penyeleksi-- </option><optgroup label="PENDONOR"><option disabled style="color:red" class = "pendonorOpt" value="">Pilih pendonor terlebih dahulu!</option></optgroup><optgroup label="PEGAWAI UNIVERSITAS">@foreach ($pegawaiuniversitas as $pu)<option value= {{ $pu->username}}> {{$pu->nama_jabatan}} Universitas - {{$pu->nama}} </option>@endforeach</optgroup><optgroup label="PEGAWAI FAKULTAS" style="display:none;" class="pegawaifakultas"></optgroup></select></div></div><span class="input-group-btn"><button class="btn btn-danger" onclick="removeTahapan3()"> x </button></span><br><br>';
 	 		x.appendChild(elem);
 
 				var idPendonor = $("#pendonor").val();
@@ -453,7 +471,7 @@
 			var x = document.getElementsByName('tahapanSeleksi')[0];
 	 		var elem = document.createElement('div');
 	 		elem.setAttribute("id","tahapan4");
-			elem.innerHTML = '<div class="input-group col-sm-12"><input style="width:220px;" type = "text" class="form-control input" value = "Wawancara" name="tahapan3" required disabled><span class="input-group-btn" style="width:10px;"></span><p type="text" class="form-control" style="border:0;">oleh</p><span class="input-group-btn" style="width:0px;"></span><div id="penyeleksiTahapan" class="input-sm"><div class="input-group col-sm-12"><select style="overflow:auto" class="form-control" name="listPenyeleksi" id="listPenyeleksi4"><option selected disabled> --Pilih Penyeleksi-- </option><optgroup label="PENDONOR"><option disabled style="color:red" class = "pendonorOpt" value="">Pilih pendonor terlebih dahulu!</option></optgroup><optgroup label="PEGAWAI UNIVERSITAS">@foreach ($pegawaiuniversitas as $pu)<option value= {{ $pu->username}}> {{$pu->nama_jabatan}} Universitas - {{$pu->nama}} </option>@endforeach</optgroup><optgroup label="PEGAWAI FAKULTAS" style="display:none;" class="pegawaifakultas"></optgroup></select></div></div><span class="input-group-btn"><button class="btn btn-danger" onclick="removeTahapan4()"> x </button></span><br>';
+			elem.innerHTML = '<div class="input-group col-sm-12"><input style="width:220px;" type = "text" class="form-control input" value = "Wawancara" name="tahapan3" required="" disabled><span class="input-group-btn" style="width:10px;"></span><p type="text" class="form-control" style="border:0;">oleh</p><span class="input-group-btn" style="width:0px;"></span><div id="penyeleksiTahapan" class="input-sm"><div class="input-group col-sm-12"><select style="overflow:auto" class="form-control" name="listPenyeleksi" id="penyeleksi4"><option selected disabled> --Pilih Penyeleksi-- </option><optgroup label="PENDONOR"><option disabled style="color:red" class = "pendonorOpt" value="">Pilih pendonor terlebih dahulu!</option></optgroup><optgroup label="PEGAWAI UNIVERSITAS">@foreach ($pegawaiuniversitas as $pu)<option value= {{ $pu->username}}> {{$pu->nama_jabatan}} Universitas - {{$pu->nama}} </option>@endforeach</optgroup><optgroup label="PEGAWAI FAKULTAS" style="display:none;" class="pegawaifakultas"></optgroup></select></div></div><span class="input-group-btn"><button class="btn btn-danger" onclick="removeTahapan4()"> x </button></span><br>';
 	 		x.appendChild(elem);
 
 				var idPendonor = $("#pendonor").val();
@@ -534,6 +552,7 @@
 		document.getElementsByName('arrayTahapan')[0].value = idTahapan;
 
 		var x = $('#fakultasBeasiswa').multipleSelect('getSelects');
+
 		document.getElementsByName('listProdi')[0].value = x;
 
 		var q = $('#berkas').multipleSelect('getSelects');

@@ -2,12 +2,19 @@
 
 @section('title', 'Edit Beasiswa')
 
+@section('head')
+<link href="{{ asset('css/multiple-select.css') }}" rel="stylesheet" />
+@endsection
+
 @section('content')
 <form id='editScholarshipForm' action = "{{ url('update-beasiswa') }}" onsubmit="return validateForm()" method = "post" data-parsley-validate="">
 	<div>
-		<h3> Informasi Beasiswa </h3>
+		<h3> Edit Informasi Beasiswa </h3>
+		<p style="font-weight:bold"> Semua Kolom Harus Diisi </p>
 	</div>
+
 	<input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
+	<input type = "hidden" name = "counter" value="1">
 	<input type = "hidden" name = "idBeasiswa" value= {{$beasiswa->id_beasiswa}}>
 
 	<div class="form-group">
@@ -71,91 +78,165 @@
 
 		<div class="form-group">
 			<div class="input-group col-sm-9">
-				<label for="fakultasBeasiswa">Fakultas Beasiswa</label><br>
+				<label for="fakultasBeasiswa">Program Studi</label><br>
 				<select id="fakultasBeasiswa" name="fakultasBeasiswa" data-toggle="dropdown" required>
+						{{$dummy = ''}}
+						@foreach($daftarprodi as $key => $prodi)
+						@if ($key == 0)
+							<optgroup label="{{$prodi->nama_fakultas}}">
+							{{$dummy = $prodi->nama_fakultas }}
+						@elseif($prodi->nama_fakultas != $dummy)
+							</optgroup>
+							<optgroup label="{{$prodi->nama_fakultas}}">
+							{{$dummy = $prodi->nama_fakultas }}
+						@endif
+								@foreach($prodidipilih as $sp)
+										@if ($sp->id_prodi == $prodi->id_prodi)
+											<option selected="selected" value="{{$prodi->id_prodi}}"> {{$prodi->nama_prodi}} </option>
+											@break
+										@else
+											<option value="{{$prodi->id_prodi}}"> {{$prodi->nama_prodi}} </option>
+											@break
+										@endif
+								@endforeach
+						@endforeach
 				</select>
 				<input type="hidden" name="listProdi">
 			</div>
 		</div>
 
-		<div class="form-group col-sm-3">
-			<label for="kuota">Kuota (Mahasiswa)</label>
-			<input type="number" value ={{$beasiswa->kuota}} class="form-control" name="kuota" min= "0" data-parsley-pattern="\d*" data-parsley-type="integer" data-parsley-maxlength="3" required>
+		<span id="ahoy" style="display:none"></span>
+
+		<div class="form-group">
+			<div class="input-group col-sm-4">
+				<label for="kuota">Kuota (Mahasiswa)</label><br>
+				<input type="number" value ="{{$beasiswa->kuota}}" placeholder="Kuota" class="form-control" name="kuota" min= "0" data-parsley-pattern="\d*" data-parsley-type="integer" data-parsley-maxlength="3" required>
+			</div>
 		</div>
 
+		<div class="form-group">
+			<label for="mataUang">Mata Uang</label>
+			<p> Mata Uang Yang Digunakan </p>
+			<div class="input-group col-sm-4">
+				<select class="form-control" name="mataUang" id="mataUang" required>
+					@foreach ($matauang as $mu)
+						@if ($beasiswa->currency == $mu->id_mata_uang)
+							<option selected value= {{ $mu->nama_mata_uang}}> {{$mu->nama_mata_uang}} </option>
+						@else
+							<option value= {{ $mu->nama_mata_uang}}> {{$mu->nama_mata_uang}} </option>
+						@endif
+					@endforeach
+				</select>
+			</div>
+		</div>
+
+	<div class="form-group">
+		<label for="totalDanaPendidikan">Dana Pendidikan</label>
+		<p> Besaran dana pendidikan yang akan diberikan secara total. <br>Dana ini akan dipergunakan untuk membantu membayar uang kuliah (BOP) </p>
+		<div class="input-group col-sm-4">
+			<input  value= "{{$beasiswa->dana_pendidikan}}" class="form-control" name="danaPendidikan" data-parsley-trigger="keyup"  data-parsley-validation-threshold="1" data-parsley-pattern="\d|\d{1,3}(\,\d{3})*" data-parsley-maxlength="9" required>
+			<span class="input-group-addon" id="addon-mataUang" name="addon-mataUang"></span>
+		</div>
 	</div>
 
+	<div class="form-group">
+		<label for="totalDanaHidup">Dana Biaya Hidup</label>
+		<p> Besaran dana biaya hidup yang akan diberikan secara total. <br>Contoh biaya hidup ini seperti biaya makan, transportasi, dan tempat tinggal. </p>
+		<div class="input-group col-sm-4">
+			<input value= "{{$beasiswa->dana_hidup}}" class="form-control" name="danaHidup" data-parsley-trigger="keyup"  data-parsley-validation-threshold="1" data-parsley-pattern="\d|\d{1,3}(\,\d{3})*" data-parsley-maxlength="9" required>
+			<span class="input-group-addon" id="addon-mataUang3" name="addon-mataUang"></span>
+		</div>
 	</div>
-	<div class = "row">
-		<div class="form-group col-sm-5">
-			<label for="totalDana">Dana Pendidikan</label>
-			<p> Total dana yang akan diberikan ke universitas </p>
-			<input type="number" name="totalDana" class="form-control" value= {{$beasiswa->dana_pendidikan}} min= "0" data-parsley-pattern="\d*" data-parsley-type="integer" data-parsley-maxlength="20" required>
+
+	<div class="form-group">
+		<label for="nominal">Nominal</label>
+		<p> Dana yang akan diberikan per mahasiswa </p>
+		<div class="input-group col-sm-4">
+			<input value= "{{$beasiswa->nominal}}" class="form-control" name="nominal" data-parsley-trigger="keyup" data-parsley-validation-threshold="1" data-parsley-pattern="\d|\d{1,3}(\,\d{3})*" data-parsley-maxlength="9" required>
+			<span class="input-group-addon" id="addon-mataUang2" name="addon-mataUang2"></span>
 		</div>
-		<div class="form-group col-sm-5">
-			<label for="totalDana">Dana Biaya Hidup</label>
-			<p> Total dana yang akan diberikan ke universitas </p>
-			<input type="number" name="totalDana" class="form-control" value= {{$beasiswa->dana_hidup}} min= "0" data-parsley-pattern="\d*" data-parsley-type="integer" data-parsley-maxlength="20" required>
-		</div>
-		<div class="form-group col-sm-4">
+	</div>
+
+	<div class="form-group">
+		<div class="input-group col-sm-4">
 			<label for="periode">Periode</label>
-			<p> Periode beasiswa diberikan </p>
-
-			<select class="form-control" name="periode">
-				<?php $periodeSelected = false;?>
-				@if ($beasiswa->periode == "bulan")
-				{
-					<option selected value= "bulan"> Bulan </option>
-					<?php $periodeSelected = true; ?>
-				}
-				@else
-				{
-					<option value= "bulan"> Bulan </option>
-				}
-				@endif
-
-				@if ($periodeSelected == false AND $beasiswa->periode == 'semester'){
-					<option selected value= "semester"> Semester </option>
-				}
-				@else{
-					<option value= "semester"> Semester </option>
-				}
-				@endif
-
-				@if($periodeSelected==false AND $beasiswa->periode == 'tahun'){
-					<option selected value= "tahun"> Tahun </option>
-				}
-				@else{
-					<option value= "tahun"> Tahun </option>
-				}
-				@endif
+			<p> Periode beasiswa diberikan setiap..</p>
+			<select class="form-control" name="periode" id="periode" required>
+				@foreach ($periode as $periode)
+					@if ($beasiswa->currency == $mu->id_mata_uang)
+						<option selected value= {{ $periode->nama_periode}}> {{ $periode->nama_periode}} </option>
+					@else
+						<option value= {{ $periode->nama_periode}}> {{ $periode->nama_periode}} </option>
+					@endif
+				@endforeach
 			</select>
 		</div>
 	</div>
-	<div class = "row">
-		<div class="form-group col-sm-5">
-			<label for="nominal">Nominal</label>
-			<p> Dana yang akan diberikan kepada  mahasiswa </p>
-			<input type="number" class="form-control" value= {{$beasiswa->nominal}} name="nominal" min= "0" data-parsley-pattern="\d*" data-parsley-type="integer" data-parsley-maxlength="8" required>
-		</div>
 
-		<div class="form-group col-sm-4">
-			<label for="jangka">Jangka (Semester) </label>
-			<p> Jangka waktu pemberian beasiswa </p>
-			<input type="number" value= {{$beasiswa->jangka}} class="form-control" name="jangka" min= "0" data-parsley-pattern="\d*" data-parsley-type="integer" data-parsley-maxlength="3" required>
+	<div class="form-group">
+		<label for="jangka">Jangka</label>
+		<p>Berapa periode beasiswa akan diberikan?</p>
+		<div class="input-group col-sm-4">
+			<input value= "{{$beasiswa->jangka}}" type="number" placeholder="4" class="form-control" name="jangka" min= "0" data-parsley-pattern="\d*" data-parsley-type="integer" data-parsley-maxlength="3" required>
+			<span class="input-group-addon" id="addon-jangka" name="addon-jangka"></span>
 		</div>
 	</div>
-	<div class = "row">
 
-		<div class="form-group col-sm-4">
-			<label for="tanggalBuka">Tanggal Buka</label>
-			<input type="date" value= {{$beasiswa->tanggal_buka}} name="tanggalBuka" data-date-format="YYYY/MM/DD" required>
+	<div class="form-group">
+		<div class="input-group col-sm-4">
+			<label for="tanggalBuka">Tanggal Buka</label><br>
+			<input value= "{{$beasiswa->tanggal_buka}}" type="date" class="form-control" name="tanggalBuka" data-date-format="YYYY/MM/DD" required>
 		</div>
-		<div class="form-group col-sm-4">
-			<label for="tanggalTutup">Tanggal Tutup</label>
-			<input type="date" value= {{$beasiswa->tanggal_tutup}} name="tanggalTutup" data-date-format="YYYY/MM/DD" required>
-		</div>
+	</div>
 
+	<div class="form-group">
+		<div class="input-group col-sm-4">
+			<label for="tanggalTutup">Tanggal Tutup</label><br>
+			<input value= "{{$beasiswa->tanggal_tutup}}" type="date" class="form-control" name="tanggalTutup" data-date-format="YYYY/MM/DD" required>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<div class="input-group col-sm-4">
+			<label for="waktuTagih">Waktu Tagih</label><br>
+			<p>Masukkan waktu kapan akan dilakukannya penagihan kepada pendonor</p>
+			<input value= "{{$beasiswa->waktu_tagih}}" type="date" class="form-control" name="waktuTagih" data-date-format="YYYY/MM/DD" required>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<div class="input-group col-sm-9">
+			<label for="syarat">Syarat &nbsp;</label>
+			<input type="hidden" id="arraySyarat" name="arraySyarat">
+			<button type="button" class="btn btn-default" id="buttonTambahSyarat" onclick="insertRow()"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+			<div class="form-group" name="syarat">
+				<div class="input-group col-sm-12">
+					<!-- invalidate? -->
+					@foreach ($syarat as $key => $syarat)
+	 					<br><input value= "{{ $syarat->syarat}}" type = "text" class="form-control col-sm-9" name="syarat{{++$key}}" required><br><br>
+	 				@endforeach
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<div class="input-group col-sm-9">
+			<label for="berkasPersyaratan">Berkas Persyaratan Pendaftaran</label><br>
+			<select id="berkas" multiple="multiple" data-toggle="dropdown" name="berkas" required>
+				@foreach ($berkas as $b)
+					@foreach ($beasiswaberkas as $bb)
+							@if ($bb->id_berkas == $b->id_berkas)
+								<option selected="selected" value= {{ $b->id_berkas}}> {{$b->nama_berkas}} </option>
+								@break
+							@else
+								<option value= {{ $b->id_berkas}}> {{$b->nama_berkas}} </option>
+							@endif
+					@endforeach
+				@endforeach
+			</select>
+			<input type="hidden" name="listBerkas">
+		</div>
 	</div>
 
 	<div>
@@ -179,43 +260,130 @@
 <script src="{{ asset('js/jquery-3.2.0.js') }}"></script>
 <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'></script>
 <script src="http://parsleyjs.org/dist/parsley.js"></script>
+<script type="text/javascript" src="{{ URL::asset('js/multiple-select.js') }}"></script>
 <script>
+
+  $('#berkas').multipleSelect({
+		placeholder: "Pilih berkas",
+		width: "100%"
+	});
+
+	function cekProdi(z, idFakultas){
+		//console.log("length nya: " +z);
+		if(z==1){
+			var p = document.getElementsByClassName("pegawaifakultas");
+			var i;
+			for (i = 0; i < p.length; i++) {
+			    p[i].style.display = "block";
+			}
+		}else {
+			var p = document.getElementsByClassName("pegawaifakultas");
+			var i;
+			for (i = 0; i < p.length; i++) {
+			    p[i].style.display = "none";
+			}
+		}
+	}
+
+	$('#editScholarshipForm').parsley({
+	successClass: 'has-success',
+	errorClass: 'has-error',
+	classHandler: function(el) {
+		return el.$element.closest(".form-group");
+	},
+	errorsContainer: function(el) {
+    return el.$element.closest('.form-group');
+	},
+	errorsWrapper: '<span class="help-block"></span>',
+	errorTemplate: "<span></span>"
+	});
+
+
 	$("[name='alertDateModal']").hide();
+	$("[name='alertDateModal2']").hide();
 	$("[name='alertDanaModal']").hide();
 	counter=1;
+	var idSyarat = [];
+	idSyarat.push(1);
 	function insertRow(){
 		counter+=1;
+		idSyarat.push(counter);
+		console.log(idSyarat);
 		document.getElementsByName("counter")[0].value = counter;
-		var theForm = document.getElementById('editScholarshipForm');
-		/*
-		var tmp = document.createElement("input");
-		tmp.name = "syarat"+counter;
-		tmp.type = "text";
-		console.log(tmp.name);
-		theForm.appendChild(tmp);
-		var r = document.createElement('span');
-		theForm.appendChild(r);
-		*/
+		var theForm = document.getElementById('createScholarshipForm');
 		var x = document.getElementsByName('syarat')[0];
 		var elem = document.createElement('div');
-		elem.innerHTML = '<input type = "text" class="form-control" name="syarat'+counter+'">';
+		elem.setAttribute("id","syarat"+counter);
+		elem.innerHTML = '<div class="input-group col-sm-12"><input type = "text" class="form-control col-sm-9" name="syarat'+counter+'" required><span class="input-group-btn"><button class="btn btn-danger" onclick="removeSyarat('+counter+')"> x </button></span><br>';
 		x.appendChild(elem);
-		theForm.appendChild(x);
+	}
+	function removeSyarat(i){
+	//	counter-=1;
+		var j;
+		$("#syarat"+i).remove();
+		for (j = 0; j < idSyarat.length; j++) {
+
+			console.log(idSyarat[j] + " " + i);
+			if (idSyarat[j] == i)
+			{
+				 if (j == idSyarat.length)
+				 {
+					 idSyarat.pop();
+				 }
+				 else{
+					 idSyarat.splice(j, 1);
+				 }
+				 break;
+			}
+		}
+		console.log(idSyarat);
 	}
 
 	function validateForm(){
-		var totalDana = document.getElementsByName('totalDana')[0].value;
+		var danaHidup = document.getElementsByName('danaHidup')[0].value;
+		var danaPendidikan = document.getElementsByName('danaPendidikan')[0].value;
+		danaHidup = danaHidup.replace (/,/g, "");
+		danaPendidikan = danaPendidikan.replace (/,/g, "");
 		var kuota = document.getElementsByName('kuota')[0].value;
 		var nominal = document.getElementsByName('nominal')[0].value;
+		nominal = nominal.replace (/,/g, "");
+		danaHidup = parseInt(danaHidup);
+		danaPendidikan = parseInt(danaPendidikan);
+		nominal = parseInt(nominal);
+		document.getElementsByName('danaHidup')[0].value = danaHidup;
+		document.getElementsByName('danaPendidikan')[0].value = danaPendidikan;
+		document.getElementsByName('nominal')[0].value = nominal;
+
+
 		var jangka = document.getElementsByName('jangka')[0].value;
 		var jumlahDana = kuota*nominal*jangka;
 		var tanggalBuka = new Date(document.getElementsByName('tanggalBuka')[0].value);
 		var tanggalTutup = new Date(document.getElementsByName('tanggalTutup')[0].value);
-		if (tanggalBuka.getTime() < tanggalTutup.getTime() && totalDana == kuota*nominal*jangka)
+		var now = new Date();
+
+		document.getElementsByName('arraySyarat')[0].value = idSyarat;
+
+		var x = $('#fakultasBeasiswa').multipleSelect('getSelects');
+		console.log(x);
+		document.getElementsByName('listProdi')[0].value = x;
+
+		var q = $('#berkas').multipleSelect('getSelects');
+		document.getElementsByName('listBerkas')[0].value = q;
+
+		if (!(tanggalBuka.getTime() < tanggalTutup.getTime()) )
+		{
+			$("[name='alertDateModal']").show();
+			return false;
+		}
+		else if(!(tanggalTutup.getTime() > now.getTime())){
+			$("[name='alertDateModal2']").show();
+			return false;
+		}
+		else if (tanggalBuka.getTime() < tanggalTutup.getTime() && (danaHidup+danaPendidikan) == kuota*nominal*jangka)
 		{
 			return true;
 		}
-		else if(totalDana != jumlahDana){
+		else if((danaHidup+danaPendidikan) != jumlahDana){
 			$("[name='alertDanaModal']").show();
 			return false;
 		}
@@ -235,6 +403,153 @@
 			return true;
 		});
 	});
+
+	$(function() {
+		$('#fakultasBeasiswa').change(function() {}).multipleSelect({
+			width: '100%'
+		});
+	});
+
+	$(document).ready(function(){
+			$("#fakultasBeasiswa").change(function(){
+				var x = $('#fakultasBeasiswa').multipleSelect('getSelects');
+
+				document.getElementById("ahoy").innerHTML = x;
+				var idFakultas = document.getElementById("ahoy").innerHTML;
+				//console.log(idFakultas);
+				var z = document.getElementById("ahoy").innerHTML.length;
+				cekProdi(z,idFakultas);
+			});
+
+		$("#mataUang").change(function(){
+			var mataUang = $("#mataUang").val();
+
+			document.getElementById("addon-mataUang").innerHTML = mataUang;
+			document.getElementById("addon-mataUang2").innerHTML = mataUang;
+			document.getElementById("addon-mataUang3").innerHTML = mataUang;
+		});
+
+		$("#periode").change(function(){
+			var periode = $("#periode").val();
+
+			document.getElementById("addon-jangka").innerHTML = periode;
+		});
+
+		//#ALVINSPRINT2
+		$("#pendonor").change(function(){
+			var idPendonor = $("#pendonor").val();
+			var pendonor = $("#pendonor").find('option:selected').text()
+			$(".pendonorOpt").val(idPendonor);
+			$(".pendonorOpt").html(pendonor);
+			$(".pendonorOpt").removeAttr("disabled");
+			$(".pendonorOpt").removeAttr("style");
+		});
+
+		$("#jenjang").change(function(){
+			var jenjang = $("#jenjang").val();
+			console.log(jenjang);
+			if (jenjang == {{$beasiswa->id_jenjang}})
+			{
+				reloadProdi();
+			}
+			else{
+			fillProdi(jenjang);}
+		});
+
+		$("[name='danaHidup']").change(function(){
+			var danaHidup = $("[name='danaHidup']").val();
+
+			addComas("danaHidup",danaHidup);
+		});
+
+		$("[name='danaPendidikan']").change(function(){
+			var danaPendidikan = $("[name='danaPendidikan']").val();
+
+			addComas("danaPendidikan",danaPendidikan);
+		});
+
+		$("[name='nominal']").change(function(){
+			var nominal = $("[name='nominal']").val();
+
+			addComas("nominal",nominal);
+		});
+	});
+
+	function addComas(place, nStr)
+	{
+
+		nStr = nStr.toString();
+		var x1 = nStr.replace (/,/g, "");
+
+		var rgx = /(\d+)(\d{3})/;
+		while (rgx.test(x1)) {
+			x1 = x1.replace(rgx, '$1' + ',' + '$2');
+		}
+
+		document.getElementsByName(place)[0].value = x1;
+	}
+	function fillProdi(jenjang)
+	{
+		$.ajax({
+			type:'POST',
+			url:'{{ url('/retrieve-prodi') }}',
+			dataType:'json',
+			data:{'_token' : '<?php echo csrf_token() ?>',
+			'jenjang': jenjang},
+			success:function(data){
+				var idFakultas = 0;
+				$('#fakultasBeasiswa').empty();
+				if (data[0] == null) {
+					$('#fakultasBeasiswa').multipleSelect("refresh");
+				}
+				else{
+					var html = [];
+					$.each(data, function(i,item){
+						if (idFakultas == 0)
+						{
+							idFakultas =  data[i].id_fakultas;
+							html.push('<optgroup label = "' + data[i].nama_fakultas +'">');
+						}
+						else if (idFakultas != data[i].id_fakultas){
+							idFakultas =  data[i].id_fakultas;
+							html.push('</optgroup>');
+							html.push('<optgroup label = "' + data[i].nama_fakultas +'">');
+							//$('#fakultasBeasiswa').append('<optgroup label = "' + data[i].nama_fakultas +'">').multipleSelect("refresh");
+						}
+						html.push('<option value="' + data[i].id_prodi + '">' + data[i].nama_prodi + '</option>');
+					});
+					$('#fakultasBeasiswa').html(html.join('')).multipleSelect(); // add options to select
+
+				}
+			}
+		});
+}
+		function reloadProdi(jenjang)
+		{
+			$('#fakultasBeasiswa').empty();
+			var html = [];
+
+			@foreach($daftarprodi as $key => $prodi)
+			@if ($key == 0)
+				 html.push('<optgroup label="{{$prodi->nama_fakultas}}">');
+			@elseif($prodi->nama_fakultas != $daftarprodi[$key-1])
+				html.push('</optgroup>');
+				html.push('<optgroup label="{{$prodi->nama_fakultas}}">');
+
+			 @endif
+			@foreach($prodidipilih as $sp)
+							@if ($sp->id_prodi == $prodi->id_prodi)
+								html.push('<option selected="selected" value="{{$prodi->id_prodi}}"> {{$prodi->nama_prodi}} </option>');
+								@break
+							@else
+								html.push('<option value="{{$prodi->id_prodi}}"> {{$prodi->nama_prodi}} </option>');
+								@break
+							@endif
+					@endforeach
+			@endforeach
+			$('#fakultasBeasiswa').html(html.join('')).multipleSelect();
+	}
+
 
 </script>
 @endsection
