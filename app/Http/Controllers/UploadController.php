@@ -44,12 +44,11 @@ class UploadController extends Controller
         $oldfile = DB::table('berkas_umum')->where('file', $file)->first();
         if($oldfile == null) {
           DB::insert('INSERT INTO `berkas_umum`(`id_berkas`, `id_mahasiswa`, `file`)
-          VALUES (?,?,?)', [$idBerkas, $idMahasiswa, $file]
-        );
+          VALUES (?,?,?)', [$idBerkas, $idMahasiswa, $file]);
+        }
+        $berkas->storeAs('berkas', $file);
       }
     }
-    $berkas->storeAs('berkas', $file);
-  }
     return redirect('profil');
   }
 }

@@ -181,21 +181,23 @@ class ScholarshipController extends Controller
       $idBeasiswa = $request->get('idBeasiswa');
       $idMahasiswa = $request->get('userid');
 
-      foreach ($request->berkases as $index=>$berkas) {
-        $idBerkas = $request->idBerkas[$index];
-        $file = $idMahasiswa.'-'.$request->nama[$index].'.pdf';
-        $oldfile = DB::table('beasiswa_berkas')
-                          ->where('id_pendaftaran', $id_pendaftaran)
-                          ->where('id_beasiswa', $idBeasiswa)
-                          ->where('id_berkas', $idBerkas)
-                          ->where('id_mahasiswa', $idMahasiswa)
-                          ->where('file', $file)
-                          ->first();
-        if ($oldfile == null) {
-          DB::insert('INSERT INTO `beasiswa_berkas`(`id_pendaftaran`, `id_beasiswa`, `id_berkas`, `id_mahasiswa`, `file`)
-                      VALUES (?,?,?,?,?)', [$id_pendaftaran, $idBeasiswa, $idBerkas, $idMahasiswa, $file]);
+      if (count($request->berkases)>0) {
+        foreach ($request->berkases as $index=>$berkas) {
+          $idBerkas = $request->idBerkas[$index];
+          $file = $idMahasiswa.'-'.$request->nama[$index].'.pdf';
+          $oldfile = DB::table('beasiswa_berkas')
+          ->where('id_pendaftaran', $id_pendaftaran)
+          ->where('id_beasiswa', $idBeasiswa)
+          ->where('id_berkas', $idBerkas)
+          ->where('id_mahasiswa', $idMahasiswa)
+          ->where('file', $file)
+          ->first();
+          if ($oldfile == null) {
+            DB::insert('INSERT INTO `beasiswa_berkas`(`id_pendaftaran`, `id_beasiswa`, `id_berkas`, `id_mahasiswa`, `file`)
+            VALUES (?,?,?,?,?)', [$id_pendaftaran, $idBeasiswa, $idBerkas, $idMahasiswa, $file]);
+          }
+          $berkas->storeAs('berkas', $file);
         }
-        $berkas->storeAs('berkas', $file);
       }
     }
 

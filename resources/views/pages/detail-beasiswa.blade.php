@@ -7,12 +7,11 @@
 <h4>Detail Beasiswa &nbsp;<a href="#upload"><button class="btn btn-success"><b>Upload</b></button></a></h4>
 
 @elseif ($namarole=='Mahasiswa')
-  @if($beasiswa -> link_seleksi == null)
-    <h4>Detail Beasiswa &nbsp;<a href= "{{ url('daftar-beasiswa/'.$beasiswa->id_beasiswa) }}"><button class="btn btn-default"><b>Daftar</b></button></a></h4>
-  @else
-    <h4>Detail Beasiswa &nbsp;<a href={{$beasiswa->link_seleksi}}><button class="btn btn-default"><b>Daftar</b></button></a></h4>
-  @endif
-
+@if ($beasiswa->tanggal_buka <= Carbon\Carbon::now() and Carbon\Carbon::now() <= $beasiswa->tanggal_tutup)
+  <h4>Detail Beasiswa &nbsp;
+    <a href= "{{url('daftar-beasiswa/'.$beasiswa->id_beasiswa)}}"><button class="btn"><b>Daftar</b></button></a>
+  </h4>
+@endif
 @elseif ($namarole=="Pegawai Universitas")
 <h4>Detail Beasiswa &nbsp;
   <a href = "{{ url('edit-beasiswa/'.$beasiswa->id_beasiswa) }}" class="btn btn-warning" data-toggle="tooltip" title="Edit" role="button"">

@@ -406,7 +406,7 @@ function pendaftarBeasiswa($id)
 
   function download(Request $request)
   {
-      return response()->download(storage_path('app/berkas'.$request->berkas));
+      return response()->download(storage_path('app/berkas/'.$request->berkas));
   }
 
 }
