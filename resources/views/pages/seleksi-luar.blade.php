@@ -9,10 +9,16 @@
 @section('content')
 <h4> Lihat Tahapan {{$tahapan->nama_tahapan}} </h4>
 <a href = "{{ url('seleksi') }}">  Kembali Ke Daftar Seleksi  </a>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</br>
+</br>
 @if($final=='2')
-<a href = "{{ url('nama-penerima/'.$idbeasiswa) }}">  Lihat Pendaftar Beasiswa  </a>
+<a href = "{{ url('nama-penerima/'.$idbeasiswa) }}">  Lihat Penerima Beasiswa  </a>
+@elseif($final == '0')
+<a href = "{{ url('/pendaftar-beassiswa/'.$idbeasiswa) }}">  Lihat Pendaftar Beasiswa  </a>
+
 @endif
+</br>
+</br>
 </br>
 @if ($final == '1' )
 <h3> Tidak ada mahasiswa yang dapat diseleksi untuk tahapan ini </h4>
@@ -70,10 +76,10 @@
 						<input type="checkbox" class="chk" id="{{$pendaftar->id_mahasiswa}}"> Diterima
 						@endif
 				@elseif ($final == 2)
-						@if ($pendaftar->nilai_seleksi == 1)
-						 Diterima
-						@else
+						@if ($pendaftar->nilai_seleksi == 0)
 						 Ditolak
+						@else
+						 Diterima
 						@endif
 				@endif
 			</td>
