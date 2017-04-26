@@ -154,11 +154,11 @@ class ScholarshipController extends Controller
                               ->first();
                               // return var_dump($bepe->id_penyeleksi);
 
-          //tanggal sekarang                      
+          //tanggal sekarang
           $now = new \DateTime();
 
           $date = $now->format('Y-m-d');
-          
+
 
           if($namarole=='Mahasiswa' && $beasiswa->public == 1 && $beasiswa->tanggal_tutup > $date){
             $nomorberkasumum = [20,19,10,9,3];
@@ -179,7 +179,9 @@ class ScholarshipController extends Controller
             // return var_dump($berkasumum->pluck('id_berkas')==$berkasumumup->pluck('id_berkas'));
             if ($berkasumum->pluck('id_berkas')!=$berkasumumup->pluck('id_berkas')) {
               // return 'lengkapi berkas umum '.$berkasumum->pluck('nama_berkas'). ' di profil';
-              return view('pages.upload-berkas-umum', compact('user','pengguna','namarole'))->withBerkas($berkasumum);
+              $link = 'daftar-beasiswa/'.$id;
+              $link2 = 'list-beasiswa';
+              return view('pages.upload-berkas-umum', compact('user','pengguna','namarole','link','link2'))->withBerkas($berkasumum);
               // return redirect('upload-berkas-umum');
             }
 
@@ -189,7 +191,7 @@ class ScholarshipController extends Controller
                                   ->join('berkas', 'berkas.id_berkas', '=', 'assignment_berkas_beasiswa.id_berkas')
                                   ->select('berkas.*')
                                   ->get();
-            if ($isDaftar == false){                      
+            if ($isDaftar == false){
             return view('pages.daftar-beasiswa')->withBeasiswa($beasiswa)->withUser($user)->withNamarole($namarole)->withPengguna($pengguna)->withMahasiswa($mahasiswa)->withBerkas($berkas)->withBepe($bepe)->withBerkasumum($berkasumum);
             }
             else {
@@ -207,7 +209,6 @@ class ScholarshipController extends Controller
     {
 
         $beasiswa = DB::table('beasiswa')->orderBy('id_beasiswa', 'desc')->first();
-
 
        DB::insert('INSERT INTO `pendaftaran_beasiswa`(`id_beasiswa`, `id_mahasiswa`,`status_lamaran`,`alamat`,`nama_bank`,`nomor_rekening`,`jenis_identitas`,`nomor_identitas`,`nama_pemilik_rekening`,`nomor_telepon`,`nomor_hp`,`penghasilan_orang_tua`,`IPK` )
                   VALUES (?,?,1,?,?,?,?,?,?,?,?,?,?)',
@@ -237,7 +238,7 @@ class ScholarshipController extends Controller
 
 
                 $id_pendaftaran = DB::table('pendaftaran_beasiswa')->orderBy('id_pendaftaran', 'desc')->first()->id_pendaftaran;
-                $this->uploadSubmit($request, $id_pendaftaran);
+               $this->uploadSubmit($request, $id_pendaftaran);
       return redirect('/detail-beasiswa/'.$request->get('idBeasiswa'));
     }
 
@@ -245,6 +246,24 @@ class ScholarshipController extends Controller
     {
       $idBeasiswa = $request->get('idBeasiswa');
       $idMahasiswa = $request->get('userid');
+
+      if (count($request->idBerkas2)>0) {
+        foreach ($request->idBerkas2 as $index=>$berkas) {
+          $idBerkas = $request->idBerkas2[$index];
+          $file = $idMahasiswa.'-'.$request->nama2[$index].'.pdf';
+          $oldfile = DB::table('beasiswa_berkas')
+          ->where('id_pendaftaran', $id_pendaftaran)
+          ->where('id_beasiswa', $idBeasiswa)
+          ->where('id_berkas', $idBerkas)
+          ->where('id_mahasiswa', $idMahasiswa)
+          ->where('file', $file)
+          ->first();
+          if ($oldfile == null) {
+            DB::insert('INSERT INTO `beasiswa_berkas`(`id_pendaftaran`, `id_beasiswa`, `id_berkas`, `id_mahasiswa`, `file`)
+            VALUES (?,?,?,?,?)', [$id_pendaftaran, $idBeasiswa, $idBerkas, $idMahasiswa, $file]);
+          }
+        }
+      }
 
       if (count($request->berkases)>0) {
         foreach ($request->berkases as $index=>$berkas) {
@@ -364,15 +383,16 @@ class ScholarshipController extends Controller
 
       // Memasukkan Beasiswa
       DB::insert('INSERT INTO `beasiswa`(`nama_beasiswa`, `deskripsi_beasiswa`, `id_kategori`, `tanggal_buka`, `tanggal_tutup`,
-                                        `kuota`, `nominal`, `dana_pendidikan`, `dana_hidup`, `periode`,  `id_pendonor`, `jangka`, `currency`, `id_jenis_seleksi`, `link_seleksi`, `waktu_tagih`, `id_status`, `public`, `flag`,`dokumen_publik`,`dokumen_internal`)
-                  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,1,0,1,"#","#")',
+                                        `kuota`, `nominal_pendidikan`, `nominal_hidup`, `dana_pendidikan`, `dana_hidup`, `periode`,  `id_pendonor`, `jangka`, `currency`, `id_jenis_seleksi`, `link_seleksi`, `waktu_tagih`, `id_status`, `public`, `flag`,`dokumen_publik`,`dokumen_internal`)
+                  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,1,0,1,"#","#")',
                   [$request->input('namaBeasiswa'),
                   $request->input('deskripsiBeasiswa'),
                   $request->get('kategoriBeasiswa'),
                   $request->input('tanggalBuka'),
                   $request->input('tanggalTutup'),
                   $request->input('kuota'),
-                  $request->input('nominal'),
+                  $request->input('nominalPendidikan'),
+                  $request->input('nominalHidup'),
                   $request->input('danaPendidikan'),
                   $request->input('danaHidup'),
                   $angkaPer,
@@ -416,7 +436,6 @@ class ScholarshipController extends Controller
 
       // Memasukkan beasiswa penyeleksi
       $arrayTahapan = explode(",",$request->get('arrayTahapan'));
-
       //Jika penilaian di luar sistem
       if ($request->get('jenisSeleksi')==2) {
         DB::insert('INSERT INTO `beasiswa_penyeleksi` (`id_beasiswa`, `id_penyeleksi`) VALUES (?,?)' , [$beasiswa->id_beasiswa, $request->get('penyeleksi')]);
@@ -426,8 +445,10 @@ class ScholarshipController extends Controller
 
       //Jika penilaian di luar sistem (banyak tahapan)
       // Memasukkan beasiswa penyeleksi tahapan
-      else if ($request->get('penyeleksi')==3){
+
+      else if ($request->get('jenisSeleksi')==3){
         for ($i = 0; $i < sizeof($arrayTahapan); $i++){
+
           if($arrayTahapan[$i]==1){
             DB::insert('INSERT INTO `beasiswa_penyeleksi` (`id_beasiswa`, `id_penyeleksi`) VALUES (?,?)' , [$beasiswa->id_beasiswa, $request->get('penyeleksi1')]);
             $bp = DB::table('beasiswa_penyeleksi')->orderBy('id_bp', 'desc')->first();
@@ -483,7 +504,8 @@ class ScholarshipController extends Controller
                     'tanggal_buka'=>$request->input('tanggalBuka'),
                     'tanggal_tutup'=>$request->input('tanggalTutup'),
                     'kuota'=>$request->input('kuota'),
-                    'nominal'=>$request->input('nominal'),
+                    'nominal_pendidikan'=>$request->input('nominalPendidikan'),
+                    'nominal_hidup'=>$request->input('nominalHidup'),
                     'dana_pendidikan'=>$request->get('danaPendidikan'),
                     'dana_hidup'=>$request->get('danaHidup'),
                     'periode'=>$angkaPer,

@@ -34,21 +34,32 @@
       </tr>
     </thead>
     <tbody>
-    <tr>
+  @if (count($beasiswas)==0)
+  <tr>
+  <th><label>1. </label></th>
+  <th>-</th>
+  <th>-</th>
+  <th>-</th>
+  </tr>
+  @else
+
    @foreach($beasiswas as $index => $beasiswa)
+   <tr>
     <th><label>{{$index+1}}.</label></th>
     <th><label><a href="{{ url('pendaftar-beasiswa/'.$beasiswa->id_beasiswa) }}">{{$beasiswa->nama_beasiswa}}</a></label></th>
     <th><label>{{$beasiswa->dana_pendidikan}}</label></th>
     <th><label>{{$beasiswa->dana_hidup}}</label></th>
-   </tr>
+  </tr>
    @endforeach
+
+   @endif
    </tbody>
     </table>
 
    @elseif($namarole=='Mahasiswa')
-   
+
   <p><a href="{{url('edit-profil')}}"><button type="button" class="btn btn-info">Edit Profil</button></a></p>
-   
+
    <p></p>
     <div class="row">
     <div class = "col-sm-6">

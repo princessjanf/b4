@@ -15,6 +15,7 @@
 <form action="{{url('upload')}}" method="post" enctype="multipart/form-data">
   <input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
   <input type = "hidden" name = "idMahasiswa" value="{{$pengguna->id_user}}" >
+  <input type = "hidden" name = "link" value="{{$link}}" >
 
   <h3>Berkas Umum:</h3>
   <h6 style="font-weight:bold"><font color="grey">Upload berkas umum yang dibutuhkan dalam pdf</font></h6>
@@ -30,7 +31,7 @@
   </div>
 
   <input type="submit" class="btn btn-info" name="submit" value="Upload" />
-  <a href="{{ url('profil') }}"><button id="cancel" class="btn btn-danger" formnovalidate>Back </button></a>
+  <a href="{{ url($link2) }}"><button type="button" id="cancel" class="btn btn-danger" type="button" formnovalidate>Back </button></a>
 </form>
 
 @endsection

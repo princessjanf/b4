@@ -2,14 +2,16 @@
 
 @section('title', 'List Beasiswa')
 
+@section('head')
+<link href="{{ asset('css/multiple-select.css') }}" rel="stylesheet" />
+@endsection
+
 @section('content')
 @if($namarole=="Pegawai Universitas")
 
 <h4>List beasiswa &nbsp;&nbsp;
 	<a data-toggle="tooltip" title="Tambah beasiswa" role="button" id="add-beasiswa" class="btn btn-success" href="{{ url('add-beasiswa') }}"><span class="glyphicon glyphicon-plus">&nbsp;</span>Tambah Beasiswa</a>
-	@if ($seleksichecker==1)
-		<a data-toggle="tooltip" title="Buka Halaman Seleksi"  class="btn btn-info" href="{{ url('seleksi') }}">&nbsp;Seleksi Beasiswa</a>
-	@endif
+
 </h4>
 @else
 <h4>List beasiswa</h4>
@@ -19,9 +21,9 @@
 		<tr>
 			<th>No</th>
 			<th>Nama Beasiswa</th>
-			<th>Pendonor</th>
-			@if($namarole=="Pendonor" || $namarole=="Pegawai Universitas" || $namarole=="Direktorat Kerjasama")
 			<th>Status</th>
+			@if($namarole=="Pendonor" || $namarole=="Pegawai Universitas" || $namarole=="Direktorat Kerjasama")
+			<th>Pendonor</th>
 			@endif
 			<th>Pendaftaran</th>
 			<th>Tanggal Tutup</th>
@@ -93,14 +95,18 @@
 				</a>
 				@else
 
-				
+
 				@endif
 			</td>
 			@elseif($namarole=="Mahasiswa")
 			<td>	@if ($beasiswa->tanggal_buka <= Carbon\Carbon::now() and Carbon\Carbon::now() <= $beasiswa->tanggal_tutup)
-					<a href = "{{url('/daftar-beasiswa/'.$beasiswa->id_beasiswa)}}"><button class="btn"><b>Daftar</b></button></a>
+								@if($beasiswa->id_jenis_seleksi=='1')
+								<a href= "{{url($beasiswa->link_seleksi)}}"><button class="btn"><b>Daftar</b></button></a>
+								@else
+								<a href= "{{url('daftar-beasiswa/'.$beasiswa->id_beasiswa)}}"><button class="btn"><b>Daftar</b></button></a>
+								@endif
 					@endif
-          
+
 			</td>
 			@elseif($namarole=="Direktorat Kerjasama")
 			<td>
@@ -114,7 +120,10 @@
 @endsection
 
 @section('script')
-
+<script src="{{ asset('js/jquery-3.2.0.js') }}"></script>
+<script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'></script>
+<script src="{{ asset('js/jquery.dataTables.js') }}"></script>
+<script src="{{ asset('js/dataTables.bootstrap.js') }}"></script>
 
 <script>
 	$('#confirmationDelete').on('show.bs.modal', function(e) {

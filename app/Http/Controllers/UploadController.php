@@ -28,8 +28,9 @@ class UploadController extends Controller
     $berkas = DB::table('berkas')
                       ->whereIn('id_berkas', $nomorberkasumum)
                       ->get();
-
-    return view('pages.upload-berkas-umum', compact('user','pengguna','namarole','berkas'));
+    $link = 'profil';
+    $link2 = 'profil';
+    return view('pages.upload-berkas-umum', compact('user','pengguna','namarole','berkas','link','link2'));
   }
 
   public function uploadSubmit(UploadRequest $request)
@@ -49,6 +50,6 @@ class UploadController extends Controller
         $berkas->storeAs('berkas', $file);
       }
     }
-    return redirect('profil');
+    return redirect($request->link);
   }
 }

@@ -102,11 +102,14 @@
 
 	<div>
 		@if (count($berkasumum) > 0)
-		<h5>Berkas Umum dari Profil:</h5>
-		<h6 style="font-weight:bold"><font color="grey">Upload baru di halaman profil</font></h6>
+		<h5>Berkas Umum Yang Sudah Dimiliki dari Profil:</h5>
+		<h6 style="font-weight:bold"><font color="grey">*) Jika Ingin Mengganti Berkas, Silahkan Upload baru di halaman <a href={{url('profil')}}>profil</a></font></h6>
 		<div class="row">
 			@foreach ($berkasumum as $index => $tmp)
 			<div class="col-sm-8">
+				<input name = "berkases2[{{$index}}]" value="{{$tmp->nama_berkas}}" hidden>
+				<input name = "nama2[{{$index}}]" value="{{$tmp->nama_berkas}}" hidden>
+				<input name = "idBerkas2[{{$index}}]" value="{{$tmp->id_berkas}}" hidden>
 				<label>{{$index+1}}. {{$tmp->nama_berkas}}</label>
 			</div>
 			@endforeach
@@ -132,7 +135,7 @@
 	<hr>
 	<div>
 		<button type="submit" id="submit-form" class="btn btn-success"> Submit </button>
-		<button style ="text-decoration: none"id="cancel" class="btn btn-danger" formnovalidate><a href="{{ url('list-beasiswa	') }}" >Cancel </a></button>
+		<a href="{{ url('list-beasiswa	') }}" ><button style ="text-decoration: none"id="cancel" class="btn btn-danger" type="button" formnovalidate>Cancel</button></a>
 	</div>
 </form>
 

@@ -74,32 +74,34 @@ class MainController extends Controller
       $pendonorBeasiswa = DB::table('pendonor')->where('id_user', $beasiswa1->id_pendonor)->first();
       $pendonor_beasiswa = $pendonorBeasiswa->nama_instansi;
 
-      if ($role->nama_role == 'Pegawai')
-      {
-        $roles = DB::table('role_pegawai')->where('id_role_pegawai', $role->id_role)->first();
-        $namarole = $roles->nama_role_pegawai;
-      }
-      else
-      {
+
         $namarole = $role->nama_role;
-      }
+
+
+
 
       if($namarole=='Pegawai'){
         $pengguna = DB::table('pegawai')->where('id_user', $pengguna->id_user)->first();
         $role = DB::table('role_pegawai')->where('id_role_pegawai', $pengguna->id_role_pegawai)->first();
         $namarole = $role->nama_role_pegawai;
       }
+
       if ($namarole == 'Mahasiswa' || $namarole == 'Pegawai Fakultas') {
         $beasiswas = DB::table('beasiswa')->where('flag', '1')->where('public', '1')->get();
-      } else if ($namarole == 'pendonor'){
+
+
+				//kalo mahasiswa udah daftar
+
+      } else if ($namarole == 'Pendonor'){
         $pendonor = DB::table('pendonor')->where('id_user', $pengguna->id_user)->first();
         $beasiswas = collect(DB::table('beasiswa')->where('flag', '1')->where('public', '1')->get());
-        $beasiswas2= collect(DB::table('beasiswa')->where('flag', '1')->where('public', '0')->where('id_pendonor', $pendonor->id_pendonor)->get());
+        $beasiswas2= collect(DB::table('beasiswa')->where('flag', '1')->where('public', '0')->where('id_pendonor', $pendonor->id_user)->get());
         $beasiswas = $beasiswas->merge($beasiswas2)->sort()->values()->all();
+
       } else {
         $beasiswas = DB::table('beasiswa')->where('flag', '1')->get();
       }
-      return view('pages.list-beasiswa')->withBeasiswas($beasiswas)->withUser($user)->withNamarole($namarole)->withPendonorBeasiswa($pendonor_beasiswa);
+       return view('pages.list-beasiswa')->withBeasiswas($beasiswas)->withUser($user)->withNamarole($namarole)->withPendonorBeasiswa($pendonor_beasiswa);
     }
      function addbeasiswa()
     {
@@ -183,27 +185,28 @@ class MainController extends Controller
       }
 
       $beasiswa = DB::table('beasiswa')->where('id_beasiswa', $id)->first();
-      $kategori = DB::table('kategori_beasiswa')->where('id_kategori', $beasiswa->id_kategori)->get();
+      $kategori = DB::table('kategori_beasiswa')->where('id_kategori', $beasiswa->id_kategori)->first();
       $persyaratans = DB::table('persyaratan')->where('id_beasiswa', $beasiswa->id_beasiswa)->get();
 
-      if ($namarole=='pendonor')
+      if ($namarole=='Pendonor')
       {
         $isPendonor = false;
         $pendonor = DB::table('beasiswa')
                     ->where('id_beasiswa', $beasiswa->id_beasiswa)
-                    ->join('pendonor', 'beasiswa.id_pendonor', '=', 'pendonor.id_pendonor')
+                    ->join('pendonor', 'beasiswa.id_pendonor', '=', 'pendonor.id_user')
                     ->select('pendonor.*')
                     ->first();
-        if ($pendonor->username == $user->username)
+        if ($pendonor->id_user == $pengguna->id_user)
         {
           $isPendonor = true;
         }
 
-        $pendaftars = DB::table('melamar')
+        $pendaftars = DB::table('pendaftaran_beasiswa')
                     ->where('id_beasiswa', $beasiswa->id_beasiswa)
-                    ->join('user', 'melamar.username', '=', 'user.username')
-                    ->select('melamar.*', 'user.nama')
+                    ->join('user', 'pendaftaran_beasiswa.id_mahasiswa', '=', 'user.id_user')
+                    ->select('pendaftaran_beasiswa.*', 'user.nama')
                     ->get();
+
         return view('pages.detail-beasiswa')->withBeasiswa($beasiswa)->withPersyaratans($persyaratans)->withUser($user)->withNamarole($namarole)->withPendaftars($pendaftars)->withIspendonor($isPendonor)->withKategori($kategori);
       }
       else
@@ -429,10 +432,7 @@ function pendaftarBeasiswa($id)
 
             $namaMhs = DB::table('user')->where('id_user', $iduser)->first();
 
-            return view('pages.lihat-berkas-mahasiswa')
-            ->withPengguna($pengguna)
-            ->withUser($user)
-            ->withNamarole($namarole)->withMahasiswa($mahasiswa)->withNamaMhs($namaMhs)->withBerkas($berkas);
+            return view('pages.lihat-berkas-mahasiswa', compact('beasiswa','pengguna','user','namarole','mahasiswa','namaMhs','berkas'));
           }
 
 

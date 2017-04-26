@@ -9,7 +9,11 @@
 @elseif ($namarole=='Mahasiswa')
 @if ($beasiswa->tanggal_buka <= Carbon\Carbon::now() and Carbon\Carbon::now() <= $beasiswa->tanggal_tutup)
   <h4>Detail Beasiswa &nbsp;
+    @if($beasiswa->id_jenis_seleksi=='1')
+    <a href= "{{url($beasiswa->link_seleksi)}}"><button class="btn"><b>Daftar</b></button></a>
+    @else
     <a href= "{{url('daftar-beasiswa/'.$beasiswa->id_beasiswa)}}"><button class="btn"><b>Daftar</b></button></a>
+    @endif
   </h4>
 @endif
 @elseif ($namarole=="Pegawai Universitas")
@@ -31,7 +35,7 @@
 @endif
 <h2>{{$beasiswa->nama_beasiswa}}</h2>
 <p>{{$beasiswa->deskripsi_beasiswa}}</p>
-<!-- <p><b>Kategori Beasiswa:</b> {{$kategori}}</p> -->
+<p><b>Kategori Beasiswa:</b> {{$kategori->nama_kategori}}</p>
 <p><b>Kuota:</b> {{$beasiswa->kuota}}</p>
 <p><b>Dana Pendidikan:</b> Rp.{{$beasiswa->dana_pendidikan}}</p>
 <p><b>Dana Hidup:</b> Rp.{{$beasiswa->dana_hidup}}</p>
@@ -45,8 +49,8 @@
   @endforeach
   @endif
 </p>
-@if ($namarole=='pendonor' && $ispendonor)
-<p>Pendaftar:
+@if ($namarole=='Pendonor' && $ispendonor)
+<p><b>Pendaftar</b>:
   @if (count($pendaftars) < 1)
   <br>1. -
   @else
