@@ -46,11 +46,11 @@
 				<ul class="nav nav-stacked">
 					<hr>
 					<li><a href="{{ url('') }}">Home</a></li>
-					@if ($namarole=='pendonor'||$namarole=='Pegawai Universitas'||$namarole=='Pegawai Fakultas')
+					@if ($namarole=='Pendonor'||$namarole=='Pegawai Universitas'||$namarole=='Pegawai Fakultas')
 					<li><a href="#dashboard">Dashboard</a></li>
 					@endif
 					<li><a href="{{ url('list-beasiswa') }}">List Beasiswa</a></li>
-					@if ($namarole=='pendonor')
+					@if ($namarole=='Pendonor')
 					<li><a href="#kelolalpj">Kelola LPJ</a></li>
 					@elseif ($namarole=='Mahasiswa')
 					<li><a href="#isilpj">Isi LPJ</a></li>

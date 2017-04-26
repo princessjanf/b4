@@ -45,7 +45,7 @@
   @endforeach
   @endif
 </p>
-@if ($namarole=='pendonor' && $ispendonor)
+@if ($namarole=='Pendonor' && $ispendonor)
 <p>Pendaftar:
   @if (count($pendaftars) < 1)
   <br>1. -

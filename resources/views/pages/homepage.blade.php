@@ -38,14 +38,14 @@
               <li><a href="{{ url('login') }}">Log In</a></li>
               @else
               <li class="active"><a href="{{ url('') }}">Home</a></li>
-              @if ($namarole=='pendonor'||$namarole=='Pegawai Universitas'||$namarole=='Pegawai Fakultas')
+              @if ($namarole=='Pendonor'||$namarole=='Pegawai Universitas'||$namarole=='Pegawai Fakultas')
               <li><a href="#dashboard">Dashboard</a></li>
               @endif
               <li><a href="{{ url('list-beasiswa') }}">List Beasiswa</a></li>
-              @if ($namarole=='pendonor')
+              @if ($namarole=='Pendonor')
               <li><a href="#donate">Donate</a></li>
 							<li><a href="#kelolalpj">Kelola LPJ</a></li>
-              @elseif ($namarole=='mahasiswa')
+              @elseif ($namarole=='Mahasiswa')
               <li><a href="#isilpj">Isi LPJ</a></li>
               @endif
               <li><a href="{{ url('profil') }}">{{$user->username}} ({{$namarole}})</a></li>

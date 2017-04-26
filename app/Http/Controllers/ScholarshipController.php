@@ -154,11 +154,11 @@ class ScholarshipController extends Controller
                               ->first();
                               // return var_dump($bepe->id_penyeleksi);
 
-          //tanggal sekarang                      
+          //tanggal sekarang
           $now = new \DateTime();
 
           $date = $now->format('Y-m-d');
-          
+
 
           if($namarole=='Mahasiswa' && $beasiswa->public == 1 && $beasiswa->tanggal_tutup > $date){
             $nomorberkasumum = [20,19,10,9,3];
@@ -189,7 +189,7 @@ class ScholarshipController extends Controller
                                   ->join('berkas', 'berkas.id_berkas', '=', 'assignment_berkas_beasiswa.id_berkas')
                                   ->select('berkas.*')
                                   ->get();
-            if ($isDaftar == false){                      
+            if ($isDaftar == false){
             return view('pages.daftar-beasiswa')->withBeasiswa($beasiswa)->withUser($user)->withNamarole($namarole)->withPengguna($pengguna)->withMahasiswa($mahasiswa)->withBerkas($berkas)->withBepe($bepe)->withBerkasumum($berkasumum);
             }
             else {
@@ -535,7 +535,7 @@ class ScholarshipController extends Controller
     //       $role = DB::table('role')->where('id_role', $pengguna->id_role)->first();
     //       $namarole = $role->nama_role;
 
-    //       // $pengguna = DB::table('pegawai')->where('username', $user->username)->first();
+    //       // $pengguna = DB::table('pegawai')->where('id_user', $pengguna->id_user)->first();
     //       // $pendonor = DB::table('pendonor')->where('username', $user->username)->first();
 
     //       // if ($pengguna != null){
@@ -556,7 +556,7 @@ class ScholarshipController extends Controller
     //       // $jenjang = DB::table('jenjang')->get();
     //       // $fakultas = DB::table('fakultas')->get();
     //       $beasiswa = DB::table('beasiswa')->where('id_beasiswa', $id)->first();
-    //       if($namarole=='mahasiswa'){
+    //       if($namarole=='Mahasiswa'){
     //         return view('pages.daftar-beasiswa')->withBeasiswa($beasiswa)->withUser($user)->withNamarole($namarole);
     //       }
     //       else{
