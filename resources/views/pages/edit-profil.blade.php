@@ -137,7 +137,6 @@
   <strong>Nomor identitas harus berupa angka</strong>
 </div>
     @endif
-   
 @endsection
 
 @section('script')

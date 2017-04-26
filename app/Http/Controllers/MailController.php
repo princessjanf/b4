@@ -2,7 +2,6 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Mail;
-
 use SSO\SSO;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\DB;

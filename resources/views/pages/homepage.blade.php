@@ -48,7 +48,7 @@
               @elseif ($namarole=='mahasiswa')
               <li><a href="#isilpj">Isi LPJ</a></li>
               @endif
-              <li><a href="#profil">{{$user->username}} ({{$namarole}})</a></li>
+              <li><a href="{{ url('profil') }}">{{$user->username}} ({{$namarole}})</a></li>
               <li><a href="{{ url('logout') }}">Log Out</a></li>
               @endif
             </ul>

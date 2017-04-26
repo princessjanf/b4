@@ -5,12 +5,13 @@
 @section('content')
 @if ($namarole=='Direktorat Kerjasama')
 <h4>Detail Beasiswa &nbsp;<a href="#upload"><button class="btn btn-success"><b>Upload</b></button></a></h4>
-@elseif ($namarole=='mahasiswa')
-  @if($beasiswa -> link_seleksi == null)
-    <h4>Detail Beasiswa &nbsp;<a href= "{{ url('daftar-beasiswa/'.$beasiswa->id_beasiswa) }}"><button class="btn btn-default"><b>Daftar</b></button></a></h4>
-  @else
-    <h4>Detail Beasiswa &nbsp;<a href={{$beasiswa->link_seleksi}}><button class="btn btn-default"><b>Daftar</b></button></a></h4>
-  @endif
+
+@elseif ($namarole=='Mahasiswa')
+@if ($beasiswa->tanggal_buka <= Carbon\Carbon::now() and Carbon\Carbon::now() <= $beasiswa->tanggal_tutup)
+  <h4>Detail Beasiswa &nbsp;
+    <a href= "{{url('daftar-beasiswa/'.$beasiswa->id_beasiswa)}}"><button class="btn"><b>Daftar</b></button></a>
+  </h4>
+@endif
 @elseif ($namarole=="Pegawai Universitas")
 
 <h4>Detail Beasiswa &nbsp;
@@ -30,8 +31,12 @@
 @endif
 <h2>{{$beasiswa->nama_beasiswa}}</h2>
 <p>{{$beasiswa->deskripsi_beasiswa}}</p>
-<p>Periode Beasiswa:  {{$beasiswa->tanggal_buka}} - {{$beasiswa->tanggal_tutup}}</p>
-<p>Persyaratan:
+<!-- <p><b>Kategori Beasiswa:</b> {{$kategori}}</p> -->
+<p><b>Kuota:</b> {{$beasiswa->kuota}}</p>
+<p><b>Dana Pendidikan:</b> Rp.{{$beasiswa->dana_pendidikan}}</p>
+<p><b>Dana Hidup:</b> Rp.{{$beasiswa->dana_hidup}}</p>
+<p><b>Periode Pendaftaran Beasiswa</b>:  {{$beasiswa->tanggal_buka}} s/d {{$beasiswa->tanggal_tutup}}</p>
+<p><b>Persyaratan</b>:
   @if (count($persyaratans) < 1)
   <br>1. -
   @else
