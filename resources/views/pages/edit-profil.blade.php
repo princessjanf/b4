@@ -3,8 +3,29 @@
 @section('title', 'Edit Profil')
 
 @section('content')
+    <div class="col-sm-9">
     
-   <h2>EDIT PROFIL</h2>
+    @if($namarole=='Pegawai Universitas'||$namarole=='Pegawai Fakultas'||$namarole=='Direktorat Kerjasama')
+    <label for="namaBeasiswa">NAMA</label>
+     <p>{{$pengguna->nama}}</p>
+     NIK:
+     <p>{{$pegawai->no_identitas}}</p>
+     JABATAN:
+      <p>{{$jabatan->nama_jabatan}}</p>
+    
+    @elseif($namarole=='Pendonor')
+    NAMA INSTANSI:
+     <p>{{$pendonor->nama_instansi}}</p>
+     NAMA:
+      <p>{{$pengguna->nama}}</p>
+
+      NAMA BEASISWA YANG DI DONORKAN:
+       @foreach($beasiswas as $index => $beasiswa)
+    <p>{{$index+1}} {{$beasiswa->nama_beasiswa}}</p>
+    @endforeach
+
+   @elseif($namarole=='Mahasiswa')
+   <h2>Edit Profil</h2>
    <form id='editProfil' action = "{{ url('update-profil') }}" onsubmit="return validateForm()" method = "post" data-parsley-validate="">
    <input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
    <input type = "hidden" name = "idUser" value= {{$mahasiswa->id_user}}>
@@ -107,7 +128,7 @@
 
    <div>
       <button type="submit" id="submit-form" class="btn"> Submit</button>
-     <a href="{{ url('profil') }}" ><button id="cancel" class="btn btn-danger" formnovalidate>Cancel </button></a>
+      <button style ="text-decoration: none"id="cancel" class="btn btn-danger" formnovalidate><a href="{{ url('profil') }}" >Cancel </a></button>
     </div>
 </form>
 <br>
@@ -115,8 +136,7 @@
   <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
   <strong>Nomor identitas harus berupa angka</strong>
 </div>
-
-   
+    @endif
 @endsection
 
 @section('script')

@@ -14,7 +14,6 @@
      <p><label>{{$pegawai->no_identitas}}</label></p>
      JABATAN:
       <p><label>{{$jabatan->nama_jabatan}}</label></p>
-
     @elseif($namarole=='Pendonor')
     NAMA INSTANSI:
      <p><label>{{$pendonor->nama_instansi}}</label></p>
@@ -46,9 +45,9 @@
     </table>
 
    @elseif($namarole=='Mahasiswa')
-   
+   <div class="container">
   <p><a href="{{url('edit-profil')}}"><button type="button" class="btn btn-info">Edit Profil</button></a></p>
-   
+   </div>
    <p></p>
     <div class="row">
     <div class = "col-sm-6">
@@ -82,7 +81,6 @@
      <p><label>{{$mahasiswa->penghasilan_orang_tua}}</label></p>
      </div>
      </div>
-
      <h4>Berkas Umum:</h4>
      @foreach($berkas as $index => $file)
      <form action="{{url('download-berkas')}}" method="POST">
@@ -119,9 +117,6 @@
     @endforeach
    </tbody>
     </table>
-
-
-
     @endif
     </div>
 @endsection
