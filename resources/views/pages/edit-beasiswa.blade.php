@@ -148,6 +148,7 @@
 		</div>
 	</div>
 
+
 	<div class="form-group">
 		<label for="nominal">Nominal Biaya Pendidikan</label>
 		<p> Dana yang akan diberikan per mahasiswa </p>

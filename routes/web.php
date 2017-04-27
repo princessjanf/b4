@@ -179,9 +179,9 @@ Route::get('nama-penerima/{idBeasiswa}',[
 ]);
 
 Route::post('download-berkas', 'MainController@download');
-Route::get('sendbasicemail','MailController@basic_email');
-Route::get('sendhtmlemail','MailController@html_email');
-Route::get('sendattachmentemail','MailController@attachment_email');
+// Route::get('sendbasicemail','MailController@basic_email');
+// Route::get('sendhtmlemail','MailController@html_email');
+// Route::get('sendattachmentemail','MailController@attachment_email');
 
 Route::get('upload-berkas-umum',[
   'middleware' => 'authSSO',

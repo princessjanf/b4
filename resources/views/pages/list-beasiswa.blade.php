@@ -16,7 +16,11 @@
 	@endif
 </h4>
 @else
-<h4>List beasiswa</h4>
+<h4>List beasiswa &nbsp;&nbsp;
+@if ($seleksichecker==1)
+		<a data-toggle="tooltip" title="Buka Halaman Seleksi"  class="btn btn-info" href="{{ url('seleksi') }}">&nbsp;Seleksi Beasiswa</a>
+	@endif
+</h4>
 @endif
 <table id="beasiswalist" class="table table-striped">
 	<thead>

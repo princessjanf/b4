@@ -18,7 +18,9 @@
 @endif
 @elseif ($namarole=="Pegawai Universitas")
 
-<h4>Detail Beasiswa &nbsp;
+
+<h4>Detail Beasiswa &nbsp;</h4>
+<h2>{{$beasiswa->nama_beasiswa}}</h2>
   <a href = "{{ url('edit-beasiswa/'.$beasiswa->id_beasiswa) }}" class="btn btn-warning" data-toggle="tooltip" title="Edit" role="button">
     <span class="glyphicon glyphicon-pencil"></span>
   </a>
@@ -38,23 +40,39 @@
   		<a href = "{{ url('/pendaftar-beasiswa/'.$beasiswa->id_beasiswa) }}" class="btn btn-info">  Lihat Pendaftar Beasiswa  </a>
   @endif
 
-</h4>
+
 @elseif($namarole == 'Pendonor' and $isPendonor)
+<h4>Detail Beasiswa &nbsp;</h4>
+<h2>{{$beasiswa->nama_beasiswa}}</h2>
 @if ($isselected == 1)
     <a href = "{{ url('/nama-penerima/'.$beasiswa->id_beasiswa) }}" class="btn btn-info">  Lihat Penerima Beasiswa  </a>
 @else
     <a href = "{{ url('/pendaftar-beasiswa/'.$beasiswa->id_beasiswa) }}" class="btn btn-info">  Lihat Pendaftar Beasiswa  </a>
 @endif
-@elseif($isPenyeleksi == '1')
+@if($ispenyeleksi == '1')
 @if ($isselected == '1')
     <a href = "{{ url('/nama-penerima/'.$beasiswa->id_beasiswa) }}" class="btn btn-info">  Lihat Penerima Beasiswa  </a>
 @else
     <a href = "{{ url('/pendaftar-beasiswa/'.$beasiswa->id_beasiswa) }}" class="btn btn-info">  Lihat Pendaftar Beasiswa  </a>
 @endif
-@else
-<h4>Detail Beasiswa</h4>
 @endif
+@else
+<h4>Detail Beasiswa &nbsp;</h4>
 <h2>{{$beasiswa->nama_beasiswa}}</h2>
+@if($ispenyeleksi == '1')
+@if ($isselected == '1')
+    <a href = "{{ url('/nama-penerima/'.$beasiswa->id_beasiswa) }}" class="btn btn-info">  Lihat Penerima Beasiswa  </a>
+@else
+    <a href = "{{ url('/pendaftar-beasiswa/'.$beasiswa->id_beasiswa) }}" class="btn btn-info">  Lihat Pendaftar Beasiswa  </a>
+@endif
+
+@endif
+
+
+
+@endif
+</br>
+</br>
 <p>{{$beasiswa->deskripsi_beasiswa}}</p>
 <p><b>Kategori Beasiswa:</b> {{$kategori->nama_kategori}}</p>
 <p><b>Kuota:</b> {{$beasiswa->kuota}}</p>

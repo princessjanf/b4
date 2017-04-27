@@ -199,11 +199,13 @@ class MainController extends Controller
       if (empty($retrIsPenyeleksi))
         {$isPenyeleksi = 0;}
 
+
       //Dengan asumsi bahwa setiap beasiswa pasti ada yang diterima
       $retrIsSelected = DB::table('penerima_beasiswa')->where('id_beasiswa', $beasiswa->id_beasiswa)->first();
       $isSelected = 1;
       if (empty($retrIsSelected))
         {$isSelected = 0;}
+
 
 
       if ($namarole=='Pendonor')
@@ -225,7 +227,7 @@ class MainController extends Controller
                     ->select('pendaftaran_beasiswa.*', 'user.nama')
                     ->get();
 
-        return view('pages.detail-beasiswa')->withBeasiswa($beasiswa)->withPersyaratans($persyaratans)->withUser($user)->withNamarole($namarole)->withPendaftars($pendaftars)->withIspendonor($isPendonor)->withKategori($kategori)->with($isPenyeleksi)->with($isSelected);
+        return view('pages.detail-beasiswa')->withBeasiswa($beasiswa)->withPersyaratans($persyaratans)->withUser($user)->withNamarole($namarole)->withPendaftars($pendaftars)->withIspendonor($isPendonor)->withKategori($kategori)->withIspenyeleksi($isPenyeleksi)->with($isSelected);
       }
       else
       {
@@ -400,8 +402,10 @@ function pendaftarBeasiswa($id)
       $role = DB::table('role')->where('id_role', $pengguna->id_role)->first();
       $namarole = $role->nama_role;
       $beasiswa = DB::table('beasiswa')->where('id_beasiswa', $id)->first();
+      $penyeleksi = DB::table('beasiswa_penyeleksi')->where('id_penyeleksi', $pengguna->id_user)->first();
 
-          if($namarole=='Pendonor' && $pengguna->id_user == $beasiswa->id_pendonor)
+
+          if( $namarole=='Pendonor' && $pengguna->id_user == $beasiswa->id_pendonor )
           {
             $mahasiswas = DB::table('pendaftaran_beasiswa')->where('id_beasiswa',$beasiswa->id_beasiswa)
             ->join('mahasiswa','mahasiswa.id_user', '=', 'pendaftaran_beasiswa.id_mahasiswa')
@@ -417,6 +421,27 @@ function pendaftarBeasiswa($id)
             ->withPengguna($pengguna)
             ->withUser($user)
             ->withNamarole($namarole)->withBeasiswa($beasiswa)->withMahasiswas($mahasiswas);
+          }
+          else if ($namarole == 'Pegawai')
+          {
+            if($penyeleksi->id_penyeleksi == $pengguna->id_user)
+            {
+              $mahasiswas = DB::table('pendaftaran_beasiswa')->where('id_beasiswa',$beasiswa->id_beasiswa)
+            ->join('mahasiswa','mahasiswa.id_user', '=', 'pendaftaran_beasiswa.id_mahasiswa')
+            ->join('user', 'user.id_user', '=', 'pendaftaran_beasiswa.id_mahasiswa')
+            ->join('fakultas', 'fakultas.id_fakultas', '=', 'mahasiswa.id_fakultas')
+            ->join('program_studi', 'program_studi.id_prodi', '=', 'mahasiswa.id_prodi')
+            ->select('mahasiswa.*','user.nama', 'fakultas.nama_fakultas', 'program_studi.nama_prodi')
+            ->get();
+
+
+
+            return view('pages.pendaftar-beasiswa')
+            ->withPengguna($pengguna)
+            ->withUser($user)
+            ->withNamarole($namarole)->withBeasiswa($beasiswa)->withMahasiswas($mahasiswas);
+            }
+
           }
 
 
@@ -439,6 +464,20 @@ function pendaftarBeasiswa($id)
       $beasiswa = DB::table('beasiswa')->where('id_beasiswa', $idbeasiswa)->first();
 
           if($namarole=='Pendonor')
+          {
+            $berkas = DB::table('beasiswa_berkas')->where('beasiswa_berkas.id_mahasiswa', $mahasiswa->id_user)->where('beasiswa_berkas.id_beasiswa', $beasiswa->id_beasiswa)
+            ->join('mahasiswa','mahasiswa.id_user', '=', 'beasiswa_berkas.id_mahasiswa')
+            ->join('beasiswa', 'beasiswa.id_beasiswa', '=', 'beasiswa_berkas.id_beasiswa')
+            ->join('berkas', 'berkas.id_berkas', '=', 'beasiswa_berkas.id_berkas')
+            ->join('pendaftaran_beasiswa', 'pendaftaran_beasiswa.id_pendaftaran', '=', 'beasiswa_berkas.id_pendaftaran')
+            ->select('mahasiswa.*','beasiswa_berkas.*','berkas.nama_berkas', 'pendaftaran_beasiswa.id_pendaftaran')
+            ->get();
+
+            $namaMhs = DB::table('user')->where('id_user', $iduser)->first();
+
+            return view('pages.lihat-berkas-mahasiswa', compact('beasiswa','pengguna','user','namarole','mahasiswa','namaMhs','berkas'));
+          }
+          else if($namarole=='Pegawai')
           {
             $berkas = DB::table('beasiswa_berkas')->where('beasiswa_berkas.id_mahasiswa', $mahasiswa->id_user)->where('beasiswa_berkas.id_beasiswa', $beasiswa->id_beasiswa)
             ->join('mahasiswa','mahasiswa.id_user', '=', 'beasiswa_berkas.id_mahasiswa')
@@ -566,7 +605,8 @@ function pendaftarBeasiswa($id)
 					if (count($retrTahapan)-1 == $key)
 					{
 						$final = DB::table('seleksi_beasiswa')->where('id_beasiswa', $id)->where('id_tahapan',$tahapan->id_tahapan)->first();
-						if ($final->final == 1)
+
+            if ($final->final == 1)
 						{
 							$check = 1;
 						}
