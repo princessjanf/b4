@@ -222,7 +222,7 @@
 	<div id="fieldWebsite" class="form-group" style="display: none;">
 		<label for="websiteSeleksi">Website Seleksi</label><br>
 		<p>Masukkan website yang anda akan jadikan sebagai tempat untuk seleksi</p>
-		<input type="text" placeholder="Website seleksi" class="form-control" id="websiteSeleksi" required="">
+		<input type="text" placeholder="Website seleksi" class="form-control" name="websiteSeleksi" id="websiteSeleksi" required="">
 	</div>
 
 	<!-- 2 -->

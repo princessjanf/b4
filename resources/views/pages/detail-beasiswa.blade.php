@@ -41,7 +41,7 @@
   @endif
 
 
-@elseif($namarole == 'Pendonor' and $isPendonor)
+@elseif($namarole == 'Pendonor' and $ispendonor)
 <h4>Detail Beasiswa &nbsp;</h4>
 <h2>{{$beasiswa->nama_beasiswa}}</h2>
 @if ($isselected == 1)
