@@ -195,3 +195,5 @@ Route::post('upload',[
 Route::post('filter-pegawai-fakultas', 'ScholarshipController@filterPegawaiFakultas');
 
 Route::get('email/{idBeasiswa}', 'MailController@sendEmail')->middleware('authSSO');
+
+Route::get('lihat-statistik', 'ChartController@index')->middleware('authSSO');
