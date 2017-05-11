@@ -123,15 +123,19 @@
 <script src="{{ asset('js/jquery.dataTables.js') }}"></script>
 <script src="{{ asset('js/dataTables.bootstrap.js') }}"></script>
 <script>
+
 	$(document).ready(function() {
 		$('#tableSeleksi').DataTable();
 		$("[name='alertSaveDraft']").hide();
 		$("[name='alertWaktuDaftar']").hide();
 		$("#alertCheck").hide();
 		$("#alertCheck2").hide();
-
 		$("#fix #kuotaChecker").text(document.querySelectorAll('input[type="checkbox"]:checked').length);
+		if(document.querySelectorAll('input[type="checkbox"]:checked').length > {{$beasiswa->kuota}} || document.querySelectorAll('input[type="checkbox"]:checked').length == 0 ){
+			$('#showResult').attr("disabled", true);
+		}
 	});
+
 	function saveDraft(){
 				var arrayResult = [];
 				$('#tableSeleksi .chk').each(function(i, val){
@@ -141,6 +145,7 @@
 					}
 				});
 
+				console.log(arrayResult);
 			$.ajax({
 				type:'POST',
 				url:'{{url('/save-draft-check')}}',
@@ -161,6 +166,7 @@
 	$("#tableSeleksi").change(function(){
 		$("#fix #kuotaChecker").text(document.querySelectorAll('input[type="checkbox"]:checked').length);
 		if(document.querySelectorAll('input[type="checkbox"]:checked').length > {{$beasiswa->kuota}}){
+
 			$('#alertCheck').show();
 			$('#showResult').attr("disabled", true);
 		}
@@ -176,6 +182,7 @@
 
 
 	function showResult(){
+
 		var x = "{{$beasiswa->tanggal_tutup}}".split('-');
 		var now = new Date();
 		var tgl = new Date().setFullYear(x[0], x[1]-1, x[2]-1);
