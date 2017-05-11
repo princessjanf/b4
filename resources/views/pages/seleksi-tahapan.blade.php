@@ -7,14 +7,13 @@
 @endsection
 
 @section('content')
-
-<h4> Lihat Tahapan {{$tahapan->nama_tahapan}} </h4>
+<h4> Tahapan {{$tahapan->nama_tahapan}} {{$beasiswa->nama_beasiswa}}</h4>
 <a href = "{{ url('seleksi/'.$idbeasiswa) }}">  Kembali Ke Daftar Tahapan  </a>
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-@if($final=='2')
+@if($penerimachecker == 1)
 <a href = "{{ url('nama-penerima/'.$idbeasiswa) }}">  Lihat Penerima Beasiswa  </a>
-@elseif($final == '0')
+@else
 <a href = "{{ url('/pendaftar-beasiswa/'.$idbeasiswa) }}">  Lihat Pendaftar Beasiswa  </a>
 @endif
 </br>
@@ -63,6 +62,9 @@
 			<th>No</th>
 			<th>Nama Pendaftar</th>
 			<th>Nilai Seleksi</th>
+			@if($penerimachecker == 1)
+			<th> Status Seleksi </th>
+			@endif
 		</tr>
 	</thead>
 	<tbody>
@@ -97,16 +99,26 @@
 
 			      @elseif ($final == 0)
 			      <td>
-			        <input type = "number" id="{{$pendaftar->id_mahasiswa}}" name = "{{$pendaftar->id_mahasiswa}}" value= "{{$pendaftar->nilai_seleksi}}" min="0" max="100">
+			        <input class="field" type = "number" id="{{$pendaftar->id_mahasiswa}}" name = "{{$pendaftar->id_mahasiswa}}" value= "{{$pendaftar->nilai_seleksi}}" min="0" max="100" data-parsley-max="100" data-parsley-min="0" data-parsley-trigger="keyup" data-parsley-error-message="Nilai seleksi harus berada antara 0-100" data-parsley-group='field'>
 			      </td>
 			      @endif
 			@endif
 
+			@if($penerimachecker == 1)
+				@foreach($penerima as $p)
+					@if ($p->id_mahasiswa == $pendaftar->id_mahasiswa)
+						<td> Diterima </td>
+						@break
+					@else
+						<td> Ditolak </td>
+					@endif
+
+				@endforeach
+			@endif
 		</tr>
 		@endforeach
 	</tbody>
 </table>
-
 <div id="savedraf" name= "alertSaveDraft" class="alert alert-dismissable fade in">
 	<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 	<strong>Nilai sementara berhasil disimpan</strong>
@@ -127,7 +139,13 @@
 @endif
 @endif
 @endif
-
+@if($final == 2)
+@if($penyeleksiljt == 1)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<a href = "{{ url	('seleksi-beasiswa/'.$idbeasiswa.'/'.$tahapanljt) }}">  Lanjut Ke Tahap {{$namaljt->nama_tahapan}}  </a>
+@endif
+@endif
 @endsection
 
 @section('script')
@@ -135,11 +153,15 @@
 <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'></script>
 <script src="{{ asset('js/jquery.dataTables.js') }}"></script>
 <script src="{{ asset('js/dataTables.bootstrap.js') }}"></script>
+<script src="http://parsleyjs.org/dist/parsley.js"></script>
+
 <script>
 	$(document).ready(function() {
 		$('#tableSeleksi').DataTable();
 		$("[name='alertSaveDraft']").hide();
 		$("[name='alertWaktuDaftar']").hide();
+
+		var instance = $('.field').parsley();
 
 	});
 	function saveDraftCheck(){
@@ -193,10 +215,19 @@
 		$("#resultConfirmationModal .modal-body #jumlahChecked").text(document.querySelectorAll('input[type="checkbox"]:checked').length);
 		@if($tahapanljt == 0)
 		if(document.querySelectorAll('input[type="checkbox"]:checked').length > {{$beasiswa->kuota}}){
+			console.log($('#resultConfirmationModal .modal-footer #submitResult'));
+			$('#resultConfirmationModal .modal-footer #submitResult').attr("disabled", "true");
 			$('#resultConfirmationModal').find('.modal-footer #alertChecked').show();
+		}
+		else if(document.querySelectorAll('input[type="checkbox"]:checked').length == 0)
+		{
+			$('#resultConfirmationModal').find('.modal-footer #alertChecked2').show();
 			$('#resultConfirmationModal .modal-footer #submitResult').attr("disabled", true);
 		}
-		@endif
+		else{
+			$('#resultConfirmationModal .modal-footer #submitResult').attr("disabled", false);
+		}
+		@else
 		if(document.querySelectorAll('input[type="checkbox"]:checked').length == 0)
 		{
 			$('#resultConfirmationModal').find('.modal-footer #alertChecked2').show();
@@ -205,6 +236,7 @@
 		else{
 			$('#resultConfirmationModal .modal-footer #submitResult').attr("disabled", false);
 		}
+		@endif
 	});
 
 	function showResultCheck(){
@@ -281,6 +313,7 @@
 		}
 		else{
 		var table = $('#tableSeleksi').DataTable().$('input').serialize();
+		console.log(table);
 		$.ajax({
 			type:'POST',
 			url:'{{url('/save-draft')}}',
@@ -294,10 +327,12 @@
 			success:function(data){
 				var html='';
 				var count=0;
+				var picked = 0;
 				html+='<table id="resultTable" name="resultTable" class="table"><thead><tr><th>Nama</th><th>Status Penerimaan</th></tr></thead><tbody>';
 				var nama='';
 				$.each(data, function(i,item){
 					$.each(item, function(j,datum){
+
 						$.ajax({
 							async:false,
 							type:'POST',
@@ -309,13 +344,15 @@
 							success:function(data){
 								nama = data.msg.nama;
 								console.log(nama);
-
-								count=+1;
+								count+=1;
+								console.log(count);
 								if(count<={{$beasiswa->kuota}}){
+									picked+=1;
 									html = html + '<tr><td class="idMahasiswa" id='+datum[0]+'>' + nama + '</td><td> <input type="checkbox" class="chk" value='+datum[0]+' checked> Diterima </td></tr>';
 								}
 								else{
-									html = html + '<tr><td class="idMahasiswa">' + nama + '</td><td> <input type="checkbox" class="chk" value='+datum[0]+'> </td></tr>';
+									html = html + '<tr><td class="idMahasiswa" id='+datum[0]+'>' + nama + '</td><td> <input type="checkbox" class="chk" value='+datum[0]+'> Diterima </td></tr>'
+									// html = html + '<tr><td class="idMahasiswa">' + nama + '</td><td> <input type="checkbox" class="chk" value='+datum[0]+'> Diterima </td></tr>';
 								}
 							}
 						});
@@ -325,7 +362,7 @@
 				html = html+ '</tbody></table>'
 
 				$('#resultConfirmationModal').find('.modal-body').append(html);
-				$("#resultConfirmationModal .modal-body #jumlahChecked").text(count);
+				$("#resultConfirmationModal .modal-body #jumlahChecked").text(picked);
 				$('#resultConfirmationModal').find('.modal-footer #alertChecked').hide();
 				$('#resultConfirmationModal').find('.modal-footer #alertChecked2').hide();
 				$('#resultConfirmationModal').modal('show');
@@ -336,7 +373,13 @@
 	function finalizeResult(){
 
 		@if($idtahapan == 1 OR $idtahapan==2)
-
+		var arrayResult = [];
+		$('#tableSeleksi .chkInit').each(function(i, val){
+			var checkbox_cell_is_checked = $(this).is(':checked');
+			if(checkbox_cell_is_checked){
+				arrayResult.push($(this).attr('id'));
+			}
+		});
 		@else
 		var arrayResult = [];
 		$('#resultConfirmationModal .modal-body #resultTable .idMahasiswa').each(function(i, val){
@@ -349,6 +392,7 @@
 			}
 		});
 		@endif
+
 		$.ajax({
 			type:'POST',
 			url:'{{url('/finalize-result')}}',
@@ -360,8 +404,7 @@
 				'pengguna': {{$pengguna->id_user}}
 			},
 			success:function(data){
-				console.log(data);
-				//window.location.href = "{{ url('seleksi-beasiswa/'.$idbeasiswa.'/'.$idtahapan) }}";
+				window.location.href = "{{ url('seleksi-beasiswa/'.$idbeasiswa.'/'.$idtahapan) }}";
 			},
 			error: function(xhr, textStatus, errorThrown) {
 				alert(xhr.responseText);
