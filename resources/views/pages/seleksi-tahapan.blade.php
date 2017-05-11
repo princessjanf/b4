@@ -105,15 +105,16 @@
 			@endif
 
 			@if($penerimachecker == 1)
+			{{$set = ''}}
 				@foreach($penerima as $p)
 					@if ($p->id_mahasiswa == $pendaftar->id_mahasiswa)
-						<td> Diterima </td>
+						{{$set = 'Diterima'}}
 						@break
 					@else
-						<td> Ditolak </td>
+						{{$set = 'Ditolak'}}
 					@endif
-
 				@endforeach
+				<td> {{$set}} </td>
 			@endif
 		</tr>
 		@endforeach
