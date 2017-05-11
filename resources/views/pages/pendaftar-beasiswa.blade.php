@@ -7,7 +7,7 @@
     <H2>PENDAFTAR BEASISWA</H2>
     <HR></HR>
     <h3>{{$beasiswa->nama_beasiswa}}</h3>
-    <table class="table table-bordered">
+    <table able id="pendaftarList" class="table table-striped">
       <thead>
         <tr>
           <th>No.</th>
@@ -16,6 +16,8 @@
           <th>Email</th>
           <th>Fakultas</th>
           <th>Jurusan</th>
+          <th>IPK</th>
+          <th>Penghasilan Orang Tua</th>
         </tr>
       </thead>
 
@@ -39,6 +41,8 @@
            <th><label>{{$mahasiswa->email}}</label></th>
            <th><label>{{$mahasiswa->nama_fakultas}}</label></th>
            <th><label>{{$mahasiswa->nama_prodi}}</label></th>
+           <th><label>{{$mahasiswa->IPK}}</label></th>
+           <th><label>{{$mahasiswa->penghasilan_orang_tua}}</label></th>
          </tr>
             @endforeach
             @endif
@@ -52,3 +56,26 @@
 
 </div>
 @endsection
+
+@section('script')
+<script src="{{ asset('js/jquery-3.2.0.js') }}"></script>
+<script src='https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js'></script>
+<script src="{{ asset('js/jquery.dataTables.js') }}"></script>
+<script src="{{ asset('js/dataTables.bootstrap.js') }}"></script>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('#pendaftarList').DataTable();
+  });
+  $(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();
+  });
+</script>
+
+<style media="screen">
+  .dataTables_filter {
+    margin-left: 175px;
+  }
+</style>
+@endsection
+

@@ -6,8 +6,37 @@
 <div class="col-sm-9">
     <H2>PENDAFTAR BEASISWA</H2>
     <HR></HR>
-    <h3>{{$namaMhs->nama}}</h3>
+    <h3>{{$namaMhs->nama}}  </h3>  
+      <table style="width:75%">
+        <tr>
+        <th></th>
+        <th></th>
+        </tr>
 
+        <tr>
+          <td>Email</td>
+          <td><h5>{{$mahasiswa->email}}</h5></td>
+        </tr>
+        <tr>
+          <td>Fakultas</td>
+          <td><h5>{{$fakultas->nama_fakultas}}</h5></td>
+        </tr>
+        <tr>
+          <td>Prodi</td>
+          <td><h5>{{$prodi->nama_prodi}}</h5></td>
+        </tr>
+        <tr>
+          <td>IPK</td>
+          <td><h5>{{$mahasiswa->IPK}}</h5></td>
+        </tr>
+        <tr>
+          <td>Penghasilan Orang Tua</td>
+          <td><h5>{{$mahasiswa->penghasilan_orang_tua}}</h5></td>
+        </tr>
+    </table>
+    
+    <br>
+    
     <p>BERKAS YANG DIMILIKI MAHASISWA</p>
     <table class="table table-bordered">
       <thead>

@@ -474,8 +474,10 @@ function pendaftarBeasiswa($id)
             ->get();
 
             $namaMhs = DB::table('user')->where('id_user', $iduser)->first();
+            $fakultas = DB::table('fakultas')->where('id_fakultas', $mahasiswa->id_fakultas)->first();
+            $prodi = DB::table('program_studi')->where('id_prodi', $mahasiswa->id_prodi)->first();
 
-            return view('pages.lihat-berkas-mahasiswa', compact('beasiswa','pengguna','user','namarole','mahasiswa','namaMhs','berkas'));
+            return view('pages.lihat-berkas-mahasiswa', compact('beasiswa','pengguna','user','namarole','mahasiswa','namaMhs','berkas','fakultas','prodi'));
           }
           else if($namarole=='Pegawai')
           {
@@ -488,8 +490,11 @@ function pendaftarBeasiswa($id)
             ->get();
 
             $namaMhs = DB::table('user')->where('id_user', $iduser)->first();
+            $fakultas = DB::table('fakultas')->where('id_fakultas', $mahasiswa->id_fakultas)->first();
+            $prodi = DB::table('program_studi')->where('id_prodi', $mahasiswa->id_prodi)->first();
 
-            return view('pages.lihat-berkas-mahasiswa', compact('beasiswa','pengguna','user','namarole','mahasiswa','namaMhs','berkas'));
+
+            return view('pages.lihat-berkas-mahasiswa', compact('beasiswa','pengguna','user','namarole','mahasiswa','namaMhs','berkas','fakultas','prodi'));
           }
 
 
