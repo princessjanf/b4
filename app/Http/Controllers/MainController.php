@@ -782,7 +782,10 @@ function pendaftarBeasiswa($id)
 		function saveDraftCheck(Request $request)
 		{
 			//Loop untuk setiap partisipan yang namanya ada di dalam table
-			foreach ($request->table as $key => $idMahasiswa) {
+      DB::table('seleksi_beasiswa')->where('id_beasiswa', $request->idbeasiswa)->where('id_tahapan', $request->idtahapan)
+      ->where('id_penyeleksi', $request->pengguna)->update(['nilai_seleksi' =>'0']);
+
+      foreach ($request->table as $key => $idMahasiswa) {
 				DB::table('seleksi_beasiswa')->where('id_beasiswa',$request->idbeasiswa)->where('id_tahapan', $request->idtahapan)
 				->where('id_mahasiswa', $idMahasiswa)->where('id_penyeleksi', $request->pengguna)->update(['nilai_seleksi' =>'1']);
 			}
@@ -861,11 +864,11 @@ function pendaftarBeasiswa($id)
 			//get nama tahapan
 			$namatahapan = DB::table('tahapan')->where('id_tahapan', $request->idtahapan)->select('nama_tahapan')->first();
 
-			if ($namatahapan->nama_tahapan == 'Administratif')
+			if ($namatahapan->nama_tahapan == 'Seleksi Administratif')
 			{
 				$idstatus = 2;
 			}
-			else if ($namatahapan->nama_tahapan == 'Berkas')
+			else if ($namatahapan->nama_tahapan == 'Seleksi Berkas')
 			{
 				$idstatus = 3;
 			}
