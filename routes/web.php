@@ -178,10 +178,18 @@ Route::get('nama-penerima/{idBeasiswa}',[
   'uses' => 'MainController@penerimaBeasiswa'
 ]);
 
-Route::post('download-berkas', 'MainController@download');
 // Route::get('sendbasicemail','MailController@basic_email');
 // Route::get('sendhtmlemail','MailController@html_email');
 // Route::get('sendattachmentemail','MailController@attachment_email');
+Route::post('download-berkas',[
+  'middleware' => 'authSSO',
+  'uses' => 'MainController@download'
+]);
+
+Route::post('unduh-dk',[
+  'middleware' => 'authSSO',
+  'uses' => 'MainController@unduhDK'
+]);
 
 Route::get('upload-berkas-umum',[
   'middleware' => 'authSSO',
@@ -195,3 +203,13 @@ Route::post('upload',[
 Route::post('filter-pegawai-fakultas', 'ScholarshipController@filterPegawaiFakultas');
 
 Route::get('email/{idBeasiswa}', 'MailController@sendEmail')->middleware('authSSO');
+
+//Alvin sprint 3
+Route::get('unggah-dokumen-kerjasama/{idBeasiswa}',[
+  'middleware' => 'authSSO',
+  'uses' => 'UploadController@unggahDokumenKerjasama'
+]);
+Route::post('unggahDK',[
+  'middleware' => 'authSSO',
+  'uses' => 'UploadController@unggahDKsubmit'
+]);

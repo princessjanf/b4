@@ -4,20 +4,23 @@
 
 @section('content')
 @if ($namarole=='Direktorat Kerjasama')
-<h4>Detail Beasiswa &nbsp;<a href="#upload"><button class="btn btn-success"><b>Upload</b></button></a></h4>
+<h4>Detail Beasiswa</h4>
+<h2>{{$beasiswa->nama_beasiswa}}</h2>
 
 @elseif ($namarole=='Mahasiswa')
-@if ($beasiswa->tanggal_buka <= Carbon\Carbon::now() and Carbon\Carbon::now() <= $beasiswa->tanggal_tutup)
-  <h4>Detail Beasiswa &nbsp;
-    @if($beasiswa->id_jenis_seleksi=='1')
-    <a href= "{{url($beasiswa->link_seleksi)}}"><button class="btn"><b>Daftar</b></button></a>
-    @else
-    <a href= "{{url('daftar-beasiswa/'.$beasiswa->id_beasiswa)}}"><button class="btn"><b>Daftar</b></button></a>
-    @endif
-  </h4>
-@endif
+  @if ($beasiswa->tanggal_buka <= Carbon\Carbon::now() and Carbon\Carbon::now() <= $beasiswa->tanggal_tutup)
+    <h4>Detail Beasiswa &nbsp;
+      @if($beasiswa->id_jenis_seleksi=='1')
+      <a href= "{{url($beasiswa->link_seleksi)}}"><button class="btn"><b>Daftar</b></button></a>
+      @else
+      <a href= "{{url('daftar-beasiswa/'.$beasiswa->id_beasiswa)}}"><button class="btn"><b>Daftar</b></button></a>
+      @endif
+    </h4>
+  @else
+    <h4>Detail Beasiswa &nbsp;</h4>
+    <h2>{{$beasiswa->nama_beasiswa}}</h2>
+  @endif
 @elseif ($namarole=="Pegawai Universitas")
-
 
 <h4>Detail Beasiswa &nbsp;</h4>
 <h2>{{$beasiswa->nama_beasiswa}}</h2>
@@ -40,39 +43,32 @@
   		<a href = "{{ url('/pendaftar-beasiswa/'.$beasiswa->id_beasiswa) }}" class="btn btn-info">  Lihat Pendaftar Beasiswa  </a>
   @endif
 
-
 @elseif($namarole == 'Pendonor' and $ispendonor)
 <h4>Detail Beasiswa &nbsp;</h4>
 <h2>{{$beasiswa->nama_beasiswa}}</h2>
-@if ($isselected == 1)
-    <a href = "{{ url('/nama-penerima/'.$beasiswa->id_beasiswa) }}" class="btn btn-info">  Lihat Penerima Beasiswa  </a>
+  @if ($isselected == 1)
+      <a href = "{{ url('/nama-penerima/'.$beasiswa->id_beasiswa) }}" class="btn btn-info">  Lihat Penerima Beasiswa  </a>
+  @else
+      <a href = "{{ url('/pendaftar-beasiswa/'.$beasiswa->id_beasiswa) }}" class="btn btn-info">  Lihat Pendaftar Beasiswa  </a>
+  @endif
+  @if($ispenyeleksi == '1')
+    @if ($isselected == '1')
+      <a href = "{{ url('/nama-penerima/'.$beasiswa->id_beasiswa) }}" class="btn btn-info">  Lihat Penerima Beasiswa  </a>
+    @else
+      <a href = "{{ url('/pendaftar-beasiswa/'.$beasiswa->id_beasiswa) }}" class="btn btn-info">  Lihat Pendaftar Beasiswa  </a>
+    @endif
+  @endif
 @else
-    <a href = "{{ url('/pendaftar-beasiswa/'.$beasiswa->id_beasiswa) }}" class="btn btn-info">  Lihat Pendaftar Beasiswa  </a>
+  <h4>Detail Beasiswa &nbsp;</h4>
+  <h2>{{$beasiswa->nama_beasiswa}}</h2>
+  @if($ispenyeleksi == '1')
+    @if ($isselected == '1')
+        <a href = "{{ url('/nama-penerima/'.$beasiswa->id_beasiswa) }}" class="btn btn-info">  Lihat Penerima Beasiswa  </a>
+    @else
+        <a href = "{{ url('/pendaftar-beasiswa/'.$beasiswa->id_beasiswa) }}" class="btn btn-info">  Lihat Pendaftar Beasiswa  </a>
+    @endif
+  @endif
 @endif
-@if($ispenyeleksi == '1')
-@if ($isselected == '1')
-    <a href = "{{ url('/nama-penerima/'.$beasiswa->id_beasiswa) }}" class="btn btn-info">  Lihat Penerima Beasiswa  </a>
-@else
-    <a href = "{{ url('/pendaftar-beasiswa/'.$beasiswa->id_beasiswa) }}" class="btn btn-info">  Lihat Pendaftar Beasiswa  </a>
-@endif
-@endif
-@else
-<h4>Detail Beasiswa &nbsp;</h4>
-<h2>{{$beasiswa->nama_beasiswa}}</h2>
-@if($ispenyeleksi == '1')
-@if ($isselected == '1')
-    <a href = "{{ url('/nama-penerima/'.$beasiswa->id_beasiswa) }}" class="btn btn-info">  Lihat Penerima Beasiswa  </a>
-@else
-    <a href = "{{ url('/pendaftar-beasiswa/'.$beasiswa->id_beasiswa) }}" class="btn btn-info">  Lihat Pendaftar Beasiswa  </a>
-@endif
-
-@endif
-
-
-
-@endif
-</br>
-</br>
 <p>{{$beasiswa->deskripsi_beasiswa}}</p>
 <p><b>Kategori Beasiswa:</b> {{$kategori->nama_kategori}}</p>
 <p><b>Kuota:</b> {{$beasiswa->kuota}}</p>
@@ -99,10 +95,7 @@
   @endif
 </p>
 @endif
-
-<br>
-<br>
-<br>
+<a href="{{ url('list-beasiswa') }}"><button type="button" id="kembali" class="btn btn-info" type="button" formnovalidate>Kembali</button></a>
 <br>
 <br>
 @endsection
