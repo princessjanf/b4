@@ -8,6 +8,7 @@
 
 @section('content')
 	<div class="col-sm-12">
+		{!! $chart[0]->render() !!}
 		{!! $chart[1]->render() !!}
 	</div>
 @endsection
