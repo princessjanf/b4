@@ -25,8 +25,12 @@
 		<a data-toggle="tooltip" title="Tambah beasiswa" role="button" id="add-beasiswa" class="btn btn-success" href="{{ url('add-beasiswa') }}"><span class="glyphicon glyphicon-plus">&nbsp;</span>Tambah Beasiswa</a>
 		@if ($seleksichecker==1)
 			<a data-toggle="tooltip" title="Buka Halaman Seleksi"  class="btn btn-info" href="{{ url('seleksi') }}">&nbsp;Seleksi Beasiswa</a>
+  </h2>
 		@endif
-	</h2>
+
+    <p>Sebagai Pegawai Universitas anda dapat membuat, memodifikasi, menghapus, mengumumkan beasiswa, dan menyeleksi beasiswa.</p>
+    <p class="list-group-item list-group-item-info" style="font-size:8pt; font-weight: bold; font-style: italic; ">*Anda hanya dapat mengumumkan beasiswa apabila Direktorat Kerjasama sudah mengunggah dokumen kerjasama atas beasiswa tersebut.</p>
+    <br>
 @else
 	<h2>Paket-Paket Beasiswa &nbsp;&nbsp;
 		@if ($seleksichecker==1 AND $namarole!="Direktorat Kerjasama" AND $namarole!="Direktorat Kerjasama")
@@ -121,7 +125,7 @@
 
 				@if($namarole!="Direktorat Kerjasama")
 					<td>
-						@if ($beasiswa->tanggal_buka <= Carbon\Carbon::now() and Carbon\Carbon::now() <= $beasiswa->tanggal_tutup)
+						@if ($beasiswa->tanggal_buka <= Carbon\Carbon::now() AND Carbon\Carbon::now() <= $beasiswa->tanggal_tutup AND $beasiswa->public==1)
 						<p><b><font color="green">Dibuka</font></b></p>
 						@else
 						<p><b><font color="red">Ditutup</font></b></p>
@@ -176,11 +180,11 @@
 
 				@if($namarole=="Pegawai Universitas")
 					<td>
-						<a href = "{{ url('edit-beasiswa/'.$beasiswa->id_beasiswa) }}" class="btn btn-warning" data-toggle="tooltip" title="Edit" role="button">
+						<a href = "{{ url('edit-beasiswa/'.$beasiswa->id_beasiswa) }}" class="btn btn-warning" data-toggle="tooltip" title="Modifikasi" role="button">
 							<span class="glyphicon glyphicon-pencil"></span>
 						</a>
 
-						<button class="btn btn-danger" type="submit" title="Delete" data-toggle="modal" data-target="#confirmationDelete" data-username="{{$beasiswa->id_beasiswa}}" data-username2="{{$beasiswa->nama_beasiswa}}">
+						<button class="btn btn-danger" type="submit" title="Hapus" data-toggle="modal" data-target="#confirmationDelete" data-username="{{$beasiswa->id_beasiswa}}" data-username2="{{$beasiswa->nama_beasiswa}}">
 							<span class="glyphicon glyphicon-trash"></span>
 						</button>
 
@@ -203,13 +207,16 @@
 								</div>
 							</div>
 						</div>
-						@if($beasiswa->public==0)
-						<a href = "{{ url('make-public-beasiswa/'.$beasiswa->id_beasiswa) }}" class="btn btn-info" data-toggle="tooltip" title="Make Public" role="button">
-							<span class="glyphicon glyphicon-eye-open"></span>
-						</a>
-						@else
 
-						@endif
+            @foreach ($dokumenkerjasamas as $index => $dk)
+  						@if($beasiswa->public==0 AND $dk->id_beasiswa==$beasiswa->id_beasiswa)
+  						<a href = "{{ url('make-public-beasiswa/'.$beasiswa->id_beasiswa) }}" class="btn btn-info" data-toggle="tooltip" title="Buat Publik" role="button">
+  							<span class="glyphicon glyphicon-eye-open"></span>
+  						</a>
+  						@else
+
+  						@endif
+            @endforeach
 					</td>
 				@elseif($namarole=="Mahasiswa")
 					<td align="center">	@if ($beasiswa->tanggal_buka <= Carbon\Carbon::now() and Carbon\Carbon::now() <= $beasiswa->tanggal_tutup)

@@ -99,14 +99,17 @@ class MainController extends Controller
       $daftarBeasiswa = DB::table('beasiswa_penyeleksi')->where('id_penyeleksi', $pengguna->id_user)
 												->join('beasiswa','beasiswa_penyeleksi.id_beasiswa', 'beasiswa.id_beasiswa')
 												->select('beasiswa.id_beasiswa', 'beasiswa.nama_beasiswa')->orderBy('id_beasiswa', 'desc')->get();
+
+      $dokumenkerjasama = DB::table('dokumen_kerjasama')->get();
+
 			$seleksichecker = 0;
 			if ($daftarBeasiswa->count() == 0)
 			{
-				return view('pages.list-beasiswa')->withBeasiswas($beasiswas)->withUser($user)->withNamarole($namarole)->withSeleksichecker($seleksichecker);
+				return view('pages.list-beasiswa')->withDokumenkerjasamas($dokumenkerjasama)->withBeasiswas($beasiswas)->withUser($user)->withNamarole($namarole)->withSeleksichecker($seleksichecker);
 			}
 			else{
 				$seleksichecker = 1;
-				return view('pages.list-beasiswa')->withBeasiswas($beasiswas)->withUser($user)->withNamarole($namarole)->withSeleksichecker($seleksichecker);
+        return view('pages.list-beasiswa')->withDokumenkerjasamas($dokumenkerjasama)->withBeasiswas($beasiswas)->withUser($user)->withNamarole($namarole)->withSeleksichecker($seleksichecker);
 			}
 
     }
