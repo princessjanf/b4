@@ -4,9 +4,22 @@
 
 @section('head')
 <link href="{{ asset('css/multiple-select.css') }}" rel="stylesheet" />
+
 @endsection
 
 @section('content')
+
+@if (session('namabeasiswa'))
+    <div class="alert alert-success">
+        Dokumen kerjasama untuk {{ session('namabeasiswa') }} telah <b> berhasil </b> diunggah: {{ session('namadokumen') }}
+    </div>
+
+@elseif (session('namabeasiswatimpa'))
+    <div class="alert alert-success">
+        Dokumen kerjasama untuk {{ session('namabeasiswatimpa') }} telah <b> berhasil </b> diperbaharui: {{ session('namadokumentimpa') }}
+    </div>
+@endif
+
 @if($namarole=="Pegawai Universitas")
 	<h2>Paket-Paket Beasiswa &nbsp;&nbsp;
 		<a data-toggle="tooltip" title="Tambah beasiswa" role="button" id="add-beasiswa" class="btn btn-success" href="{{ url('add-beasiswa') }}"><span class="glyphicon glyphicon-plus">&nbsp;</span>Tambah Beasiswa</a>

@@ -11,18 +11,22 @@
   @endforeach
 </ul>
 @endif
+
 <form action="{{url('unggahDK')}}" method="post" enctype="multipart/form-data">
   <input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
   <input type = "hidden" name = "idDirektorat" value="{{$pengguna->id_user}}" >
   <input type = "hidden" name = "idBeasiswa" value="{{$beasiswa->id_beasiswa}}" >
+  <input type = "hidden" name = "namaBeasiswa" value="{{$beasiswa->nama_beasiswa}}" >
   <h3>Unggah Dokumen Kerjasama - {{$beasiswa->nama_beasiswa}} </h3>
   <h6 style="font-weight:bold"><font color="grey">Unggah dokumen kerjasama yang sudah disepakati dalam format .pdf</font></h6>
-  <input type="file" class="form-control" name="uploadDK">
+  <input type="file" class="form-control" name="DokumenKerjasama">
   <br>
   <input type="submit" class="btn btn-info" name="submit" value="Unggah" disabled />
   <a href="{{ url('list-beasiswa') }}"><button type="button" id="kembali" class="btn btn-info" type="button" formnovalidate>Kembali</button></a>
 </form>
-<br><br><br><br><br><br><br>
+<br><br>
+
+<br><br><br><br><br>
 @endsection
 
 @section('script')

@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UploadRequest;
+use Redirect;
+use Session;
 
 class UploadController extends Controller
 {
@@ -19,8 +21,8 @@ class UploadController extends Controller
     $namarole = $role->nama_role;
 
     if($namarole=='Pegawai'){
-      $pengguna = DB::table('pegawai')->where('id_user', $pengguna->id_user)->first();
-      $role = DB::table('role_pegawai')->where('id_role_pegawai', $pengguna->id_role_pegawai)->first();
+      $pegawai = DB::table('pegawai')->where('id_user', $pengguna->id_user)->first();
+      $role = DB::table('role_pegawai')->where('id_role_pegawai', $pegawai->id_role_pegawai)->first();
       $namarole = $role->nama_role_pegawai;
     }
 
@@ -41,16 +43,20 @@ class UploadController extends Controller
     if(count($request->berkases)>0) {
       foreach ($request->berkases as $index=>$berkas) {
         $idBerkas = $request->idBerkas[$index];
+        $namaberkas = $request->nama[$index];
+        $namamahasiswa = $request->namamahasiswa;
         $file = $idMahasiswa.'-'.$request->nama[$index].'.pdf';
         $oldfile = DB::table('berkas_umum')->where('file', $file)->first();
         if($oldfile == null) {
           DB::insert('INSERT INTO `berkas_umum`(`id_berkas`, `id_mahasiswa`, `file`)
           VALUES (?,?,?)', [$idBerkas, $idMahasiswa, $file]);
+          $berkas->storeAs('berkas', $file);
+          return redirect($request->get('link'))->with('namaberkas', $namaberkas)->with('namamahasiswa', $namamahasiswa);
+        }else{
+          return redirect($request->get('link'))->with('namaberkastimpa', $namaberkas)->with('namamahasiswatimpa', $namamahasiswa);
         }
-        $berkas->storeAs('berkas', $file);
       }
     }
-    return redirect($request->link);
   }
 
   //Alvin Sprint 3
@@ -79,18 +85,22 @@ class UploadController extends Controller
 
   public function unggahDKsubmit(UploadRequest $request)
   {
-    $idBeasiswa = $request->get('idBeasiswa');
-    $idDirektorat = $request->get('idDirektorat');
-    $dokumen = $request->uploadDK;
+    $idbeasiswa = $request->get('idBeasiswa');
+    $namabeasiswa = $request->get('namaBeasiswa');
+    $iddirektorat = $request->get('idDirektorat');
+    $dokumen = $request->DokumenKerjasama;
     if(count($dokumen)>0) {
-        $namaDokumen = $idDirektorat.'-'.$idBeasiswa.'-Dokumen Kerjasama.pdf';
-        $oldfile = DB::table('dokumen_kerjasama')->where('nama_dokumen', $namaDokumen)->first();
+        $namadokumen = $iddirektorat.'-'.$idbeasiswa.'-Dokumen Kerjasama.pdf';
+        $oldfile = DB::table('dokumen_kerjasama')->where('nama_dokumen', $namadokumen)->first();
         if($oldfile == null) {
           DB::insert('INSERT INTO `dokumen_kerjasama`(`id_direktorat`, `id_beasiswa`, `nama_dokumen`)
-          VALUES (?,?,?)', [$idDirektorat, $idBeasiswa, $namaDokumen]);
+          VALUES (?,?,?)', [$iddirektorat, $idbeasiswa, $namadokumen]);
+          $dokumen->storeAs('dokumen_kerjasama/'.$idbeasiswa, $namadokumen);
+          return redirect('list-beasiswa')->with('namabeasiswa', $namabeasiswa)->with('namadokumen', $namadokumen);
+        }else{
+          $dokumen->storeAs('dokumen_kerjasama/'.$idbeasiswa, $namadokumen);
+          return redirect('list-beasiswa')->with('namabeasiswatimpa', $namabeasiswa)->with('namadokumentimpa', $namadokumen);
         }
-        $dokumen->storeAs('dokumen_kerjasama/'.$idBeasiswa, $namaDokumen);
     }
-    return redirect('list-beasiswa');
   }
 }

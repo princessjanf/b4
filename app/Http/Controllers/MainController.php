@@ -44,7 +44,7 @@ class MainController extends Controller
         DB::insert('INSERT INTO `user`(`username`, `nama`, `email`, `id_role`)
                     VALUES (?,?,?,1)',
                     [
-                       $user->username,
+                        $user->username,
                         $user->name,
                         $user->username."@ui.ac.id"
                     ]

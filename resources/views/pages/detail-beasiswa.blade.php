@@ -3,6 +3,7 @@
 @section('title', 'Detail Beasiswa')
 
 @section('content')
+
 @if ($namarole=='Direktorat Kerjasama')
 <h4>Detail Beasiswa</h4>
 <h2>{{$beasiswa->nama_beasiswa}}</h2>
