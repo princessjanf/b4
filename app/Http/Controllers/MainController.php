@@ -17,6 +17,7 @@ class MainController extends Controller
       }
       else{
         $user = SSO::getUser();
+
         $pengguna = DB::table('user')->where('username', $user->username)->first();
         $role = DB::table('role')->where('id_role', $pengguna->id_role)->first();
         $namarole = $role->nama_role;
@@ -39,24 +40,76 @@ class MainController extends Controller
         SSO::authenticate();
       $user = SSO::getUser();
       $exist = DB::table('user')->where('username', $user->username)->first();
+
       if ($exist == null)
       {
+        if ($user->role != 'tamu')
+          $email = $user->username."@ui.ac.id";
+        else {
+          $email = $user->username;
+        }
         DB::insert('INSERT INTO `user`(`username`, `nama`, `email`, `id_role`)
                     VALUES (?,?,?,1)',
                     [
                        $user->username,
                         $user->name,
-                        $user->username."@ui.ac.id"
+                        $email
                     ]
                   );
-        DB::insert('INSERT INTO `mahasiswa`(`username`, `npm`, `id_fakultas`, `id_prodi`)
-                    VALUES (?,?,1,1)',
-                    [
-                       $user->username,
-                        $user->npm
-                    ]
+        $pgn = DB::table('user')->orderBy('id_user', 'desc')->first();
+
+        if ($user->role == 'mahasiswa')
+        {
+
+          $ep = explode('(',$user->educational_program);
+          $jenjang = DB::table('jenjang')->where('nama_jenjang', $ep)->first();
+
+        $np = explode('(',$user->study_program);
+        $namaprodi =ucwords(strtolower($np[0]));
+        $prodi= DB::table('program_studi')->where('nama_prodi', $namaprodi)->first();
+
+        if (count($prodi) == 0)
+        {
+          DB::insert('INSERT INTO `mahasiswa`(`id_user`, `npm`, `email`, `id_fakultas`,  `id_prodi`, `alamat`, `nama_bank`, `nomor_rekening`, `jenis_identitas`, `nomor_identitas`, `nama_pemilik_rekening`, `nomor_telepon`, `nomor_hp`, `penghasilan_orang_tua`, `IPK`)
+
+                        VALUES (?,?,?,8,29,"Jalan Jambu No. 3","Mandiri", "1256134298","KTP", "121212121", ?, "021774499", "082112525123", "999999", "4.0")',
+                      [
+                          $pgn->id_user,
+                          $user->npm,
+                          $pgn->email,
+                          $user->name
+                      ]
+                    );
+        }
+        // return $fakultas->id_fakultas;
+        DB::insert('INSERT INTO `mahasiswa`(`id_user`, `npm`, `email`, `id_fakultas`, `id_prodi`, `id_jenjang`, `alamat`, `nama_bank`, `nomor_rekening`, `jenis_identitas`, `nomor_identitas`, `nama_pemilik_rekening`, `nomor_telepon`, `nomor_hp`, `penghasilan_orang_tua`, `IPK`)
+
+        VALUES (?,?,?,?,?,?,"Jalan Jambu No. 3","Mandiri", "1256134298","KTP", "121212121", ?, "021774499", "082112525123", "999999", "4.0")',
+        [
+            $pgn->id_user,
+            $user->npm,
+            $pgn->email,
+            $prodi->id_fakultas,
+            $prodi->id_prodi,
+            $jenjang->id_jenjang,
+            $user->name
+        ]
                   );
       }
+
+    else {
+      DB::insert('INSERT INTO `mahasiswa`(`id_user`, `npm`, `email`, `id_fakultas`,  `id_prodi`, `alamat`, `nama_bank`, `nomor_rekening`, `jenis_identitas`, `nomor_identitas`, `nama_pemilik_rekening`, `nomor_telepon`, `nomor_hp`, `penghasilan_orang_tua`, `IPK`)
+
+                    VALUES (?,"1406623676",?,8,29,"Jalan Jambu No. 3","Mandiri", "1256134298","KTP", "121212121", ?, "021774499", "082112525123", "999999", "4.0")',
+                  [
+                      $pgn->id_user,
+
+                      $pgn->email,
+                      $user->name
+                  ]
+                );
+    }
+  }
         return redirect('');
     }
 
@@ -666,7 +719,10 @@ function pendaftarBeasiswa($id)
 			//Kalau punya akses:
 			else{
 					$beasiswa = DB::table('beasiswa')->where('id_beasiswa',$idBeasiswa)->first();
-					// Cek apakah sudah final atau belum
+          //cek tahapan lanjut
+
+
+        	// Cek apakah sudah final atau belum
 					$final = 0;
 					/*	final = 1 -> belum ada pendaftar
 					*		final = 2 -> lihat hasil
@@ -730,7 +786,51 @@ function pendaftarBeasiswa($id)
 				//get nama dan nilai pendaftar beasiswa untuk tahap ini
 
 				$beasiswa = DB::table('beasiswa')->where('id_beasiswa',$idBeasiswa)->first();
+        $penerimaChecker = DB::table('penerima_beasiswa')->where('id_beasiswa', $idBeasiswa)->first();
+        if (empty($penerimaChecker))
+        {
+          $penerimaChecker = 0;
+        }
+        else{
+          $penerimaChecker = 1;
+        }
+        $tahapanljt = 0; // 0 -> ini adalah tahap terakhir
+        $namaljt = '';
+        $penyeleksiljt = 0; // 0 -> pengguna sekarang bukan penyeleksi tahap berikutnya; 1 -> pengguna sekarang adl penyelksi tahap berikutnya
+        $daftarTahapan = DB::table('beasiswa_penyeleksi')->join('beasiswa_penyeleksi_tahapan', 'beasiswa_penyeleksi.id_bp','=','beasiswa_penyeleksi_tahapan.id_bp')
+                        ->where('beasiswa_penyeleksi.id_beasiswa', $idBeasiswa)->get();
+        $setTmp = 0;
+        foreach($daftarTahapan as $key=>$dt)
+        {
+          if ($setTmp == 1)
+          {
+            $tahapanljt = $dt->id_tahapan;
+            $namaljt = DB::table('tahapan')->where('id_tahapan', $tahapanljt)->first();
+            if ($dt->id_penyeleksi == $pengguna->id_user)
+            {
+              $penyeleksiljt = 1;
+            }
+            break;
+          }
+          if ($dt->id_tahapan == $idTahapan)
+          {
+            $setTmp = 1;
+          }
 
+        }
+
+        if ($penerimaChecker == 1)
+        {
+          $penerima = DB::table('penerima_beasiswa')->where('id_beasiswa', $idBeasiswa)->get();
+        }
+        else{
+          $penerima = '';
+        }
+        // foreach ($penerima as $penerima)
+        // {
+        //   return $penerima->id_beasiswa;
+        // }
+        // return $penerima->id_beasiswa;
 				$final = 0;
 				/*	final = 1 -> belum ada pendaftar
 				*		final = 2 -> lihat hasi
@@ -740,7 +840,7 @@ function pendaftarBeasiswa($id)
 				if (empty($cekFinal)) // Jika belum/ tidak ada pendaftar
 				{
 					$final = 1;
-					return view('pages.seleksi-tahapan')->withUser($user)->withPengguna($pengguna)->withNamarole($namarole)->withIdtahapan($idTahapan)->withIdbeasiswa($idBeasiswa)->withBeasiswa($beasiswa)->withFinal($final)->withTahapan($tahapan);
+					return view('pages.seleksi-tahapan')->withUser($user)->withPengguna($pengguna)->withNamarole($namarole)->withIdtahapan($idTahapan)->withIdbeasiswa($idBeasiswa)->withBeasiswa($beasiswa)->withFinal($final)->withTahapan($tahapan)->withTahapanljt($tahapanljt)->withPenyeleksiljt($penyeleksiljt)->withNamaljt($namaljt)->withPenerimachecker($penerimaChecker)->withPenerima($penerima);
 				}
 				else{
 					$pendaftar = DB::table('seleksi_beasiswa')->where('id_beasiswa', $idBeasiswa)
@@ -751,10 +851,10 @@ function pendaftarBeasiswa($id)
 					if($cekFinal -> final == '1')
 					{
 						$final = 2;
-						return view('pages.seleksi-tahapan')->withUser($user)->withPengguna($pengguna)->withNamarole($namarole)->withPendaftar($pendaftar)->withIdtahapan($idTahapan)->withIdbeasiswa($idBeasiswa)->withBeasiswa($beasiswa)->withFinal($final)->withTahapan($tahapan);
+						return view('pages.seleksi-tahapan')->withUser($user)->withPengguna($pengguna)->withNamarole($namarole)->withPendaftar($pendaftar)->withIdtahapan($idTahapan)->withIdbeasiswa($idBeasiswa)->withBeasiswa($beasiswa)->withFinal($final)->withTahapan($tahapan)->withTahapanljt($tahapanljt)->withPenyeleksiljt($penyeleksiljt)->withNamaljt($namaljt)->withPenerimachecker($penerimaChecker)->withPenerima($penerima);
 					}
 					else{
-						return view('pages.seleksi-tahapan')->withUser($user)->withPengguna($pengguna)->withNamarole($namarole)->withPendaftar($pendaftar)->withIdtahapan($idTahapan)->withIdbeasiswa($idBeasiswa)->withBeasiswa($beasiswa)->withFinal($final)->withTahapan($tahapan);
+						return view('pages.seleksi-tahapan')->withUser($user)->withPengguna($pengguna)->withNamarole($namarole)->withPendaftar($pendaftar)->withIdtahapan($idTahapan)->withIdbeasiswa($idBeasiswa)->withBeasiswa($beasiswa)->withFinal($final)->withTahapan($tahapan)->withTahapanljt($tahapanljt)->withPenyeleksiljt($penyeleksiljt)->withNamaljt($namaljt)->withPenerimachecker($penerimaChecker)->withPenerima($penerima);
 					}
 
 				}
@@ -763,31 +863,36 @@ function pendaftarBeasiswa($id)
 		}
 		function savedraftest(Request $request)
 		{
-			$table = [2];
-			$partisipan = DB::table('seleksi_beasiswa')->where('id_beasiswa', '2')->where('id_tahapan', '5')->select('id_mahasiswa')->get();
-			foreach($partisipan as $key => $partisipan)
-			{
-				DB::table('pendaftaran_beasiswa')->where('id_mahasiswa', $partisipan->id_mahasiswa)->where('id_beasiswa', '2')->update(['status_lamaran' => '7']);
-			}
+      $idBeasiswa = 64;
+      $tahapanljt = 0; // 0 -> ini adalah tahap terakhir
+      $penyeleksiljt = 0; // 0 -> pengguna sekarang bukan penyeleksi tahap berikutnya; 1 -> pengguna sekarang adl penyelksi tahap berikutnya
+      $daftarTahapan = DB::table('beasiswa_penyeleksi')->join('beasiswa_penyeleksi_tahapan', 'beasiswa_penyeleksi.id_bp','=','beasiswa_penyeleksi_tahapan.id_bp')
+                      ->where('beasiswa_penyeleksi.id_beasiswa', $idBeasiswa)->get();
+      $setTmp = 0;
+      $idTahapan = 4;
+      foreach($daftarTahapan as $key=>$dt)
+      {
+        if ($setTmp == 1)
+        {
+          $tahapanljt = $dt->id_tahapan;
+          break;
+        }
+        if ($dt->id_tahapan == $idTahapan)
+        {
+          $setTmp = 1;
+        }
 
-			DB::table('seleksi_beasiswa')->where('id_beasiswa','2')->where('id_tahapan','5')
-			->where('id_penyeleksi', '5')->update(['final'=>'1']);
-			foreach ($table as $key => $idMahasiswa) {
-
-				DB::table('pendaftaran_beasiswa')->where('id_mahasiswa', $idMahasiswa)->where('id_beasiswa', '2')->update(['status_lamaran' => '6']);
-				DB::table('penerima_beasiswa')->insert(
-					['id_beasiswa' => '2',
-					'id_mahasiswa'=>$idMahasiswa
-				]
-			);
-
-			}
+      }
+      return $tahapanljt;
 		}
 
 		function saveDraftCheck(Request $request)
 		{
 			//Loop untuk setiap partisipan yang namanya ada di dalam table
-			foreach ($request->table as $key => $idMahasiswa) {
+      DB::table('seleksi_beasiswa')->where('id_beasiswa', $request->idbeasiswa)->where('id_tahapan', $request->idtahapan)
+      ->where('id_penyeleksi', $request->pengguna)->update(['nilai_seleksi' =>'0']);
+
+      foreach ($request->table as $key => $idMahasiswa) {
 				DB::table('seleksi_beasiswa')->where('id_beasiswa',$request->idbeasiswa)->where('id_tahapan', $request->idtahapan)
 				->where('id_mahasiswa', $idMahasiswa)->where('id_penyeleksi', $request->pengguna)->update(['nilai_seleksi' =>'1']);
 			}
@@ -813,7 +918,7 @@ function pendaftarBeasiswa($id)
 
 			for($i = 0;$i < sizeof($table);$i++)
 			{
-				$row = explode("=",$table[0]);
+				$row = explode("=",$table[$i]);
 				DB::table('seleksi_beasiswa')
 				->where('id_beasiswa', $request->idbeasiswa)->where('id_penyeleksi', $request->pengguna)
 				->where('id_tahapan', $request->idtahapan)->where('id_mahasiswa', $row[0])
@@ -866,11 +971,11 @@ function pendaftarBeasiswa($id)
 			//get nama tahapan
 			$namatahapan = DB::table('tahapan')->where('id_tahapan', $request->idtahapan)->select('nama_tahapan')->first();
 
-			if ($namatahapan->nama_tahapan == 'Administratif')
+			if ($namatahapan->nama_tahapan == 'Seleksi Administratif')
 			{
 				$idstatus = 2;
 			}
-			else if ($namatahapan->nama_tahapan == 'Berkas')
+			else if ($namatahapan->nama_tahapan == 'Seleksi Berkas')
 			{
 				$idstatus = 3;
 			}
