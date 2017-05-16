@@ -86,7 +86,7 @@
 								<h4 class="modal-title">Hapus Beasiswa</h4>
 							</div>
 							<div class="modal-body">
-								<p id='isi1'>message</p>
+								<p id='isi1'>Anda yakin ingin menghapus beasiswa?</p>
 							</div>
 							<div class="modal-footer">
 								<a href="#" id="linkHapus" ><button type="button" class="btn btn-success">Ya</button></a>
@@ -112,7 +112,7 @@
 								<h4 class="modal-title">Umumkan Beasiswa</h4>
 							</div>
 							<div class="modal-body">
-								<p id='isi2'>hehe</p>
+								<p id='isi2'>Anda yakin ingin mengumumkan beasiswa?</p>
 							</div>
 							<div class="modal-footer">
 								<a href="#" id="linkPublic" ><button type="button" class="btn btn-success">Ya</button></a>
