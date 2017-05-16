@@ -17,6 +17,7 @@ class MainController extends Controller
       }
       else{
         $user = SSO::getUser();
+
         $pengguna = DB::table('user')->where('username', $user->username)->first();
         $role = DB::table('role')->where('id_role', $pengguna->id_role)->first();
         $namarole = $role->nama_role;
@@ -39,6 +40,7 @@ class MainController extends Controller
         SSO::authenticate();
       $user = SSO::getUser();
       $exist = DB::table('user')->where('username', $user->username)->first();
+
       if ($exist == null)
       {
         DB::insert('INSERT INTO `user`(`username`, `nama`, `email`, `id_role`)
@@ -49,14 +51,40 @@ class MainController extends Controller
                         $user->username."@ui.ac.id"
                     ]
                   );
-        DB::insert('INSERT INTO `mahasiswa`(`username`, `npm`, `id_fakultas`, `id_prodi`)
-                    VALUES (?,?,1,1)',
-                    [
-                       $user->username,
-                        $user->npm
-                    ]
+        $pgn = DB::table('user')->orderBy('id_user', 'desc')->first();
+
+        $np = explode('(',$user->study_program);
+        $namaprodi =ucwords(strtolower($np[0]));
+        $prodi= DB::table('program_studi')->where('nama_prodi', $namaprodi)->first();
+
+        if (count($prodi) == 0)
+        {
+          DB::insert('INSERT INTO `mahasiswa`(`id_user`, `npm`, `email`, `id_fakultas`,  `id_prodi`, `alamat`, `nama_bank`, `nomor_rekening`, `jenis_identitas`, `nomor_identitas`, `nama_pemilik_rekening`, `nomor_telepon`, `nomor_hp`, `penghasilan_orang_tua`, `IPK`)
+
+                        VALUES (?,?,?,8,29,"Jalan Jambu No. 3","Mandiri", "1256134298","KTP", "121212121", ?, "021774499", "082112525123", "999999", "4.0")',
+                      [
+                          $pgn->id_user,
+                          $user->npm,
+                          $pgn->email,
+                          $user->name
+                      ]
+                    );
+        }
+        // return $fakultas->id_fakultas;
+        DB::insert('INSERT INTO `mahasiswa`(`id_user`, `npm`, `email`, `id_fakultas`,  `id_prodi`, `alamat`, `nama_bank`, `nomor_rekening`, `jenis_identitas`, `nomor_identitas`, `nama_pemilik_rekening`, `nomor_telepon`, `nomor_hp`, `penghasilan_orang_tua`, `IPK`)
+
+        VALUES (?,?,?,?,?,"Jalan Jambu No. 3","Mandiri", "1256134298","KTP", "121212121", ?, "021774499", "082112525123", "999999", "4.0")',
+        [
+            $pgn->id_user,
+            $user->npm,
+            $pgn->email,
+            $prodi->id_fakultas,
+            $prodi->id_prodi,
+            $user->name
+        ]
                   );
       }
+
         return redirect('');
     }
 
