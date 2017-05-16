@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\DB;
 use SSO\SSO;
 use Charts;
@@ -17,14 +18,32 @@ class ChartController extends Controller
 
       $chart = array();
       array_push($chart, Charts::multidatabase('bar', 'highcharts')
-                              ->title("chart sesuatu")
+                              ->title("chart fakultas all")
                               ->elementLabel('Jumlah')
                               ->dataset('Penerima', DB::table('penerima_beasiswa as pb')->join('beasiswa as b', 'b.id_beasiswa', '=', 'pb.id_beasiswa')->get())
                               ->dataset('Pendaftar', DB::table('pendaftaran_beasiswa as pb')->join('beasiswa as b', 'b.id_beasiswa', '=', 'pb.id_beasiswa')->get())
                               ->groupBy('nama_beasiswa')
                             );
-      array_push($chart, Charts::database(DB::table('user')->get(), 'bar', 'highcharts')
-                              ->groupBy('username')
+      array_push($chart, Charts::multidatabase('bar', 'highcharts')
+                              ->title("chart fakultas 1")
+                              ->elementLabel('Jumlah')
+                              ->dataset('Penerima', DB::table('penerima_beasiswa as pb')->join('beasiswa as b', 'b.id_beasiswa', '=', 'pb.id_beasiswa')->join('mahasiswa as m', 'm.id_user','=','pb.id_mahasiswa')->where('m.id_fakultas','=','1')->get())
+                              ->dataset('Pendaftar', DB::table('pendaftaran_beasiswa as pb')->join('beasiswa as b', 'b.id_beasiswa', '=', 'pb.id_beasiswa')->join('mahasiswa as m', 'm.id_user','=','pb.id_mahasiswa')->where('m.id_fakultas','=','1')->get())
+                              ->groupBy('nama_beasiswa')
+                            );
+      array_push($chart, Charts::multidatabase('bar', 'highcharts')
+                              ->title("chart prodi 2")
+                              ->elementLabel('Jumlah')
+                              ->dataset('Penerima', DB::table('penerima_beasiswa as pb')->join('beasiswa as b', 'b.id_beasiswa', '=', 'pb.id_beasiswa')->join('mahasiswa as m', 'm.id_user','=','pb.id_mahasiswa')->where('m.id_prodi','=','2')->get())
+                              ->dataset('Pendaftar', DB::table('pendaftaran_beasiswa as pb')->join('beasiswa as b', 'b.id_beasiswa', '=', 'pb.id_beasiswa')->join('mahasiswa as m', 'm.id_user','=','pb.id_mahasiswa')->where('m.id_prodi','=','2')->get())
+                              ->groupBy('nama_beasiswa')
+                            );
+      array_push($chart, Charts::multidatabase('bar', 'highcharts')
+                              ->title("chart pendonor 1")
+                              ->elementLabel('Jumlah')
+                              ->dataset('Penerima', DB::table('penerima_beasiswa as pb')->join('beasiswa as b', 'b.id_beasiswa', '=', 'pb.id_beasiswa')->where('b.id_pendonor','=','1')->get())
+                              ->dataset('Pendaftar', DB::table('pendaftaran_beasiswa as pb')->join('beasiswa as b', 'b.id_beasiswa', '=', 'pb.id_beasiswa')->where('b.id_pendonor','=','1')->get())
+                              ->groupBy('nama_beasiswa')
                             );
 
       return view('pages.statistik-beasiswa', compact('user','pengguna','namarole','chart'));
