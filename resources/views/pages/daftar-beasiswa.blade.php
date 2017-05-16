@@ -8,6 +8,8 @@
 
 @section('content')
 <form id='daftarScholarshipForm' action = "{{ url('register-beasiswa') }}" onsubmit="return validateForm()" method = "post" data-parsley-validate="" enctype="multipart/form-data">
+
+
 	<div>
 		<h3> Daftar Beasiswa </h3> <h4><font color="#003366"> {{$beasiswa->nama_beasiswa}}</font></h4>
 		<hr>
@@ -134,8 +136,33 @@
 	</div>
 	<hr>
 	<div>
-		<button type="submit" id="submit-form" class="btn btn-success"> Submit </button>
+		
 		<a href="{{ url('list-beasiswa	') }}" ><button style ="text-decoration: none"id="cancel" class="btn btn-danger" type="button" formnovalidate>Cancel</button></a>
+		<input type="button" name="btn" value="Submit" id="submitBtn" data-toggle="modal" data-target="#confirm-submit" class="btn btn-success" />
+
+		
+
+		<div class="modal fade" id="confirm-submit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			    <div class="modal-dialog">
+				        <div class="modal-content">
+				            <div class="modal-header">
+				               <b> Confirm Submit</b>
+				            </div>
+				            <div class="modal-body">
+				                Apakah Anda yakin ingin mendaftar Beasiswa <b> {{$beasiswa->nama_beasiswa}}</b>?
+
+				            </div>
+
+						  <div class="modal-footer">
+						            <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+						            <button type="submit" id="submit-form" class="btn btn-success"> Submit </button>
+						           <!--  <a href="#" id="submit" class="btn btn-success success">Submit</a> -->
+						  </div>
+				    </div>
+				</div>
+		</div>
+
+		
 	</div>
 </form>
 

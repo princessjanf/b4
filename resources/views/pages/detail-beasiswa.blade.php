@@ -8,7 +8,8 @@
 
 @elseif ($namarole=='Mahasiswa')
 @if ($beasiswa->tanggal_buka <= Carbon\Carbon::now() and Carbon\Carbon::now() <= $beasiswa->tanggal_tutup)
-  <h4>Detail Beasiswa &nbsp;
+  <h4>Detail Beasiswa &nbsp;</h4>
+  <h2>{{$beasiswa->nama_beasiswa}}</h2>
     @if($beasiswa->id_jenis_seleksi=='1')
     <a href= "{{url($beasiswa->link_seleksi)}}"><button class="btn"><b>Daftar</b></button></a>
     @else
