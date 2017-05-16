@@ -52,6 +52,12 @@ class MainController extends Controller
                     ]
                   );
         $pgn = DB::table('user')->orderBy('id_user', 'desc')->first();
+        $ep = explode('(',$user->educational_program);
+        $jenjang = DB::table('jenjang')->where('nama_jenjang', $ep)->first();
+
+        if ($user->role == 'mahasiswa')
+        {
+
 
         $np = explode('(',$user->study_program);
         $namaprodi =ucwords(strtolower($np[0]));
@@ -71,20 +77,34 @@ class MainController extends Controller
                     );
         }
         // return $fakultas->id_fakultas;
-        DB::insert('INSERT INTO `mahasiswa`(`id_user`, `npm`, `email`, `id_fakultas`,  `id_prodi`, `alamat`, `nama_bank`, `nomor_rekening`, `jenis_identitas`, `nomor_identitas`, `nama_pemilik_rekening`, `nomor_telepon`, `nomor_hp`, `penghasilan_orang_tua`, `IPK`)
+        DB::insert('INSERT INTO `mahasiswa`(`id_user`, `npm`, `email`, `id_fakultas`, `id_prodi`, `id_jenjang`, `alamat`, `nama_bank`, `nomor_rekening`, `jenis_identitas`, `nomor_identitas`, `nama_pemilik_rekening`, `nomor_telepon`, `nomor_hp`, `penghasilan_orang_tua`, `IPK`)
 
-        VALUES (?,?,?,?,?,"Jalan Jambu No. 3","Mandiri", "1256134298","KTP", "121212121", ?, "021774499", "082112525123", "999999", "4.0")',
+        VALUES (?,?,?,?,?,?,"Jalan Jambu No. 3","Mandiri", "1256134298","KTP", "121212121", ?, "021774499", "082112525123", "999999", "4.0")',
         [
             $pgn->id_user,
             $user->npm,
             $pgn->email,
             $prodi->id_fakultas,
             $prodi->id_prodi,
+            $jenjang->id_jenjang,
             $user->name
         ]
                   );
       }
 
+    else {
+      DB::insert('INSERT INTO `mahasiswa`(`id_user`, `npm`, `email`, `id_fakultas`,  `id_prodi`, `alamat`, `nama_bank`, `nomor_rekening`, `jenis_identitas`, `nomor_identitas`, `nama_pemilik_rekening`, `nomor_telepon`, `nomor_hp`, `penghasilan_orang_tua`, `IPK`)
+
+                    VALUES (?,?,?,8,29,"Jalan Jambu No. 3","Mandiri", "1256134298","KTP", "121212121", ?, "021774499", "082112525123", "999999", "4.0")',
+                  [
+                      $pgn->id_user,
+                      $user->npm,
+                      $pgn->email,
+                      $user->name
+                  ]
+                );
+    }
+  }
         return redirect('');
     }
 
