@@ -178,7 +178,9 @@
 
 <script type="text/javascript">
 	$(document).ready(function() {
-		$('#beasiswalist').DataTable();
+		$('#beasiswalist').DataTable({
+			 "paging": false
+		});
 	});
 	$(document).ready(function(){
 		$('[data-toggle="tooltip"]').tooltip();
