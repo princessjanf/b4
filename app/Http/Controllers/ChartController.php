@@ -76,6 +76,40 @@ class ChartController extends Controller
 
     }
 
+    function jumlahBeasiswaFakultas() {
+      $user = SSO::getUser();
+      $pengguna = ChartController::getPengguna($user);
+      $namarole = ChartController::getNamarole($pengguna);
+
+       $chart = Charts::multidatabase('bar', 'highcharts')
+                              ->title("Jumlah Beasiswa Per Fakultas")    
+                              ->elementLabel('Jumlah')
+                              ->dataset('Beasiswa', DB::table('beasiswa')
+                                ->join('beasiswa_jenjang_prodi', 'beasiswa_jenjang_prodi.id_beasiswa','=','beasiswa.id_beasiswa')
+                                ->join('program_studi', 'program_studi.id_prodi', '=', 'beasiswa_jenjang_prodi.id_prodi')
+                                ->join('fakultas','fakultas.id_fakultas','=', 'program_studi.id_fakultas')->get())
+                              ->groupBy('nama_fakultas');
+
+        return view('pages.statistik-beasiswa5', compact('user','pengguna','namarole','chart'));
+    }
+
+    function jumlahBeasiswaProdi() {
+      $user = SSO::getUser();
+      $pengguna = ChartController::getPengguna($user);
+      $namarole = ChartController::getNamarole($pengguna);
+
+       $chart = Charts::multidatabase('bar', 'highcharts')
+                              ->title("Jumlah Beasiswa Per Program Studi")    
+                              ->elementLabel('Jumlah')
+                              ->dataset('Beasiswa', DB::table('beasiswa')
+                                ->join('beasiswa_jenjang_prodi', 'beasiswa_jenjang_prodi.id_beasiswa','=','beasiswa.id_beasiswa')
+                                ->join('program_studi', 'program_studi.id_prodi', '=', 'beasiswa_jenjang_prodi.id_prodi')
+                                ->get())
+                              ->groupBy('nama_prodi');
+
+        return view('pages.statistik-beasiswa5', compact('user','pengguna','namarole','chart'));
+    }
+
     function pendaftarFakultas() {
       $user = SSO::getUser();
       $pengguna = ChartController::getPengguna($user);
