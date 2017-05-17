@@ -187,7 +187,7 @@ class ChartController extends Controller
                               ->dataset('Jumlah Beasiswa', DB::table('program_studi as ps')->join('beasiswa_jenjang_prodi as b', 'b.id_prodi', '=', 'ps.id_prodi')->get())
                               ->groupBy('nama_prodi');
 
-      return view('pages.statistik-beasiswa4', compact('user','pengguna','namarole','chart', 'prodi', 'selected'));
+      return view('pages.statistik-beasiswa6', compact('user','pengguna','namarole','chart', 'prodi', 'selected'));
     }
 
     function index6filter(Request $request)
@@ -204,15 +204,19 @@ class ChartController extends Controller
         $chart = Charts::multidatabase('bar', 'highcharts')
         ->title("Jumlah Beasiswa di Semua Prodi")
         ->elementLabel('Jumlah')
-        -->dataset('Jumlah Beasiswa', DB::table('program_studi as ps')->join('beasiswa_jenjang_prodi as b', 'b.id_prodi', '=', 'ps.id_prodi')->get())
+        ->dataset('Jumlah Beasiswa', DB::table('program_studi as ps')->join('beasiswa_jenjang_prodi as b', 'b.id_prodi', '=', 'ps.id_prodi')->get())
         ->groupBy('nama_prodi');
       } else {
         $chart = Charts::multidatabase('bar', 'highcharts')
-        ->title("Beasiswa di $request->selected")
+        ->title("Jumlah Beasiswa di $request->selected")
         ->elementLabel('Jumlah')
-        // ->dataset('Jumlah Beasiswa', DB::table('program_studi as ps')->join('beasiswa_jenjang_prodi as b', 'b.id_beasiswa', '=', 'pb.id_beasiswa')->join('mahasiswa as m', 'm.id_user','=','pb.id_mahasiswa')->join('fakultas as f', 'f.id_fakultas','=','m.id_fakultas')->where('f.nama_fakultas','=',$request->selected)->get())
-        ->groupBy('nama_beasiswa');
+       ->dataset('Beasiswa', DB::table('beasiswa')
+                                ->join('beasiswa_jenjang_prodi', 'beasiswa_jenjang_prodi.id_beasiswa','=','beasiswa.id_beasiswa')
+                                ->join('program_studi', 'program_studi.id_prodi', '=', 'beasiswa_jenjang_prodi.id_prodi')
+                                ->where('program_studi.nama_prodi','=', $request->selected)
+                                ->get())
+                              ->groupBy('nama_prodi');
       }
-      return view('pages.statistik-beasiswa4', compact('user','pengguna','namarole','chart', 'prodi', 'selected'));
+      return view('pages.statistik-beasiswa6', compact('user','pengguna','namarole','chart', 'prodi', 'selected'));
     }
 }
