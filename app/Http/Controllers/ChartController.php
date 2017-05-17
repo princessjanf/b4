@@ -210,13 +210,29 @@ class ChartController extends Controller
         $chart = Charts::multidatabase('bar', 'highcharts')
         ->title("Jumlah Beasiswa di $request->selected")
         ->elementLabel('Jumlah')
-       ->dataset('Beasiswa', DB::table('beasiswa')
-                                ->join('beasiswa_jenjang_prodi', 'beasiswa_jenjang_prodi.id_beasiswa','=','beasiswa.id_beasiswa')
+       ->dataset('Beasiswa', DB::table('beasiswa_jenjang_prodi')
                                 ->join('program_studi', 'program_studi.id_prodi', '=', 'beasiswa_jenjang_prodi.id_prodi')
                                 ->where('program_studi.nama_prodi','=', $request->selected)
                                 ->get())
                               ->groupBy('nama_prodi');
       }
       return view('pages.statistik-beasiswa6', compact('user','pengguna','namarole','chart', 'prodi', 'selected'));
+    }
+
+    function beasiswaPerProdi(Request $request)
+    {
+      $user = SSO::getUser();
+      $pengguna = $this->getPengguna($user);
+      $namarole = $this->getNamarole($pengguna);
+      $prodi = DB::table('program_studi')->pluck('nama_prodi');
+      $prodi->prepend('Semua Prodi');
+      $selected = "Semua Prodi";
+      $chart = Charts::multidatabase('bar', 'highcharts')
+                              ->title("Beasiswa di Semua Prodi")
+                              ->elementLabel('Jumlah')
+                              ->dataset('Penerima', DB::table('penerima_beasiswa as pb')->join('beasiswa as b', 'b.id_beasiswa', '=', 'pb.id_beasiswa')->get())
+                              ->groupBy('nama_beasiswa');
+
+      return view('pages.statistik-beasiswa4', compact('user','pengguna','namarole','chart', 'fakultas', 'selected'));
     }
 }
