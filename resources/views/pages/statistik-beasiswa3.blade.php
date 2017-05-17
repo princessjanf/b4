@@ -9,7 +9,7 @@
 @section('content')
 	<div class="col-sm-12">
 	 @foreach($beasiswa as $index => $beasiswaa)
-   <p>Pendaftar Beasiswa {{$beasiswaa->nama_beasiswa}}</p>
+   <p>Pendaftar {{$beasiswaa->nama_beasiswa}}</p>
    @endforeach
 	
 		{!! $chart[0]->render() !!}
