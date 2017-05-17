@@ -172,4 +172,47 @@ class ChartController extends Controller
       }
       return view('pages.statistik-beasiswa4', compact('user','pengguna','namarole','chart', 'fakultas', 'selected'));
     }
+
+    function index6()
+    {
+      $user = SSO::getUser();
+      $pengguna = $this->getPengguna($user);
+      $namarole = $this->getNamarole($pengguna);
+      $prodi = DB::table('program_studi')->pluck('nama_prodi');
+      $prodi->prepend('Semua Prodi');
+      $selected = "Semua Prodi";
+      $chart = Charts::multidatabase('bar', 'highcharts')
+                              ->title("Jumlah Beasiswa di Semua Prodi")
+                              ->elementLabel('Jumlah')
+                              ->dataset('Jumlah Beasiswa', DB::table('program_studi as ps')->join('beasiswa_jenjang_prodi as b', 'b.id_prodi', '=', 'ps.id_prodi')->get())
+                              ->groupBy('nama_prodi');
+
+      return view('pages.statistik-beasiswa4', compact('user','pengguna','namarole','chart', 'prodi', 'selected'));
+    }
+
+    function index6filter(Request $request)
+    {
+      $user = SSO::getUser();
+      $pengguna = $this->getPengguna($user);
+      $namarole = $this->getNamarole($pengguna);
+      $prodi = DB::table('program_studi')->pluck('nama_prodi');
+      $prodi->prepend('Semua Prodi');
+      $selected = $request->selected;
+
+      if ($selected == "Semua Prodi")
+      {
+        $chart = Charts::multidatabase('bar', 'highcharts')
+        ->title("Jumlah Beasiswa di Semua Prodi")
+        ->elementLabel('Jumlah')
+        -->dataset('Jumlah Beasiswa', DB::table('program_studi as ps')->join('beasiswa_jenjang_prodi as b', 'b.id_prodi', '=', 'ps.id_prodi')->get())
+        ->groupBy('nama_prodi');
+      } else {
+        $chart = Charts::multidatabase('bar', 'highcharts')
+        ->title("Beasiswa di $request->selected")
+        ->elementLabel('Jumlah')
+        // ->dataset('Jumlah Beasiswa', DB::table('program_studi as ps')->join('beasiswa_jenjang_prodi as b', 'b.id_beasiswa', '=', 'pb.id_beasiswa')->join('mahasiswa as m', 'm.id_user','=','pb.id_mahasiswa')->join('fakultas as f', 'f.id_fakultas','=','m.id_fakultas')->where('f.nama_fakultas','=',$request->selected)->get())
+        ->groupBy('nama_beasiswa');
+      }
+      return view('pages.statistik-beasiswa4', compact('user','pengguna','namarole','chart', 'prodi', 'selected'));
+    }
 }

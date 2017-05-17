@@ -200,3 +200,4 @@ Route::get('lihat-statistik', 'ChartController@index')->middleware('authSSO');
 Route::get('lihat-statistik4', 'ChartController@index4')->middleware('authSSO');
 Route::post('lihat-statistik4', 'ChartController@index4filter')->middleware('authSSO');
 Route::get('lihat-statistik2', 'ChartController@statistikAll')->middleware('authSSO');
+Route::get('lihat-statistik4', 'ChartController@index6')->middleware('authSSO');
