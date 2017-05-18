@@ -11,5 +11,4 @@ Silahkan balas Email ini jika masih ada pertanyaan lebih lanjut.
 Terima kasih.
 <p></p>
 Salam,
-<p></p>
 Tim Penyeleksi
