@@ -194,12 +194,16 @@ Route::post('upload',[
 
 Route::post('filter-pegawai-fakultas', 'ScholarshipController@filterPegawaiFakultas');
 
-Route::get('email/{idBeasiswa}', 'MailController@sendEmail')->middleware('authSSO');
+Route::get('email/{idBeasiswa}', 'MailController2@sendEmail')->middleware('authSSO');
 
 Route::get('lihat-statistik', 'ChartController@index')->middleware('authSSO');
 Route::get('lihat-statistik4', 'ChartController@index4')->middleware('authSSO');
 Route::post('lihat-statistik4', 'ChartController@index4filter')->middleware('authSSO');
 Route::get('lihat-statistik2', 'ChartController@statistikAll')->middleware('authSSO');
+Route::get('lihat-statistik3', 'ChartController@pendaftarFakultas')->middleware('authSSO');
+
+Route::get('lihat-statistik5', 'ChartController@jumlahBeasiswaFakultas')->middleware('authSSO');
+
 Route::get('lihat-statistik6', 'ChartController@index6')->middleware('authSSO');
 Route::post('lihat-statistik6', 'ChartController@index6filter')->middleware('authSSO');
 Route::get('lihat-statistik7', 'ChartController@beasiswaPerProdi')->middleware('authSSO');

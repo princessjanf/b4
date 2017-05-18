@@ -32,6 +32,7 @@ public function sendEmail($idBeasiswa)
         ->where('pb.id_beasiswa', $idBeasiswa)
         ->select('us.nama as nama', 'b.nama_beasiswa as nama_beasiswa','us.email as email')
         ->get();
+
 foreach ($namaPenerima as $np) {
    $data = array(
    'name'=> $np->nama,
@@ -74,6 +75,7 @@ foreach ($namaPenerima as $np) {
    'subject'=> 'Informasi Penerimaan Beasiswa',
    'messagea' =>' Selamat Anda diterima di beasiswa '.$beasiswa->nama_beasiswa
    );
+   // return var_dump($namaPenerima);
     //kirim email
   Mail::send('pages.send-mail', $data, function($message) use ($data)
   {
