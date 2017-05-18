@@ -10,6 +10,7 @@
 	<link rel="icon" href="{{ asset('img/favicon.ico') }}" type="image/x-icon">
 
 	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css">
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
 	<link href="{{ asset('css/styles.css') }}" rel="stylesheet">
 	<link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet" />
 	<link href="{{ asset('css/style.css') }}" rel="stylesheet" />

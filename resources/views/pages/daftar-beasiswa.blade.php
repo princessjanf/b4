@@ -7,6 +7,12 @@
 @endsection
 
 @section('content')
+@if (session('namaberkas'))
+    <div class="alert alert-success">
+        Berkas {{ session('namaberkas') }} milik {{ session('namamahasiswa') }} telah <b> berhasil </b> diunggah.
+    </div>
+@endif
+
 <form id='daftarScholarshipForm' action = "{{ url('register-beasiswa') }}" onsubmit="return validateForm()" method = "post" data-parsley-validate="" enctype="multipart/form-data">
 
 

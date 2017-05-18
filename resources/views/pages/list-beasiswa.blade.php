@@ -4,11 +4,31 @@
 
 @section('head')
 <link href="{{ asset('css/multiple-select.css') }}" rel="stylesheet" />
+
 @endsection
 
 @section('content')
-@if($namarole=="Pegawai Universitas")
 
+@if (session('namabeasiswa'))
+    <div class="alert alert-success">
+        Dokumen kerjasama untuk {{ session('namabeasiswa') }} telah <b> berhasil </b> diunggah: {{ session('namadokumen') }}
+    </div>
+
+@elseif (session('namabeasiswatimpa'))
+    <div class="alert alert-success">
+        Dokumen kerjasama untuk {{ session('namabeasiswatimpa') }} telah <b> berhasil </b> diperbaharui: {{ session('namadokumentimpa') }}
+    </div>
+@endif
+
+@if($namarole=="Pegawai Universitas")
+	<h2>Paket-Paket Beasiswa &nbsp;&nbsp;
+		<a data-toggle="tooltip" title="Tambah beasiswa" role="button" id="add-beasiswa" class="btn btn-success" href="{{ url('add-beasiswa') }}"><span class="glyphicon glyphicon-plus">&nbsp;</span>Tambah Beasiswa</a>
+		@if ($seleksichecker==1)
+			<a data-toggle="tooltip" title="Buka Halaman Seleksi"  class="btn btn-info" href="{{ url('seleksi') }}">&nbsp;Seleksi Beasiswa</a>
+  </h2>
+		@endif
+
+<<<<<<< HEAD
 <h3>LIST BEASISWA &nbsp;&nbsp;
 	<a data-toggle="tooltip" title="Tambah beasiswa" role="button" id="add-beasiswa" class="btn btn-success" href="{{ url('add-beasiswa') }}"><span class="glyphicon glyphicon-plus">&nbsp;</span>Tambah Beasiswa</a>
 	@if ($seleksichecker==1)
@@ -21,56 +41,169 @@
 		<a data-toggle="tooltip" title="Buka Halaman Seleksi"  class="btn btn-info" href="{{ url('seleksi') }}">&nbsp;Seleksi Beasiswa</a>
 	@endif
 </h3>
+=======
+    <p>Sebagai Pegawai Universitas anda dapat membuat, memodifikasi, menghapus, mengumumkan beasiswa, dan menyeleksi beasiswa.</p>
+    <p class="list-group-item list-group-item-info" style="font-size:8pt; font-weight: bold; font-style: italic; ">*Anda hanya dapat mengumumkan beasiswa apabila Direktorat Kerjasama sudah mengunggah dokumen kerjasama atas beasiswa tersebut.</p>
+    <br>
+@else
+	<h2>Paket-Paket Beasiswa &nbsp;&nbsp;
+		@if ($seleksichecker==1 AND $namarole!="Direktorat Kerjasama" AND $namarole!="Direktorat Kerjasama")
+			<a data-toggle="tooltip" title="Buka Halaman Seleksi"  class="btn btn-info" href="{{ url('seleksi') }}">&nbsp;Seleksi Beasiswa</a>
+			</h2>
+		@elseif($namarole=="Direktorat Kerjasama")
+		</h2>
+			<p>Sebagai Direktorat Kerjasama anda dapat mengunggah dokumen kerjasama yang sudah disepakati.</p>
+			<p class="list-group-item list-group-item-info" style="font-size:8pt; font-weight: bold; font-style: italic; ">*Dengan dokumen kerjasama yang telah diunggah, akan membuat beasiswa tersebut dapat diumumkan kepada publik oleh Pegawai Universitas.</p>
+			<br>
+		@endif
+>>>>>>> refs/remotes/origin/upload-berkas-kerjasama
 @endif
 <table id="beasiswalist" class="table table-striped">
 	<thead>
 		<tr>
-			<th>No</th>
-			<th>Nama Beasiswa</th>
-			<th>Status</th>
-			@if($namarole=="Pendonor" || $namarole=="Pegawai Universitas" || $namarole=="Direktorat Kerjasama")
-			<th>Pendonor</th>
+			@if($namarole=="Direktorat Kerjasama")
+				<th>Waktu dibuat</th>
+			@else
+				<th>No</th>
 			@endif
-			<th>Pendaftaran</th>
-			<th>Tanggal Tutup</th>
+			<th>Nama Beasiswa</th>
+			<th>Pendonor</th>
+			@if($namarole=="Pendonor" || $namarole=="Pegawai Universitas" || $namarole=="Direktorat Kerjasama")
+				<th>Status</th>
+			@endif
+			@if($namarole!="Direktorat Kerjasama")
+				<th>Pendaftaran</th>
+				<th>Tanggal Tutup</th>
+			@else
+				<th>Dokumen</th>
+			@endif
+
 			@if($namarole=="Mahasiswa" || $namarole=="Pegawai Universitas" || $namarole=="Direktorat Kerjasama")
-			<th>More</th>
+				<th></th>
 			@endif
 		</tr>
 	</thead>
 	<tbody>
 		@foreach ($beasiswas as $index => $beasiswa)
-		<tr>
-			<td>{{$index+1}}</td>
-			<td>
-				<a href="{{ url('detail-beasiswa/'.$beasiswa->id_beasiswa) }}">{{$beasiswa->nama_beasiswa}}</a>
-			</td>
-			@if($namarole=="Pendonor" || $namarole=="Pegawai Universitas" || $namarole=="Direktorat Kerjasama")
-			<td>
-				@if ($beasiswa->public == 1)
-				Sudah Publik
+			<tr>
+				@if($namarole!="Direktorat Kerjasama")
+					<td>{{$index+1}}</td>
 				@else
-				Belum Publik
+					@php
+						$bulan = substr($beasiswa->timestamp, 5,2);
+						$waktu = substr($beasiswa->timestamp, 11,8);
+						$tanggal = substr($beasiswa->timestamp, 8,2);
+						$tahun = substr($beasiswa->timestamp, 0,4);
+						if($bulan=="01"){
+							$bulan="Januari";
+						}else if ($bulan=="02"){
+							$bulan="Februari";
+						}else if ($bulan=="03"){
+							$bulan="Maret";
+						}else if ($bulan=="04"){
+							$bulan="April";
+						}else if ($bulan=="05"){
+							$bulan="Mei";
+						}else if ($bulan=="06"){
+							$bulan="Juni";
+						}else if ($bulan=="07"){
+							$bulan="Juli";
+						}else if ($bulan=="08"){
+							$bulan="Agustus";
+						}else if ($bulan=="09"){
+							$bulan="September";
+						}else if ($bulan=="10"){
+							$bulan="Oktober";
+						}else if ($bulan=="11"){
+							$bulan="November";
+						}else if ($bulan=="12"){
+							$bulan="Desember";
+						}
+					@endphp
+				 <td> {{$waktu}} <br> {{$tanggal}}-{{$bulan}}-{{$tahun}}</td>
 				@endif
-			</td>
-			@endif
-			<td>
-				{{$pendonor_beasiswa}}
-			</td>
-			<td>
-				@if ($beasiswa->tanggal_buka <= Carbon\Carbon::now() and Carbon\Carbon::now() <= $beasiswa->tanggal_tutup)
-				<p><b><font color="green">Dibuka</font></b></p>
-				@else
-				<p><b><font color="red">Ditutup</font></b></p>
+				<td>
+					<a href="{{ url('detail-beasiswa/'.$beasiswa->id_beasiswa) }}">{{$beasiswa->nama_beasiswa}}</a>
+				</td>
+				<td>
+					{{$beasiswa->nama_instansi}}
+				</td>
+				@if($namarole=="Pendonor" || $namarole=="Pegawai Universitas" || $namarole=="Direktorat Kerjasama")
+					<td>
+						@if ($beasiswa->public == 1)
+						<p><b><font color="green">Sudah Publik</font></b></p>
+						@else
+						<p><b><font color="red">Belum Publik</font></b></p>
+						@endif
+					</td>
 				@endif
-			</td>
-			<td>{{$beasiswa->tanggal_tutup}}</td>
 
-			@if($namarole=="Pegawai Universitas")
-			<td>
-				<a href = "{{ url('edit-beasiswa/'.$beasiswa->id_beasiswa) }}" class="btn btn-warning" data-toggle="tooltip" title="Edit" role="button">
-					<span class="glyphicon glyphicon-pencil"></span>
-				</a>
+				@if($namarole!="Direktorat Kerjasama")
+					<td>
+						@if ($beasiswa->tanggal_buka <= Carbon\Carbon::now() AND Carbon\Carbon::now() <= $beasiswa->tanggal_tutup AND $beasiswa->public==1)
+						<p><b><font color="green">Dibuka</font></b></p>
+						@else
+						<p><b><font color="red">Ditutup</font></b></p>
+						@endif
+					</td>
+					@php
+						$bulan = substr($beasiswa->tanggal_tutup, 5,2);
+						$waktu = substr($beasiswa->tanggal_tutup, 11,8);
+						$tanggal = substr($beasiswa->tanggal_tutup, 8,2);
+						$tahun = substr($beasiswa->tanggal_tutup, 0,4);
+						if($bulan=="01"){
+							$bulan="Januari";
+						}else if ($bulan=="02"){
+							$bulan="Februari";
+						}else if ($bulan=="03"){
+							$bulan="Maret";
+						}else if ($bulan=="04"){
+							$bulan="April";
+						}else if ($bulan=="05"){
+							$bulan="Mei";
+						}else if ($bulan=="06"){
+							$bulan="Juni";
+						}else if ($bulan=="07"){
+							$bulan="Juli";
+						}else if ($bulan=="08"){
+							$bulan="Agustus";
+						}else if ($bulan=="09"){
+							$bulan="September";
+						}else if ($bulan=="10"){
+							$bulan="Oktober";
+						}else if ($bulan=="11"){
+							$bulan="November";
+						}else if ($bulan=="12"){
+							$bulan="Desember";
+						}
+					@endphp
+				 <td> {{$waktu}} <br> {{$tanggal}}-{{$bulan}}-{{$tahun}}</td>
+				@else
+					@if($beasiswa->nama_dokumen==null)
+						<td style="font-style: italic;">Belum ada</td>
+					@else
+						<td style="font-weight: bold; color: blue">
+							<form action="{{url('unduh-dk')}}" method="POST">
+							 <input type="text" value="{{$beasiswa->nama_dokumen}}" name="dk" hidden>
+							 <input type="text" value="{{$beasiswa->id_beasiswa}}" name="idBeasiswa" hidden>
+							 <input type="hidden" value="<?php echo csrf_token(); ?>" name="_token">
+							 <input type="submit" class="btn btn-default" name="submit" value="{{$beasiswa->nama_dokumen}}" />
+						 </form>
+						</td>
+					@endif
+				@endif
+			</td>
+
+			<td>{{$beasiswa->tanggal_tutup}}</td>
+      @if($namarole=="Pegawai Universitas")
+      <td>
+          <a href = "{{ url('edit-beasiswa/'.$beasiswa->id_beasiswa) }}" class="btn btn-warning" data-toggle="tooltip" title="Modifikasi" role="button">
+            <span class="glyphicon glyphicon-pencil"></span>
+          </a>
+
+          <button class="btn btn-danger" type="submit" title="Hapus" data-toggle="modal" data-target="#confirmationDelete" data-username="{{$beasiswa->id_beasiswa}}" data-username2="{{$beasiswa->nama_beasiswa}}">
+            <span class="glyphicon glyphicon-trash"></span>
+          </button>
 
 				<button class="btn btn-danger" type="submit" title="Delete" data-toggle="modal" data-target="#confirmationDelete" data-username="{{$beasiswa->id_beasiswa}}" data-username2="{{$beasiswa->nama_beasiswa}}">
 					<span class="glyphicon glyphicon-trash"></span>
@@ -96,7 +229,6 @@
 					</div>
 				</div>
 				@if($beasiswa->public==0)
-				
 
 				<button class="btn btn-info" type="submit" title="Umumkan" data-toggle="modal" data-target="#confirmationPublic" data-username="{{$beasiswa->id_beasiswa}}" data-username2="{{$beasiswa->nama_beasiswa}}">
 					<span class="glyphicon glyphicon-eye-open"></span>
@@ -122,26 +254,31 @@
 					</div>
 				</div>
 				@else
-
-
-				@endif
+          @foreach ($dokumenkerjasamas as $index => $dk)
+						@if($beasiswa->public==0 AND $dk->id_beasiswa==$beasiswa->id_beasiswa)
+						<a href = "{{ url('make-public-beasiswa/'.$beasiswa->id_beasiswa) }}" class="btn btn-info" data-toggle="tooltip" title="Buat Publik" role="button">
+							<span class="glyphicon glyphicon-eye-open"></span>
+						</a>
+						@else
+						@endif
+          @endforeach
 			</td>
 			@elseif($namarole=="Mahasiswa")
-			<td>	@if ($beasiswa->tanggal_buka <= Carbon\Carbon::now() and Carbon\Carbon::now() <= $beasiswa->tanggal_tutup)
-								@if($beasiswa->id_jenis_seleksi=='1')
-								<a href= "{{url($beasiswa->link_seleksi)}}"><button class="btn"><b>Daftar</b></button></a>
-								@else
-								<a href= "{{url('daftar-beasiswa/'.$beasiswa->id_beasiswa)}}"><button class="btn"><b>Daftar</b></button></a>
-								@endif
+				<td align="center">	@if ($beasiswa->tanggal_buka <= Carbon\Carbon::now() and Carbon\Carbon::now() <= $beasiswa->tanggal_tutup)
+					@if($beasiswa->id_jenis_seleksi=='1')
+					<a href= "{{url($beasiswa->link_seleksi)}}"><button class="btn"><b>Daftar</b></button></a>
+					@else
+					<a href= "{{url('daftar-beasiswa/'.$beasiswa->id_beasiswa)}}"><button class="btn"><b>Daftar</b></button></a>
 					@endif
-
-			</td>
-			@elseif($namarole=="Direktorat Kerjasama")
-			<td>
-				<a href = "#upload"><img style="width:20px" name = "upload-logo" src="{{ asset('img/upload.png') }}" alt="" /></a>
-			</td>
+				</td>
 			@endif
-		</tr>
+
+			@elseif($namarole=="Direktorat Kerjasama")
+				<td>
+					<a data-toggle="tooltip" title="Unggah Dokumen Kerjasama" role="button" class="btn btn-success" href="{{ url('unggah-dokumen-kerjasama/'.$beasiswa->id_beasiswa) }}"><span class="glyphicon glyphicon-arrow-up"></span><br></a>
+				</td>
+			@endif
+			</tr>
 		@endforeach
 	</tbody>
 </table>
@@ -185,6 +322,16 @@
 	$(document).ready(function(){
 		$('[data-toggle="tooltip"]').tooltip();
 	});
+	$('#beasiswalist').dataTable( {
+  "columnDefs": [
+    { "width": "18%", "targets": 0 },
+		{ "width": "25%", "targets": 1 },
+		{ "width": "10%", "targets": 2 },
+		{ "width": "10%", "targets": 3 },
+		{ "width": "20%", "targets": 4 },
+		{ "width": "20%", "targets": 5 }
+  ]
+} );
 </script>
 <style media="screen">
 	.dataTables_filter {
