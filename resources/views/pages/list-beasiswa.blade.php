@@ -28,20 +28,6 @@
   </h2>
 		@endif
 
-<<<<<<< HEAD
-<h3>LIST BEASISWA &nbsp;&nbsp;
-	<a data-toggle="tooltip" title="Tambah beasiswa" role="button" id="add-beasiswa" class="btn btn-success" href="{{ url('add-beasiswa') }}"><span class="glyphicon glyphicon-plus">&nbsp;</span>Tambah Beasiswa</a>
-	@if ($seleksichecker==1)
-		<a data-toggle="tooltip" title="Buka Halaman Seleksi"  class="btn btn-info" href="{{ url('seleksi') }}">&nbsp;Seleksi Beasiswa</a>
-	@endif
-</h3>
-@else
-<h3>LIST BEASISWA &nbsp;&nbsp;
-@if ($seleksichecker==1)
-		<a data-toggle="tooltip" title="Buka Halaman Seleksi"  class="btn btn-info" href="{{ url('seleksi') }}">&nbsp;Seleksi Beasiswa</a>
-	@endif
-</h3>
-=======
     <p>Sebagai Pegawai Universitas anda dapat membuat, memodifikasi, menghapus, mengumumkan beasiswa, dan menyeleksi beasiswa.</p>
     <p class="list-group-item list-group-item-info" style="font-size:8pt; font-weight: bold; font-style: italic; ">*Anda hanya dapat mengumumkan beasiswa apabila Direktorat Kerjasama sudah mengunggah dokumen kerjasama atas beasiswa tersebut.</p>
     <br>
@@ -56,7 +42,6 @@
 			<p class="list-group-item list-group-item-info" style="font-size:8pt; font-weight: bold; font-style: italic; ">*Dengan dokumen kerjasama yang telah diunggah, akan membuat beasiswa tersebut dapat diumumkan kepada publik oleh Pegawai Universitas.</p>
 			<br>
 		@endif
->>>>>>> refs/remotes/origin/upload-berkas-kerjasama
 @endif
 <table id="beasiswalist" class="table table-striped">
 	<thead>
