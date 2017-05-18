@@ -126,9 +126,9 @@
 				@if($namarole!="Direktorat Kerjasama")
 					<td>
 						@if ($beasiswa->tanggal_buka <= Carbon\Carbon::now() AND Carbon\Carbon::now() <= $beasiswa->tanggal_tutup AND $beasiswa->public==1)
-						<p><b><font color="green">Dibuka</font></b></p>
+						      <p><b><font color="green">Dibuka</font></b></p>
 						@else
-						<p><b><font color="red">Ditutup</font></b></p>
+						      <p><b><font color="red">Ditutup</font></b></p>
 						@endif
 					</td>
 					@php
@@ -179,84 +179,80 @@
 				@endif
 			</td>
 
-			<td>{{$beasiswa->tanggal_tutup}}</td>
-      @if($namarole=="Pegawai Universitas")
-      <td>
-          <a href = "{{ url('edit-beasiswa/'.$beasiswa->id_beasiswa) }}" class="btn btn-warning" data-toggle="tooltip" title="Modifikasi" role="button">
-            <span class="glyphicon glyphicon-pencil"></span>
-          </a>
+        @if($namarole=="Pegawai Universitas")
+          <td>
+              <a href = "{{ url('edit-beasiswa/'.$beasiswa->id_beasiswa) }}" class="btn btn-warning" data-toggle="tooltip" title="Modifikasi" role="button">
+                <span class="glyphicon glyphicon-pencil"></span>
+              </a>
 
-          <button class="btn btn-danger" type="submit" title="Hapus" data-toggle="modal" data-target="#confirmationDelete" data-username="{{$beasiswa->id_beasiswa}}" data-username2="{{$beasiswa->nama_beasiswa}}">
-            <span class="glyphicon glyphicon-trash"></span>
-          </button>
+              <button class="btn btn-danger" type="submit" title="Hapus" data-toggle="modal" data-target="#confirmationDelete" data-username="{{$beasiswa->id_beasiswa}}" data-username2="{{$beasiswa->nama_beasiswa}}">
+                <span class="glyphicon glyphicon-trash"></span>
+              </button>
 
-				<button class="btn btn-danger" type="submit" title="Delete" data-toggle="modal" data-target="#confirmationDelete" data-username="{{$beasiswa->id_beasiswa}}" data-username2="{{$beasiswa->nama_beasiswa}}">
-					<span class="glyphicon glyphicon-trash"></span>
-				</button>
+    				<!-- Modal -->
+    				<div class="modal fade" id="confirmationDelete" role="dialog">
+    					<div class="modal-dialog">
+    						<!-- Modal content-->
+    						<div class="modal-content">
+    							<div class="modal-header">
+    								<button type="button" class="close" data-dismiss="modal">&times;</button>
+    								<h4 class="modal-title">Hapus Beasiswa</h4>
+    							</div>
+    							<div class="modal-body">
+    								<p id='isi1'>Anda yakin ingin menghapus beasiswa?</p>
+    							</div>
+    							<div class="modal-footer">
+    								<a href="#" id="linkHapus" ><button type="button" class="btn btn-success">Ya</button></a>
+    								<button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
+    							</div>
+    						</div>
+    					</div>
+    				</div>
+    				@if($beasiswa->public==0)
 
-				<!-- Modal -->
-				<div class="modal fade" id="confirmationDelete" role="dialog">
-					<div class="modal-dialog">
-						<!-- Modal content-->
-						<div class="modal-content">
-							<div class="modal-header">
-								<button type="button" class="close" data-dismiss="modal">&times;</button>
-								<h4 class="modal-title">Hapus Beasiswa</h4>
-							</div>
-							<div class="modal-body">
-								<p id='isi1'>Anda yakin ingin menghapus beasiswa?</p>
-							</div>
-							<div class="modal-footer">
-								<a href="#" id="linkHapus" ><button type="button" class="btn btn-success">Ya</button></a>
-								<button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
-							</div>
-						</div>
-					</div>
-				</div>
-				@if($beasiswa->public==0)
+      				<button class="btn btn-info" type="submit" title="Umumkan" data-toggle="modal" data-target="#confirmationPublic" data-username="{{$beasiswa->id_beasiswa}}" data-username2="{{$beasiswa->nama_beasiswa}}">
+      					<span class="glyphicon glyphicon-eye-open"></span>
+      				</button>
 
-				<button class="btn btn-info" type="submit" title="Umumkan" data-toggle="modal" data-target="#confirmationPublic" data-username="{{$beasiswa->id_beasiswa}}" data-username2="{{$beasiswa->nama_beasiswa}}">
-					<span class="glyphicon glyphicon-eye-open"></span>
-				</button>
-
-				<!-- Modal -->
-				<div class="modal fade" id="confirmationPublic" role="dialog">
-					<div class="modal-dialog">
-						<!-- Modal content-->
-						<div class="modal-content">
-							<div class="modal-header">
-								<button type="button" class="close" data-dismiss="modal">&times;</button>
-								<h4 class="modal-title">Umumkan Beasiswa</h4>
-							</div>
-							<div class="modal-body">
-								<p id='isi2'>Anda yakin ingin mengumumkan beasiswa?</p>
-							</div>
-							<div class="modal-footer">
-								<a href="#" id="linkPublic" ><button type="button" class="btn btn-success">Ya</button></a>
-								<button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
-							</div>
-						</div>
-					</div>
-				</div>
-				@else
-          @foreach ($dokumenkerjasamas as $index => $dk)
-						@if($beasiswa->public==0 AND $dk->id_beasiswa==$beasiswa->id_beasiswa)
-						<a href = "{{ url('make-public-beasiswa/'.$beasiswa->id_beasiswa) }}" class="btn btn-info" data-toggle="tooltip" title="Buat Publik" role="button">
-							<span class="glyphicon glyphicon-eye-open"></span>
-						</a>
-						@else
-						@endif
-          @endforeach
-			</td>
-			@elseif($namarole=="Mahasiswa")
-				<td align="center">	@if ($beasiswa->tanggal_buka <= Carbon\Carbon::now() and Carbon\Carbon::now() <= $beasiswa->tanggal_tutup)
-					@if($beasiswa->id_jenis_seleksi=='1')
-					<a href= "{{url($beasiswa->link_seleksi)}}"><button class="btn"><b>Daftar</b></button></a>
-					@else
-					<a href= "{{url('daftar-beasiswa/'.$beasiswa->id_beasiswa)}}"><button class="btn"><b>Daftar</b></button></a>
-					@endif
-				</td>
-			@endif
+      				<!-- Modal -->
+      				<div class="modal fade" id="confirmationPublic" role="dialog">
+    					<div class="modal-dialog">
+    						<!-- Modal content-->
+    						<div class="modal-content">
+    							<div class="modal-header">
+    								<button type="button" class="close" data-dismiss="modal">&times;</button>
+    								<h4 class="modal-title">Umumkan Beasiswa</h4>
+    							</div>
+    							<div class="modal-body">
+    								<p id='isi2'>Anda yakin ingin mengumumkan beasiswa?</p>
+    							</div>
+    							<div class="modal-footer">
+    								<a href="#" id="linkPublic" ><button type="button" class="btn btn-success">Ya</button></a>
+    								<button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
+    							</div>
+    						</div>
+    					</div>
+    				</div>
+    				@else
+              @foreach ($dokumenkerjasamas as $index => $dk)
+    						@if($beasiswa->public==0 AND $dk->id_beasiswa==$beasiswa->id_beasiswa)
+    						<a href = "{{ url('make-public-beasiswa/'.$beasiswa->id_beasiswa) }}" class="btn btn-info" data-toggle="tooltip" title="Buat Publik" role="button">
+    							<span class="glyphicon glyphicon-eye-open"></span>
+    						</a>
+    						@else
+    						@endif
+              @endforeach
+            @endif
+    			</td>
+  			@elseif($namarole=="Mahasiswa")
+  				<td align="center">	@if ($beasiswa->tanggal_buka <= Carbon\Carbon::now() and Carbon\Carbon::now() <= $beasiswa->tanggal_tutup)
+  					@if($beasiswa->id_jenis_seleksi=='1')
+  					<a href= "{{url($beasiswa->link_seleksi)}}"><button class="btn"><b>Daftar</b></button></a>
+  					@else
+  					<a href= "{{url('daftar-beasiswa/'.$beasiswa->id_beasiswa)}}"><button class="btn"><b>Daftar</b></button></a>
+  					@endif
+  				</td>
+  			@endif
 
 			@elseif($namarole=="Direktorat Kerjasama")
 				<td>
@@ -296,28 +292,15 @@
 <script src="{{ asset('js/jquery.dataTables.js') }}"></script>
 <script src="{{ asset('js/dataTables.bootstrap.js') }}"></script>
 
-
-
 <script type="text/javascript">
 	$(document).ready(function() {
 		$('#beasiswalist').DataTable({
-			 "paging": false
-		});
+			"paging": false
 	});
-	$(document).ready(function(){
 		$('[data-toggle="tooltip"]').tooltip();
 	});
-	$('#beasiswalist').dataTable( {
-  "columnDefs": [
-    { "width": "18%", "targets": 0 },
-		{ "width": "25%", "targets": 1 },
-		{ "width": "10%", "targets": 2 },
-		{ "width": "10%", "targets": 3 },
-		{ "width": "20%", "targets": 4 },
-		{ "width": "20%", "targets": 5 }
-  ]
-} );
 </script>
+
 <style media="screen">
 	.dataTables_filter {
 		margin-left: 175px;
