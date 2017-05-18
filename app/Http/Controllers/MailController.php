@@ -37,7 +37,7 @@ foreach ($namaPenerima as $np) {
    'name'=> $np->nama,
    'email'=> $np->email,
    'subject'=> 'Informasi Penerimaan Beasiswa',
-   'messagea' =>' Selamat Anda diterima di beasiswa '.$beasiswa->nama_beasiswa
+   'messagea' =>' Setelah melakukan penyeleksian, kami mengumumkan bahwa Anda diterima di beasiswa '.$beasiswa->nama_beasiswa
    );
     //kirim email
   Mail::send('pages.send-mail', $data, function($message) use ($data)
@@ -47,8 +47,9 @@ foreach ($namaPenerima as $np) {
     $message->subject($data['subject']);
      //echo ("Basic Email Sent. Check your inbox.");
   });
-   return view('pages.notif-email')->withUser($user)->withNamarole($namarole);
+  
 }
+ return view('pages.notif-email')->withUser($user)->withNamarole($namarole);
 }
 else if ($namarole=='Pendonor'){
   // return var_dump($pengguna->id_user);
@@ -82,8 +83,9 @@ foreach ($namaPenerima as $np) {
     $message->subject($data['subject']);
      //echo ("Basic Email Sent. Check your inbox.");
   });
-   return view('pages.notif-email')->withUser($user)->withNamarole($namarole);
+   
 }
+return view('pages.notif-email')->withUser($user)->withNamarole($namarole);
         // BELUM: cek if tahapan ini udah final atau belum, kalau udah final cuma bisa lihat hasil seleksi
 } else {
   return view('pages.noaccess')->withUser($user)->withNamarole($namarole);
