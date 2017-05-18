@@ -20,6 +20,7 @@
 	</select>
 </form>
 <br>{!! $chart->render() !!}
+@endsection
 
 @section('script')
 
