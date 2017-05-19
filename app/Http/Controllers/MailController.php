@@ -16,6 +16,7 @@ public function sendEmail($idBeasiswa)
       {
         return view('pages.noaccess')->withUser($user)->withNamarole($namarole);
       }
+
        if($namarole=='Pegawai'){
         $pengguna = DB::table('pegawai')->where('id_user', $pengguna->id_user)->first();
         $role = DB::table('role_pegawai')->where('id_role_pegawai', $pengguna->id_role_pegawai)->first();
@@ -32,12 +33,17 @@ public function sendEmail($idBeasiswa)
         ->where('pb.id_beasiswa', $idBeasiswa)
         ->select('us.nama as nama', 'b.nama_beasiswa as nama_beasiswa','us.email as email')
         ->get();
+
+        $namaDitolak = DB::table('pendaftaran_beasiswa')->where('id_beasiswa', $idBeasiswa)->where('status_lamaran', 7)->join('user', 'user.id_user','=', 'pendaftaran_beasiswa.id_mahasiswa')
+        ->join('beasiswa','beasiswa.id_beasiswa','=','pendaftaran_beasiswa.id_beasiswa')->select('user.nama', 'beasiswa.nama_Beasiswa', 'user.email') ->get();
+
+
 foreach ($namaPenerima as $np) {
    $data = array(
    'name'=> $np->nama,
    'email'=> $np->email,
    'subject'=> 'Informasi Penerimaan Beasiswa',
-   'messagea' =>' Setelah melakukan penyeleksian, kami mengumumkan bahwa Anda diterima di beasiswa '.$beasiswa->nama_beasiswa
+   'messagea' =>' Selamat Anda diterima di beasiswa '.$beasiswa->nama_beasiswa
    );
     //kirim email
   Mail::send('pages.send-mail', $data, function($message) use ($data)
@@ -47,9 +53,26 @@ foreach ($namaPenerima as $np) {
     $message->subject($data['subject']);
      //echo ("Basic Email Sent. Check your inbox.");
   });
-  
+  return view('pages.notif-email')->withUser($user)->withNamarole($namarole);
 }
- return view('pages.notif-email')->withUser($user)->withNamarole($namarole);
+  foreach ($namaDitolak as $nd) {
+   $data = array(
+   'name'=> $nd->nama,
+   'email'=> $nd->email,
+   'subject'=> 'Informasi Penerimaan Beasiswa',
+   'messagea' => $beasiswa->nama_beasiswa
+   );
+    //kirim email
+  Mail::send('pages.email-ditolak', $data, function($message) use ($data)
+  {
+   $message->to($data['email']);
+    $message->from('adindanadinta@gmail.com');
+    $message->subject($data['subject']);
+     //echo ("Basic Email Sent. Check your inbox.");
+  });
+   return view('pages.email-ditolak')->withUser($user)->withNamarole($namarole);
+}
+
 }
 else if ($namarole=='Pendonor'){
   // return var_dump($pengguna->id_user);
@@ -68,6 +91,10 @@ else if ($namarole=='Pendonor'){
         ->where('pb.id_beasiswa', $idBeasiswa)
         ->select('us.nama as nama', 'b.nama_beasiswa as nama_beasiswa','us.email as email')
         ->get();
+
+        $namaDitolak = DB::table('pendaftaran_beasiswa')->where('id_beasiswa', $idBeasiswa)->where('status_lamaran', 7)->join('user', 'user.id_user','=', 'pendaftaran_beasiswa.id_mahasiswa')
+        ->join('beasiswa','beasiswa.id_beasiswa','=','pendaftaran_beasiswa.id_beasiswa')->select('user.nama', 'beasiswa.nama_Beasiswa', 'user.email') ->get();
+
 foreach ($namaPenerima as $np) {
    $data = array(
    'name'=> $np->nama,
@@ -75,6 +102,7 @@ foreach ($namaPenerima as $np) {
    'subject'=> 'Informasi Penerimaan Beasiswa',
    'messagea' =>' Selamat Anda diterima di beasiswa '.$beasiswa->nama_beasiswa
    );
+   // return var_dump($namaPenerima);
     //kirim email
   Mail::send('pages.send-mail', $data, function($message) use ($data)
   {
@@ -83,9 +111,26 @@ foreach ($namaPenerima as $np) {
     $message->subject($data['subject']);
      //echo ("Basic Email Sent. Check your inbox.");
   });
-   
+   return view('pages.notif-email')->withUser($user)->withNamarole($namarole);
 }
-return view('pages.notif-email')->withUser($user)->withNamarole($namarole);
+
+foreach ($namaDitolak as $nd) {
+ $data = array(
+ 'name'=> $nd->nama,
+ 'email'=> $nd->email,
+ 'subject'=> 'Informasi Penerimaan Beasiswa',
+ 'messagea' => $beasiswa->nama_beasiswa
+ );
+  //kirim email
+Mail::send('pages.email-ditolak', $data, function($message) use ($data)
+{
+ $message->to($data['email']);
+  $message->from('adindanadinta@gmail.com');
+  $message->subject($data['subject']);
+   //echo ("Basic Email Sent. Check your inbox.");
+});
+ return view('pages.email-ditolak')->withUser($user)->withNamarole($namarole);
+}
         // BELUM: cek if tahapan ini udah final atau belum, kalau udah final cuma bisa lihat hasil seleksi
 } else {
   return view('pages.noaccess')->withUser($user)->withNamarole($namarole);

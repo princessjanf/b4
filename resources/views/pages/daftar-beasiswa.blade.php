@@ -142,11 +142,11 @@
 	</div>
 	<hr>
 	<div>
-		
-		<a href="{{ url('list-beasiswa	') }}" ><button style ="text-decoration: none"id="cancel" class="btn btn-danger" type="button" formnovalidate>Cancel</button></a>
-		<input type="button" name="btn" value="Submit" id="submitBtn" data-toggle="modal" data-target="#confirm-submit" class="btn btn-success" />
 
-		
+		<a href="{{ url('list-beasiswa	') }}" ><button style ="text-decoration: none"id="cancel" class="btn btn-danger" type="button" formnovalidate>Batal</button></a>
+		<input type="button" name="btn" value="Kirim" id="submitBtn" data-toggle="modal" data-target="#confirm-submit" class="btn btn-success" />
+
+
 
 		<div class="modal fade" id="confirm-submit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 			    <div class="modal-dialog">
@@ -168,7 +168,7 @@
 				</div>
 		</div>
 
-		
+
 	</div>
 </form>
 

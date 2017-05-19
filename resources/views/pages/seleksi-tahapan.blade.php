@@ -50,8 +50,8 @@
 				</div>
 
 
-				<button type='button' id="submitResult" class='btn btn-default' onclick="finalizeResult()">Submit</button>
-				<button type='button' class='btn btn-default' data-dismiss='modal'>Close</button>
+				<button type='button' id="submitResult" class='btn btn-default' onclick="finalizeResult()">Kirim</button>
+				<button type='button' class='btn btn-default' data-dismiss='modal'>Tutup</button>
 			</div>
 		</div>
 	</div>
@@ -132,11 +132,11 @@
 <div id = "fix">
 </div>
 @if($idtahapan==1 OR $idtahapan==2)
-<button class="btn-primary" onclick="saveDraftCheck()"> Save As Draft </button>
-<button class="btn-success" onclick="showResultCheck()"> Finalize Result </button>
+<button class="btn-primary" onclick="saveDraftCheck()"> Simpan Sebagai Draf </button>
+<button class="btn-success" onclick="showResultCheck()"> Finalisasi Hasil </button>
 @else
-<button class="btn-primary" onclick="saveDraft()"> Save As Draft </button>
-<button class="btn-success" onclick="showResult()"> Finalize Result </button>
+<button class="btn-primary" onclick="saveDraft()"> Simpan Sebagai Draf </button>
+<button class="btn-success" onclick="showResult()"> Finalisasi Hasil </button>
 @endif
 @endif
 @endif

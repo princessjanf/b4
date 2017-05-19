@@ -318,9 +318,14 @@ class ScholarshipController extends Controller
       $role = DB::table('role_pegawai')->where('id_role_pegawai', $pengguna->id_role_pegawai)->first();
       $namarole = $role->nama_role_pegawai;
 
+      $beasiswa = DB::table('beasiswa')->where('id_beasiswa', $id)->first();
+      $namabeasiswa =$beasiswa->nama_beasiswa;
+
       if($namarole=='Pegawai Universitas'){
-      DB::update('update `beasiswa` SET public = 1 WHERE id_beasiswa =?', [$id]);
-      return redirect('/list-beasiswa');}
+        DB::update('update `beasiswa` SET public = 1 WHERE id_beasiswa =?', [$id]);
+        return redirect('/list-beasiswa')->with('beasiswabuatpublik', $namabeasiswa);
+      }
+
       else{
         return redirect('noaccess');
       }

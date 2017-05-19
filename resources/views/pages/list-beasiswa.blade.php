@@ -11,12 +11,17 @@
 
 @if (session('namabeasiswa'))
     <div class="alert alert-success">
-        {{ session('namabeasiswa') }} telah <b> berhasil </b> diunggah: {{ session('namadokumen') }}
+        Dokumen kerjasama untuk {{ session('namabeasiswa') }} telah <b> berhasil </b> diunggah: {{ session('namadokumen') }}
     </div>
 
 @elseif (session('namabeasiswatimpa'))
     <div class="alert alert-success">
         Dokumen kerjasama untuk {{ session('namabeasiswatimpa') }} telah <b> berhasil </b> diperbaharui: {{ session('namadokumentimpa') }}
+    </div>
+
+@elseif (session('beasiswabuatpublik'))
+    <div class="alert alert-success">
+        {{ session('beasiswabuatpublik') }} telah <b> berhasil </b> dibuat publik. Mahasiswa sudah bisa melihat dan mendaftar beasiswa ini.
     </div>
 @endif
 
@@ -41,31 +46,27 @@
 @elseif($namarole=="Mahasiswa")
   <h2>Paket-Paket Beasiswa &nbsp;&nbsp;</h2>
 @else
-<<<<<<< HEAD
 	<h2>Paket-Paket Beasiswa &nbsp;&nbsp;
 		@if ($seleksichecker==1 AND $namarole!="Direktorat Kerjasama")
-=======
-	<h2>PAKET-PAKET BEASISWA &nbsp;&nbsp;
-		@if ($seleksichecker==1 AND $namarole!="Direktorat Kerjasama" AND $namarole!="Direktorat Kerjasama")
->>>>>>> origin/develop
 			<a data-toggle="tooltip" title="Buka Halaman Seleksi"  class="btn btn-info" href="{{ url('seleksi') }}">&nbsp;Seleksi Beasiswa</a>
 			</h2>
 		@elseif($namarole=="Direktorat Kerjasama")
 		</h2>
 			<p>Sebagai Direktorat Kerjasama anda dapat mengunggah dokumen kerjasama yang sudah disepakati.</p>
-			<p class="list-group-item list-group-item-info" style="font-size:8pt; font-weight: bold; font-style: italic; ">*Dengan dokumen kerjasama yang telah diunggah, akan membuat beasiswa tersebut dapat diumumkan kepada publik oleh Pegawai Universitas.</p>
-			<br>
+      <div class="list-group">
+        <p class="list-group-item list-group-item-warning"  style="font-size:10pt; font-weight: bold;">
+        Perhatian:
+        </p>
+        <p class="list-group-item list-group-item-warning" style="font-size:8pt; font-weight: bold; font-style: italic; ">*Dengan dokumen kerjasama yang telah diunggah, akan membuat beasiswa tersebut dapat diumumkan kepada publik oleh Pegawai Universitas.
+        </p>
+      </div>
 		@endif
 @endif
 <label><font color='#4192f4'>*) Klik judul tabel untuk menyortir berdasar kolom yang dipilih</font></label>
 <table id="beasiswalist" class="table table-striped">
 	<thead>
 		<tr>
-			@if($namarole=="Direktorat Kerjasama")
-				<th>Waktu dibuat</th>
-			@else
-				<th>No</th>
-			@endif
+			<th>Waktu dibuat</th>
 			<th>Nama Beasiswa</th>
 			<th>Pendonor</th>
 			@if($namarole=="Pendonor" || $namarole=="Pegawai Universitas" || $namarole=="Direktorat Kerjasama")
@@ -88,9 +89,6 @@
 	<tbody>
 		@foreach ($beasiswas as $index => $beasiswa)
 			<tr>
-				@if($namarole!="Direktorat Kerjasama")
-					<td>{{$index+1}}</td>
-				@else
 					@php
 						$bulan = substr($beasiswa->timestamp, 5,2);
 						$waktu = substr($beasiswa->timestamp, 11,8);
@@ -122,8 +120,7 @@
 							$bulan="Desember";
 						}
 					@endphp
-				 <td> {{$waktu}} <br> {{$tanggal}}-{{$bulan}}-{{$tahun}}</td>
-				@endif
+				 <td>  {{$tanggal}}-{{$bulan}}-{{$tahun}} <br> {{$waktu}} </td>
 				<td>
 					<a href="{{ url('detail-beasiswa/'.$beasiswa->id_beasiswa) }}">{{$beasiswa->nama_beasiswa}}</a>
 				</td>
@@ -227,13 +224,61 @@
     						</div>
     					</div>
     				</div>
+              <?php $set = 0; ?>
             @foreach ($dokumenkerjasamas as $index => $dk)
               @if($beasiswa->public==0 AND $dk->id_beasiswa==$beasiswa->id_beasiswa)
-      				<button class="btn btn-info" type="submit" title="Buat Publik" data-toggle="modal" data-target="#confirmationPublic" data-username="{{$beasiswa->id_beasiswa}}" data-username2="{{$beasiswa->nama_beasiswa}}">
-      					<span class="glyphicon glyphicon-eye-open"></span>
-      				</button>
+                <?php $set = 2; ?>
+                @break
+              @elseif($beasiswa->public==1)
+                <?php $set = 0; ?>
+              @else
+                <?php $set = 1; ?>
               @endif
             @endforeach
+
+            @if($set == 2)
+            @php
+              $bulan = substr($beasiswa->tanggal_buka, 5,2);
+              $waktu = substr($beasiswa->tanggal_buka, 11,8);
+              $tanggal = substr($beasiswa->tanggal_buka, 8,2);
+              $tahun = substr($beasiswa->tanggal_buka, 0,4);
+              if($bulan=="01"){
+                $bulan="Januari";
+              }else if ($bulan=="02"){
+                $bulan="Februari";
+              }else if ($bulan=="03"){
+                $bulan="Maret";
+              }else if ($bulan=="04"){
+                $bulan="April";
+              }else if ($bulan=="05"){
+                $bulan="Mei";
+              }else if ($bulan=="06"){
+                $bulan="Juni";
+              }else if ($bulan=="07"){
+                $bulan="Juli";
+              }else if ($bulan=="08"){
+                $bulan="Agustus";
+              }else if ($bulan=="09"){
+                $bulan="September";
+              }else if ($bulan=="10"){
+                $bulan="Oktober";
+              }else if ($bulan=="11"){
+                $bulan="November";
+              }else if ($bulan=="12"){
+                $bulan="Desember";
+              }
+            @endphp
+            <button class="btn btn-info" type="submit" title="Buat Publik" data-toggle="modal" data-target="#confirmationPublic" data-username="{{$beasiswa->id_beasiswa}}" data-username2="{{$beasiswa->nama_beasiswa}}"
+              data-bulan="{{$bulan}}" data-waktu="{{$waktu}}" data-tanggal="{{$tanggal}}" data-tahun="{{$tahun}}">
+              <span class="glyphicon glyphicon-eye-open"></span>
+            </button>
+            @elseif($set == 0)
+            <p></p>
+            @else
+            <button disabled class="btn btn-default" type="submit" title="Dokumen kerjasama belum ada" data-toggle="modal" data-target="#confirmationPublic" data-username="{{$beasiswa->id_beasiswa}}" data-username2="{{$beasiswa->nama_beasiswa}}">
+              <span class="glyphicon glyphicon-eye-open"></span>
+            </button>
+            @endif
 
       				<!-- Modal -->
       				<div class="modal fade" id="confirmationPublic" role="dialog">
@@ -245,7 +290,8 @@
     								<h4 class="modal-title">Umumkan Beasiswa</h4>
     							</div>
     							<div class="modal-body">
-    								<p id='isi2'>Anda yakin ingin mengumumkan beasiswa?</p>
+
+    								<p id='isi2'>Yakin?</p>
     							</div>
     							<div class="modal-footer">
     								<a href="#" id="linkPublic" ><button type="button" class="btn btn-success">Ya</button></a>
@@ -292,7 +338,11 @@
 	$('#confirmationPublic').on('show.bs.modal', function(e) {
 		var idBeasiswa = e.relatedTarget.dataset.username;
 		var namaBeasiswa = e.relatedTarget.dataset.username2;
-		document.getElementById("isi2").innerHTML="Anda yakin ingin mengumumkan beasiswa "+namaBeasiswa+"?";
+    var tanggal = e.relatedTarget.dataset.tanggal;
+    var tahun = e.relatedTarget.dataset.tahun;
+    var bulan = e.relatedTarget.dataset.bulan;
+    var waktu = e.relatedTarget.dataset.waktu;
+		document.getElementById("isi2").innerHTML="Anda yakin ingin mengumumkan "+namaBeasiswa+ " walaupun mahasiswa baru bisa mendaftar pada "+ tanggal + "-" + bulan + "-" + tahun + " " + waktu +"?";
 		var link = document.getElementById("linkPublic");
 		var linkUmum = "./make-public-beasiswa/"+idBeasiswa;
 		link.setAttribute("href", linkUmum);
@@ -306,7 +356,17 @@
 <script type="text/javascript">
 	$(document).ready(function() {
 		$('#beasiswalist').DataTable({
-			"paging": false
+			"paging": false,
+      "order": [[ 0, "desc" ]],
+      "columnDefs": [
+      { "width": "100px", "targets": 0 },
+      { "width": "150px", "targets": 1 },
+      { "width": "100px", "targets": 2 },
+      { "width": "70px", "targets": 3 },
+      { "width": "20px", "targets": 4 },
+      { "width": "90px", "targets": 5 },
+      { "width": "120px", "targets": 6 }
+    ]
 	});
 		$('[data-toggle="tooltip"]').tooltip();
 	});

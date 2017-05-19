@@ -132,7 +132,10 @@ class MainController extends Controller
       }
 
       if ($namarole == 'Mahasiswa' || $namarole == 'Pegawai Fakultas') {
-        $beasiswas = DB::table('beasiswa')->where('flag', '1')->where('public', '1')->orderBy('id_beasiswa', 'desc')->join('pendonor','pendonor.id_user', 'beasiswa.id_pendonor')->get();
+        $beasiswas = DB::table('beasiswa')->where('flag', '1')->where('public', '1')->orderBy('beasiswa.id_beasiswa', 'desc')
+        ->join('pendonor','pendonor.id_user', 'beasiswa.id_pendonor')
+        ->join('log_beasiswa','beasiswa.id_beasiswa', '=', 'log_beasiswa.id_beasiswa')->where('tipe_perubahan', 'initial setup')
+        ->get();
 
       } else if ($namarole == 'Pendonor'){
         $pendonor = DB::table('pendonor')->where('id_user', $pengguna->id_user)->first();

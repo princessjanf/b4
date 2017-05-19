@@ -46,8 +46,8 @@
 								<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 								<strong>Tidak ada mahasiswa yang dipilih!</strong>
 				</div>
-				<button type='button' id="submitResult" class='btn btn-default' onclick="finalizeResult()">Submit</button>
-				<button type='button' class='btn btn-default' data-dismiss='modal'>Close</button>
+				<button type='button' id="submitResult" class='btn btn-default' onclick="finalizeResult()">Kirim</button>
+				<button type='button' class='btn btn-default' data-dismiss='modal'>Tutup</button>
 			</div>
 		</div>
 	</div>
@@ -109,9 +109,9 @@
 	<p> Terpilih
 	<span id="kuotaChecker"> </span>
 	dari </br>  {{$beasiswa->kuota}} mahasiswa </p>
-	<button class="btn-primary" onclick="saveDraft()"> Save As Draft </button>
+	<button class="btn-primary" onclick="saveDraft()"> Simpan Sebagai Draf </button>
 </div>
-<button id="showResult" class="btn-success" onclick="showResult()"> Finalize Result </button>
+<button id="showResult" class="btn-success" onclick="showResult()"> Finalisasi Hasil </button>
 @endif
 @endif
 
