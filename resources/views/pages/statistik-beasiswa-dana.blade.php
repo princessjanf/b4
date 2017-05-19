@@ -23,7 +23,21 @@
 @foreach($data3 as $index => $data)
 <th><label>{{$index+1}}.</label></th>
 <th><label>{{$data->nama_beasiswa}}</label></th>
-<th><label>{{$data->dana_total}}</label></th>
+<th><label  id = "index{{$index}}">
+	<script>
+
+	var nStr = "{{$data->dana_total}}".toString();
+	var x1 = nStr.replace (/,/g, "");
+
+	var rgx = /(\d+)(\d{3})/;
+	while (rgx.test(x1)) {
+		x1 = x1.replace(rgx, '$1' + ',' + '$2');
+	}
+	
+	document.getElementById("index{{$index}}").innerHTML = "{{$data->nama_mata_uang}} " + x1;
+
+	</script>
+	</label></th>
 </tr>
 @endforeach
 </tbody>

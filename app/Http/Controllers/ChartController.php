@@ -504,7 +504,7 @@ class ChartController extends Controller
                     ->labels($data2->pluck('nama_prodi'))
                     ->values($data2->pluck('dana_total')));
 
-      $data3 = DB::table('beasiswa')
+      $data3 = DB::table('beasiswa')->join('mata_uang', 'mata_uang.id_mata_uang','=','beasiswa.currency')
                    ->select(DB::raw('*, SUM(dana_pendidikan+dana_hidup) AS dana_total'))
                    ->groupBy('nama_beasiswa')
                    ->get();
