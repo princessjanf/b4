@@ -36,8 +36,7 @@ public function sendEmail($idBeasiswa)
 
         $namaDitolak = DB::table('pendaftaran_beasiswa')->where('id_beasiswa', $idBeasiswa)->where('status_lamaran', 7)->join('user', 'user.id_user','=', 'pendaftaran_beasiswa.id_mahasiswa')
         ->join('beasiswa','beasiswa.id_beasiswa','=','pendaftaran_beasiswa.id_beasiswa')->select('user.nama', 'beasiswa.nama_Beasiswa', 'user.email') ->get();
-
-
+        
 foreach ($namaPenerima as $np) {
    $data = array(
    'name'=> $np->nama,

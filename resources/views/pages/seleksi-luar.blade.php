@@ -92,7 +92,7 @@
 	<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 	<strong>Nilai sementara berhasil disimpan</strong>
 </div>
-<div id="waktudaftar" name= "alertWaktuDaftar" class="alert alert-dismissable fade in">
+<div id="waktudaftar" name= "alertWaktuDaftar" class="alert-danger alert-dismissable fade in">
 	<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
 	<strong>Masa pendaftaran belum selesai</strong>
 </div>
@@ -165,16 +165,21 @@
 
 	$("#tableSeleksi").change(function(){
 		$("#fix #kuotaChecker").text(document.querySelectorAll('input[type="checkbox"]:checked').length);
+		console.log(document.querySelectorAll('input[type="checkbox"]:checked').length);
 		if(document.querySelectorAll('input[type="checkbox"]:checked').length > {{$beasiswa->kuota}}){
-
 			$('#alertCheck').show();
 			$('#showResult').attr("disabled", true);
+
 		}
 		else if(document.querySelectorAll('input[type="checkbox"]:checked').length == 0)
 		{
 			$('#showResult').attr("disabled", true);
 		}
 		else{
+			if ($('#alertCheck').hasClass('in'))
+			{
+				$('#alertCheck').hide();
+			}
 			$('#showResult').attr("disabled", false);
 		}
 	});
@@ -185,9 +190,9 @@
 
 		var x = "{{$beasiswa->tanggal_tutup}}".split('-');
 		var now = new Date();
-		var tgl = new Date().setFullYear(x[0], x[1]-1, x[2]-1);
+		var tgl = new Date().setFullYear(x[0], x[1]-1, x[2]);
 
-		if (tgl > now)
+		if (tgl - now >= 0)
 		{
 			$("[name='alertWaktuDaftar']").show();
 		}

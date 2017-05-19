@@ -18,6 +18,7 @@ class MainController extends Controller
       else{
         $user = SSO::getUser();
 
+        return $user->username;
         $pengguna = DB::table('user')->where('username', $user->username)->first();
         $role = DB::table('role')->where('id_role', $pengguna->id_role)->first();
         $namarole = $role->nama_role;
@@ -875,27 +876,92 @@ function pendaftarBeasiswa($id)
 		}
 		function savedraftest(Request $request)
 		{
-      $idBeasiswa = 64;
-      $tahapanljt = 0; // 0 -> ini adalah tahap terakhir
-      $penyeleksiljt = 0; // 0 -> pengguna sekarang bukan penyeleksi tahap berikutnya; 1 -> pengguna sekarang adl penyelksi tahap berikutnya
-      $daftarTahapan = DB::table('beasiswa_penyeleksi')->join('beasiswa_penyeleksi_tahapan', 'beasiswa_penyeleksi.id_bp','=','beasiswa_penyeleksi_tahapan.id_bp')
-                      ->where('beasiswa_penyeleksi.id_beasiswa', $idBeasiswa)->get();
-      $setTmp = 0;
-      $idTahapan = 4;
-      foreach($daftarTahapan as $key=>$dt)
+
+      // get partisipan seleksi beasiswa untuk tahapan ini
+      $partisipan = DB::table('seleksi_beasiswa')->where('id_beasiswa', $request->idbeasiswa)->where('id_tahapan', $request->idtahapan)->select('id_mahasiswa')->get();
+      //get nama tahapan
+      $namatahapan = DB::table('tahapan')->where('id_tahapan', $request->idtahapan)->select('nama_tahapan')->first();
+
+      if ($namatahapan->nama_tahapan == 'Seleksi Administratif')
       {
-        if ($setTmp == 1)
+        $idstatus = 2;
+      }
+      else if ($namatahapan->nama_tahapan == 'Seleksi Berkas')
+      {
+        $idstatus = 3;
+      }
+      else if ($namatahapan->nama_tahapan == 'Tes Tertulis')
+      {
+        $idstatus = 4;
+      }
+      else if ($namatahapan->nama_tahapan == 'Wawancara')
+      {
+        $idstatus = 5;
+      }
+
+
+      foreach($partisipan as $key => $partisipan)
+      {
+        DB::table('pendaftaran_beasiswa')->where('id_mahasiswa', $partisipan->id_mahasiswa)->where('id_beasiswa', $request->idbeasiswa)->update(['status_lamaran' => '7']);
+      }
+      foreach ($request->table as $key => $idMahasiswa) {
+          DB::table('pendaftaran_beasiswa')->where('id_mahasiswa', $idMahasiswa)->where('id_beasiswa', $request->idbeasiswa)->update(['status_lamaran' => $idstatus]);
+      }
+
+      /*
+        Jika ada tahapan berikutnya, maka masukkan nama finalis ke db untuk tahap berikutnya
+      */
+      $retrTahapan = DB::table('beasiswa_penyeleksi')->where('id_beasiswa', $request->idbeasiswa)
+      ->join('beasiswa_penyeleksi_tahapan','beasiswa_penyeleksi.id_bp','=','beasiswa_penyeleksi_tahapan.id_bp')
+      ->join('tahapan','beasiswa_penyeleksi_tahapan.id_tahapan','=','tahapan.id_tahapan')
+      ->join('user','beasiswa_penyeleksi.id_penyeleksi','=','user.id_user')
+      ->select('beasiswa_penyeleksi_tahapan.id_tahapan', 'tahapan.nama_tahapan','beasiswa_penyeleksi.id_penyeleksi')
+      ->orderBy('beasiswa_penyeleksi_tahapan.id_bpt', 'asc')->get();
+      $set=0;
+
+      foreach ($retrTahapan as $key => $tahapan) {
+        if (count($retrTahapan)-1 == $key)
         {
-          $tahapanljt = $dt->id_tahapan;
+          DB::table('seleksi_beasiswa')
+          ->where('id_beasiswa', $request->idbeasiswa)->where('id_penyeleksi', $request->pengguna)
+          ->where('id_tahapan', $request->idtahapan)
+          ->update(['final' => '1']);
+          foreach ($request->table as $key => $idMahasiswa) {
+              DB::table('penerima_beasiswa')->insert(
+                ['id_beasiswa' => $request->idbeasiswa,
+                'id_mahasiswa'=>$idMahasiswa
+              ]
+            );
+            DB::table('pendaftaran_beasiswa')->where('id_mahasiswa', $idMahasiswa)->where('id_beasiswa', $request->idbeasiswa)->update(['status_lamaran' => '6']);
+          }
+        }
+        if ($set==1)
+        {
+          $set=$tahapan->id_tahapan;
+          $idpenyeleksi = DB::table('beasiswa_penyeleksi_tahapan')->join('beasiswa_penyeleksi', 'beasiswa_penyeleksi.id_bp', '=', 'beasiswa_penyeleksi_tahapan.id_bp')
+                          ->where('id_beasiswa',$request->idbeasiswa)->where('id_tahapan',$set)->first();
+          DB::table('seleksi_beasiswa')
+          ->where('id_beasiswa', $request->idbeasiswa)->where('id_penyeleksi', $request->pengguna)
+          ->where('id_tahapan', $request->idtahapan)
+          ->update(['final' => '1']);
+          foreach ($request->table as $key => $idMahasiswa) {
+              DB::table('seleksi_beasiswa')->insert(
+                ['id_beasiswa' => $request->idbeasiswa,
+                'id_penyeleksi'=>$idpenyeleksi->id_penyeleksi,
+                'id_tahapan'=>$set,
+                'id_mahasiswa'=>$idMahasiswa
+              ]
+            );
+          }
           break;
         }
-        if ($dt->id_tahapan == $idTahapan)
+        else if ($tahapan->id_tahapan == $request->idtahapan)
         {
-          $setTmp = 1;
+          $set=1;
         }
-
       }
-      return $tahapanljt;
+
+      return response()->json(array('msg'=> $set), 200);
 		}
 
 		function saveDraftCheck(Request $request)
@@ -958,6 +1024,8 @@ function pendaftarBeasiswa($id)
 			{
 				DB::table('pendaftaran_beasiswa')->where('id_mahasiswa', $partisipan->id_mahasiswa)->where('id_beasiswa', $request->idbeasiswa)->update(['status_lamaran' => '7']);
 			}
+
+
 
 			DB::table('seleksi_beasiswa')->where('id_beasiswa',$request->idbeasiswa)->where('id_tahapan', $request->idtahapan)
 			->where('id_penyeleksi', $request->pengguna)->update(['final'=>'1']);
@@ -1039,6 +1107,8 @@ function pendaftarBeasiswa($id)
 				if ($set==1)
 				{
 					$set=$tahapan->id_tahapan;
+          $idpenyeleksi = DB::table('beasiswa_penyeleksi_tahapan')->join('beasiswa_penyeleksi', 'beasiswa_penyeleksi.id_bp', '=', 'beasiswa_penyeleksi_tahapan.id_bp')
+                          ->where('id_beasiswa',$request->idbeasiswa)->where('id_tahapan',$set)->first();
 					DB::table('seleksi_beasiswa')
 					->where('id_beasiswa', $request->idbeasiswa)->where('id_penyeleksi', $request->pengguna)
 					->where('id_tahapan', $request->idtahapan)
@@ -1046,7 +1116,7 @@ function pendaftarBeasiswa($id)
 					foreach ($request->table as $key => $idMahasiswa) {
 							DB::table('seleksi_beasiswa')->insert(
 								['id_beasiswa' => $request->idbeasiswa,
-								'id_penyeleksi'=>$request->pengguna,
+								'id_penyeleksi'=>$idpenyeleksi->id_penyeleksi,
 								'id_tahapan'=>$set,
 								'id_mahasiswa'=>$idMahasiswa
 							]
