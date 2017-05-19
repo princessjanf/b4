@@ -46,12 +46,12 @@
 @elseif($namarole=="Mahasiswa")
   <h2>Paket-Paket Beasiswa &nbsp;&nbsp;</h2>
 @else
-	<h2>Paket-Paket Beasiswa &nbsp;&nbsp;
+	<h2>Paket-Paket Beasiswa &nbsp;&nbsp;</h2>
 		@if ($seleksichecker==1 AND $namarole!="Direktorat Kerjasama")
 			<a data-toggle="tooltip" title="Buka Halaman Seleksi"  class="btn btn-info" href="{{ url('seleksi') }}">&nbsp;Seleksi Beasiswa</a>
-			</h2>
+			
 		@elseif($namarole=="Direktorat Kerjasama")
-		</h2>
+		
 			<p>Sebagai Direktorat Kerjasama anda dapat mengunggah dokumen kerjasama yang sudah disepakati.</p>
       <div class="list-group">
         <p class="list-group-item list-group-item-warning"  style="font-size:10pt; font-weight: bold;">
