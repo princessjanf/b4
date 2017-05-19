@@ -29,8 +29,13 @@ class ChartController extends Controller
                             ->dataset('Penerima', DB::table('penerima_beasiswa as pb')->join('beasiswa as b', 'b.id_beasiswa', '=', 'pb.id_beasiswa')->get())
                             ->dataset('Pendaftar', DB::table('pendaftaran_beasiswa as pb')->join('beasiswa as b', 'b.id_beasiswa', '=', 'pb.id_beasiswa')->get())
                             ->groupBy('nama_beasiswa');
-
-    return view('pages.statistik', compact('user','pengguna','namarole'));
+    $prodi = Charts::multidatabase('bar', 'highcharts')
+      ->title("Pendaftar dan Penerima Beasiswa di Seluruh Prodi")
+      ->elementLabel('Jumlah')
+      ->dataset('Penerima', DB::table('penerima_beasiswa as pb')->join('beasiswa as b', 'b.id_beasiswa', '=', 'pb.id_beasiswa')->get())
+      ->dataset('Pendaftar', DB::table('pendaftaran_beasiswa as pb')->join('beasiswa as b', 'b.id_beasiswa', '=', 'pb.id_beasiswa')->get())
+      ->groupBy('nama_beasiswa');
+    return view('pages.penerimapendaftar', compact('user','pengguna','namarole', 'fakultas', 'prodi'));
 
   }
   function persebaran()
@@ -307,7 +312,7 @@ class ChartController extends Controller
     {
       $role = DB::table('role')->where('id_role', $pengguna->id_role)->first();
       $namarole = $role->nama_role;
-
+      
       if($namarole=='Pegawai'){
         $pengguna = DB::table('pegawai')->where('id_user', $pengguna->id_user)->first();
         $role = DB::table('role_pegawai')->where('id_role_pegawai', $pengguna->id_role_pegawai)->first();
@@ -415,50 +420,50 @@ class ChartController extends Controller
     }
 
     function beasiswaPerProdi()
-    {
-      $user = SSO::getUser();
-      $pengguna = $this->getPengguna($user);
-      $namarole = $this->getNamarole($pengguna);
-      $prodi = DB::table('program_studi')->pluck('nama_prodi');
-      $prodi->prepend('Semua Prodi');
-      $selected = "Semua Prodi";
-      $chart = Charts::multidatabase('bar', 'highcharts')
-        ->title("Pendaftar dan Penerima Beasiswa di Seluruh Prodi")
-        ->elementLabel('Jumlah')
-        ->dataset('Penerima', DB::table('penerima_beasiswa as pb')->join('beasiswa as b', 'b.id_beasiswa', '=', 'pb.id_beasiswa')->get())
-        ->dataset('Pendaftar', DB::table('pendaftaran_beasiswa as pb')->join('beasiswa as b', 'b.id_beasiswa', '=', 'pb.id_beasiswa')->get())
-        ->groupBy('nama_beasiswa');
+     {
+       $user = SSO::getUser();
+       $pengguna = $this->getPengguna($user);
+       $namarole = $this->getNamarole($pengguna);
+       $prodi = DB::table('program_studi')->pluck('nama_prodi');
+       $prodi->prepend('Semua Prodi');
+       $selected = "Semua Prodi";
+       $chart = Charts::multidatabase('bar', 'highcharts')
+         ->title("Pendaftar dan Penerima Beasiswa di Seluruh Prodi")
+         ->elementLabel('Jumlah')
+         ->dataset('Penerima', DB::table('penerima_beasiswa as pb')->join('beasiswa as b', 'b.id_beasiswa', '=', 'pb.id_beasiswa')->get())
+         ->dataset('Pendaftar', DB::table('pendaftaran_beasiswa as pb')->join('beasiswa as b', 'b.id_beasiswa', '=', 'pb.id_beasiswa')->get())
+         ->groupBy('nama_beasiswa');
 
-      return view('pages.statistik-beasiswa7', compact('user','pengguna','namarole','chart', 'prodi', 'selected'));
+       return view('pages.statistik-beasiswa7', compact('user','pengguna','namarole','chart', 'prodi', 'selected'));
 
-    }
+     }
 
-    function beasiswaPerProdi2(Request $request)
-    {
-      $user = SSO::getUser();
-      $pengguna = $this->getPengguna($user);
-      $namarole = $this->getNamarole($pengguna);
-      $prodi = DB::table('program_studi')->pluck('nama_prodi');
-      $prodi->prepend('Semua Prodi');
-      $selected = $request->selected;
+     function beasiswaPerProdi2(Request $request)
+     {
+       $user = SSO::getUser();
+       $pengguna = $this->getPengguna($user);
+       $namarole = $this->getNamarole($pengguna);
+       $prodi = DB::table('program_studi')->pluck('nama_prodi');
+       $prodi->prepend('Semua Prodi');
+       $selected = $request->selected;
 
-      //masih kesalahan
-      if ($selected == "Semua Prodi")
-      {
-        $chart = Charts::multidatabase('bar', 'highcharts')
-        ->title("Pendaftar dan Penerima Beasiswa di Seluruh Prodi")
-        ->elementLabel('Jumlah')
-        ->dataset('Penerima', DB::table('penerima_beasiswa as pb')->join('beasiswa as b', 'b.id_beasiswa', '=', 'pb.id_beasiswa')->get())
-        ->dataset('Pendaftar', DB::table('pendaftaran_beasiswa as pb')->join('beasiswa as b', 'b.id_beasiswa', '=', 'pb.id_beasiswa')->get())
-        ->groupBy('nama_beasiswa');
-      } else {
-        $chart = Charts::multidatabase('bar', 'highcharts')
-        ->title("Pendaftar dan Penerima Beasiswa di Prodi $request->selected")
-        ->elementLabel('Jumlah')
-        ->dataset('Penerima', DB::table('penerima_beasiswa as pb')->join('beasiswa as b', 'b.id_beasiswa', '=', 'pb.id_beasiswa')->join('mahasiswa as m', 'm.id_user','=','pb.id_mahasiswa')->join('program_studi as p', 'p.id_prodi','=','m.id_prodi')->where('p.nama_prodi','=',$request->selected)->get())
-        ->dataset('Pendaftar', DB::table('pendaftaran_beasiswa as pb')->join('beasiswa as b', 'b.id_beasiswa', '=', 'pb.id_beasiswa')->join('mahasiswa as m', 'm.id_user','=','pb.id_mahasiswa')->join('program_studi as p', 'p.id_prodi','=','m.id_prodi')->where('p.nama_prodi','=',$request->selected)->get())
-        ->groupBy('nama_beasiswa');
-      }
-      return view('pages.statistik-beasiswa7', compact('user','pengguna','namarole','chart', 'prodi', 'selected'));
-    }
+
+       if ($selected == "Semua Prodi")
+       {
+         $chart = Charts::multidatabase('bar', 'highcharts')
+         ->title("Pendaftar dan Penerima Beasiswa di Seluruh Prodi")
+         ->elementLabel('Jumlah')
+         ->dataset('Penerima', DB::table('penerima_beasiswa as pb')->join('beasiswa as b', 'b.id_beasiswa', '=', 'pb.id_beasiswa')->get())
+         ->dataset('Pendaftar', DB::table('pendaftaran_beasiswa as pb')->join('beasiswa as b', 'b.id_beasiswa', '=', 'pb.id_beasiswa')->get())
+         ->groupBy('nama_beasiswa');
+       } else {
+         $chart = Charts::multidatabase('bar', 'highcharts')
+         ->title("Pendaftar dan Penerima Beasiswa di Prodi $request->selected")
+         ->elementLabel('Jumlah')
+         ->dataset('Penerima', DB::table('penerima_beasiswa as pb')->join('beasiswa as b', 'b.id_beasiswa', '=', 'pb.id_beasiswa')->join('mahasiswa as m', 'm.id_user','=','pb.id_mahasiswa')->join('program_studi as p', 'p.id_prodi','=','m.id_prodi')->where('p.nama_prodi','=',$request->selected)->get())
+         ->dataset('Pendaftar', DB::table('pendaftaran_beasiswa as pb')->join('beasiswa as b', 'b.id_beasiswa', '=', 'pb.id_beasiswa')->join('mahasiswa as m', 'm.id_user','=','pb.id_mahasiswa')->join('program_studi as p', 'p.id_prodi','=','m.id_prodi')->where('p.nama_prodi','=',$request->selected)->get())
+         ->groupBy('nama_beasiswa');
+       }
+       return view('pages.statistik-beasiswa7', compact('user','pengguna','namarole','chart', 'prodi', 'selected'));
+}
 }

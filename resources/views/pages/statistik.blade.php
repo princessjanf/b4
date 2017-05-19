@@ -9,15 +9,20 @@
 @section('content')
 <h2 style="text-align:center";> Lihat Statistik </h2>
 </br> </br>
-<a href="{{ url('statistik-persebaran') }}"> <h4>Persebaran Beasiswa</h4> </a>
-<a href="{{ url('lihat-statistik2') }}"> <h5>Persebaran Beasiswa Per Jenjang</h5> </a>
-<a href="{{ url('lihat-statistik5') }}"> <h5>Persebaran Beasiswa Per Fakultas</h5> </a>
-<a href="{{ url('lihat-statistik6') }}"> <h5>Persebaran Beasiswa Per Prodi</h5> </a>
-
-<a href="{{ url('statistik-penerima') }}"> <h4>Persebaran Penerima-Pendaftar Beasiswa</h4> </a>
-<a href="{{ url('lihat-statistik4') }}"> <h5>Persebaran Penerima-Pendaftar Beasiswa Per Fakultas</h5> </a>
-<a href="{{ url('lihat-statistik7') }}"> <h5>Persebaran Penerima-Pendaftar Beasiswa Per Prodi</h5> </a>
-
+@if($namarole != 'Mahasiswa')
+<a href="{{ url('statistik-persebaran') }}"> <h4 style="color: #1a75ff;">Lihat Persebaran Beasiswa</h4> </a>
+<a href="{{ url('lihat-statistik2') }}"> <h5 style="color: #4d94ff;">Persebaran Beasiswa Per Jenjang</h5> </a>
+<a href="{{ url('lihat-statistik5') }}"> <h5 style="color: #4d94ff;">Persebaran Beasiswa Per Fakultas</h5> </a>
+<a href="{{ url('lihat-statistik6') }}"> <h5 style="color: #4d94ff;">Persebaran Beasiswa Per Prodi</h5> </a>
+</br>
+@endif
+<a href="{{ url('statistik-penerima') }}"> <h4 style="color: #1a75ff;">Lihat Persebaran Penerima-Pendaftar Beasiswa</h4> </a>
+<a href="{{ url('lihat-statistik4') }}"> <h5 style="color: #4d94ff;">Persebaran Penerima-Pendaftar Beasiswa Per Fakultas</h5> </a>
+<a href="{{ url('lihat-statistik7') }}"> <h5 style="color: #4d94ff;">Persebaran Penerima-Pendaftar Beasiswa Per Prodi</h5> </a>
+</br>
+@if($namarole == 'Pegawai' OR $namarole == 'Pegawai Universitas' OR $namarole='Pegawai Fakultas' OR $namarole = 'Direktorat Kerjasama')
+<a href="{{ url('lihat-statistik-dana') }}"> <h4 style="color: #1a75ff;">Lihat Penerimaan Dana Beasiswa</h4> </a>
+@endif
 @endsection
 
 @section('script')
