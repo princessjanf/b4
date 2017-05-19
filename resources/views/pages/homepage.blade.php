@@ -39,7 +39,7 @@
               @else
               <li class="active"><a href="{{ url('') }}">Beranda</a></li>
               @if ($namarole=='Pendonor'||$namarole=='Pegawai Universitas'||$namarole=='Pegawai Fakultas')
-              <li><a href="#dashboard">Dasbor</a></li>
+              <li><a href="{{ url('statistik') }}">Dasbor</a></li>
               @endif
               <li><a href="{{ url('list-beasiswa') }}">Paket-Paket Beasiswa</a></li>
               @if ($namarole=='Pendonor')

@@ -31,12 +31,12 @@
 	<div id='lihatFakultas'>
 		<?php $mulai = 0;?>
 		@for ($i = 0; $i < $countjenjang; $i++)
-		<div class="col-sm-8">
+		<div class="col-sm-12">
 			<?php		$var='fak'.$i;	$index = 0;?>
 			{!! $$var->render() !!}
 		</div>
 
-		<div class="col-sm-4">
+		<div class="col-sm-12">
 		</br>
 		<table class="table table-stripped">
 			<thead>
