@@ -25,7 +25,7 @@
 	<div class="form-group">
 		<label for="deskripsiBeasiswa">Deskripsi Beasiswa</label><br>
 		<textarea id="message" placeholder="Deskripsi Beasiswa" class="form-control" name="deskripsiBeasiswa" data-parsley-trigger="keyup" data-parsley-minlength="80"
-		data-parsley-maxlength="500" data-parsley-minlength-message="Come on! You need to enter at least a 80 character comment.."s
+		data-parsley-maxlength="500" data-parsley-minlength-message="Minimal 80 karakter"
 		data-parsley-validation-threshold="10" required>{{$beasiswa->deskripsi_beasiswa}}</textarea>
 	</div>
 
@@ -222,8 +222,8 @@
 			<div class="form-group" name="syarat">
 				<div class="input-group col-sm-12">
 					<!-- invalidate? -->
-					@foreach ($syarat as $key => $syarat)
-	 					<br><input value= "{{ $syarat->syarat}}" type = "text" class="form-control col-sm-9" name="syarat{{++$key}}" required><br><br>
+					@foreach ($syarat as $key => $s)
+	 					<br><input value= "{{ $s->syarat}}" type = "text" class="form-control col-sm-9" name="syarat{{++$key}}" required><br><br>
 	 				@endforeach
 				</div>
 			</div>

@@ -27,7 +27,7 @@
 	<div class="form-group">
 		<label for="deskripsiBeasiswa">Deskripsi Beasiswa</label><br>
 		<textarea id="message" placeholder="Deskripsi Beasiswa" class="form-control" name="deskripsiBeasiswa" data-parsley-trigger="keyup" data-parsley-minlength="80"
-		data-parsley-maxlength="500" data-parsley-minlength-message="Come on! You need to enter at least a 80 character comment.."s
+		data-parsley-maxlength="500" data-parsley-minlength-message="Minimal 80 karakter"
 		data-parsley-validation-threshold="10" required></textarea>
 	</div>
 
@@ -224,7 +224,7 @@
 	<div id="fieldWebsite" class="form-group" style="display: none;">
 		<label for="websiteSeleksi">Website Seleksi</label><br>
 		<p>Masukkan website yang anda akan jadikan sebagai tempat untuk seleksi</p>
-		<input type="text" placeholder="Website seleksi" class="form-control" name="websiteSeleksi" id="websiteSeleksi" required="">
+		<input type="url" placeholder="Website seleksi" class="form-control" name="websiteSeleksi" id="websiteSeleksi" required="">
 	</div>
 
 	<!-- 2 -->
