@@ -133,8 +133,8 @@
 			<div class="form-group col-sm-8">
 				<input name = "nama[{{$index}}]" value="{{$tmp->nama_berkas}}" hidden>
 				<input name = "idBerkas[{{$index}}]" value="{{$tmp->id_berkas}}" hidden>
-				<label for="berkases[{{$index}}]">{{$index+1}}. {{$tmp->nama_berkas}}</label>
-				<input type="file" class="form-control" name="berkases[{{$index}}]" required>
+				<label for="berkases[{{$index+1}}]">{{$index+1}}. {{$tmp->nama_berkas}}</label>
+				<input type="file" class="form-control" name="berkases[{{$index+1}}]" required>
 			</div>
 			@endforeach
 		</div>

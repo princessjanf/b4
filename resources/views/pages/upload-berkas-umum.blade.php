@@ -24,15 +24,15 @@
     <div class="form-group col-sm-8">
       <input name = "nama[{{$index}}]" value="{{$tmp->nama_berkas}}" hidden>
       <input name = "idBerkas[{{$index}}]" value="{{$tmp->id_berkas}}" hidden>
-      <label for="berkases[{{$index}}]">{{$index+1}}. {{$tmp->nama_berkas}}</label>
-      <input type="file" class="form-control" name="berkases[{{$index}}]">
+      <label for="berkases[{{$index+1}}]">{{$index+1}}. {{$tmp->nama_berkas}}</label>
+      <input type="file" class="form-control" name="berkases[{{$index+1}}]">
     </div>
     @endforeach
   </div>
 
 
   <a href="{{ url($link2) }}"><button type="button" id="cancel" class="btn btn-danger" type="button" formnovalidate>Kembali </button></a>
-  <input type="submit" class="btn btn-info" name="submit" value="unggah" />
+  <input type="submit" class="btn btn-info" name="submit" value="unggah" disabled />
 </form>
 
 @endsection
@@ -40,4 +40,18 @@
 @section('script')
 <script src="{{ asset('js/jquery-3.2.0.js') }}"></script>
 <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'></script>
+<script type="text/javascript">
+$(document).ready(
+function(){
+    $('input:file').change(
+        function(){
+            if ($(this).val()) {
+                $('input:submit').attr('disabled',false);
+                // or, as has been pointed out elsewhere:
+                // $('input:submit').removeAttr('disabled');
+            }
+        }
+        );
+});
+</script>
 @endsection

@@ -21,8 +21,8 @@
   <h6 style="font-weight:bold"><font color="grey">Unggah dokumen kerjasama yang sudah disepakati dalam format .pdf</font></h6>
   <input type="file" class="form-control" name="DokumenKerjasama">
   <br>
+  <a href="{{ url('list-beasiswa') }}"><button type="button" id="kembali" class="btn btn-danger" type="button" formnovalidate>Kembali </button></a>
   <input type="submit" class="btn btn-info" name="submit" value="Unggah" disabled />
-  <a href="{{ url('list-beasiswa') }}"><button type="button" id="kembali" class="btn btn-info" type="button" formnovalidate>Kembali</button></a>
 </form>
 <br><br>
 
