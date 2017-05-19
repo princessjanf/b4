@@ -181,24 +181,9 @@ class ChartController extends Controller
       $pengguna = ChartController::getPengguna($user);
       $namarole = ChartController::getNamarole($pengguna);
 
- // if ($namarole=='Pendonor'){
-  // return var_dump($pengguna->id_user);
-        // $pendonor = DB::table('pendonor')->where('id_user', $pengguna->id_user)->first();
-        //get nama dan nilai pendaftar beasiswa untuk tahap ini
-        // $beasiswa = DB::table('beasiswa')->where('id_beasiswa',$idBeasiswa)->first();
-        // $penerima = DB::table('penerima_beasiswa')->where('id_beasiswa',$beasiswa->id_beasiswa)->get();
 
       $beasiswa = DB::table('beasiswa')->join('pendonor','pendonor.id_user','=','beasiswa.id_pendonor')->select('beasiswa.nama_beasiswa')->distinct()->get();
 
-// return var_dump($beasiswa);
-      // $namabeasiswa = DB::table('beasiswa')
-      //   ->whereIn('id_beasiswa', $beasiswa->pluck('id_beasiswa'))
-      //   ->where('id_pendonor', $idPendonor)
-      //   ->join('pendonor', 'pendonor.id_user', '=', 'beasiswa.id_pendonor')
-      //   ->select('beasiswa.*')
-      //   ->get();
-        // return view('pages.nama-penerima')->withUser($user)->withPengguna($pengguna)->withNamarole($namarole)->withBeasiswa($beasiswa)->withPenerima($penerima)->withNamapenerima($namaPenerima);
-// return var_dump(DB::table('pendaftaran_beasiswa as pb')->join('mahasiswa as m', 'm.id_user', '=', 'pb.id_mahasiswa')->join('fakultas as f', 'f.id_fakultas', '=', 'm.id_fakultas')->join('beasiswa', 'beasiswa.id_beasiswa', '=', 'pb.id_beasiswa')->get());
        $chart = array();
        array_push($chart, Charts::multidatabase('bar', 'highcharts')
                               ->title("Jumlah Pendaftar Per Fakultas")
@@ -210,7 +195,6 @@ class ChartController extends Controller
 
       return view('pages.statistik-beasiswa3', compact('user','pengguna','namarole','chart'))->withUser($user)->withPengguna($pengguna)->withNamarole($namarole)->withBeasiswa($beasiswa);
     }
-  // }
 
     function getPengguna($user)
     {
