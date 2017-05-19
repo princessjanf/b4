@@ -1085,7 +1085,10 @@ function pendaftarBeasiswa($id)
         ->join('penerima_beasiswa', 'user.id_user', '=', 'penerima_beasiswa.id_mahasiswa')
         ->select('user.*')
         ->get();
-        return view('pages.nama-penerima')->withUser($user)->withPengguna($pengguna)->withNamarole($namarole)->withBeasiswa($beasiswa)->withPenerima($penerima)->withNamapenerima($namaPenerima);
+
+        $status = DB::table('email_beasiswa')->where('id_beasiswa', $idBeasiswa)->first();
+
+        return view('pages.nama-penerima', compact('status','user','pengguna','namarole','beasiswa','penerima'))->with('namapenerima', $namaPenerima);
       }
       else {
       	 $pendonor = DB::table('pendonor')->where('id_user', $pengguna->id_user)->first();
@@ -1104,7 +1107,10 @@ function pendaftarBeasiswa($id)
         ->where('pb.id_beasiswa', $idBeasiswa)
         ->select('us.nama as nama', 'b.nama_beasiswa as nama_beasiswa','us.email as email')
         ->get();
-         return view('pages.nama-penerima')->withUser($user)->withPengguna($pengguna)->withNamarole($namarole)->withBeasiswa($beasiswa)->withPenerima($penerima)->withNamapenerima($namaPenerima);
+
+        $status = DB::table('email_beasiswa')->where('id_beasiswa', $idBeasiswa)->first();
+
+        return view('pages.nama-penerima', compact('status','user','pengguna','namarole','beasiswa','penerima'))->with('namapenerima', $namaPenerima);
       }
       else {
       	 return view('pages.noaccess')->withUser($user)->withNamarole($namarole);
