@@ -236,10 +236,11 @@ class ScholarshipController extends Controller
                   ]
                 );
 
+                $beasiswax = DB::table('beasiswa')->where('id_beasiswa',$request->get('idBeasiswa'))->first();
 
                 $id_pendaftaran = DB::table('pendaftaran_beasiswa')->orderBy('id_pendaftaran', 'desc')->first()->id_pendaftaran;
                $this->uploadSubmit($request, $id_pendaftaran);
-      return redirect('/detail-beasiswa/'.$request->get('idBeasiswa'));
+      return redirect('/detail-beasiswa/'.$request->get('idBeasiswa'))->with('namabeasiswadaftar', $beasiswax->nama_beasiswa);
     }
 
     public function uploadSubmit(UploadRequest $request, int $id_pendaftaran)

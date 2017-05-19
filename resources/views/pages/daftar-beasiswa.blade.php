@@ -152,7 +152,7 @@
 			    <div class="modal-dialog">
 				        <div class="modal-content">
 				            <div class="modal-header">
-				               <b> Confirm Submit</b>
+				               <b> Konfirmasi Daftar</b>
 				            </div>
 				            <div class="modal-body">
 				                Apakah Anda yakin ingin mendaftar Beasiswa <b> {{$beasiswa->nama_beasiswa}}</b>?
@@ -160,8 +160,8 @@
 				            </div>
 
 						  <div class="modal-footer">
-						            <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
-						            <button type="submit" id="submit-form" class="btn btn-success"> Submit </button>
+						            <button type="button" class="btn btn-danger" data-dismiss="modal">BATAL</button>
+						            <button type="submit" id="submit-form" class="btn btn-success"> KIRIM </button>
 						           <!--  <a href="#" id="submit" class="btn btn-success success">Submit</a> -->
 						  </div>
 				    </div>

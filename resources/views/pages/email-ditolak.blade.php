@@ -10,4 +10,5 @@ Kami mengucapkan terima kasih atas parisipasi Anda pada pendaftaran Beasiswa ini
 Terima kasih.
 <p></p>
 Salam,
+<br>
 Tim Penyeleksi
