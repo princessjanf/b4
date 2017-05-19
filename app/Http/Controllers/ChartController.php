@@ -119,7 +119,9 @@ class ChartController extends Controller
       $pengguna = ChartController::getPengguna($user);
       $namarole = ChartController::getNamarole($pengguna);
 
-      $jenjang = DB::table('beasiswa_jenjang_prodi')->join('jenjang','beasiswa_jenjang_prodi.id_jenjang','=','jenjang.id_jenjang')->select('beasiswa_jenjang_prodi.id_jenjang', 'nama_jenjang')->distinct()->get();
+      $jenjang = DB::table('beasiswa_jenjang_prodi')->join('beasiswa', 'beasiswa_jenjang_prodi.id_beasiswa', '=','beasiswa.id_beasiswa')
+      ->join('jenjang','beasiswa_jenjang_prodi.id_jenjang','=','jenjang.id_jenjang')
+      ->select('beasiswa_jenjang_prodi.id_jenjang', 'nama_jenjang')->distinct()->get();
 
 
       $namaProdi = [];
@@ -129,10 +131,13 @@ class ChartController extends Controller
       foreach($jenjang as $index=>$j)
       {
         array_push($jjg, $j->nama_jenjang);
-        $jumlahProdi = DB::table('beasiswa_jenjang_prodi')->where('id_jenjang', $j->id_jenjang)->join('program_studi', 'program_studi.id_prodi','=','beasiswa_jenjang_prodi.id_prodi')->select('beasiswa_jenjang_prodi.id_prodi', 'nama_prodi')->distinct()->get();
+        $jumlahProdi = DB::table('beasiswa')->join('beasiswa_jenjang_prodi', 'beasiswa_jenjang_prodi.id_beasiswa', '=', 'beasiswa.id_beasiswa')
+                      ->join('jenjang', 'beasiswa_jenjang_prodi.id_jenjang', '=', 'jenjang.id_jenjang')->join('program_studi', 'program_studi.id_prodi','=','beasiswa_jenjang_prodi.id_prodi')
+                      ->select('beasiswa.id_beasiswa', 'beasiswa_jenjang_prodi.id_prodi', 'nama_prodi')->distinct()->get();
+        
         foreach ($jumlahProdi as $jp)
         {
-          $jml = DB::table('beasiswa_jenjang_prodi')->where('id_prodi', $jp->id_prodi)->where('id_jenjang', $j->id_jenjang)->count();
+          $jml = DB::table('beasiswa_jenjang_prodi')->join('beasiswa', 'beasiswa_jenjang_prodi.id_beasiswa', '=','beasiswa.id_beasiswa')->where('id_prodi', $jp->id_prodi)->where('id_jenjang', $j->id_jenjang)->count();
           array_push($namaProdi, $jp->nama_prodi);
           array_push($jumlahBeasiswa, $jml);
           array_push($arrJenjang, $j->nama_jenjang);
@@ -146,18 +151,20 @@ class ChartController extends Controller
 
         $namaFakultas = [];
         $jmlBeasiswaFakultas = [];
-        $jmlFakultas = DB::table('beasiswa_jenjang_prodi as bjp')->where('bjp.id_jenjang', $j->id_jenjang)
+        $jmlFakultas = DB::table('beasiswa_jenjang_prodi as bjp')->join('beasiswa as b', 'b.id_beasiswa','=','bjp.id_beasiswa')
+                      ->where('bjp.id_jenjang', $j->id_jenjang)
                       ->join('jenjang_prodi as jp', 'bjp.id_jenjang', '=', 'jp.id_jenjang')
                       ->join('program_studi as ps', 'ps.id_prodi', '=', 'bjp.id_prodi')
                       ->join('fakultas as f', 'f.id_fakultas', '=', 'ps.id_fakultas')
                       ->select('nama_fakultas', 'f.id_fakultas')->distinct()->get();
-        // return $jmlFakultas;
+
         foreach($jmlFakultas as $jf)
         {
-          $jml = DB::table('beasiswa_jenjang_prodi as bjp')->join('jenjang_prodi as jp', 'bjp.id_jenjang', '=', 'jp.id_jenjang')
+          $jml = DB::table('beasiswa_jenjang_prodi as bjp')->join('beasiswa as b', 'b.id_beasiswa', '=', 'bjp.id_beasiswa')
+                        ->join('jenjang_prodi as jp', 'bjp.id_jenjang', '=', 'jp.id_jenjang')
                         ->join('program_studi as ps', 'ps.id_prodi', '=', 'bjp.id_prodi')
                         ->join('fakultas as f', 'f.id_fakultas', '=', 'ps.id_fakultas')
-                        ->where('f.id_fakultas', $jf->id_fakultas)->where('bjp.id_jenjang', $j->id_jenjang)->select('id_beasiswa')->distinct()->get();
+                        ->where('f.id_fakultas', $jf->id_fakultas)->where('bjp.id_jenjang', $j->id_jenjang)->select('b.id_beasiswa')->distinct()->get();
 
           array_push($namaFakultas, $jf->nama_fakultas);
           array_push($jmlBeasiswaFakultas, count($jml));
@@ -171,8 +178,8 @@ class ChartController extends Controller
        Charts::multidatabase('bar', 'highcharts')
               ->title("Persebaran Beasiswa Per Jenjang")
               ->elementLabel('Jumlah Beasiswa')
-              ->dataset('Jumlah Beasiswa', DB::table('beasiswa_jenjang_prodi as bjp')->join('program_studi as ps', 'bjp.id_prodi','=','ps.id_prodi')
-                          ->join('jenjang as j', 'j.id_jenjang', '=', 'bjp.id_jenjang')->get())
+              ->dataset('Jumlah Beasiswa', DB::table('beasiswa')->join('beasiswa_jenjang_prodi as bjp', 'bjp.id_beasiswa','=', 'beasiswa.id_beasiswa')->join('program_studi as ps', 'bjp.id_prodi','=','ps.id_prodi')
+                          ->join('jenjang as j', 'j.id_jenjang', '=', 'bjp.id_jenjang')->select('beasiswa.id_beasiswa', 'nama_jenjang')->distinct()->get())
               ->groupBy('nama_jenjang');
 
       $toreturn = ['user'=>$user, 'chart'=>$chart, 'pengguna'=>$pengguna, 'namarole'=>$namarole, 'countjenjang'=>count($jenjang)];
@@ -181,8 +188,6 @@ class ChartController extends Controller
       $toreturn['arrjenjang'] = $arrJenjang;
       $toreturn['jenjang'] = $jjg;
 
-      // $toreturn = ['namarole'=>$chk];
-      //compact('user','pengguna','namarole','chart0');
       for ($i = 0; $i<count($jenjang); $i++)
       {
         $var='prodi'.$i;

@@ -52,8 +52,28 @@
    <tr>
     <th><label>{{$index+1}}.</label></th>
     <th><label><a href="{{ url('pendaftar-beasiswa/'.$beasiswa->id_beasiswa) }}">{{$beasiswa->nama_beasiswa}}</a></label></th>
-    <th><label>{{$beasiswa->dana_pendidikan}}</label></th>
-    <th><label>{{$beasiswa->dana_hidup}}</label></th>
+    <th><label id="dp{{$index}}"></label></th>
+    <th><label id="dh{{$index}}"></label></th>
+    <script>
+
+    var nStr = "{{$beasiswa->dana_pendidikan}}".toString();
+    var dStr = "{{$beasiswa->dana_hidup}}".toString();
+
+    var x1 = nStr.replace (/,/g, "");
+    var x2 = nStr.replace (/,/g, "");
+
+    var rgx = /(\d+)(\d{3})/;
+    while (rgx.test(x1)) {
+      x1 = x1.replace(rgx, '$1' + ',' + '$2');
+    }
+    while (rgx.test(x2)) {
+      x1 = x1.replace(rgx, '$1' + ',' + '$2');
+    }
+
+    document.getElementById("dp{{$index}}").innerHTML = "{{$beasiswa->nama_mata_uang}} "+ x1;
+    document.getElementById("dh{{$index}}").innerHTML = "{{$beasiswa->nama_mata_uang}} "+ x2;
+
+    </script>
   </tr>
    @endforeach
 

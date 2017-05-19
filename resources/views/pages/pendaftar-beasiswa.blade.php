@@ -42,7 +42,21 @@
            <th><label>{{$mahasiswa->nama_fakultas}}</label></th>
            <th><label>{{$mahasiswa->nama_prodi}}</label></th>
            <th><label>{{$mahasiswa->IPK}}</label></th>
-           <th><label>{{$mahasiswa->penghasilan_orang_tua}}</label></th>
+           <th><label id="penghasilan{{$index}}">
+             <script>
+
+             var nStr = "{{$mahasiswa->penghasilan_orang_tua}}".toString();
+             var x1 = nStr.replace (/,/g, "");
+
+             var rgx = /(\d+)(\d{3})/;
+             while (rgx.test(x1)) {
+               x1 = x1.replace(rgx, '$1' + ',' + '$2');
+             }
+
+             document.getElementById("penghasilan{{$index}}").innerHTML = "IDR "+ x1;
+
+             </script>
+           </label></th>
          </tr>
             @endforeach
             @endif
@@ -78,4 +92,3 @@
   }
 </style>
 @endsection
-
