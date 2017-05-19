@@ -9,6 +9,7 @@
 
 @section('content')
 <h1 style="text-align:center";> LIHAT STATISTIK </h1>
+<hr>
 </br>
 </br>
 
@@ -32,13 +33,13 @@
     <div class = "col-sm-6">
 		<a style='text-align: center' href="{{ url('statistik-persebaran') }}"> <p style='text-align: center'> <i class=" fa fa-graduation-cap fa-5x"></i></p><h4 style="color: #1a75ff;">Persebaran Beasiswa</h4> </a>
 		<div class = "col-sm-4">
-		<a href="{{ url('lihat-statistik2') }}"> <p style='text-align: center'> <i class=" fa fa-university fa-3x"></i></p><h5 style='text-align: center' style="color: #4d94ff;">Beasiswa Per Jenjang</h5> </a>
+		<a href="{{ url('lihat-statistik2') }}"> <p style='text-align: center'> <i class=" fa fa-university fa-3x"></i></p><h6 style='text-align: center' style="color: #4d94ff;">Beasiswa Per Jenjang</h6> </a>
 		</div>
 		<div class = "col-sm-4">
-		<a href="{{ url('lihat-statistik5') }}"> <p style='text-align: center'> <i class=" fa fa-university fa-3x"></i></p><h5 style='text-align: center' style="color: #4d94ff;">Beasiswa Per Fakultas</h5> </a>
+		<a href="{{ url('lihat-statistik5') }}"> <p style='text-align: center'> <i class=" fa fa-university fa-3x"></i></p><h6 style='text-align: center' style="color: #4d94ff;">Beasiswa Per Fakultas</h6> </a>
 		</div>
 		<div class = "col-sm-4">
-		<a href="{{ url('lihat-statistik6') }}"> <p style='text-align: center'> <i class=" fa fa-university fa-3x"></i></p><h5 style='text-align: center' style="color: #4d94ff;">Beasiswa Per Prodi</h5> </a>
+		<a href="{{ url('lihat-statistik6') }}"> <p style='text-align: center'> <i class=" fa fa-university fa-3x"></i></p><h6 style='text-align: center' style="color: #4d94ff;">Beasiswa Per Prodi</h6> </a>
 		</div>
 		</br>
 	</div>
@@ -68,23 +69,8 @@
 </div>
 
 @endif
-</br>
-</br>
-</br>
-</br>
-</br>
-</br>
-</br>
-</br>
-</br>
-</br>
-</br></br>
-</br>
-</br>
-</br>
-</br>
-</br>
-</br>
+</br></br></br></br></br></br></br></br></br>
+</br></br></br></br></br></br></br></br></br>
 @endsection
 
 

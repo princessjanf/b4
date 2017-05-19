@@ -105,8 +105,7 @@
 </p>
 @endif
 <a href="{{ url('list-beasiswa') }}"><button type="button" id="kembali" class="btn btn-info" type="button" formnovalidate>Kembali</button></a>
-<br>
-<br>
+</br></br></br></br></br></br></br></br></br>
 @endsection
 
 @section('script')

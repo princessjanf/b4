@@ -7,7 +7,7 @@
 @endsection
 
 @section('content')
-<h4>Daftar Beasiswa Yang Dapat Diseleksi</h4>
+<h2>DAFTAR BEASISWA YANG DAPAT DISELEKSI</h2>
 <table id='daftarSeleksi' class="table table-striped">
 	<thead>
 		<tr>

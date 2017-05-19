@@ -25,7 +25,7 @@
       $('select').multipleSelect();
       </script>
     </body>
-    <button type='submit'>submit</button>
+    <button type='submit'>KIRIM</button>
   </form>
   <div>
     <button type="button" class="btn btn-default pull-right" id="buttonTambahSyarat" onclick="insertRow()">+</button>

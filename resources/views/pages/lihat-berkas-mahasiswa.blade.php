@@ -91,7 +91,7 @@
     </table>
 
     <div>
-      <a href="{{ url('pendaftar-beasiswa/' .$beasiswa->id_beasiswa) }}"><button id="cancel" class="btn btn-info" type="button" formnovalidate>BACK</button></a>
+      <a href="{{ url('pendaftar-beasiswa/' .$beasiswa->id_beasiswa) }}"><button id="cancel" class="btn btn-info" type="button" formnovalidate>KEMBALI</button></a>
     </div>
 
 </div>
