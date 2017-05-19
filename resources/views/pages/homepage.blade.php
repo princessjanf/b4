@@ -134,7 +134,7 @@
             <div class="col-lg-12">
               <div class="big-cta">
                 <div class="cta-text">
-                  <a href="{{ url('list-beasiswa') }}"><h2><span>Lihat</span> List Beasiswa</h2></a>
+                  <a href="{{ url('list-beasiswa') }}"><h2><span>Lihat</span> Seluruh Paket Beasiswa</h2></a>
                 </div>
               </div>
             </div>
@@ -151,46 +151,46 @@
                   <li class="col-lg-3 design" data-id="id-0" data-type="web">
                     <div class="item-thumbs">
                       <!-- Fancybox - Gallery Enabled - Title - Full Image -->
-                      <a class="hover-wrap fancybox" data-fancybox-group="gallery" title="Work 1" href="{{ asset('img/works/1.jpg') }}">
+                      <a class="hover-wrap fancybox" data-fancybox-group="gallery" title="Scholarship Day" href="{{ asset('img/works/1.jpg') }}">
                         <span class="overlay-img"></span>
                         <span class="overlay-img-thumb font-icon-plus"></span>
                       </a>
                       <!-- Thumb Image and Description -->
-                      <img src="{{ asset('img/works/1.jpg') }}" alt="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus quis elementum odio. Curabitur pellentesque, dolor vel pharetra mollis.">
+                      <img src="{{ asset('img/works/1.jpg') }}" alt="Universitas Bakrie mengadakan Scholarship Day yang diadakan pada tanggal 24 Maret 2016 di Universitas Bakrie Jl. HR. Rasuna Said. Info lebih lanjut www.bakrie.ac.id">
                     </div>
                   </li>
                   <!-- End Item Project -->
                   <!-- Item Project and Filter Name -->
                   <li class="item-thumbs col-lg-3 design" data-id="id-1" data-type="icon">
                     <!-- Fancybox - Gallery Enabled - Title - Full Image -->
-                    <a class="hover-wrap fancybox" data-fancybox-group="gallery" title="Work 2" href="{{ asset('img/works/2.jpg') }}">
+                    <a class="hover-wrap fancybox" data-fancybox-group="gallery" title="Bakrie Center Foundation" href="{{ asset('img/works/2.jpg') }}">
                       <span class="overlay-img"></span>
                       <span class="overlay-img-thumb font-icon-plus"></span>
                     </a>
                     <!-- Thumb Image and Description -->
-                    <img src="{{ asset('img/works/2.jpg') }}" alt="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus quis elementum odio. Curabitur pellentesque, dolor vel pharetra mollis.">
+                    <img src="{{ asset('img/works/2.jpg') }}" alt="Bakrie Center Foundation membuka beasiswa untuk Master Program (S2). Hadirnya beasiswa ini diharapkan dapat menambah banyak pemimpin-pemimpin baru. Info lebih lanjut klik www.bcf.or.id">
                   </li>
                   <!-- End Item Project -->
                   <!-- Item Project and Filter Name -->
                   <li class="item-thumbs col-lg-3 photography" data-id="id-2" data-type="illustrator">
                     <!-- Fancybox - Gallery Enabled - Title - Full Image -->
-                    <a class="hover-wrap fancybox" data-fancybox-group="gallery" title="Work 3" href="{{ asset('img/works/3.jpg') }}">
+                    <a class="hover-wrap fancybox" data-fancybox-group="gallery" title="Beasiswa R-Zis UGM" href="{{ asset('img/works/3.jpg') }}">
                       <span class="overlay-img"></span>
                       <span class="overlay-img-thumb font-icon-plus"></span>
                     </a>
                     <!-- Thumb Image and Description -->
-                    <img src="{{ asset('img/works/3.jpg') }}" alt="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus quis elementum odio. Curabitur pellentesque, dolor vel pharetra mollis.">
+                    <img src="{{ asset('img/works/3.jpg') }}" alt="UGM membuka beasiswa untuk Mahasiswa S1. Beasiswa ditujukkan untuk mahasiswa yang kurang mampu. Info lebih lanjut klik rumahzis.ugm.ac.id">
                   </li>
                   <!-- End Item Project -->
                   <!-- Item Project and Filter Name -->
                   <li class="item-thumbs col-lg-3 photography" data-id="id-2" data-type="illustrator">
                     <!-- Fancybox - Gallery Enabled - Title - Full Image -->
-                    <a class="hover-wrap fancybox" data-fancybox-group="gallery" title="Work 4" href="{{ asset('img/works/4.jpg') }}">
+                    <a class="hover-wrap fancybox" data-fancybox-group="gallery" title="Fantasia" href="{{ asset('img/works/4.jpg') }}">
                       <span class="overlay-img"></span>
                       <span class="overlay-img-thumb font-icon-plus"></span>
                     </a>
                     <!-- Thumb Image and Description -->
-                    <img src="{{ asset('img/works/4.jpg') }}" alt="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus quis elementum odio. Curabitur pellentesque, dolor vel pharetra mollis.">
+                    <img src="{{ asset('img/works/4.jpg') }}" alt="Asia Advertising mengadakan kompetisi dengan hadiah beasiswa penuh. Untuk informasi lebih lanjut kunjungi sosial media Fantasia yang tertera di poster">
                   </li>
                   <!-- End Item Project -->
                 </ul>

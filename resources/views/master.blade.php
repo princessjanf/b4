@@ -49,13 +49,12 @@
 					@if ($namarole=='Pendonor'||$namarole=='Pegawai Universitas'||$namarole=='Pegawai Fakultas')
 					<li><a href="#dashboard">Dashboard</a></li>
 					@endif
-					<li><a href="{{ url('list-beasiswa') }}">List Beasiswa</a></li>
+					<li><a href="{{ url('list-beasiswa') }}">Paket Beasiswa</a></li>
 					@if ($namarole=='Pendonor')
 					<li><a href="#kelolalpj">Kelola LPJ</a></li>
 					@elseif ($namarole=='Mahasiswa')
 					<li><a href="#isilpj">Isi LPJ</a></li>
 					@endif
-					<li><a href="#settings">Settings</a></li>
 					<hr>
 				</ul>
 			</div>

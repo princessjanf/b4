@@ -114,7 +114,7 @@
        <label>{{$file->nama_berkas}}</label>
      </form>
      @endforeach
-     <a href="{{url('upload-berkas-umum')}}"><button class="btn btn-info">Upload Baru</button></a>
+     <a href="{{url('upload-berkas-umum')}}"><button class="btn btn-info">UNGGAH BARU</button></a>
      <br><br>
 
     <h4>Daftar Beasiswa yang Didaftarkan:</h4>
