@@ -227,9 +227,10 @@
 							url:'{{url('/retrieve-nama')}}',
 							dataType:'json',
 							data:{'_token' : '<?php echo csrf_token() ?>',
-								'id_user': datum[0]
+								'id_user': datum
 							},
 							success:function(data){
+
 								nama = data.msg.nama;
 								html = html + '<tr><td class="idMahasiswa" id='+datum[0]+'>' + nama + '</td><td> Diterima </td> </tr>';
 								count++;

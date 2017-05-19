@@ -194,7 +194,7 @@
 
 	function saveDraft(){
 		var table = $('#tableSeleksi').DataTable().$('input').serialize();
-		console.log(table);
+
 		$.ajax({
 			type:'POST',
 			url:'{{url('/save-draft')}}',
@@ -206,8 +206,8 @@
 				'pengguna': {{$pengguna->id_user}}
 			},
 			success:function(data){
-				console.log(data);
-				// alert("Nilai sementara berhasil disimpan!");
+
+				alert("Nilai sementara berhasil disimpan!");
 			}
 		});
 	}
@@ -276,7 +276,7 @@
 				var nama='';
 				$.each(data, function(i,item){
 					$.each(item, function(j,datum){
-						console.log(datum);
+
 						$.ajax({
 							async:false,
 							type:'POST',
@@ -311,13 +311,13 @@
 		var now = new Date();
 		var tgl = new Date().setFullYear(x[0], x[1]-1, x[2]);
 
+
 		if (tgl > now)
 		{
 			$("[name='alertWaktuDaftar']").show();
 		}
 		else{
 		var table = $('#tableSeleksi').DataTable().$('input').serialize();
-		// console.log(table);
 		$.ajax({
 			type:'POST',
 			url:'{{url('/save-draft')}}',
@@ -336,14 +336,14 @@
 				var nama='';
 				$.each(data, function(i,item){
 					$.each(item, function(j,datum){
-
+						console.log(datum);
 						$.ajax({
 							async:false,
 							type:'POST',
 							url:'{{url('/retrieve-nama')}}',
 							dataType:'json',
 							data:{'_token' : '<?php echo csrf_token() ?>',
-								'id_user': datum[0]
+								'id_user': datum
 							},
 							success:function(data){
 								nama = data.msg.nama;
@@ -396,7 +396,7 @@
 			}
 		});
 		@endif
-
+		console.log(arrayResult);
 		$.ajax({
 			type:'POST',
 			url:'{{url('/finalize-result')}}',
@@ -408,6 +408,7 @@
 				'pengguna': {{$pengguna->id_user}}
 			},
 			success:function(data){
+
 				window.location.href = "{{ url('seleksi-beasiswa/'.$idbeasiswa.'/'.$idtahapan) }}";
 			},
 			error: function(xhr, textStatus, errorThrown) {

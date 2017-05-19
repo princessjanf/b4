@@ -6,7 +6,7 @@
 <div class="col-sm-9">
     <H2>PENDAFTAR BEASISWA</H2>
     <HR></HR>
-    <h3>{{$namaMhs->nama}}  </h3>  
+    <h3>{{$namaMhs->nama}}  </h3>
       <table style="width:75%">
         <tr>
         <th></th>
@@ -31,12 +31,27 @@
         </tr>
         <tr>
           <td>Penghasilan Orang Tua</td>
-          <td><h5>{{$mahasiswa->penghasilan_orang_tua}}</h5></td>
+          <td><h5 id="penghasilan">
+
+            <script>
+
+          	var nStr = "{{$mahasiswa->penghasilan_orang_tua}}".toString();
+          	var x1 = nStr.replace (/,/g, "");
+
+          	var rgx = /(\d+)(\d{3})/;
+          	while (rgx.test(x1)) {
+          		x1 = x1.replace(rgx, '$1' + ',' + '$2');
+          	}
+
+          	document.getElementById("penghasilan").innerHTML = "IDR "+ x1;
+
+          	</script>
+          </h5></td>
         </tr>
     </table>
-    
+
     <br>
-    
+
     <p>BERKAS YANG DIMILIKI MAHASISWA</p>
     <table class="table table-bordered">
       <thead>
