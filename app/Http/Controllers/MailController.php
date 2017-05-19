@@ -36,7 +36,7 @@ public function sendEmail($idBeasiswa)
 
         $namaDitolak = DB::table('pendaftaran_beasiswa')->where('id_beasiswa', $idBeasiswa)->where('status_lamaran', 7)->join('user', 'user.id_user','=', 'pendaftaran_beasiswa.id_mahasiswa')
         ->join('beasiswa','beasiswa.id_beasiswa','=','pendaftaran_beasiswa.id_beasiswa')->select('user.nama', 'beasiswa.nama_Beasiswa', 'user.email') ->get();
-        
+
 foreach ($namaPenerima as $np) {
    $data = array(
    'name'=> $np->nama,
@@ -69,7 +69,7 @@ foreach ($namaPenerima as $np) {
     $message->subject($data['subject']);
      //echo ("Basic Email Sent. Check your inbox.");
   });
-   return view('pages.email-ditolak')->withUser($user)->withNamarole($namarole);
+   return view('pages.notif-email')->withUser($user)->withNamarole($namarole);
 }
 
 }
@@ -128,7 +128,7 @@ Mail::send('pages.email-ditolak', $data, function($message) use ($data)
   $message->subject($data['subject']);
    //echo ("Basic Email Sent. Check your inbox.");
 });
- return view('pages.email-ditolak')->withUser($user)->withNamarole($namarole);
+ return view('pages.notif-email')->withUser($user)->withNamarole($namarole);
 }
         // BELUM: cek if tahapan ini udah final atau belum, kalau udah final cuma bisa lihat hasil seleksi
 } else {

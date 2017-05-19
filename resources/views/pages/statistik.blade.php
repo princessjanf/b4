@@ -20,7 +20,7 @@
 <a href="{{ url('lihat-statistik4') }}"> <h5 style="color: #4d94ff;">Persebaran Penerima-Pendaftar Beasiswa Per Fakultas</h5> </a>
 <a href="{{ url('lihat-statistik7') }}"> <h5 style="color: #4d94ff;">Persebaran Penerima-Pendaftar Beasiswa Per Prodi</h5> </a>
 </br>
-@if($namarole == 'Pegawai' OR $namarole == 'Pegawai Universitas' OR $namarole='Pegawai Fakultas' OR $namarole = 'Direktorat Kerjasama')
+@if($namarole != 'Mahasiswa')
 <a href="{{ url('lihat-statistik-dana') }}"> <h4 style="color: #1a75ff;">Lihat Penerimaan Dana Beasiswa</h4> </a>
 @endif
 @endsection

@@ -17,8 +17,6 @@ class MainController extends Controller
       }
       else{
         $user = SSO::getUser();
-
-        return $user->username;
         $pengguna = DB::table('user')->where('username', $user->username)->first();
         $role = DB::table('role')->where('id_role', $pengguna->id_role)->first();
         $namarole = $role->nama_role;

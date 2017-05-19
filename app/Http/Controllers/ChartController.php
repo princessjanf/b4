@@ -473,6 +473,8 @@ class ChartController extends Controller
       $pengguna = $this->getPengguna($user);
       $namarole = $this->getNamarole($pengguna);
 
+      if ($namarole == 'Mahasiswa') return view('pages.noaccess', compact('user','pengguna','namarole'));
+
       $chart = array();
 
       $data = DB::table('beasiswa as b')

@@ -357,16 +357,16 @@
 	$(document).ready(function() {
 		$('#beasiswalist').DataTable({
 			"paging": false,
-      "order": [[ 0, "desc" ]],
-      "columnDefs": [
-      { "width": "100px", "targets": 0 },
-      { "width": "150px", "targets": 1 },
-      { "width": "100px", "targets": 2 },
-      { "width": "70px", "targets": 3 },
-      { "width": "20px", "targets": 4 },
-      { "width": "90px", "targets": 5 },
-      { "width": "120px", "targets": 6 }
-    ]
+      "order": [[ 0, "desc" ]]
+      // ,"columnDefs": [
+      // { "width": "100px", "targets": 0 },
+      // { "width": "150px", "targets": 1 },
+      // { "width": "100px", "targets": 2 },
+      // { "width": "70px", "targets": 3 },
+      // { "width": "20px", "targets": 4 },
+      // { "width": "90px", "targets": 5 },
+      // { "width": "120px", "targets": 6 }
+    // ]
 	});
 		$('[data-toggle="tooltip"]').tooltip();
 	});
