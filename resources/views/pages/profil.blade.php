@@ -3,6 +3,16 @@
 @section('title', 'Profil')
 
 @section('content')
+@if (session('namaberkas'))
+    <div class="alert alert-success">
+        Berkas {{ session('namaberkas') }} milik  {{ session('namamahasiswa') }} telah <b> berhasil </b> diunggah.
+    </div>
+
+@elseif (session('namaberkastimpa'))
+    <div class="alert alert-success">
+        Berkas {{ session('namaberkastimpa') }} milik  {{ session('namamahasiswatimpa') }} telah <b> berhasil </b> diperbaharui.
+    </div>
+@endif
 
     <div class="col-sm-9">
     <H2>PROFIL</H2>

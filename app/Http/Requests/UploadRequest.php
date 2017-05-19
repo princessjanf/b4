@@ -15,10 +15,16 @@ class UploadRequest extends FormRequest
 
   public function rules()
   {
-    $jumlah = count($this->input('berkases'));
-    foreach(range(0, 5) as $index) {
-      $rules['berkases.' . $index] = 'mimes:pdf|max:10240';
-    }
-    return $rules;
+      if($this->input('berkases')!=null){
+      $jumlah = count($this->input('berkases'));
+        foreach(range(0, $jumlah) as $index) {
+          $rules['berkases.' . $index] = 'mimes:pdf|max:2048';
+      }
+        return $rules;
+      }else{
+        return [
+            'DokumenKerjasama' => 'mimes:pdf|max:2048'
+        ];
+      }
   }
 }

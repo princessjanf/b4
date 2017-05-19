@@ -55,6 +55,7 @@
 			<th>Pendonor</th>
 			@if($namarole=="Pendonor" || $namarole=="Pegawai Universitas" || $namarole=="Direktorat Kerjasama")
 				<th>Status</th>
+
 			@endif
 			@if($namarole!="Direktorat Kerjasama")
 				<th>Pendaftaran</th>
@@ -62,6 +63,7 @@
 			@else
 				<th>Dokumen</th>
 			@endif
+
 
 			@if($namarole=="Mahasiswa" || $namarole=="Pegawai Universitas" || $namarole=="Direktorat Kerjasama")
 				<th></th>
