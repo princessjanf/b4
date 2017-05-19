@@ -702,7 +702,7 @@ function pendaftarBeasiswa($id)
 			$pengguna = DB::table('user')->where('username', $user->username)->first();
 			$role = DB::table('role')->where('id_role', $pengguna->id_role)->first();
 			$namarole = $role->nama_role;
-
+      $tahapanljt = 0;
 			if ($namarole=='Mahasiswa')
 			{
 				return view('pages.noaccess')->withUser($user)->withNamarole($namarole);
@@ -735,15 +735,17 @@ function pendaftarBeasiswa($id)
 
         	// Cek apakah sudah final atau belum
 					$final = 0;
+
 					/*	final = 1 -> belum ada pendaftar
 					*		final = 2 -> lihat hasil
 					*/
 					$cekFinal = DB::table('seleksi_beasiswa')->where('id_beasiswa', $idBeasiswa)->where('id_tahapan', '5')->first();
 					$tahapan = DB::table('tahapan')->where('id_tahapan',$idTahapan)->first();
+          $penerimaChecker = 0;
 					if (empty($cekFinal)) // Jika belum/ tidak ada pendaftar
 					{
 						$final = 1;
-						return view('pages.seleksi-tahapan')->withUser($user)->withPengguna($pengguna)->withNamarole($namarole)->withIdtahapan($idTahapan)->withIdbeasiswa($idBeasiswa)->withBeasiswa($beasiswa)->withFinal($final)->withTahapan($tahapan);
+						return view('pages.seleksi-tahapan')->withUser($user)->withPengguna($pengguna)->withNamarole($namarole)->withIdtahapan($idTahapan)->withIdbeasiswa($idBeasiswa)->withBeasiswa($beasiswa)->withFinal($final)->withTahapan($tahapan)->withPenerimachecker($penerimaChecker)->withTahapanljt($tahapanljt);
 					}
 					else{
 						$pendaftar = DB::table('seleksi_beasiswa')->where('id_beasiswa', $idBeasiswa)
@@ -754,10 +756,11 @@ function pendaftarBeasiswa($id)
 						if($cekFinal -> final == '1')
 						{
 							$final = 2;
-							return view('pages.seleksi-luar')->withUser($user)->withPengguna($pengguna)->withNamarole($namarole)->withPendaftar($pendaftar)->withIdtahapan($idTahapan)->withIdbeasiswa($idBeasiswa)->withBeasiswa($beasiswa)->withFinal($final)->withTahapan($tahapan);
+              $penerimaChecker = 1;
+							return view('pages.seleksi-luar')->withUser($user)->withPengguna($pengguna)->withNamarole($namarole)->withPendaftar($pendaftar)->withIdtahapan($idTahapan)->withIdbeasiswa($idBeasiswa)->withBeasiswa($beasiswa)->withFinal($final)->withTahapan($tahapan)->withPenerimachecker($penerimaChecker)->withTahapanljt($tahapanljt);
 						}
 						else{
-							return view('pages.seleksi-luar')->withUser($user)->withPengguna($pengguna)->withNamarole($namarole)->withPendaftar($pendaftar)->withIdtahapan($idTahapan)->withIdbeasiswa($idBeasiswa)->withBeasiswa($beasiswa)->withFinal($final)->withTahapan($tahapan);
+							return view('pages.seleksi-luar')->withUser($user)->withPengguna($pengguna)->withNamarole($namarole)->withPendaftar($pendaftar)->withIdtahapan($idTahapan)->withIdbeasiswa($idBeasiswa)->withBeasiswa($beasiswa)->withFinal($final)->withTahapan($tahapan)->withPenerimachecker($penerimaChecker)->withTahapanljt($tahapanljt);
 						}
 
 					}
