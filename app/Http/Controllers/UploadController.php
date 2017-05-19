@@ -37,6 +37,7 @@ class UploadController extends Controller
 
   public function uploadSubmit(UploadRequest $request)
   {
+    $username = $request->get('username');
     $idBeasiswa = $request->get('idBeasiswa');
     $idMahasiswa = $request->get('idMahasiswa');
 
@@ -44,18 +45,15 @@ class UploadController extends Controller
       foreach ($request->berkases as $index=>$berkas) {
         $idBerkas = $request->idBerkas[$index];
         $namaberkas = $request->nama[$index];
-        $namamahasiswa = $request->namamahasiswa;
-        $file = $idMahasiswa.'-'.$request->nama[$index].'.pdf';
+        $file = $request->nama[$index].'.pdf';
         $oldfile = DB::table('berkas_umum')->where('file', $file)->first();
         if($oldfile == null) {
           DB::insert('INSERT INTO `berkas_umum`(`id_berkas`, `id_mahasiswa`, `file`)
           VALUES (?,?,?)', [$idBerkas, $idMahasiswa, $file]);
-          $berkas->storeAs('berkas', $file);
-          return redirect($request->get('link'))->with('namaberkas', $namaberkas)->with('namamahasiswa', $namamahasiswa);
-        }else{
-          return redirect($request->get('link'))->with('namaberkastimpa', $namaberkas)->with('namamahasiswatimpa', $namamahasiswa);
         }
+        $berkas->storeAs('berkas/'.$username, $file);
       }
+      return redirect($request->get('link'))->with('namaberkas', $namaberkas);
     }
   }
 

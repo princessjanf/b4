@@ -5,12 +5,7 @@
 @section('content')
 @if (session('namaberkas'))
     <div class="alert alert-success">
-        Berkas {{ session('namaberkas') }} milik  {{ session('namamahasiswa') }} telah <b> berhasil </b> diunggah.
-    </div>
-
-@elseif (session('namaberkastimpa'))
-    <div class="alert alert-success">
-        Berkas {{ session('namaberkastimpa') }} milik  {{ session('namamahasiswatimpa') }} telah <b> berhasil </b> diperbaharui.
+        Berkas telah <b> berhasil </b> diunggah.
     </div>
 @endif
 

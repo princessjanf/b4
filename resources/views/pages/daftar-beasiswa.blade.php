@@ -9,7 +9,7 @@
 @section('content')
 @if (session('namaberkas'))
     <div class="alert alert-success">
-        Berkas {{ session('namaberkas') }} milik {{ session('namamahasiswa') }} telah <b> berhasil </b> diunggah.
+        Berkas telah <b> berhasil </b> diunggah.
     </div>
 @endif
 
@@ -23,8 +23,8 @@
 
 	<input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
 	<input type = "hidden" name = "idBeasiswa" value= {{$beasiswa->id_beasiswa}}>
-	<input type = "hidden" name = "userid" value= {{$pengguna->id_user}}>
-
+  <input type = "hidden" name = "userid" value= {{$pengguna->id_user}}>
+<input type = "hidden" name = "username" value= "{{$user->username}}">
   	<input type = "hidden" name = "idMahasiswa" value={{$pengguna->id_user}} >
   	<input type = "hidden" name = "idPenyeleksi" value= {{$bepe->id_penyeleksi}}>
   	<input type = "hidden" name = "idTahapan" value={{$bepe->id_tahapan}} >

@@ -567,7 +567,8 @@ function pendaftarBeasiswa($id)
 
   function download(Request $request)
   {
-      return response()->download(storage_path('app/berkas/'.$request->berkas));
+      $user = SSO::getUser();
+      return response()->download(storage_path('app/berkas/'.$user->username.'/'.$request->berkas));
   }
 
   function unduhDK(Request $request)
