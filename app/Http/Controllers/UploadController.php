@@ -46,7 +46,7 @@ class UploadController extends Controller
         $idBerkas = $request->idBerkas[$index];
         $namaberkas = $request->nama[$index];
         $file = $request->nama[$index].'.pdf';
-        $oldfile = DB::table('berkas_umum')->where('file', $file)->first();
+        $oldfile = DB::table('berkas_umum')->where('id_berkas', $idBerkas)->where('id_mahasiswa', $idMahasiswa)->first();
         if($oldfile == null) {
           DB::insert('INSERT INTO `berkas_umum`(`id_berkas`, `id_mahasiswa`, `file`)
           VALUES (?,?,?)', [$idBerkas, $idMahasiswa, $file]);

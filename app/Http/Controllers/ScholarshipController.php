@@ -270,7 +270,7 @@ class ScholarshipController extends Controller
       if (count($request->berkases)>0) {
         foreach ($request->berkases as $index=>$berkas) {
           $idBerkas = $request->idBerkas[$index];
-          $file = $request->nama[$index].'.pdf';
+          $file = $idBeasiswa.'-'.$request->nama[$index].'.pdf';
           $oldfile = DB::table('beasiswa_berkas')
           ->where('id_pendaftaran', $id_pendaftaran)
           ->where('id_beasiswa', $idBeasiswa)
