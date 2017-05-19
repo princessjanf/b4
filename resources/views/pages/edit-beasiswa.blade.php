@@ -237,12 +237,18 @@
 				@foreach ($berkas as $b)
 					@foreach ($beasiswaberkas as $bb)
 							@if ($bb->id_berkas == $b->id_berkas)
-								<option selected="selected" value= {{ $b->id_berkas}}> {{$b->nama_berkas}} </option>
+								<?php $set = 1; ?>
 								@break
 							@else
-								<option value= {{ $b->id_berkas}}> {{$b->nama_berkas}} </option>
-							@endif
+								<?php $set = 0; ?>
+								@endif
 					@endforeach
+						@if ($set == 1)
+						<option selected="selected" value= {{ $b->id_berkas}}> {{$b->nama_berkas}} </option>
+						@else
+						<option value= {{ $b->id_berkas}}> {{$b->nama_berkas}} </option>
+						@endif
+
 				@endforeach
 			</select>
 			<input type="hidden" name="listBerkas">
