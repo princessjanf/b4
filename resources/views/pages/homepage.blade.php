@@ -34,22 +34,22 @@
           <div class="navbar-collapse collapse ">
             <ul class="nav navbar-nav">
               @if($user==null)
-              <li class="active"><a href="{{ url('') }}">Home</a></li>
-              <li><a href="{{ url('login') }}">Log In</a></li>
+              <li class="active"><a href="{{ url('') }}">Beranda</a></li>
+              <li><a href="{{ url('login') }}">Masuk</a></li>
               @else
-              <li class="active"><a href="{{ url('') }}">Home</a></li>
+              <li class="active"><a href="{{ url('') }}">Beranda</a></li>
               @if ($namarole=='Pendonor'||$namarole=='Pegawai Universitas'||$namarole=='Pegawai Fakultas')
-              <li><a href="#dashboard">Dashboard</a></li>
+              <li><a href="#dashboard">Dasbor</a></li>
               @endif
-              <li><a href="{{ url('list-beasiswa') }}">List Beasiswa</a></li>
+              <li><a href="{{ url('list-beasiswa') }}">Paket-Paket Beasiswa</a></li>
               @if ($namarole=='Pendonor')
-              <li><a href="#donate">Donate</a></li>
+              <li><a href="#donate">Donasi</a></li>
 							<li><a href="#kelolalpj">Kelola LPJ</a></li>
               @elseif ($namarole=='mahasiswa')
               <li><a href="#isilpj">Isi LPJ</a></li>
               @endif
-              <li><a href="{{ url('profil') }}">{{$user->username}} ({{$namarole}})</a></li>
-              <li><a href="{{ url('logout') }}">Log Out</a></li>
+              <li><a href="{{ url('profil') }}">{{$user->name}} ({{$namarole}})</a></li>
+              <li><a href="{{ url('logout') }}">Keluar</a></li>
               @endif
             </ul>
           </div>
@@ -134,7 +134,7 @@
             <div class="col-lg-12">
               <div class="big-cta">
                 <div class="cta-text">
-                  <a href="{{ url('list-beasiswa') }}"><h2><span>Lihat</span> List Beasiswa</h2></a>
+                  <a href="{{ url('list-beasiswa') }}"><h2><span>Lihat</span> Paket-Paket Beasiswa</h2></a>
                 </div>
               </div>
             </div>

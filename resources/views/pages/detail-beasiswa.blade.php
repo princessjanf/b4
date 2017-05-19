@@ -4,7 +4,20 @@
 
 @section('content')
 
+@if (session('namabeasiswa'))
+    <div class="alert alert-success">
+        {{ session('namabeasiswa') }} telah <b> berhasil </b> dibuat!
+    </div>
+
+@elseif (session('namabeasiswamodif'))
+    <div class="alert alert-success">
+        {{ session('namabeasiswamodif') }} telah <b> berhasil </b> dimodifikasi!
+    </div>
+
+@endif
+
 @if ($namarole=='Direktorat Kerjasama')
+
 <h4>Detail Beasiswa</h4>
 <h2>{{$beasiswa->nama_beasiswa}}</h2>
 
@@ -27,24 +40,12 @@
 
 <h4>Detail Beasiswa &nbsp;</h4>
 <h2>{{$beasiswa->nama_beasiswa}}</h2>
-  <a href = "{{ url('edit-beasiswa/'.$beasiswa->id_beasiswa) }}" class="btn btn-warning" data-toggle="tooltip" title="Edit" role="button">
-    <span class="glyphicon glyphicon-pencil"></span>
-  </a>
-  @if ($beasiswa->public == '0')
-  <a href = "{{ url('delete-beasiswa/'.$beasiswa->id_beasiswa) }}" class="btn btn-danger" data-toggle="tooltip" title="Hapus" role="button">
-    <span class="glyphicon glyphicon-trash"></span>
-  </a>
-  @endif
-  @if ($beasiswa->public == '0')
-  <a href = "{{ url('make-public-beasiswa/'.$beasiswa->id_beasiswa) }}" class="btn btn-info" data-toggle="tooltip" title="Make Public" role="button">
-    <span class="glyphicon glyphicon-eye-open"></span>
-  </i></button></a>
-  @endif
   @if ($isselected == 1)
   		<a href = "{{ url('/nama-penerima/'.$beasiswa->id_beasiswa) }}" class="btn btn-info">  Lihat Penerima Beasiswa  </a>
   @else
   		<a href = "{{ url('/pendaftar-beasiswa/'.$beasiswa->id_beasiswa) }}" class="btn btn-info">  Lihat Pendaftar Beasiswa  </a>
   @endif
+  <br><br>
 
 @elseif($namarole == 'Pendonor' and $ispendonor)
 <h4>Detail Beasiswa &nbsp;</h4>

@@ -453,11 +453,13 @@ class ScholarshipController extends Controller
             DB::insert('INSERT INTO `beasiswa_penyeleksi` (`id_beasiswa`, `id_penyeleksi`) VALUES (?,?)' , [$beasiswa->id_beasiswa, $request->get('penyeleksi1')]);
             $bp = DB::table('beasiswa_penyeleksi')->orderBy('id_bp', 'desc')->first();
             DB::insert('INSERT INTO `beasiswa_penyeleksi_tahapan` (`id_bp`, `id_tahapan`) VALUES (?,?)', [$bp->id_bp, $arrayTahapan[$i]]);
-          }elseif ($arrayTahapan[$i]==2) {
-            DB::insert('INSERT INTO `beasiswa_penyeleksi` (`id_beasiswa`, `id_penyeleksi`) VALUES (?,?)' , [$beasiswa->id_beasiswa, $request->get('penyeleksi2')]);
-            $bp = DB::table('beasiswa_penyeleksi')->orderBy('id_bp', 'desc')->first();
-            DB::insert('INSERT INTO `beasiswa_penyeleksi_tahapan` (`id_bp`, `id_tahapan`) VALUES (?,?)', [$bp->id_bp, $arrayTahapan[$i]]);
-          }elseif ($arrayTahapan[$i]==3) {
+          }
+          // elseif ($arrayTahapan[$i]==2) {
+          //   DB::insert('INSERT INTO `beasiswa_penyeleksi` (`id_beasiswa`, `id_penyeleksi`) VALUES (?,?)' , [$beasiswa->id_beasiswa, $request->get('penyeleksi2')]);
+          //   $bp = DB::table('beasiswa_penyeleksi')->orderBy('id_bp', 'desc')->first();
+          //   DB::insert('INSERT INTO `beasiswa_penyeleksi_tahapan` (`id_bp`, `id_tahapan`) VALUES (?,?)', [$bp->id_bp, $arrayTahapan[$i]]);
+          // }
+          elseif ($arrayTahapan[$i]==3) {
             DB::insert('INSERT INTO `beasiswa_penyeleksi` (`id_beasiswa`, `id_penyeleksi`) VALUES (?,?)' , [$beasiswa->id_beasiswa, $request->get('penyeleksi3')]);
             $bp = DB::table('beasiswa_penyeleksi')->orderBy('id_bp', 'desc')->first();
             DB::insert('INSERT INTO `beasiswa_penyeleksi_tahapan` (`id_bp`, `id_tahapan`) VALUES (?,?)', [$bp->id_bp, $arrayTahapan[$i]]);
@@ -468,7 +470,7 @@ class ScholarshipController extends Controller
           }
         }
       }
-      return redirect('/detail-beasiswa/'.$beasiswa->id_beasiswa);
+      return redirect('/detail-beasiswa/'.$beasiswa->id_beasiswa)->with('namabeasiswa', $request->input('namaBeasiswa'));
     }
 
     public function updateBeasiswa(Request $request){
@@ -547,7 +549,7 @@ class ScholarshipController extends Controller
 
           DB::insert('INSERT INTO `log_beasiswa` (`id_beasiswa`, `tipe_perubahan`, `id_user`) VALUES (?,?,?)', [$request->get('idBeasiswa'), 'modifikasi', $pengguna->id_user]);
 
-          return redirect('/detail-beasiswa/'.$request->get('idBeasiswa'));
+          return redirect('/detail-beasiswa/'.$request->get('idBeasiswa'))->with('namabeasiswamodif', $request->input('namaBeasiswa'));
       }
 
     //   public function daftarBeasiswa($id)

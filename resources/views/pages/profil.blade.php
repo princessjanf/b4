@@ -67,6 +67,25 @@
     </table>
 
    @elseif($namarole=='Mahasiswa')
+   <script>
+     $(document).ready(function(){
+       addComas('penghasilan',{{$mahasiswa->penghasilan_orang_tua}});
+     });
+
+     function addComas(place, nStr)
+     {
+
+       nStr = nStr.toString();
+       var x1 = nStr.replace (/,/g, "");
+
+       var rgx = /(\d+)(\d{3})/;
+       while (rgx.test(x1)) {
+         x1 = x1.replace(rgx, '$1' + ',' + '$2');
+       }
+       console.log(x1);
+       document.getElementById('penghasilan').innerHTML = 'Rp' + x1;
+     }
+   </script>
 
   <p><a href="{{url('edit-profil')}}"><button type="button" class="btn btn-info">Edit Profil</button></a></p>
 
@@ -100,7 +119,7 @@
     NAMA PEMILIK REKENING:
      <p><label>{{$mahasiswa->nama_pemilik_rekening}}</label></p>
     PENGHASILAN ORANG TUA:
-     <p><label>{{$mahasiswa->penghasilan_orang_tua}}</label></p>
+     <p><label id="penghasilan"></label></p>
      </div>
      </div>
 
@@ -140,9 +159,6 @@
     @endforeach
    </tbody>
     </table>
-
-
-
     @endif
     </div>
 @endsection

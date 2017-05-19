@@ -1,6 +1,6 @@
 @extends('master')
 
-@section('title', 'Buat Entri Beasiswa')
+@section('title', 'Tambah Beasiswa')
 
 @section('head')
 <link href="{{ asset('css/multiple-select.css') }}" rel="stylesheet" />
@@ -9,6 +9,8 @@
 @section('content')
 <form id='createScholarshipForm' action = "{{ url('insert-beasiswa') }}" onsubmit="return validateForm()" method = "post" data-parsley-validate="">
 	<div>
+		<h2> Tambah Beasiswa </h2>
+		<b><hr></b>
 		<h3> Informasi Beasiswa </h3>
 		<p style="font-weight:bold"> Semua Kolom Harus Diisi </p>
 	</div>
@@ -128,7 +130,7 @@
 		<p> Dana yang akan diberikan per mahasiswa </p>
 		<div class="input-group col-sm-4">
 			<input class="form-control" name="nominalHidup" data-parsley-trigger="keyup" data-parsley-validation-threshold="1" data-parsley-pattern="\d|\d{1,3}(\,\d{3})*" data-parsley-maxlength="9" required>
-			<span class="input-group-addon" id="addon-mataUang2" name="addon-mataUang3"></span>
+			<span class="input-group-addon" id="addon-mataUang4" name="addon-mataUang3"></span>
 		</div>
 	</div>
 
@@ -280,8 +282,9 @@
 							</select>
 						</div>
 					</div>
-				</div><br>
+				</div>
 
+				<!-- <br>
 				<div id='tahapan2' class="input-group col-sm-12">
 				  <input style="width:220px;" type="text" class="form-control input" value="Seleksi Berkas" placeholder="Nama tahapan seleksi" name="tahapan2" required="" disabled/>
 				  <span class="input-group-btn" style="width:10px;"></span>
@@ -304,7 +307,8 @@
 							</select>
 						</div>
 					</div>
-				</div><br>
+				</div>
+				<br> -->
 
 			</div>
 		</div>
@@ -313,13 +317,13 @@
 	<div>
 		<input type="button" name="btn" value="Submit" id="submitBtn" data-toggle="modal" data-target="#confirm-submit" class="btn btn-success" />
 
-		
+
 
 		<div class="modal fade" id="confirm-submit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 			    <div class="modal-dialog">
 				        <div class="modal-content">
 				            <div class="modal-header">
-				               <b> Confirm Submit</b>
+				               <b> Konfirmasi Penambahan Beasiswa </b>
 				            </div>
 				            <div class="modal-body">
 				                Apakah Anda yakin ingin menambahkan Beasiswa?
@@ -653,6 +657,7 @@
 			document.getElementById("addon-mataUang").innerHTML = mataUang;
 			document.getElementById("addon-mataUang2").innerHTML = mataUang;
 			document.getElementById("addon-mataUang3").innerHTML = mataUang;
+			document.getElementById("addon-mataUang4").innerHTML = mataUang;
 		});
 
 		$("#periode").change(function(){
