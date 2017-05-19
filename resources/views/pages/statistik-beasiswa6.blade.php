@@ -21,8 +21,6 @@
 	</select>
 </form>
 <br>{!! $chart->render() !!}
-</br>
-</br>
 @if($table == 1)
 	<h4 style="text-align:center";> Detail Beasiswa </h4>
 	<table id="beasiswalist" class="table table-striped">
@@ -48,5 +46,13 @@
 @endsection
 
 @section('script')
-
+<script src="{{ asset('js/jquery-3.2.0.js') }}"></script>
+<script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'></script>
+<script src="{{ asset('js/jquery.dataTables.js') }}"></script>
+<script src="{{ asset('js/dataTables.bootstrap.js') }}"></script>
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('#beasiswalist').DataTable();
+	});
+</script>
 @endsection
