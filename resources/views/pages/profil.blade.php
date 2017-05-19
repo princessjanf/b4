@@ -24,7 +24,7 @@
 
       NAMA BEASISWA YANG DI DONORKAN:
        <p></p>
-    <table class="table table-bordered">
+    <table id="tabel1" class="table table-bordered">
     <thead>
       <tr>
         <th>No.</th>
@@ -109,7 +109,7 @@
 
     <h4>Daftar Beasiswa yang Didaftarkan:</h4>
    <p></p>
-    <table class="table table-striped">
+    <table id="tabel2" class="table table-striped">
     <thead>
       <tr>
         <th >No.</th>
@@ -135,4 +135,17 @@
 
     @endif
     </div>
+@endsection
+
+@section('script')
+<script src="{{ asset('js/jquery-3.2.0.js') }}"></script>
+<script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'></script>
+<script src="{{ asset('js/jquery.dataTables.js') }}"></script>
+<script src="{{ asset('js/dataTables.bootstrap.js') }}"></script>
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('#tabel1').DataTable();
+    $('#tabel2').DataTable();
+	});
+</script>
 @endsection

@@ -312,7 +312,7 @@ class ChartController extends Controller
     {
       $role = DB::table('role')->where('id_role', $pengguna->id_role)->first();
       $namarole = $role->nama_role;
-      
+
       if($namarole=='Pegawai'){
         $pengguna = DB::table('pegawai')->where('id_user', $pengguna->id_user)->first();
         $role = DB::table('role_pegawai')->where('id_role_pegawai', $pengguna->id_role_pegawai)->first();
@@ -465,5 +465,48 @@ class ChartController extends Controller
          ->groupBy('nama_beasiswa');
        }
        return view('pages.statistik-beasiswa7', compact('user','pengguna','namarole','chart', 'prodi', 'selected'));
-}
+     }
+
+    function danaBeasiswa()
+    {
+      $user = SSO::getUser();
+      $pengguna = $this->getPengguna($user);
+      $namarole = $this->getNamarole($pengguna);
+
+      $chart = array();
+
+      $data = DB::table('beasiswa as b')
+                    ->join('beasiswa_jenjang_prodi as bjp', 'bjp.id_beasiswa', '=', 'b.id_beasiswa')
+                    ->join('program_studi as ps', 'ps.id_prodi', '=', 'bjp.id_prodi')
+                    ->join('fakultas as f', 'f.id_fakultas', '=', 'ps.id_fakultas')
+                    ->select(DB::raw('*, SUM(dana_pendidikan+dana_hidup) AS dana_total'))
+                    ->groupBy('nama_fakultas')
+                    ->get();
+
+      array_push($chart, Charts::create('bar', 'highcharts')
+                   ->title('Dana Beasiswa Per Fakultas')
+                   ->elementLabel('Dana (Rp)')
+                   ->labels($data->pluck('nama_fakultas'))
+                   ->values($data->pluck('dana_total')));
+
+       $data2 = DB::table('beasiswa as b')
+                     ->join('beasiswa_jenjang_prodi as bjp', 'bjp.id_beasiswa', '=', 'b.id_beasiswa')
+                     ->join('program_studi as ps', 'ps.id_prodi', '=', 'bjp.id_prodi')
+                     ->select(DB::raw('*, SUM(dana_pendidikan+dana_hidup) AS dana_total'))
+                     ->groupBy('nama_prodi')
+                     ->get();
+
+       array_push($chart, Charts::create('bar', 'highcharts')
+                    ->title('Dana Beasiswa Per Prodi')
+                    ->elementLabel('Dana (Rp)')
+                    ->labels($data2->pluck('nama_prodi'))
+                    ->values($data2->pluck('dana_total')));
+
+      $data3 = DB::table('beasiswa')
+                   ->select(DB::raw('*, SUM(dana_pendidikan+dana_hidup) AS dana_total'))
+                   ->groupBy('nama_beasiswa')
+                   ->get();
+
+      return view('pages.statistik-beasiswa-dana', compact('user','pengguna','namarole','chart', 'data3'));
+    }
 }
