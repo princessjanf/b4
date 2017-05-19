@@ -503,12 +503,36 @@ class ChartController extends Controller
                     ->elementLabel('Dana (Rp)')
                     ->labels($data2->pluck('nama_prodi'))
                     ->values($data2->pluck('dana_total')));
+       $data4 = DB::table('beasiswa as b')
+                     ->join('pendonor as p', 'b.id_pendonor', '=', 'p.id_user')
+                     ->select(DB::raw('*, SUM(dana_pendidikan+dana_hidup) AS dana_total'))
+                     ->groupBy('id_pendonor')
+                     ->get();
+
+     array_push($chart, Charts::create('bar', 'highcharts')
+                    ->title('Dana Beasiswa Per Pendonor')
+                    ->elementLabel('Dana (Rp)')
+                    ->labels($data4->pluck('nama_instansi'))
+                    ->values($data4->pluck('dana_total')));
 
       $data3 = DB::table('beasiswa')->join('mata_uang', 'mata_uang.id_mata_uang','=','beasiswa.currency')
                    ->select(DB::raw('*, SUM(dana_pendidikan+dana_hidup) AS dana_total'))
                    ->groupBy('nama_beasiswa')
                    ->get();
 
-      return view('pages.statistik-beasiswa-dana', compact('user','pengguna','namarole','chart', 'data3'));
+
+      return view('pages.statistik-beasiswa-dana', compact('user','pengguna','namarole','chart', 'data3','chartp'));
+    }
+
+    function danastatistik()
+    {
+      $user = SSO::getUser();
+      $pengguna = $this->getPengguna($user);
+      $namarole = $this->getNamarole($pengguna);
+
+
+
+      return view('pages.statistik', compact('user','pengguna','namarole','chart'));
+
     }
 }

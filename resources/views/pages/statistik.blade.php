@@ -7,6 +7,8 @@
 @endsection
 
 @section('content')
+
+
 <h2 style="text-align:center";> Lihat Statistik </h2>
 </br> </br>
 @if($namarole != 'Mahasiswa')

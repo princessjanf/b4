@@ -9,6 +9,7 @@
 @section('content')
 <br>{!! $chart[0]->render() !!}
 <br>{!! $chart[1]->render() !!}
+<br>{!! $chart[2]->render() !!}
 
 <table id="tabel" class="table table-striped">
 <thead>
@@ -33,7 +34,7 @@
 	while (rgx.test(x1)) {
 		x1 = x1.replace(rgx, '$1' + ',' + '$2');
 	}
-	
+
 	document.getElementById("index{{$index}}").innerHTML = "{{$data->nama_mata_uang}} " + x1;
 
 	</script>
