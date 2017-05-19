@@ -108,10 +108,10 @@
 			{{$set = ''}}
 				@foreach($penerima as $p)
 					@if ($p->id_mahasiswa == $pendaftar->id_mahasiswa)
-						{{$set = 'Diterima'}}
+						<?php $set = 'Diterima';?>
 						@break
 					@else
-						{{$set = 'Ditolak'}}
+						<?php $set = 'Ditolak';?>
 					@endif
 				@endforeach
 				<td> {{$set}} </td>
@@ -174,7 +174,7 @@
 					}
 				});
 
-				console.log(arrayResult);
+				// console.log(arrayResult);
 			$.ajax({
 				type:'POST',
 				url:'{{url('/save-draft-check')}}',
@@ -186,7 +186,7 @@
 					'pengguna': {{$pengguna->id_user}}
 				},
 				success:function(data){
-					console.log(data.msg[0]);
+					// console.log(data.msg[0]);
 					alert("Nilai sementara berhasil disimpan!");
 				}
 			});
@@ -206,8 +206,8 @@
 				'pengguna': {{$pengguna->id_user}}
 			},
 			success:function(data){
-				console.log(data.msg[0]);
-				alert("Nilai sementara berhasil disimpan!");
+				console.log(data);
+				// alert("Nilai sementara berhasil disimpan!");
 			}
 		});
 	}
@@ -216,7 +216,7 @@
 		$("#resultConfirmationModal .modal-body #jumlahChecked").text(document.querySelectorAll('input[type="checkbox"]:checked').length);
 		@if($tahapanljt == 0)
 		if(document.querySelectorAll('input[type="checkbox"]:checked').length > {{$beasiswa->kuota}}){
-			console.log($('#resultConfirmationModal .modal-footer #submitResult'));
+			// console.log($('#resultConfirmationModal .modal-footer #submitResult'));
 			$('#resultConfirmationModal .modal-footer #submitResult').attr("disabled", "true");
 			$('#resultConfirmationModal').find('.modal-footer #alertChecked').show();
 		}
@@ -244,7 +244,7 @@
 
 		var x = "{{$beasiswa->tanggal_tutup}}".split('-');
 		var now = new Date();
-		var tgl = new Date().setFullYear(x[0], x[1]-1, x[2]-1);
+		var tgl = new Date().setFullYear(x[0], x[1]-1, x[2]);
 
 		if (tgl > now)
 		{
@@ -258,6 +258,7 @@
 					arrayResult.push($(this).attr('id'));
 				}
 			});
+
 		$.ajax({
 			type:'POST',
 			url:'{{url('/save-draft-check')}}',
@@ -275,16 +276,18 @@
 				var nama='';
 				$.each(data, function(i,item){
 					$.each(item, function(j,datum){
+						console.log(datum);
 						$.ajax({
 							async:false,
 							type:'POST',
 							url:'{{url('/retrieve-nama')}}',
 							dataType:'json',
 							data:{'_token' : '<?php echo csrf_token() ?>',
-								'id_user': datum[0]
+								'id_user': datum
 							},
 							success:function(data){
 								nama = data.msg.nama;
+								console.log(nama);
 								html = html + '<tr><td class="idMahasiswa" id='+datum[0]+'>' + nama + '</td><td> Diterima </td> </tr>';
 								count++;
 						}
@@ -314,7 +317,7 @@
 		}
 		else{
 		var table = $('#tableSeleksi').DataTable().$('input').serialize();
-		console.log(table);
+		// console.log(table);
 		$.ajax({
 			type:'POST',
 			url:'{{url('/save-draft')}}',
@@ -344,9 +347,9 @@
 							},
 							success:function(data){
 								nama = data.msg.nama;
-								console.log(nama);
+								// console.log(nama);
 								count+=1;
-								console.log(count);
+								// console.log(count);
 								if(count<={{$beasiswa->kuota}}){
 									picked+=1;
 									html = html + '<tr><td class="idMahasiswa" id='+datum[0]+'>' + nama + '</td><td> <input type="checkbox" class="chk" value='+datum[0]+' checked> Diterima </td></tr>';
