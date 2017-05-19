@@ -1,6 +1,6 @@
 @extends('master')
 
-@section('title', 'List Beasiswa')
+@section('title', 'Paket Beasiswa')
 
 @section('head')
 <link href="{{ asset('css/multiple-select.css') }}" rel="stylesheet" />
@@ -21,7 +21,7 @@
 @endif
 
 @if($namarole=="Pegawai Universitas")
-	<h2>Paket-Paket Beasiswa &nbsp;&nbsp;
+	<h2>PAKET-PAKET BEASISWA &nbsp;&nbsp;
 		<a data-toggle="tooltip" title="Tambah beasiswa" role="button" id="add-beasiswa" class="btn btn-success" href="{{ url('add-beasiswa') }}"><span class="glyphicon glyphicon-plus">&nbsp;</span>Tambah Beasiswa</a>
 		@if ($seleksichecker==1)
 			<a data-toggle="tooltip" title="Buka Halaman Seleksi"  class="btn btn-info" href="{{ url('seleksi') }}">&nbsp;Seleksi Beasiswa</a>
@@ -41,8 +41,13 @@
 @elseif($namarole=="Mahasiswa")
   <h2>Paket-Paket Beasiswa &nbsp;&nbsp;</h2>
 @else
+<<<<<<< HEAD
 	<h2>Paket-Paket Beasiswa &nbsp;&nbsp;
 		@if ($seleksichecker==1 AND $namarole!="Direktorat Kerjasama")
+=======
+	<h2>PAKET-PAKET BEASISWA &nbsp;&nbsp;
+		@if ($seleksichecker==1 AND $namarole!="Direktorat Kerjasama" AND $namarole!="Direktorat Kerjasama")
+>>>>>>> origin/develop
 			<a data-toggle="tooltip" title="Buka Halaman Seleksi"  class="btn btn-info" href="{{ url('seleksi') }}">&nbsp;Seleksi Beasiswa</a>
 			</h2>
 		@elseif($namarole=="Direktorat Kerjasama")
@@ -52,6 +57,7 @@
 			<br>
 		@endif
 @endif
+<label><font color='#4192f4'>*) Klik judul tabel untuk menyortir berdasar kolom yang dipilih</font></label>
 <table id="beasiswalist" class="table table-striped">
 	<thead>
 		<tr>
@@ -64,6 +70,7 @@
 			<th>Pendonor</th>
 			@if($namarole=="Pendonor" || $namarole=="Pegawai Universitas" || $namarole=="Direktorat Kerjasama")
 				<th>Status</th>
+
 			@endif
 			@if($namarole!="Direktorat Kerjasama")
 				<th>Pendaftaran</th>
@@ -71,6 +78,7 @@
 			@else
 				<th>Dokumen</th>
 			@endif
+
 
 			@if($namarole=="Mahasiswa" || $namarole=="Pegawai Universitas" || $namarole=="Direktorat Kerjasama")
 				<th></th>

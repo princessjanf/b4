@@ -24,7 +24,7 @@
 @elseif ($namarole=='Mahasiswa')
 
   @if ($beasiswa->tanggal_buka <= Carbon\Carbon::now() and Carbon\Carbon::now() <= $beasiswa->tanggal_tutup)
-    <h4>Detail Beasiswa &nbsp;
+    <h4>DETAIL BEASISWA &nbsp;
       @if($beasiswa->id_jenis_seleksi=='1')
       <a href= "{{url($beasiswa->link_seleksi)}}"><button class="btn"><b>Daftar</b></button></a>
       @else
@@ -33,12 +33,12 @@
     </h4>
     <h2>{{$beasiswa->nama_beasiswa}}</h2>
   @else
-    <h4>Detail Beasiswa &nbsp;</h4>
+    <h4>DETAIL BEASISWA &nbsp;</h4>
     <h2>{{$beasiswa->nama_beasiswa}}</h2>
   @endif
 @elseif ($namarole=="Pegawai Universitas")
 
-<h4>Detail Beasiswa &nbsp;</h4>
+<h4>DETAIL BEASISWA &nbsp;</h4>
 <h2>{{$beasiswa->nama_beasiswa}}</h2>
   @if ($isselected == 1)
   		<a href = "{{ url('/nama-penerima/'.$beasiswa->id_beasiswa) }}" class="btn btn-info">  Lihat Penerima Beasiswa  </a>
@@ -48,7 +48,7 @@
   <br><br>
 
 @elseif($namarole == 'Pendonor' and $ispendonor)
-<h4>Detail Beasiswa &nbsp;</h4>
+<h4>DETAIL BEASISWA &nbsp;</h4>
 <h2>{{$beasiswa->nama_beasiswa}}</h2>
   @if ($isselected == 1)
       <a href = "{{ url('/nama-penerima/'.$beasiswa->id_beasiswa) }}" class="btn btn-info">  Lihat Penerima Beasiswa  </a>
@@ -63,7 +63,7 @@
     @endif
   @endif
 @else
-  <h4>Detail Beasiswa &nbsp;</h4>
+  <h4>DETAIL BEASISWA &nbsp;</h4>
   <h2>{{$beasiswa->nama_beasiswa}}</h2>
   @if($ispenyeleksi == '1')
     @if ($isselected == '1')

@@ -32,7 +32,7 @@
 
   
   <a href="{{ url($link2) }}"><button type="button" id="cancel" class="btn btn-danger" type="button" formnovalidate>Back </button></a>
-  <input type="submit" class="btn btn-info" name="submit" value="Upload" />
+  <input type="submit" class="btn btn-info" name="submit" value="unggah" />
 </form>
 
 @endsection
