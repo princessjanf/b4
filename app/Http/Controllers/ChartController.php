@@ -23,19 +23,13 @@ class ChartController extends Controller
     $user = SSO::getUser();
     $pengguna = $this->getPengguna($user);
     $namarole = $this->getNamarole($pengguna);
-    $fakultas = Charts::multidatabase('bar', 'highcharts')
-                            ->title("Beasiswa di Semua Fakultas")
-                            ->elementLabel('Jumlah')
-                            ->dataset('Penerima', DB::table('penerima_beasiswa as pb')->join('beasiswa as b', 'b.id_beasiswa', '=', 'pb.id_beasiswa')->get())
-                            ->dataset('Pendaftar', DB::table('pendaftaran_beasiswa as pb')->join('beasiswa as b', 'b.id_beasiswa', '=', 'pb.id_beasiswa')->get())
-                            ->groupBy('nama_beasiswa');
-    $prodi = Charts::multidatabase('bar', 'highcharts')
-      ->title("Pendaftar dan Penerima Beasiswa di Seluruh Prodi")
-      ->elementLabel('Jumlah')
-      ->dataset('Penerima', DB::table('penerima_beasiswa as pb')->join('beasiswa as b', 'b.id_beasiswa', '=', 'pb.id_beasiswa')->get())
-      ->dataset('Pendaftar', DB::table('pendaftaran_beasiswa as pb')->join('beasiswa as b', 'b.id_beasiswa', '=', 'pb.id_beasiswa')->get())
-      ->groupBy('nama_beasiswa');
-    return view('pages.penerimapendaftar', compact('user','pengguna','namarole', 'fakultas', 'prodi'));
+    $chart = Charts::multidatabase('bar', 'highcharts')
+                      ->title(" ")
+                      ->elementLabel('Jumlah')
+                      ->dataset('Penerima', DB::table('penerima_beasiswa as pb')->join('beasiswa as b', 'b.id_beasiswa', '=', 'pb.id_beasiswa')->get())
+                      ->dataset('Pendaftar', DB::table('pendaftaran_beasiswa as pb')->join('beasiswa as b', 'b.id_beasiswa', '=', 'pb.id_beasiswa')->get())
+                      ->groupBy('nama_beasiswa');
+    return view('pages.penerimapendaftar', compact('user','pengguna','namarole', 'chart'));
 
   }
   function persebaran()
@@ -434,7 +428,7 @@ class ChartController extends Controller
        $prodi->prepend('Semua Prodi');
        $selected = "Semua Prodi";
        $chart = Charts::multidatabase('bar', 'highcharts')
-         ->title("Pendaftar dan Penerima Beasiswa di Seluruh Prodi")
+         ->title("Pendaftar dan Penerima Beasiswa di Semua Prodi")
          ->elementLabel('Jumlah')
          ->dataset('Penerima', DB::table('penerima_beasiswa as pb')->join('beasiswa as b', 'b.id_beasiswa', '=', 'pb.id_beasiswa')->get())
          ->dataset('Pendaftar', DB::table('pendaftaran_beasiswa as pb')->join('beasiswa as b', 'b.id_beasiswa', '=', 'pb.id_beasiswa')->get())
@@ -457,7 +451,7 @@ class ChartController extends Controller
        if ($selected == "Semua Prodi")
        {
          $chart = Charts::multidatabase('bar', 'highcharts')
-         ->title("Pendaftar dan Penerima Beasiswa di Seluruh Prodi")
+         ->title("Pendaftar dan Penerima Beasiswa di Semua Prodi")
          ->elementLabel('Jumlah')
          ->dataset('Penerima', DB::table('penerima_beasiswa as pb')->join('beasiswa as b', 'b.id_beasiswa', '=', 'pb.id_beasiswa')->get())
          ->dataset('Pendaftar', DB::table('pendaftaran_beasiswa as pb')->join('beasiswa as b', 'b.id_beasiswa', '=', 'pb.id_beasiswa')->get())
