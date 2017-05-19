@@ -180,16 +180,22 @@ class ChartController extends Controller
       $user = SSO::getUser();
       $pengguna = ChartController::getPengguna($user);
       $namarole = ChartController::getNamarole($pengguna);
+      $beasiswa = DB::table('beasiswa')->pluck('dana_pendidikan');
+      $beasiswa->prepend('Semua Dana');
 
 
-      $beasiswa = DB::table('beasiswa')->join('pendonor','pendonor.id_user','=','beasiswa.id_pendonor')->select('beasiswa.nama_beasiswa')->distinct()->get();
+      // $beasiswa = DB::table('beasiswa')->join('pendonor','pendonor.id_user','=','beasiswa.id_pendonor')->select('beasiswa.nama_beasiswa')->distinct()->get();
+        // $nama = DB::table('user')->where('username',$user->username)->first();
+        // $pendonor = DB::table('pendonor')->where('id_user', $nama->id_user)->first();
+      // $beasiswa = DB::table('beasiswa')->get();
+      // $danaPendidikan = DB::table('beasiswa')->where('dana_pendidikan', $beasiswa->dana_pendidikan)->get();
 
        $chart = array();
-       array_push($chart, Charts::multidatabase('bar', 'highcharts')
-                              ->title("Jumlah Pendaftar Per Fakultas")
+       array_push($chart, Charts::multidatabase('line', 'highcharts')
+                              ->title("Jumlah Dana Pendidikan per Pendonor")
                               ->elementLabel('Jumlah')
-                              ->dataset('Pendaftar', DB::table('pendaftaran_beasiswa as pb')->join('mahasiswa as m', 'm.id_user', '=', 'pb.id_mahasiswa')->join('fakultas as f', 'f.id_fakultas', '=', 'm.id_fakultas')->join('beasiswa', 'beasiswa.id_beasiswa', '=', 'pb.id_beasiswa')->get())
-                              ->groupBy('nama_fakultas')
+                              ->dataset('dana_pendidikan', DB::table('beasiswa as b')->where('b.dana_pendidikan', '=', 'b.dana_pendidikan')->get())
+                              ->groupBy('id_pendonor')
                             );
 
 
@@ -318,10 +324,11 @@ class ChartController extends Controller
       $prodi->prepend('Semua Prodi');
       $selected = "Semua Prodi";
       $chart = Charts::multidatabase('bar', 'highcharts')
-                              ->title("Jumlah Beasiswa di Semua Prodi")
-                              ->elementLabel('Jumlah')
-                              ->dataset('Jumlah Beasiswa', DB::table('program_studi as ps')->join('beasiswa_jenjang_prodi as b', 'b.id_prodi', '=', 'ps.id_prodi')->get())
-                              ->groupBy('nama_prodi');
+        ->title("Pendaftar dan Penerima Beasiswa di Seluruh Prodi")
+        ->elementLabel('Jumlah')
+        ->dataset('Penerima', DB::table('penerima_beasiswa as pb')->join('beasiswa as b', 'b.id_beasiswa', '=', 'pb.id_beasiswa')->get())
+        ->dataset('Pendaftar', DB::table('pendaftaran_beasiswa as pb')->join('beasiswa as b', 'b.id_beasiswa', '=', 'pb.id_beasiswa')->get())
+        ->groupBy('nama_beasiswa');
 
       return view('pages.statistik-beasiswa7', compact('user','pengguna','namarole','chart', 'prodi', 'selected'));
 
@@ -340,14 +347,14 @@ class ChartController extends Controller
       if ($selected == "Semua Prodi")
       {
         $chart = Charts::multidatabase('bar', 'highcharts')
-        ->title("Beasiswa di Semua Prodi")
+        ->title("Pendaftar dan Penerima Beasiswa di Seluruh Prodi")
         ->elementLabel('Jumlah')
         ->dataset('Penerima', DB::table('penerima_beasiswa as pb')->join('beasiswa as b', 'b.id_beasiswa', '=', 'pb.id_beasiswa')->get())
         ->dataset('Pendaftar', DB::table('pendaftaran_beasiswa as pb')->join('beasiswa as b', 'b.id_beasiswa', '=', 'pb.id_beasiswa')->get())
         ->groupBy('nama_beasiswa');
       } else {
         $chart = Charts::multidatabase('bar', 'highcharts')
-        ->title("Beasiswa di $request->selected")
+        ->title("Pendaftar dan Penerima Beasiswa di Prodi $request->selected")
         ->elementLabel('Jumlah')
         ->dataset('Penerima', DB::table('penerima_beasiswa as pb')->join('beasiswa as b', 'b.id_beasiswa', '=', 'pb.id_beasiswa')->join('mahasiswa as m', 'm.id_user','=','pb.id_mahasiswa')->join('program_studi as p', 'p.id_prodi','=','m.id_prodi')->where('p.nama_prodi','=',$request->selected)->get())
         ->dataset('Pendaftar', DB::table('pendaftaran_beasiswa as pb')->join('beasiswa as b', 'b.id_beasiswa', '=', 'pb.id_beasiswa')->join('mahasiswa as m', 'm.id_user','=','pb.id_mahasiswa')->join('program_studi as p', 'p.id_prodi','=','m.id_prodi')->where('p.nama_prodi','=',$request->selected)->get())
