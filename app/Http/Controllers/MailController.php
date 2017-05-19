@@ -51,10 +51,10 @@ foreach ($namaPenerima as $np) {
 
 
 }
- return view('pages.notif-email')->withUser($user)->withNamarole($namarole);
+ // return view('pages.notif-email')->withUser($user)->withNamarole($namarole);
 
-   $namaDitolak = DB::table('pendaftaran_beasiswa')->where('id_beasiswa', $idBeasiswa)->where('status_lamaran', 7)->join('user', 'user.id_user','=', 'pendaftaran_beasiswa.id_mahasiswa')
-        ->join('beasiswa','beasiswa.id_beasiswa','=','pendaftaran_beasiswa.id_beasiswa')->select('user.nama', 'beasiswa.nama_Beasiswa', 'user.email') ->get();
+   $namaDitolak = DB::table('pendaftaran_beasiswa')->where('pendaftaran_beasiswa.id_beasiswa', $idBeasiswa)->where('status_lamaran', 7)->join('user', 'user.id_user','=', 'pendaftaran_beasiswa.id_mahasiswa')
+        ->join('beasiswa','beasiswa.id_beasiswa','=','pendaftaran_beasiswa.id_beasiswa')->select('user.nama', 'beasiswa.nama_beasiswa', 'user.email') ->get();
 
 foreach ($namaDitolak as $nd) {
    $data = array(
@@ -113,10 +113,10 @@ foreach ($namaPenerima as $np) {
   });
 
 }
- return view('pages.notif-email')->withUser($user)->withNamarole($namarole);
+ // return view('pages.notif-email')->withUser($user)->withNamarole($namarole);
 
-  $namaDitolak = DB::table('pendaftaran_beasiswa')->where('id_beasiswa', $idBeasiswa)->where('status_lamaran', 7)->join('user', 'user.id_user','=', 'pendaftaran_beasiswa.id_mahasiswa')
-        ->join('beasiswa','beasiswa.id_beasiswa','=','pendaftaran_beasiswa.id_beasiswa')->select('user.nama', 'beasiswa.nama_Beasiswa', 'user.email') ->get();
+  $namaDitolak = DB::table('pendaftaran_beasiswa')->where('pendaftaran_beasiswa.id_beasiswa', $idBeasiswa)->where('status_lamaran', 7)->join('user', 'user.id_user','=', 'pendaftaran_beasiswa.id_mahasiswa')
+        ->join('beasiswa','beasiswa.id_beasiswa','=','pendaftaran_beasiswa.id_beasiswa')->select('user.nama', 'beasiswa.nama_beasiswa', 'user.email') ->get();
 
 foreach ($namaDitolak as $nd) {
    $data = array(

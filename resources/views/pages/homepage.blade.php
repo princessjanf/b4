@@ -38,17 +38,9 @@
               <li><a href="{{ url('login') }}">Masuk</a></li>
               @else
               <li class="active"><a href="{{ url('') }}">Beranda</a></li>
-              @if ($namarole=='Pendonor'||$namarole=='Pegawai Universitas'||$namarole=='Pegawai Fakultas')
-              <li><a href="{{ url('statistik') }}">Dasbor</a></li>
-              @endif
-              <li><a href="{{ url('list-beasiswa') }}">Paket-Paket Beasiswa</a></li>
-              @if ($namarole=='Pendonor')
-              <li><a href="#donate">Donasi</a></li>
-							<li><a href="#kelolalpj">Kelola LPJ</a></li>
-              @elseif ($namarole=='mahasiswa')
-              <li><a href="#isilpj">Isi LPJ</a></li>
-              @endif
+              <li><a href="{{ url('list-beasiswa') }}">Paket Beasiswa</a></li>
               <li><a href="{{ url('profil') }}">{{$user->name}} ({{$namarole}})</a></li>
+              <li><a href="{{ url('statistik') }}">Dasbor</a></li>
               <li><a href="{{ url('logout') }}">Keluar</a></li>
               @endif
             </ul>
@@ -74,8 +66,8 @@
                 <li>
                   <img src="{{ asset('img/slides/2.jpg') }}" alt="">
                   <div class="flex-caption">
-                    <h3>Frequently Asked Question</h3>
-                    <p>Ketahui lebih lanjut tentang pertanyaan yang sering ditanyakan oleh pengguna modul beasiswa.</p>
+                    <h3>MEET OUR TEAM</h3>
+                    <p>Tim B4 adalah pengembang dari Modul Beasiswa. Tim terdiri dari Alvin, Dinda, Dwiki, Gerald, dan Princess. Kami sangat bahagia mendapatkan kesempatan untuk mengembangkan modul ini. :)</p>
                     <a href="#" class="btn btn-theme">Lebih Lanjut</a>
                   </div>
                 </li>
@@ -134,7 +126,7 @@
             <div class="col-lg-12">
               <div class="big-cta">
                 <div class="cta-text">
-                  <a href="{{ url('list-beasiswa') }}"><h2><span>Lihat</span> Paket-Paket Beasiswa</h2></a>
+                  <a href="{{ url('list-beasiswa') }}"><h2><span>Lihat</span> Seluruh Paket Beasiswa</h2></a>
                 </div>
               </div>
             </div>

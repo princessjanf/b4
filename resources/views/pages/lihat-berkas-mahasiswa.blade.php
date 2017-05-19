@@ -80,6 +80,7 @@
           <form action="{{url ('download-berkas')}}" method="POST">
             <input type="text" value="{{$file->file}}" name="berkas" hidden>
             <input type="hidden" value="<?php echo csrf_token(); ?>" name="_token">
+            <input type="hidden" value="{{$namaMhs->username}}" name="username">
            <th><label><button type="submit" class="btn btn-default">Download</button></label></th>
            </form>
          </tr>
@@ -90,7 +91,7 @@
     </table>
 
     <div>
-      <a href="{{ url('pendaftar-beasiswa/' .$beasiswa->id_beasiswa) }}"><button id="cancel" class="btn btn-info" type="button" formnovalidate>BACK</button></a>
+      <a href="{{ url('pendaftar-beasiswa/' .$beasiswa->id_beasiswa) }}"><button id="cancel" class="btn btn-info" type="button" formnovalidate>KEMBALI</button></a>
     </div>
 
 </div>

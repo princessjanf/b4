@@ -315,7 +315,9 @@
 	</div>
 <!-- Diatas ini untuk field konfigurasi-penyeleksi -->
 	<div>
-		<input type="button" name="btn" value="Submit" id="submitBtn" data-toggle="modal" data-target="#confirm-submit" class="btn btn-success" />
+		<a href="{{ url('list-beasiswa') }}" ><button style ="text-decoration: none"id="cancel" class="btn btn-danger" formnovalidate>BATAL</button></a>
+
+		<input type="button" name="btn" value="KIRIM" id="submitBtn" data-toggle="modal" data-target="#confirm-submit" class="btn btn-success" />
 
 
 
@@ -331,14 +333,14 @@
 				            </div>
 
 						  <div class="modal-footer">
-						            <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
-						            <button type="submit" id="submit-form" class="btn btn-success"> Submit </button>
+						            <button type="button" class="btn btn-danger" data-dismiss="modal">BATAL</button>
+						            <button type="submit" id="submit-form" class="btn btn-success"> KIRIM </button>
 						           <!--  <a href="#" id="submit" class="btn btn-success success">Submit</a> -->
 						  </div>
 				    </div>
 				</div>
 		</div>
-		<button style ="text-decoration: none"id="cancel" class="btn btn-danger" formnovalidate><a href="{{ url('list-beasiswa') }}" >Cancel </a></button>
+		
 
 
 	</div>

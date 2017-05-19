@@ -65,7 +65,7 @@
     </table>
 
     <div>
-      <a href="{{ url('profil') }}"><button id="cancel" class="btn btn-info" type="button" formnovalidate>Back</button></a>
+      <a href="{{ url('profil') }}"><button id="cancel" class="btn btn-info" type="button" formnovalidate>Kembali</button></a>
     </div>
 
 </div>

@@ -12,7 +12,8 @@
      aksestahapan : id_tahapan
      tahapan : id_tahapan, nama_tahapan, nama
 -->
-<h4>Seleksi {{$beasiswa->nama_beasiswa}}</h4>
+<h3>SELEKSI {{$beasiswa->nama_beasiswa}}</h3>
+
 
 <a href = "{{ url('seleksi') }}">  Kembali Ke Daftar Beasiswa  </a>
 

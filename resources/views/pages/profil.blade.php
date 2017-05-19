@@ -137,6 +137,7 @@
      <form action="{{url('download-berkas')}}" method="POST">
        <input type="text" value="{{$file->file}}" name="berkas" hidden>
        <input type="hidden" value="<?php echo csrf_token(); ?>" name="_token">
+       <input type="hidden" value="{{$user->username}}" name="username">
        <label class="form-group">{{$index+1}}.</label>
        <button class="btn" type="submit">Download</button>
        <label>{{$file->nama_berkas}}</label>
@@ -170,6 +171,9 @@
     </table>
     @endif
     </div>
+    </br></br></br></br></br></br></br></br></br>
+    </br></br></br></br></br></br></br></br></br>
+    </br></br></br></br></br></br></br></br></br>
 @endsection
 
 @section('script')
