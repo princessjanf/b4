@@ -21,6 +21,30 @@
 	</select>
 </form>
 <br>{!! $chart->render() !!}
+</br>
+</br>
+@if($table == 1)
+	<h4 style="text-align:center";> Detail Beasiswa </h4>
+	<table id="beasiswalist" class="table table-striped">
+			<thead>
+					<tr>
+							<th> No </th>
+							<th> Nama Beasiswa </th>
+							<th> Pendonor </th>
+					</tr>
+			</thead>
+			<tbody>
+				@foreach($beasiswas as $index=>$beasiswa)
+					<tr>
+						<td> {{$index+1}} </td>
+						<td> {{$beasiswa->nama_beasiswa}} </td>
+						<td> {{$beasiswa->nama_instansi}} </td>
+					</tr>
+				@endforeach
+			</tbody>
+	</table>
+@endif
+
 @endsection
 
 @section('script')
