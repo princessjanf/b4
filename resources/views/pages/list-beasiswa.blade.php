@@ -304,9 +304,9 @@
   			@elseif($namarole=="Mahasiswa")
   				<td align="center">	@if ($beasiswa->tanggal_buka <= Carbon\Carbon::now() and Carbon\Carbon::now() <= $beasiswa->tanggal_tutup)
   					@if($beasiswa->id_jenis_seleksi=='1')
-  					<a href= "{{url($beasiswa->link_seleksi)}}"><button class="btn"><b>Daftar</b></button></a>
+  					     <a href= "{{ url($beasiswa->link_seleksi) }}"><button class="btn"><b>Daftar</b></button></a>
   					@else
-  					<a href= "{{url('daftar-beasiswa/'.$beasiswa->id_beasiswa)}}"><button class="btn"><b>Daftar</b></button></a>
+  					     <a href= "{{ url('daftar-beasiswa/'.$beasiswa->id_beasiswa) }}"><button class="btn"><b>Daftar</b></button></a>
   					@endif
   				</td>
   			@endif

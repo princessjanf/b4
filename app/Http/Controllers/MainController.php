@@ -138,8 +138,15 @@ class MainController extends Controller
 
       } else if ($namarole == 'Pendonor'){
         $pendonor = DB::table('pendonor')->where('id_user', $pengguna->id_user)->first();
-        $beasiswas = collect(DB::table('beasiswa')->where('flag', '1')->where('public', '1')->orderBy('id_beasiswa', 'desc')->join('pendonor','pendonor.id_user', 'beasiswa.id_pendonor')->get());
-        $beasiswas2= collect(DB::table('beasiswa')->where('flag', '1')->where('public', '0')->where('id_pendonor', $pendonor->id_user)->join('pendonor','pendonor.id_user', 'beasiswa.id_pendonor')->orderBy('id_beasiswa', 'desc')->get());
+        $beasiswas = collect(DB::table('beasiswa')->where('flag', '1')->where('public', '1')->orderBy('beasiswa.id_beasiswa', 'desc')
+        ->join('pendonor','pendonor.id_user', 'beasiswa.id_pendonor')
+        ->join('log_beasiswa','beasiswa.id_beasiswa', '=', 'log_beasiswa.id_beasiswa')->get());
+
+        $beasiswas2= collect(DB::table('beasiswa')->where('flag', '1')->where('public', '0')->where('beasiswa.id_pendonor', $pendonor->id_user)
+        ->join('pendonor','pendonor.id_user', 'beasiswa.id_pendonor')
+        ->join('log_beasiswa','beasiswa.id_beasiswa', '=', 'log_beasiswa.id_beasiswa')
+        ->orderBy('beasiswa.id_beasiswa', 'desc')->get());
+        
         $beasiswas = $beasiswas->merge($beasiswas2)->sort()->values()->all();
 
       } else {
@@ -567,7 +574,8 @@ function pendaftarBeasiswa($id)
 
   function download(Request $request)
   {
-      return response()->download(storage_path('app/berkas/'.$request->berkas));
+      $user = SSO::getUser();
+      return response()->download(storage_path('app/berkas/'.$user->username.'/'.$request->berkas));
   }
 
   function unduhDK(Request $request)

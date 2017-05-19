@@ -14,6 +14,11 @@
         {{ session('namabeasiswamodif') }} telah <b> berhasil </b> dimodifikasi!
     </div>
 
+@elseif (session('namabeasiswadaftar'))
+    <div class="alert alert-success">
+        Anda telah <b> berhasil </b> mendaftar ke {{ session('namabeasiswadaftar') }}! 
+    </div>
+
 @endif
 
 @if ($namarole=='Direktorat Kerjasama')

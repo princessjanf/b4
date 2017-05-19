@@ -9,7 +9,7 @@
 @section('content')
 @if (session('namaberkas'))
     <div class="alert alert-success">
-        Berkas {{ session('namaberkas') }} milik {{ session('namamahasiswa') }} telah <b> berhasil </b> diunggah.
+        Berkas telah <b> berhasil </b> diunggah.
     </div>
 @endif
 
@@ -23,8 +23,8 @@
 
 	<input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
 	<input type = "hidden" name = "idBeasiswa" value= {{$beasiswa->id_beasiswa}}>
-	<input type = "hidden" name = "userid" value= {{$pengguna->id_user}}>
-
+  <input type = "hidden" name = "userid" value= {{$pengguna->id_user}}>
+<input type = "hidden" name = "username" value= "{{$user->username}}">
   	<input type = "hidden" name = "idMahasiswa" value={{$pengguna->id_user}} >
   	<input type = "hidden" name = "idPenyeleksi" value= {{$bepe->id_penyeleksi}}>
   	<input type = "hidden" name = "idTahapan" value={{$bepe->id_tahapan}} >
@@ -152,7 +152,7 @@
 			    <div class="modal-dialog">
 				        <div class="modal-content">
 				            <div class="modal-header">
-				               <b> Confirm Submit</b>
+				               <b> Konfirmasi Daftar</b>
 				            </div>
 				            <div class="modal-body">
 				                Apakah Anda yakin ingin mendaftar Beasiswa <b> {{$beasiswa->nama_beasiswa}}</b>?
@@ -160,8 +160,8 @@
 				            </div>
 
 						  <div class="modal-footer">
-						            <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
-						            <button type="submit" id="submit-form" class="btn btn-success"> Submit </button>
+						            <button type="button" class="btn btn-danger" data-dismiss="modal">BATAL</button>
+						            <button type="submit" id="submit-form" class="btn btn-success"> KIRIM </button>
 						           <!--  <a href="#" id="submit" class="btn btn-success success">Submit</a> -->
 						  </div>
 				    </div>

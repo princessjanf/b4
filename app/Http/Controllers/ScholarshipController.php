@@ -236,21 +236,23 @@ class ScholarshipController extends Controller
                   ]
                 );
 
+                $beasiswax = DB::table('beasiswa')->where('id_beasiswa',$request->get('idBeasiswa'))->first();
 
                 $id_pendaftaran = DB::table('pendaftaran_beasiswa')->orderBy('id_pendaftaran', 'desc')->first()->id_pendaftaran;
                $this->uploadSubmit($request, $id_pendaftaran);
-      return redirect('/detail-beasiswa/'.$request->get('idBeasiswa'));
+      return redirect('/detail-beasiswa/'.$request->get('idBeasiswa'))->with('namabeasiswadaftar', $beasiswax->nama_beasiswa);
     }
 
     public function uploadSubmit(UploadRequest $request, int $id_pendaftaran)
     {
+      $username = $request->get('username');
       $idBeasiswa = $request->get('idBeasiswa');
       $idMahasiswa = $request->get('userid');
 
       if (count($request->idBerkas2)>0) {
         foreach ($request->idBerkas2 as $index=>$berkas) {
           $idBerkas = $request->idBerkas2[$index];
-          $file = $idMahasiswa.'-'.$request->nama2[$index].'.pdf';
+          $file = $request->nama2[$index].'.pdf';
           $oldfile = DB::table('beasiswa_berkas')
           ->where('id_pendaftaran', $id_pendaftaran)
           ->where('id_beasiswa', $idBeasiswa)
@@ -268,7 +270,7 @@ class ScholarshipController extends Controller
       if (count($request->berkases)>0) {
         foreach ($request->berkases as $index=>$berkas) {
           $idBerkas = $request->idBerkas[$index];
-          $file = $idMahasiswa.'-'.$request->nama[$index].'.pdf';
+          $file = $request->nama[$index].'.pdf';
           $oldfile = DB::table('beasiswa_berkas')
           ->where('id_pendaftaran', $id_pendaftaran)
           ->where('id_beasiswa', $idBeasiswa)
@@ -280,7 +282,7 @@ class ScholarshipController extends Controller
             DB::insert('INSERT INTO `beasiswa_berkas`(`id_pendaftaran`, `id_beasiswa`, `id_berkas`, `id_mahasiswa`, `file`)
             VALUES (?,?,?,?,?)', [$id_pendaftaran, $idBeasiswa, $idBerkas, $idMahasiswa, $file]);
           }
-          $berkas->storeAs('berkas', $file);
+          $berkas->storeAs('berkas/'.$username, $file);
         }
       }
     }
