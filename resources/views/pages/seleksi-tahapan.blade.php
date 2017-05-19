@@ -306,7 +306,7 @@
 	function showResult(){
 		var x = "{{$beasiswa->tanggal_tutup}}".split('-');
 		var now = new Date();
-		var tgl = new Date().setFullYear(x[0], x[1]-1, x[2]-1);
+		var tgl = new Date().setFullYear(x[0], x[1]-1, x[2]);
 
 		if (tgl > now)
 		{
