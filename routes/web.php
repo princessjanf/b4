@@ -213,3 +213,23 @@ Route::post('unggahDK',[
   'middleware' => 'authSSO',
   'uses' => 'UploadController@unggahDKsubmit'
 ]);
+
+
+Route::get('statistik', 'ChartController@statistik')->middleware('authSSO');
+Route::get('statistik-persebaran', 'ChartController@persebaran')->middleware('authSSO');
+Route::get('statistik-penerima', 'ChartController@penerima')->middleware('authSSO');
+Route::get('lihat-statistik', 'ChartController@index')->middleware('authSSO');
+Route::get('lihat-statistik4', 'ChartController@index4')->middleware('authSSO');
+Route::post('lihat-statistik4', 'ChartController@index4filter')->middleware('authSSO');
+Route::get('lihat-statistik2', 'ChartController@statistikAll')->middleware('authSSO');
+Route::get('lihat-statistik3', 'ChartController@pendaftarFakultas')->middleware('authSSO');
+
+Route::get('lihat-statistik5', 'ChartController@index5')->middleware('authSSO');
+Route::post('lihat-statistik5', 'ChartController@index5filter')->middleware('authSSO');
+
+Route::get('lihat-statistik6', 'ChartController@index6')->middleware('authSSO');
+Route::post('lihat-statistik6', 'ChartController@index6filter')->middleware('authSSO');
+Route::get('lihat-statistik7', 'ChartController@beasiswaPerProdi')->middleware('authSSO');
+Route::post('lihat-statistik7', 'ChartController@beasiswaPerProdi2')->middleware('authSSO');
+
+Route::get('lihat-statistik-dana', 'ChartController@danaBeasiswa')->middleware('authSSO');
