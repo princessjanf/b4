@@ -77,7 +77,7 @@ foreach ($namaDitolak as $nd) {
   DB::insert('INSERT INTO `email_beasiswa`(`id_beasiswa`, `is_emailed`)
             VALUES (?,?)',
             [
-                $idbeasiswa,
+                $idBeasiswa,
                 1
             ]
           );
