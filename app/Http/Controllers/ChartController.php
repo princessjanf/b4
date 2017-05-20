@@ -51,7 +51,7 @@ class ChartController extends Controller
                            ->dataset('Beasiswa', DB::table('beasiswa')
                              ->join('beasiswa_jenjang_prodi', 'beasiswa_jenjang_prodi.id_beasiswa','=','beasiswa.id_beasiswa')
                              ->join('program_studi', 'program_studi.id_prodi', '=', 'beasiswa_jenjang_prodi.id_prodi')
-                             ->join('fakultas','fakultas.id_fakultas','=', 'program_studi.id_fakultas')->distinct()->get())
+                             ->join('fakultas','fakultas.id_fakultas','=', 'program_studi.id_fakultas')->select('id_beasiswa', 'nama_fakultas', 'id_fakultas')->distinct()->get())
                            ->groupBy('nama_fakultas');
 
    $prodi = Charts::multidatabase('bar', 'highcharts')
