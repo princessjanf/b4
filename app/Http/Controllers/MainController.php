@@ -1015,21 +1015,7 @@ function pendaftarBeasiswa($id)
 			$set=0;
 
 			foreach ($retrTahapan as $key => $tahapan) {
-				if (count($retrTahapan)-1 == $key)
-				{
-					DB::table('seleksi_beasiswa')
-					->where('id_beasiswa', $request->idbeasiswa)->where('id_penyeleksi', $request->pengguna)
-					->where('id_tahapan', $request->idtahapan)
-					->update(['final' => '1']);
-					foreach ($request->table as $key => $idMahasiswa) {
-							DB::table('penerima_beasiswa')->insert(
-								['id_beasiswa' => $request->idbeasiswa,
-								'id_mahasiswa'=>$idMahasiswa
-							]
-						);
-						DB::table('pendaftaran_beasiswa')->where('id_mahasiswa', $idMahasiswa)->where('id_beasiswa', $request->idbeasiswa)->update(['status_lamaran' => '6']);
-					}
-				}
+
 				if ($set==1)
 				{
 					$set=$tahapan->id_tahapan;
@@ -1048,7 +1034,23 @@ function pendaftarBeasiswa($id)
 							]
 						);
 					}
-					break;
+          if (count($retrTahapan)-1 != $key)
+          {break;}
+				}
+        if (count($retrTahapan)-1 == $key)
+				{
+					DB::table('seleksi_beasiswa')
+					->where('id_beasiswa', $request->idbeasiswa)->where('id_penyeleksi', $request->pengguna)
+					->where('id_tahapan', $request->idtahapan)
+					->update(['final' => '1']);
+					foreach ($request->table as $key => $idMahasiswa) {
+							DB::table('penerima_beasiswa')->insert(
+								['id_beasiswa' => $request->idbeasiswa,
+								'id_mahasiswa'=>$idMahasiswa
+							]
+						);
+						DB::table('pendaftaran_beasiswa')->where('id_mahasiswa', $idMahasiswa)->where('id_beasiswa', $request->idbeasiswa)->update(['status_lamaran' => '6']);
+					}
 				}
 				else if ($tahapan->id_tahapan == $request->idtahapan)
 				{

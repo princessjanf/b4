@@ -224,7 +224,7 @@
 	<div id="fieldWebsite" class="form-group" style="display: none;">
 		<label for="websiteSeleksi">Website Seleksi</label><br>
 		<p>Masukkan website yang anda akan jadikan sebagai tempat untuk seleksi</p>
-		<input type="url" placeholder="Website seleksi" class="form-control" name="websiteSeleksi" id="websiteSeleksi" required="">
+		<input type="url" placeholder="Website seleksi" class="form-control" name="websiteSeleksi" id="websiteSeleksi" required data-parsley-trigger="keyup" data-parsley-validation-threshold="1">
 	</div>
 
 	<!-- 2 -->
@@ -340,7 +340,7 @@
 				    </div>
 				</div>
 		</div>
-		
+
 
 
 	</div>
@@ -699,13 +699,13 @@
 		$("[name='nominalPendidikan']").change(function(){
 			var nominal = $("[name='nominalPendidikan']").val();
 
-			addComas("nominalPendidikan",nominalPendidikan);
+			addComas("nominalPendidikan",nominal);
 		});
 
 		$("[name='nominalHidup']").change(function(){
 			var nominal = $("[name='nominalHidup']").val();
 
-			addComas("nominalHidup",nominalHidup);
+			addComas("nominalHidup",nominal);
 		});
 	});
 

@@ -223,6 +223,7 @@
 				<div class="input-group col-sm-12">
 					<!-- invalidate? -->
 					@foreach ($syarat as $key => $s)
+
 	 					<br><input value= "{{ $s->syarat}}" type = "text" class="form-control col-sm-9" name="syarat{{++$key}}" required><br><br>
 	 				@endforeach
 				</div>
@@ -318,13 +319,20 @@
 	$("[name='alertDateModal']").hide();
 	$("[name='alertDateModal2']").hide();
 	$("[name='alertDanaModal']").hide();
-	counter=1;
+
 	var idSyarat = [];
-	idSyarat.push(1);
+	var counter =0;
+
+	@foreach($syarat as $key => $s)
+	idSyarat.push({{$key+1}});
+	counter = {{$key+1}};
+	@endforeach
+	console.log(counter);
 	function insertRow(){
 		counter+=1;
+		console.log(counter);
 		idSyarat.push(counter);
-		console.log(idSyarat);
+
 		document.getElementsByName("counter")[0].value = counter;
 		var theForm = document.getElementById('createScholarshipForm');
 		var x = document.getElementsByName('syarat')[0];
@@ -332,6 +340,7 @@
 		elem.setAttribute("id","syarat"+counter);
 		elem.innerHTML = '<div class="input-group col-sm-12"><input type = "text" class="form-control col-sm-9" name="syarat'+counter+'" required><span class="input-group-btn"><button class="btn btn-danger" onclick="removeSyarat('+counter+')"> x </button></span><br>';
 		x.appendChild(elem);
+
 	}
 	function removeSyarat(i){
 	//	counter-=1;

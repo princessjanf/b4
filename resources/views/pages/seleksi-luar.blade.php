@@ -14,7 +14,7 @@
 @if($final=='2')
 <a href = "{{ url('nama-penerima/'.$idbeasiswa) }}">  Lihat Penerima Beasiswa  </a>
 @elseif($final == '0')
-<a href = "{{ url('/pendaftar-beassiswa/'.$idbeasiswa) }}">  Lihat Pendaftar Beasiswa  </a>
+<a href = "{{ url('/pendaftar-beasiswa/'.$idbeasiswa) }}">  Lihat Pendaftar Beasiswa  </a>
 
 @endif
 </br>
