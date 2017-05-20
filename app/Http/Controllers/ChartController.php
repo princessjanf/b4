@@ -127,11 +127,12 @@ class ChartController extends Controller
         array_push($jjg, $j->nama_jenjang);
         $jumlahProdi = DB::table('beasiswa')->join('beasiswa_jenjang_prodi', 'beasiswa_jenjang_prodi.id_beasiswa', '=', 'beasiswa.id_beasiswa')
                       ->join('jenjang', 'beasiswa_jenjang_prodi.id_jenjang', '=', 'jenjang.id_jenjang')->join('program_studi', 'program_studi.id_prodi','=','beasiswa_jenjang_prodi.id_prodi')
-                      ->select('beasiswa.id_beasiswa', 'beasiswa_jenjang_prodi.id_prodi', 'nama_prodi')->distinct()->get();
+                      ->where('jenjang.id_jenjang',2)->select('beasiswa_jenjang_prodi.id_prodi', 'nama_prodi')->distinct()->get();
 
         foreach ($jumlahProdi as $jp)
         {
-          $jml = DB::table('beasiswa_jenjang_prodi')->join('beasiswa', 'beasiswa_jenjang_prodi.id_beasiswa', '=','beasiswa.id_beasiswa')->where('id_prodi', $jp->id_prodi)->where('id_jenjang', $j->id_jenjang)->count();
+          echo $jp->id_prodi.' '.$j->id_jenjang.' ';
+          $jml = DB::table('beasiswa_jenjang_prodi')->where('id_prodi', $jp->id_prodi)->where('id_jenjang', $j->id_jenjang)->count();
           array_push($namaProdi, $jp->nama_prodi);
           array_push($jumlahBeasiswa, $jml);
           array_push($arrJenjang, $j->nama_jenjang);
@@ -154,12 +155,11 @@ class ChartController extends Controller
 
         foreach($jmlFakultas as $jf)
         {
-          $jml = DB::table('beasiswa_jenjang_prodi as bjp')->join('beasiswa as b', 'b.id_beasiswa', '=', 'bjp.id_beasiswa')
-                        ->join('jenjang_prodi as jp', 'bjp.id_jenjang', '=', 'jp.id_jenjang')
+
+          $jml = DB::table('beasiswa_jenjang_prodi as bjp')
                         ->join('program_studi as ps', 'ps.id_prodi', '=', 'bjp.id_prodi')
                         ->join('fakultas as f', 'f.id_fakultas', '=', 'ps.id_fakultas')
-                        ->where('f.id_fakultas', $jf->id_fakultas)->where('bjp.id_jenjang', $j->id_jenjang)->select('b.id_beasiswa')->distinct()->get();
-
+                        ->where('f.id_fakultas', $jf->id_fakultas)->where('bjp.id_jenjang', $j->id_jenjang)->select('id_beasiswa')->distinct()->get();
           array_push($namaFakultas, $jf->nama_fakultas);
           array_push($jmlBeasiswaFakultas, count($jml));
         }
