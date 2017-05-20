@@ -41,8 +41,8 @@ class ChartController extends Controller
      Charts::multidatabase('bar', 'highcharts')
             ->title("Persebaran Beasiswa Per Jenjang")
             ->elementLabel('Jumlah Beasiswa')
-            ->dataset('Jumlah Beasiswa', DB::table('beasiswa_jenjang_prodi as bjp')->join('program_studi as ps', 'bjp.id_prodi','=','ps.id_prodi')
-                        ->join('jenjang as j', 'j.id_jenjang', '=', 'bjp.id_jenjang')->get())
+            ->dataset('Jumlah Beasiswa', DB::table('beasiswa_jenjang_prodi as bjp')->join('beasiswa as b', 'b.id_beasiswa', '=', 'bjp.id_beasiswa')->join('program_studi as ps', 'bjp.id_prodi','=','ps.id_prodi')
+                        ->join('jenjang as j', 'j.id_jenjang', '=', 'bjp.id_jenjang')->select('b.id_beasiswa', 'nama_jenjang')->distinct()->get())
             ->groupBy('nama_jenjang');
 
     $fakultas = Charts::multidatabase('bar', 'highcharts')
@@ -51,7 +51,7 @@ class ChartController extends Controller
                            ->dataset('Beasiswa', DB::table('beasiswa')
                              ->join('beasiswa_jenjang_prodi', 'beasiswa_jenjang_prodi.id_beasiswa','=','beasiswa.id_beasiswa')
                              ->join('program_studi', 'program_studi.id_prodi', '=', 'beasiswa_jenjang_prodi.id_prodi')
-                             ->join('fakultas','fakultas.id_fakultas','=', 'program_studi.id_fakultas')->get())
+                             ->join('fakultas','fakultas.id_fakultas','=', 'program_studi.id_fakultas')->distinct()->get())
                            ->groupBy('nama_fakultas');
 
    $prodi = Charts::multidatabase('bar', 'highcharts')
