@@ -3,6 +3,7 @@
 @section('title', 'Detail Beasiswa')
 
 @section('content')
+<?php $set = 0; ?>
 
 @if (session('namabeasiswa'))
     <div class="alert alert-success">
@@ -16,7 +17,7 @@
 
 @elseif (session('namabeasiswadaftar'))
     <div class="alert alert-success">
-        Anda telah <b> berhasil </b> mendaftar ke {{ session('namabeasiswadaftar') }}! 
+        Anda telah <b> berhasil </b> mendaftar ke {{ session('namabeasiswadaftar') }}!
     </div>
 
 @endif
@@ -46,35 +47,43 @@
 <h4>DETAIL BEASISWA &nbsp;</h4>
 <h2>{{$beasiswa->nama_beasiswa}}</h2>
   @if ($isselected == 1)
-  		<a href = "{{ url('/nama-penerima/'.$beasiswa->id_beasiswa) }}" class="btn btn-info">  Lihat Penerima Beasiswa  </a>
+      <?php $set = 1;?>
+      <a href = "{{ url('/nama-penerima/'.$beasiswa->id_beasiswa) }}" class="btn btn-info">  Lihat Penerima Beasiswa  </a>
   @else
   		<a href = "{{ url('/pendaftar-beasiswa/'.$beasiswa->id_beasiswa) }}" class="btn btn-info">  Lihat Pendaftar Beasiswa  </a>
+      <?php $set = 1;?>
   @endif
   <br><br>
 
 @elseif($namarole == 'Pendonor' and $ispendonor)
 <h4>DETAIL BEASISWA &nbsp;</h4>
 <h2>{{$beasiswa->nama_beasiswa}}</h2>
-  @if ($isselected == 1)
+  @if ($isselected == 1 AND $set == 0)
       <a href = "{{ url('/nama-penerima/'.$beasiswa->id_beasiswa) }}" class="btn btn-info">  Lihat Penerima Beasiswa  </a>
-  @else
+        <?php $set = 1;?>
+  @elseif ($isselected == 0 AND $set == 0)
       <a href = "{{ url('/pendaftar-beasiswa/'.$beasiswa->id_beasiswa) }}" class="btn btn-info">  Lihat Pendaftar Beasiswa  </a>
+        <?php $set = 1;?>
   @endif
   @if($ispenyeleksi == '1')
-    @if ($isselected == '1')
+    @if ($isselected == '1' AND $set == 0)
       <a href = "{{ url('/nama-penerima/'.$beasiswa->id_beasiswa) }}" class="btn btn-info">  Lihat Penerima Beasiswa  </a>
-    @else
+        <?php $set = 1;?>
+    @elseif ($isselected == 0 AND $set == 0)
       <a href = "{{ url('/pendaftar-beasiswa/'.$beasiswa->id_beasiswa) }}" class="btn btn-info">  Lihat Pendaftar Beasiswa  </a>
+        <?php $set = 1;?>
     @endif
   @endif
 @else
   <h4>DETAIL BEASISWA &nbsp;</h4>
   <h2>{{$beasiswa->nama_beasiswa}}</h2>
   @if($ispenyeleksi == '1')
-    @if ($isselected == '1')
+    @if ($isselected == '1' AND $set == 0)
         <a href = "{{ url('/nama-penerima/'.$beasiswa->id_beasiswa) }}" class="btn btn-info">  Lihat Penerima Beasiswa  </a>
-    @else
+        <?php $set = 1;?>
+      @elseif ($isselected == 0 AND $set == 0)
         <a href = "{{ url('/pendaftar-beasiswa/'.$beasiswa->id_beasiswa) }}" class="btn btn-info">  Lihat Pendaftar Beasiswa  </a>
+        <?php $set = 1;?>
     @endif
   @endif
 @endif

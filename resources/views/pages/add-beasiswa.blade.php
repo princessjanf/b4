@@ -483,8 +483,9 @@
 	}
 
 	var idTahapan;
+	idTahapan = [1,2];
 	function insertRowTahapan3(){
-		idTahapan = [1,2];
+		
 		counterT=3;
 		idTahapan.push(counterT);
 			document.getElementById("tulisan3").style.display = "none";
@@ -511,7 +512,7 @@
 			var x = document.getElementsByName('tahapanSeleksi')[0];
 	 		var elem = document.createElement('div');
 	 		elem.setAttribute("id","tahapan4");
-			elem.innerHTML = '<div class="input-group col-sm-12"><input style="width:220px;" type = "text" class="form-control input" value = "Wawancara" name="tahapan4" required="" disabled><span class="input-group-btn" style="width:10px;"></span><p type="text" class="form-control" style="border:0;">oleh</p><span class="input-group-btn" style="width:0px;"></span><div id="penyeleksiTahapan" class="input-sm"><div class="input-group col-sm-12"><select style="overflow:auto" class="form-control" id="penyeleksi4" name="penyeleksi4"><option selected disabled> --Pilih Penyeleksi-- </option><optgroup label="PENDONOR"><option disabled style="color:red" class = "pendonorOpt" value="">Pilih pendonor terlebih dahulu!</option></optgroup><optgroup label="PEGAWAI UNIVERSITAS">@foreach ($pegawaiuniversitas as $pu)<option value= {{ $pu->id_user}}> {{$pu->nama_jabatan}} Universitas - {{$pu->nama}} </option>@endforeach</optgroup><optgroup label="PEGAWAI FAKULTAS" style="display:none;" class="pegawaifakultas"></optgroup></select></div></div><span class="input-group-btn"><button class="btn btn-danger" onclick="removeTahapan3()"> x </button></span><br><br>';
+			elem.innerHTML = '<div class="input-group col-sm-12"><input style="width:220px;" type = "text" class="form-control input" value = "Wawancara" name="tahapan4" required="" disabled><span class="input-group-btn" style="width:10px;"></span><p type="text" class="form-control" style="border:0;">oleh</p><span class="input-group-btn" style="width:0px;"></span><div id="penyeleksiTahapan" class="input-sm"><div class="input-group col-sm-12"><select style="overflow:auto" class="form-control" id="penyeleksi4" name="penyeleksi4"><option selected disabled> --Pilih Penyeleksi-- </option><optgroup label="PENDONOR"><option disabled style="color:red" class = "pendonorOpt" value="">Pilih pendonor terlebih dahulu!</option></optgroup><optgroup label="PEGAWAI UNIVERSITAS">@foreach ($pegawaiuniversitas as $pu)<option value= {{ $pu->id_user}}> {{$pu->nama_jabatan}} Universitas - {{$pu->nama}} </option>@endforeach</optgroup><optgroup label="PEGAWAI FAKULTAS" style="display:none;" class="pegawaifakultas"></optgroup></select></div></div><span class="input-group-btn"><button class="btn btn-danger" onclick="removeTahapan4()"> x </button></span><br><br>';
 	 		x.appendChild(elem);
 
 				var idPendonor = $("#pendonor").val();
