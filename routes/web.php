@@ -233,3 +233,5 @@ Route::get('lihat-statistik7', 'ChartController@beasiswaPerProdi')->middleware('
 Route::post('lihat-statistik7', 'ChartController@beasiswaPerProdi2')->middleware('authSSO');
 
 Route::get('lihat-statistik-dana', 'ChartController@danaBeasiswa')->middleware('authSSO');
+Route::get('persebaranPerBeasiswa', 'ChartController@persebaranPerBeasiswa')->middleware('authSSO');
+Route::post('persebaranPerBeasiswa', 'ChartController@persebaranPerBeasiswafilter')->middleware('authSSO');

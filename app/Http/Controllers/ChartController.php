@@ -537,4 +537,51 @@ class ChartController extends Controller
       return view('pages.statistik', compact('user','pengguna','namarole','chart'));
 
     }
+
+    function persebaranPerBeasiswa()
+    {
+      $user = SSO::getUser();
+      $pengguna = ChartController::getPengguna($user);
+      $namarole = ChartController::getNamarole($pengguna);
+      $beasiswas = DB::table('beasiswa')->orderBy('beasiswa.id_beasiswa', 'desc')->get();
+      $selected = DB::table('beasiswa')->orderBy('beasiswa.id_beasiswa', 'desc')->first()->nama_beasiswa;
+
+      $dataset = DB::table('penerima_beasiswa as pb')
+                        ->join('beasiswa as b', 'b.id_beasiswa', 'pb.id_beasiswa')
+                        ->join('mahasiswa as m', 'pb.id_mahasiswa', 'm.id_user')
+                        ->join('fakultas as f', 'm.id_fakultas', 'f.id_fakultas')
+                        ->join('user as u', 'm.id_user', 'u.id_user')
+                        ->where('b.nama_beasiswa', $selected)
+                        ->get();
+
+      $chart = Charts::database($dataset, 'pie', 'highcharts')
+                       ->title($selected)
+                       ->groupBy('nama_fakultas');
+
+      return view('pages.statistik-persebaranPerBeasiswa', compact('user','pengguna','namarole','chart', 'beasiswas', 'selected', 'dataset'));
+    }
+
+    function persebaranPerBeasiswafilter(Request $request)
+    {
+      $user = SSO::getUser();
+      $pengguna = $this->getPengguna($user);
+      $namarole = $this->getNamarole($pengguna);
+      $selected = $request->selected;
+      $beasiswas = DB::table('beasiswa')->orderBy('beasiswa.id_beasiswa', 'desc')->get();
+
+      $dataset = DB::table('penerima_beasiswa as pb')
+                        ->join('beasiswa as b', 'b.id_beasiswa', 'pb.id_beasiswa')
+                        ->join('mahasiswa as m', 'pb.id_mahasiswa', 'm.id_user')
+                        ->join('fakultas as f', 'm.id_fakultas', 'f.id_fakultas')
+                        ->join('user as u', 'm.id_user', 'u.id_user')
+                        ->where('b.nama_beasiswa', $selected)
+                        ->get();
+
+      $chart = Charts::database($dataset, 'pie', 'highcharts')
+                       ->title($selected)
+                       ->groupBy('nama_fakultas');
+
+      return view('pages.statistik-persebaranPerBeasiswa', compact('user','pengguna','namarole','chart', 'beasiswas', 'selected', 'dataset'));
+    }
+
 }
